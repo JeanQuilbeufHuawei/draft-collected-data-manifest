@@ -5,15 +5,15 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: April 28, 2022                                         D. Lopez
+Expires: May 28, 2022                                           D. Lopez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                        October 25, 2021
+                                                       November 24, 2021
 
 
                  Data Manifest for Streaming Telemetry
-             draft-claise-opsawg-collected-data-manifest-00
+             draft-claise-opsawg-collected-data-manifest-01
 
 Abstract
 
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 28, 2022.
+   This Internet-Draft will expire on May 28, 2022.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 1]
+Claise, et al.            Expires May 28, 2022                  [Page 1]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 2]
+Claise, et al.            Expires May 28, 2022                  [Page 2]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
 2.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 3]
+Claise, et al.            Expires May 28, 2022                  [Page 3]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
    o  [I-D.claise-netconf-metadata-for-collection], which is based on
@@ -221,9 +221,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 4]
+Claise, et al.            Expires May 28, 2022                  [Page 4]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
    module: ietf-collected-data-platform-manifest
@@ -277,9 +277,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 5]
+Claise, et al.            Expires May 28, 2022                  [Page 5]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
 3.2.  YANG module ietf-collected-data-platform-manifest
@@ -289,7 +289,7 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 module ietf-collected-data-platform-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-plaftorm-manifest";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
   prefix platform-manifest;
 
   import ietf-yang-library {
@@ -333,9 +333,9 @@ module ietf-collected-data-platform-manifest {
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 6]
+Claise, et al.            Expires May 28, 2022                  [Page 6]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
      (https://trustee.ietf.org/license-info).
@@ -389,9 +389,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 7]
+Claise, et al.            Expires May 28, 2022                  [Page 7]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
          specific operating system.";
@@ -445,9 +445,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 8]
+Claise, et al.            Expires May 28, 2022                  [Page 8]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
       Telemetry (EDT).  When set to false, the values are sent
@@ -501,9 +501,9 @@ module ietf-collected-data-manifest {
 
 
 
-Claise, et al.           Expires April 28, 2022                 [Page 9]
+Claise, et al.            Expires May 28, 2022                  [Page 9]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
      are to be interpreted as described in BCP 14 (RFC 2119)
@@ -533,10 +533,11 @@ Internet-Draft           Telemetry Data Manifest            October 2021
     description
       "Defines the information for each collected objet";
     list mdt-collection-item {
+      key "sensor-path";
       description
         "Status of the collection for the given sensor-path";
-      key "sensor-path";
       leaf sensor-path {
+        type string;
         description
           "The sensor path that was configured to collect information about
            this object. Sensor path syntax is
@@ -546,41 +547,40 @@ Internet-Draft           Telemetry Data Manifest            October 2021
            necessary if the preceding node in the path is not defined in
            the same module.
 
-           Module name must be defined in the platform-manifest module and
-           every node name must be defined in the preceding node in the path.";
-        type string;
+           Module name must be defined in /platform/module-set and every node
+           name must definede in the preceding node in the path.";
       }
       leaf requested-period {
+        type int64;
         description
           "Requested period, in milisecond, between two succesive updates.";
-        type int64;
 
 
 
-Claise, et al.           Expires April 28, 2022                [Page 10]
+Claise, et al.            Expires May 28, 2022                 [Page 10]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
         // when on-change is false;
       }
       leaf current-period {
+        type int64;
         description
           "Current period, in milisecond, between two succesive update.s";
-        type int64;
         // when on-change is false;
       }
       leaf on-change {
+        type boolean;
         description
           "Whether the sensor path is collected only when there is a change,
            i.e. Event-Driven Telemetry is enabled.";
-        type boolean;
       }
       leaf suppress-redundancy {
+        type boolean;
         description
           "Whether the information is sent at every period or only when there
            is a change between two successive pollings..";
-        type boolean;
       }
     }
     // we could augment here with other kind of collection items
@@ -613,9 +613,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                [Page 11]
+Claise, et al.            Expires May 28, 2022                 [Page 11]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
 6.  Security Considerations
@@ -669,9 +669,9 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                [Page 12]
+Claise, et al.            Expires May 28, 2022                 [Page 12]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
    [RFC8525]  Bierman, A., Bjorklund, M., Schoenwaelder, J., Watsen, K.,
@@ -725,9 +725,9 @@ Authors' Addresses
 
 
 
-Claise, et al.           Expires April 28, 2022                [Page 13]
+Claise, et al.            Expires May 28, 2022                 [Page 13]
 
-Internet-Draft           Telemetry Data Manifest            October 2021
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
    Diego R. Lopez
@@ -781,4 +781,4 @@ Internet-Draft           Telemetry Data Manifest            October 2021
 
 
 
-Claise, et al.           Expires April 28, 2022                [Page 14]
+Claise, et al.            Expires May 28, 2022                 [Page 14]
