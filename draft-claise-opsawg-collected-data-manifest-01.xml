@@ -143,27 +143,32 @@ module: ietf-collected-data-platform-manifest
      +--rw os-version?         string
      +--rw os-type?            string
      +--rw module-set* [name]
-        +--rw name                  string
-        +--rw module* [name]
-        |  +--rw name         yang:yang-identifier
-        |  +--rw revision?    revision-identifier
-        |  +--rw namespace    inet:uri
-        |  +--rw location*    inet:uri
-        |  +--rw submodule* [name]
-        |  |  +--rw name        yang:yang-identifier
-        |  |  +--rw revision?   revision-identifier
-        |  |  +--rw location*   inet:uri
-        |  +--rw feature*     yang:yang-identifier
-        |  +--rw deviation*   -> ../../module/name
-        +--rw import-only-module* [name revision]
-           +--rw name         yang:yang-identifier
-           +--rw revision     union
-           +--rw namespace    inet:uri
-           +--rw location*    inet:uri
-           +--rw submodule* [name]
-              +--rw name        yang:yang-identifier
-              +--rw revision?   revision-identifier
-              +--rw location*   inet:uri
+     |  +--rw name                  string
+     |  +--rw module* [name]
+     |  |  +--rw name         yang:yang-identifier
+     |  |  +--rw revision?    revision-identifier
+     |  |  +--rw namespace    inet:uri
+     |  |  +--rw location*    inet:uri
+     |  |  +--rw submodule* [name]
+     |  |  |  +--rw name        yang:yang-identifier
+     |  |  |  +--rw revision?   revision-identifier
+     |  |  |  +--rw location*   inet:uri
+     |  |  +--rw feature*     yang:yang-identifier
+     |  |  +--rw deviation*   -> ../../module/name
+     |  +--rw import-only-module* [name revision]
+     |     +--rw name         yang:yang-identifier
+     |     +--rw revision     union
+     |     +--rw namespace    inet:uri
+     |     +--rw location*    inet:uri
+     |     +--rw submodule* [name]
+     |        +--rw name        yang:yang-identifier
+     |        +--rw revision?   revision-identifier
+     |        +--rw location*   inet:uri
+     +--rw packages-set
+        +--rw package* [name version]
+           +--rw name        -> /pkgs:packages/package/name
+           +--rw version     -> /pkgs:packages/package[pkgs:name = current()/../name]/version
+           +--rw checksum?   -> /pkgs:packages/package[pkgs:name = current()/../name][pkgs:version = current()/../version]/pkgs:checksum
                 ]]></artwork>
             </figure>
         </t>
@@ -173,6 +178,10 @@ module: ietf-collected-data-platform-manifest
           </t>
           <t>
             The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+          </t>
+          <t>
+              Alternatively, the set of available YANG modules on the device can be described via packages-set which
+              contains a list of references to YANG Packages <xref target="I-D.ietf-netmod-yang-packages"/>.
           </t>
         </section>
       <section anchor="platform-manifest-model" title="YANG module ietf-collected-data-platform-manifest">
@@ -188,6 +197,11 @@ module ietf-collected-data-platform-manifest {
     prefix yanglib;
     reference
       "RFC8525: YANG Library";
+  }
+  import ietf-yang-packages {
+    prefix pkgs;
+    reference
+      "RFC  XXXX: YANG Packages.";
   }
 
   organization
@@ -235,8 +249,8 @@ module ietf-collected-data-platform-manifest {
 
   container platform {
     description
-      "Contains information about the platform that allows to identify and
-       understand the individual data collection information.  ";
+      "Contains information about the platform that allows to identify
+       and understand the individual data collection information.  ";
     leaf platform {
       type string;
       description
@@ -245,39 +259,48 @@ module ietf-collected-data-platform-manifest {
     leaf software-version {
       type string;
       description
-        "Name of the version of software.  With respect to most network device appliances,
-                this will be the operating system version.  But for other YANG module
-                implementation, this would be a version of appliance software.  Ultimately,
-                this should correspond to a version string that will be recognizable by
-                the consumers of the platform.";
+        "Name of the version of software. With respect to most network
+         device appliances, this will be the operating system version.
+         But for other YANG module implementation, this would be a
+         version of appliance software. Ultimately, this should
+         correspond to a version string that will be recognizable by the
+         consumers of the platform.";
     }
     leaf software-flavor {
       type string;
       description
-        "A variation of a specific version where
-                YANG model support may be different.  Depending on the vendor, this could
-                be a license, additional software component, or a feature set.";
+        "A variation of a specific version where YANG model support
+         may be different.  Depending on the vendor, this could be a
+         license, additional software component, or a feature set.";
     }
     leaf os-version {
       type string;
       description
-        "Version of the operating system using this module.  This is primarily useful if
-         the software implementing the module is an application that requires a specific
-         operating system.";
+        "Version of the operating system using this module. This is
+         primarily useful if the software implementing the module is an
+         application that requires a specific operating system
+         version.";
     }
     leaf os-type {
       type string;
       description
-        "Type of the operating system using this module.  This is primarily useful if
-         the software implementing the module is an application that requires a
-         specific operating system.";
+        "Type of the operating system using this module. This is
+         primarily useful if the software implementing the module is an
+         application that requires a specific operating system type.";
     }
     list module-set {
       key "name";
       description
-        "The list of all modules defined on the device. The name of the modules
-         can be used in paths to identfy a specific collected object.";
+        "The list of all modules defined on the device. The name of the
+         modules can be used in paths to identfy a specific collected
+         object.";
       uses yanglib:module-set-parameters;
+    }
+    container packages-set {
+      description
+        "Alternatively to module-set, use a list of yang packages to
+         describe the list of available schema on the platform";
+      uses pkgs:yang-ds-pkg-ref;
     }
   }
 }
@@ -542,6 +565,7 @@ module ietf-collected-data-manifest {
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
       <?rfc include="reference.I-D.ietf-netconf-notification-capabilities"?>
+      <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>
     <section title="Changes between revisions">

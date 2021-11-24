@@ -146,6 +146,10 @@ This document specifies the data manifest, which contains the information how an
           <t>
             The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
           </t>
+          <t>
+              Alternatively, the set of available YANG modules on the device can be described via packages-set which
+              contains a list of references to YANG Packages <xref target="I-D.ietf-netmod-yang-packages"/>.
+          </t>
         </section>
       <section anchor="platform-manifest-model" title="YANG module ietf-collected-data-platform-manifest">
         <t>&lt;CODE BEGINS&gt; file "ietf-collected-data-platform-manifest@2021-10-15.yang"</t>
@@ -283,6 +287,7 @@ This document specifies the data manifest, which contains the information how an
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
       <?rfc include="reference.I-D.ietf-netconf-notification-capabilities"?>
+      <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>
     <section title="Changes between revisions">

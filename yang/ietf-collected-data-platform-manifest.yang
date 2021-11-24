@@ -5,8 +5,12 @@ module ietf-collected-data-platform-manifest {
 
   import ietf-yang-library {
     prefix yanglib;
-    reference
-      "RFC8525: YANG Library";
+    reference "RFC8525: YANG Library";
+  }
+
+  import ietf-yang-packages {
+    prefix pkgs;
+    reference "RFC  XXXX: YANG Packages.";
   }
 
   organization
@@ -54,8 +58,8 @@ module ietf-collected-data-platform-manifest {
 
   container platform {
     description
-      "Contains information about the platform that allows to identify and
-       understand the individual data collection information.  ";
+      "Contains information about the platform that allows to identify
+       and understand the individual data collection information.  ";
     leaf platform {
       type string;
       description
@@ -64,39 +68,48 @@ module ietf-collected-data-platform-manifest {
     leaf software-version {
       type string;
       description
-        "Name of the version of software.  With respect to most network device appliances,
-                this will be the operating system version.  But for other YANG module
-                implementation, this would be a version of appliance software.  Ultimately,
-                this should correspond to a version string that will be recognizable by
-                the consumers of the platform.";
+        "Name of the version of software. With respect to most network
+         device appliances, this will be the operating system version.
+         But for other YANG module implementation, this would be a
+         version of appliance software. Ultimately, this should
+         correspond to a version string that will be recognizable by the
+         consumers of the platform.";
     }
     leaf software-flavor {
       type string;
       description
-        "A variation of a specific version where
-                YANG model support may be different.  Depending on the vendor, this could
-                be a license, additional software component, or a feature set.";
+        "A variation of a specific version where YANG model support
+         may be different.  Depending on the vendor, this could be a
+         license, additional software component, or a feature set.";
     }
     leaf os-version {
       type string;
       description
-        "Version of the operating system using this module.  This is primarily useful if
-         the software implementing the module is an application that requires a specific
-         operating system.";
+        "Version of the operating system using this module. This is
+         primarily useful if the software implementing the module is an
+         application that requires a specific operating system
+         version.";
     }
     leaf os-type {
       type string;
       description
-        "Type of the operating system using this module.  This is primarily useful if
-         the software implementing the module is an application that requires a
-         specific operating system.";
+        "Type of the operating system using this module. This is
+         primarily useful if the software implementing the module is an
+         application that requires a specific operating system type.";
     }
     list module-set {
       key "name";
       description
-        "The list of all modules defined on the device. The name of the modules
-         can be used in paths to identfy a specific collected object.";
+        "The list of all modules defined on the device. The name of the
+         modules can be used in paths to identfy a specific collected
+         object.";
       uses yanglib:module-set-parameters;
+    }
+    container packages-set{
+      description
+        "Alternatively to module-set, use a list of yang packages to
+         describe the list of available schema on the platform";
+      uses pkgs:yang-ds-pkg-ref;
     }
   }
 }

@@ -77,17 +77,17 @@ Table of Contents
      3.2.  YANG module ietf-collected-data-platform-manifest . . . .   6
    4.  Collection Manifest . . . . . . . . . . . . . . . . . . . . .   8
      4.1.  Overview of the model . . . . . . . . . . . . . . . . . .   8
-     4.2.  YANG module ietf-collected-data-manifest  . . . . . . . .   9
-   5.  Mapping data to data manifest . . . . . . . . . . . . . . . .  12
+     4.2.  YANG module ietf-collected-data-manifest  . . . . . . . .  10
+   5.  Mapping data to data manifest . . . . . . . . . . . . . . . .  13
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
    8.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  13
-   9.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  13
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  13
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  14
-   Appendix A.  Changes between revisions  . . . . . . . . . . . . .  14
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  14
+   9.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  14
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  14
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  15
+   Appendix A.  Changes between revisions  . . . . . . . . . . . . .  15
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
 
 1.  Terminology
@@ -226,35 +226,40 @@ Claise, et al.            Expires May 28, 2022                  [Page 4]
 Internet-Draft           Telemetry Data Manifest           November 2021
 
 
-   module: ietf-collected-data-platform-manifest
-     +--rw platform
-        +--rw platform?           string
-        +--rw software-version?   string
-        +--rw software-flavor?    string
-        +--rw os-version?         string
-        +--rw os-type?            string
-        +--rw module-set* [name]
-           +--rw name                  string
-           +--rw module* [name]
-           |  +--rw name         yang:yang-identifier
-           |  +--rw revision?    revision-identifier
-           |  +--rw namespace    inet:uri
-           |  +--rw location*    inet:uri
-           |  +--rw submodule* [name]
-           |  |  +--rw name        yang:yang-identifier
-           |  |  +--rw revision?   revision-identifier
-           |  |  +--rw location*   inet:uri
-           |  +--rw feature*     yang:yang-identifier
-           |  +--rw deviation*   -> ../../module/name
-           +--rw import-only-module* [name revision]
-              +--rw name         yang:yang-identifier
-              +--rw revision     union
-              +--rw namespace    inet:uri
-              +--rw location*    inet:uri
-              +--rw submodule* [name]
-                 +--rw name        yang:yang-identifier
-                 +--rw revision?   revision-identifier
-                 +--rw location*   inet:uri
+module: ietf-collected-data-platform-manifest
+  +--rw platform
+     +--rw platform?           string
+     +--rw software-version?   string
+     +--rw software-flavor?    string
+     +--rw os-version?         string
+     +--rw os-type?            string
+     +--rw module-set* [name]
+     |  +--rw name                  string
+     |  +--rw module* [name]
+     |  |  +--rw name         yang:yang-identifier
+     |  |  +--rw revision?    revision-identifier
+     |  |  +--rw namespace    inet:uri
+     |  |  +--rw location*    inet:uri
+     |  |  +--rw submodule* [name]
+     |  |  |  +--rw name        yang:yang-identifier
+     |  |  |  +--rw revision?   revision-identifier
+     |  |  |  +--rw location*   inet:uri
+     |  |  +--rw feature*     yang:yang-identifier
+     |  |  +--rw deviation*   -> ../../module/name
+     |  +--rw import-only-module* [name revision]
+     |     +--rw name         yang:yang-identifier
+     |     +--rw revision     union
+     |     +--rw namespace    inet:uri
+     |     +--rw location*    inet:uri
+     |     +--rw submodule* [name]
+     |        +--rw name        yang:yang-identifier
+     |        +--rw revision?   revision-identifier
+     |        +--rw location*   inet:uri
+     +--rw packages-set
+        +--rw package* [name version]
+           +--rw name        -> /pkgs:packages/package/name
+           +--rw version     -> /pkgs:packages/package[pkgs:name = current()/../name]/version
+           +--rw checksum?   -> /pkgs:packages/package[pkgs:name = current()/../name][pkgs:version = current()/../version]/pkgs:checksum
 
    Figure 1: YANG tree diagram for ietf-collected-data-platform-manifest
                                   module
@@ -272,15 +277,14 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
 
 
-
-
-
-
-
 Claise, et al.            Expires May 28, 2022                  [Page 5]
 
 Internet-Draft           Telemetry Data Manifest           November 2021
 
+
+   Alternatively, the set of available YANG modules on the device can be
+   described via packages-set which contains a list of references to
+   YANG Packages [I-D.ietf-netmod-yang-packages].
 
 3.2.  YANG module ietf-collected-data-platform-manifest
 
@@ -296,6 +300,11 @@ module ietf-collected-data-platform-manifest {
     prefix yanglib;
     reference
       "RFC8525: YANG Library";
+  }
+  import ietf-yang-packages {
+    prefix pkgs;
+    reference
+      "RFC  XXXX: YANG Packages.";
   }
 
   organization
@@ -322,6 +331,13 @@ module ietf-collected-data-platform-manifest {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
 
+
+
+Claise, et al.            Expires May 28, 2022                  [Page 6]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
+
      Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
@@ -330,14 +346,6 @@ module ietf-collected-data-platform-manifest {
      to the license terms contained in, the Simplified BSD License
      set forth in Section 4.c of the IETF Trust's Legal Provisions
      Relating to IETF Documents
-
-
-
-Claise, et al.            Expires May 28, 2022                  [Page 6]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
      (https://trustee.ietf.org/license-info).
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
@@ -351,8 +359,8 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
   container platform {
     description
-      "Contains information about the platform that allows to identify and
-       understand the individual data collection information.  ";
+      "Contains information about the platform that allows to identify
+       and understand the individual data collection information.  ";
     leaf platform {
       type string;
       description
@@ -361,31 +369,23 @@ Internet-Draft           Telemetry Data Manifest           November 2021
     leaf software-version {
       type string;
       description
-        "Name of the version of software.  With respect to most network device appliances,
-                this will be the operating system version.  But for other YANG module
-                implementation, this would be a version of appliance software.  Ultimately,
-                this should correspond to a version string that will be recognizable by
-                the consumers of the platform.";
+        "Name of the version of software. With respect to most network
+         device appliances, this will be the operating system version.
+         But for other YANG module implementation, this would be a
+         version of appliance software. Ultimately, this should
+         correspond to a version string that will be recognizable by the
+         consumers of the platform.";
     }
     leaf software-flavor {
       type string;
       description
-        "A variation of a specific version where
-                YANG model support may be different.  Depending on the vendor, this could
-                be a license, additional software component, or a feature set.";
+        "A variation of a specific version where YANG model support
+         may be different.  Depending on the vendor, this could be a
+         license, additional software component, or a feature set.";
     }
     leaf os-version {
       type string;
       description
-        "Version of the operating system using this module.  This is primarily useful if
-         the software implementing the module is an application that requires a specific
-         operating system.";
-    }
-    leaf os-type {
-      type string;
-      description
-        "Type of the operating system using this module.  This is primarily useful if
-         the software implementing the module is an application that requires a
 
 
 
@@ -394,14 +394,31 @@ Claise, et al.            Expires May 28, 2022                  [Page 7]
 Internet-Draft           Telemetry Data Manifest           November 2021
 
 
-         specific operating system.";
+        "Version of the operating system using this module. This is
+         primarily useful if the software implementing the module is an
+         application that requires a specific operating system
+         version.";
+    }
+    leaf os-type {
+      type string;
+      description
+        "Type of the operating system using this module. This is
+         primarily useful if the software implementing the module is an
+         application that requires a specific operating system type.";
     }
     list module-set {
       key "name";
       description
-        "The list of all modules defined on the device. The name of the modules
-         can be used in paths to identfy a specific collected object.";
+        "The list of all modules defined on the device. The name of the
+         modules can be used in paths to identfy a specific collected
+         object.";
       uses yanglib:module-set-parameters;
+    }
+    container packages-set {
+      description
+        "Alternatively to module-set, use a list of yang packages to
+         describe the list of available schema on the platform";
+      uses pkgs:yang-ds-pkg-ref;
     }
   }
 }
@@ -414,6 +431,24 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
    Figure 2 contains the YANG tree diagram [RFC8340] of the ietf-
    collected-data-manifest module.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.            Expires May 28, 2022                  [Page 8]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
 
    module: ietf-collected-data-manifest
      +--rw data-collection
@@ -442,14 +477,6 @@ Internet-Draft           Telemetry Data Manifest           November 2021
    collector collects the data-manifest via MDT and wants the data-
    manifest for the data-manifest subscription.  First the collector
    will collect the actual paths that it needs in subscription A.  Once
-
-
-
-Claise, et al.            Expires May 28, 2022                  [Page 8]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
    it has the subscription id for A, it will need an additional
    subscription for B the data manifest of paths in A.  Then, it would
    need another subscription C to fetch the data manifest for the
@@ -470,6 +497,14 @@ Internet-Draft           Telemetry Data Manifest           November 2021
       when a value changes.  This is also known as Event-Driven
       Telemetry (EDT).  When set to false, the values are sent
       regularly.
+
+
+
+
+Claise, et al.            Expires May 28, 2022                  [Page 9]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
 
    o  suppress-redundancy (only when on-change is false): reduce
       bandwidth usage by sending a regular update only if the value is
@@ -498,14 +533,6 @@ module ietf-collected-data-manifest {
   organization
     "IETF NETCONF (Network Configuration) Working Group";
   contact
-
-
-
-Claise, et al.            Expires May 28, 2022                  [Page 9]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
     "WG Web:   <https://datatracker.ietf.org/wg/netconf/>
      WG List:  <mailto:netconf@ietf.org>
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
@@ -527,6 +554,13 @@ Internet-Draft           Telemetry Data Manifest           November 2021
      are to be interpreted as described in BCP 14 (RFC 2119)
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 10]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
 
      Copyright (c) 2021 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -554,14 +588,6 @@ Internet-Draft           Telemetry Data Manifest           November 2021
       key "subscription-id";
       description
         "Contains the list of current subscriptions on the
-
-
-
-Claise, et al.            Expires May 28, 2022                 [Page 10]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
          local device. Enables the collector to select its own
          subscriptions in the list.";
       leaf subscription-id {
@@ -584,6 +610,14 @@ Internet-Draft           Telemetry Data Manifest           November 2021
           "Status of the collection for the given path";
         leaf path {
           type string;
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 11]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
+
           description
             "The path that was configured to collect information
              about this object. Sensor path syntax is
@@ -610,14 +644,6 @@ Internet-Draft           Telemetry Data Manifest           November 2021
             "Current period, in milisecond, between two succesive
              updates.";
           // when on-change is false;
-
-
-
-Claise, et al.            Expires May 28, 2022                 [Page 11]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
         }
         leaf on-change {
           type boolean;
@@ -638,6 +664,15 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 }
 
    <CODE ENDS>
+
+
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 12]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
 
 5.  Mapping data to data manifest
 
@@ -666,14 +701,6 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
    o  the path is retrieved from the datapoint metadata
 
-
-
-
-Claise, et al.            Expires May 28, 2022                 [Page 12]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
    o  the data-manifest for that path is retrieved by looking up on the
       collected data-manifest.
 
@@ -690,6 +717,18 @@ Internet-Draft           Telemetry Data Manifest           November 2021
    This document includes no request to IANA.
 
 8.  Contributors
+
+
+
+
+
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 13]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
 
 9.  Open Issues
 
@@ -719,17 +758,6 @@ Internet-Draft           Telemetry Data Manifest           November 2021
               Format", draft-ietf-netmod-yang-instance-file-format-21
               (work in progress), October 2021.
 
-
-
-
-
-
-
-Claise, et al.            Expires May 28, 2022                 [Page 13]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -747,6 +775,16 @@ Internet-Draft           Telemetry Data Manifest           November 2021
               and R. Wilton, "YANG Library", RFC 8525,
               DOI 10.17487/RFC8525, March 2019,
               <https://www.rfc-editor.org/info/rfc8525>.
+
+
+
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 14]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
+
 
    [RFC8641]  Clemm, A. and E. Voit, "Subscription to YANG Notifications
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
@@ -771,6 +809,11 @@ Internet-Draft           Telemetry Data Manifest           November 2021
               Notifications", draft-ietf-netconf-notification-
               capabilities-21 (work in progress), October 2021.
 
+   [I-D.ietf-netmod-yang-packages]
+              Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
+              "YANG Packages", draft-ietf-netmod-yang-packages-02 (work
+              in progress), October 2021.
+
 Appendix A.  Changes between revisions
 
    Initial version
@@ -778,13 +821,6 @@ Appendix A.  Changes between revisions
 Acknowledgements
 
    ...
-
-
-
-Claise, et al.            Expires May 28, 2022                 [Page 14]
-
-Internet-Draft           Telemetry Data Manifest           November 2021
-
 
 Authors' Addresses
 
@@ -798,6 +834,12 @@ Authors' Addresses
    Huawei
 
    Email: jean.quilbeuf@huawei.com
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 15]
+
+Internet-Draft           Telemetry Data Manifest           November 2021
 
 
    Diego R. Lopez
@@ -837,4 +879,18 @@ Authors' Addresses
 
 
 
-Claise, et al.            Expires May 28, 2022                 [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.            Expires May 28, 2022                 [Page 16]
