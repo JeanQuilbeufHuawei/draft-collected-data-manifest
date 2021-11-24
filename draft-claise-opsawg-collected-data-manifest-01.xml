@@ -164,6 +164,7 @@ module: ietf-collected-data-platform-manifest
               +--rw name        yang:yang-identifier
               +--rw revision?   revision-identifier
               +--rw location*   inet:uri
+
                 ]]></artwork>
             </figure>
         </t>
@@ -281,6 +282,7 @@ module ietf-collected-data-platform-manifest {
     }
   }
 }
+
             ]]></artwork>
         </figure>
         <t>&lt;CODE ENDS&gt;</t>
@@ -301,6 +303,7 @@ module: ietf-collected-data-manifest
         +--rw current-period?        int64
         +--rw on-change?             boolean
         +--rw suppress-redundancy?   boolean
+
                 ]]></artwork>
             </figure>
           </t>
@@ -397,8 +400,8 @@ module ietf-collected-data-manifest {
            necessary if the preceding node in the path is not defined in
            the same module.
 
-           Module name must be defined in the platform-manifest module and 
-           every node name must be defined in the preceding node in the path.";
+           Module name must be defined in /platform/module-set and every node
+           name must definede in the preceding node in the path.";
         type string;
       }
       leaf requested-period {
@@ -429,6 +432,7 @@ module ietf-collected-data-manifest {
     // we could augment here with other kind of collection items
   }
 }
+
     ]]></artwork>
         </figure>
         <t>&lt;CODE ENDS&gt;</t>

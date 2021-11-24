@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
+<?rfc toc="yes"?>
+<?rfc tocompact="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc tocindent="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<?rfc comments="yes"?>
+<?rfc inline="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<rfc category="std" docName="draft-claise-opsawg-collected-data-manifest-01">
+  <front>
+    <title abbrev="Telemetry Data Manifest">Data Manifest for Streaming Telemetry</title>
+    <author fullname="Benoit Claise" initials="B" surname="Claise">
+      <organization>Huawei</organization>
+      <address>
+        <email>benoit.claise@huawei.com</email>
+      </address>
+    </author>
+    <author fullname="Jean Quilbeuf" initials="J" surname="Quilbeuf ">
+      <organization>Huawei</organization>
+      <address>
+        <email>jean.quilbeuf@huawei.com</email>
+      </address>
+    </author>
+    <author fullname="Diego R. Lopez" initials="D" surname="Lopez ">
+      <organization>Telefonica I+D</organization>
+      <address>
+        <postal>
+          <street>Don Ramon de la Cruz, 82</street>
+          <city>Madrid  28006</city>
+          <country>Spain</country>
+        </postal>
+        <email>diego.r.lopez@telefonica.com</email>
+      </address>
+    </author>
+    <author fullname="Thomas Graf" initials="T. " surname="Graf">
+      <organization>Swisscom</organization>
+      <address>
+        <postal>
+          <street>Binzring 17</street>
+          <city>Zurich</city>
+          <code>8045</code>
+          <country>Switzerland</country>
+        </postal>
+        <email>thomas.graf@swisscom.com</email>
+      </address>
+    </author>	  
+    <date/>
+    <area>OPS</area>
+    <workgroup>OPSAWG</workgroup>
+    <abstract>
+      <t>
+          Most network equipments feature telemetry as a mean to monitoring their status. 
+		  Several protocols exist to this end; for example, the model-driven telemetry 
+		  governed by YANG models. 
+		  These protocols provide the data itself, without any contextual information about the 
+		  collection method. This can render the data unusable if that context is lost, for 
+		  instance when the data is stored without the relevent information. This draft proposes a 
+		  YANG model to store that contextual information, that must be stored along with the 
+		  collected data in order to keep the collected data exploitable.
+      </t>
+    </abstract>
+  </front>
+  <middle>
+    <section title="Terminology" anchor="terminology">
+      <t>
+         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+         NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+         "MAY", and "OPTIONAL" in this document are to be interpreted as
+         described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+         when, and only when, they appear in all capitals, as shown here.
+      </t>
+      <t>
+        Data Manifest: all the necessary metadata required to interpret the telemetry information.
+      </t>
+      <t>
+        Platform Manifest: part of the Data Manifest that completely identifies the platform producing the data.
+      </t>
+    </section>
+    <section anchor="intro" title="Introduction">
+      <t>
+        Network elements use Model-driven Telemetry (MDT) to continuously stream information, both counters and state information.  This streamed information is used for network monitoring, directly in the data collection, in a closed-loop automation systems, or in a database (sometimes called a big data lake) for further analysis.
+     </t>
+      <t>
+        When streaming YANG objects with YANG-PUSH <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition.  On top of that definition, it's also important to understand any contextual information about the collection environment.
+     </t>
+      <t>
+        As an example, a database could contain a specific counter time series. When analyzing the data, it's important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
+        The same time series might report some values as 0, or might even omit some values in the series.  This might be explained by a too small observation period, compared to the minimum-observed-period 
+<xref target="I-D.claise-netconf-metadata-for-collection"/>. 
+Again, knowing the conditions under which the counter was collected and streamed is key. Indeed, taking into account the value of 0 might lead to the wrong conclusion that the counter dropped to zero.
+This document specifies the data manifest, which contains the information how and when the telemetry information were metered.
+     </t>
+     <t>
+         Precisely identifying the device used for producing the data (that is the platform manifest) is also key to complete the collection context. 
+		 As an example, knowing the exact device software specification might reveal a particularity in the observed data, 
+		 explained by a specific bug, or a specific bug fix. On top of that, in particular for MDT, it is crucial to know 
+		 the set of YANG modules supported by the device, along with their deviation. In some cases, there might even be 
+		 some backwards incompatible changes in native modules between one OS version to the next one. These information must 
+		 be compiled in a platform manifest that must be included in the data manifest.
+      </t>
+      <t>
+         Some related YANG modules have been specified to discover the device capabilities:
+         <list style="symbols"><t><xref target="I-D.ietf-netconf-notification-capabilities"/> which models the device capabilities regarding the production and export of telemetry data.
+           </t><t><xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specfic items (i.e. per sensor-path). 
+           </t></list>
+      </t>
+	  
+	  <t>
+         While these YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
+		 some of this information is part of the context for the streaming data. Our goal is to represent the data manifest for a given device. 
+		 This manifest contains two parts, the platform manifest and the data-collection manifest. The platform manifest is pretty stable and 
+		 should change only when the device is updated or patched. On the other hand, the data collection is likely to change each time a new 
+		 MDT subscription is requested and might even change if the device load increases and collection periods are updated. To separate these 
+		 two parts, we enclose each of them in its own module. We first present the module for the platform manifest in <xref target="platform-manifest"/> 
+		 and then the module for the collection manifest in <xref target="collection-manifest"/>. The full data manifest is obtained by combining 
+		 these two modules.
+      </t>
+	  <t>
+        This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
+		In case the data are moved to different place (typically a database), the data manifest MUST follow the collected data.
+        This can render the data unusable if that context is lost, for instance when the data is stored without the relevent information.
+		The data manifest MUST be encoded with the YANG instance data file format <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
+		the new timestamps MUST be used <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+      </t>
+    </section>
+    <section anchor="platform-manifest" title="Platform Manifest">
+        <section anchor="platform-manifest-model-tree" title="Overview of the model">
+        <t>
+          <xref target="platform-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-collected-data-platform-manifest module.
+            <figure anchor="platform-manifest-tree" title="YANG tree diagram for ietf-collected-data-platform-manifest module">
+              <artwork><![CDATA[
+{{platform_manifest_tree}}
+                ]]></artwork>
+            </figure>
+        </t>
+          
+          <t>
+            The platform manifest contains all the information to unambiguously identify a device.  The platform is identified by a set of parameters (platform, software-version, software-flavor, os-version, os-type) that are aligned with the YANG Catalog www.yangcatalog.org draft <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
+          </t>
+          <t>
+            The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the sensor paths, as they are based on module names.
+          </t>
+        </section>
+      <section anchor="platform-manifest-model" title="YANG module ietf-collected-data-platform-manifest">
+        <t>&lt;CODE BEGINS&gt; file "ietf-collected-data-platform-manifest@2021-10-15.yang"</t>
+        <figure>
+          <artwork><![CDATA[
+{{platform_manifest_yang}}
+            ]]></artwork>
+        </figure>
+        <t>&lt;CODE ENDS&gt;</t>
+      </section>
+    </section>
+
+     <section anchor="collection-manifest" title="Collection Manifest">
+        <section anchor="model-tree" title="Overview of the model">
+          <t>
+            <xref target="collected-data-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-collected-data-manifest module.
+            <figure anchor="collected-data-tree" title="YANG tree diagram for ietf-collected-data-manifest module">
+              <artwork><![CDATA[
+{{data_manifest_tree}}
+                ]]></artwork>
+            </figure>
+          </t>
+          <t>
+            The data-collection container contains the information related to individual items collection.
+            This subtree currently contains only information about MDT collection.
+            It should be extended and extendable to represent other kinds of data collection.
+          </t>
+          <t>
+            With MDT collection, the granularity of the collection is defined by the sensor path.
+            Note that all devices do not support an arbitrary granularity up to the leaf, usually for performance reasons. 
+            Each sensor-path currently collected by the device should show up in the mdt-collection-item list.
+          </t>
+          <t>
+            For each sensor-path, the collection context must be specified including:
+            <list style="symbols">
+              <t> on-change: when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
+              <t> suppress-redundancy (only when on-change is false): reduce bandwith usage by sending a regular udpate only if the value is different from the previous udpate.</t>
+              <t> requested-period (only when on-change is false): period between two updates requested by the client for this sensor-path</t>
+              <t> current-period (only when on-change is false): current period between two updates</t>
+            </list>
+          </t>
+          <t> 
+            This information is crucial to understand the collected values. For instance, the on-change and suppress-redundancy options, if set, might remove a lot of messages from the database because values are sent only when there is a change.
+          </t>
+      </section>
+      <section anchor="module-code" title="YANG module ietf-collected-data-manifest">
+        <t>&lt;CODE BEGINS&gt; file "ietf-collected-data-manifest@2021-10-15.yang"</t>
+        <figure>
+          <artwork><![CDATA[
+{{data_manifest_yang}}
+    ]]></artwork>
+        </figure>
+        <t>&lt;CODE ENDS&gt;</t>
+      </section>
+    </section>
+
+    <section anchor="mapping" title="Mapping data to data manifest">
+      <t>
+         The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it make sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
+      </t>
+      <t>
+        The platform manifest is likely to remain the same until the device is updated. So the platform manifest only need to be collected once per streaming session and updated after a device reboot.
+      </t>
+      <t> 
+        For MDT, we can rely on the sensor-path to map the collected data to the data manifest. In that sense, collecting one instance of the data-manifest per device is sufficient to get the data manifest of all data connected from that device. 
+      </t>
+    </section>
+    <section anchor="security" title="Security Considerations">
+    </section>
+    <section anchor="iana" title="IANA Considerations">
+      <t>
+        This document includes no request to IANA.
+      </t>
+    </section>
+    <section title="Contributors">
+    </section>
+    <section title="Open Issues">
+      <t>
+        <list style="symbols">
+		  <t> 
+            Do we want to the hardware specifications, next to the OS information?
+          </t>
+          <t> 
+            Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
+          </t>
+          <t>
+            How do we handle other kinds of collection than MDT like netflow, SNMP, CLI ? How do we map the collected data to the data-manifest ?
+          </t>
+		  <t>
+            Align the terms with the YANG Push specifications. Ex: sensor-path to subscription (TBC)
+          </t>
+		  <t>
+            Better explain the on-change example.
+          </t>
+        </list>
+      </t>
+    </section>
+  </middle>
+  <back>
+    <references title="Normative References">
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.8174"?>
+      <?rfc include="reference.RFC.8340"?>
+	  <?rfc include="reference.RFC.8525"?>
+      <?rfc include="reference.RFC.8641"?>
+	  <?rfc include="reference.I-D.ietf-netmod-yang-instance-file-format"?>
+    </references>
+    <references title="Informative References">
+      <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
+      <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
+      <?rfc include="reference.I-D.ietf-netconf-notification-capabilities"?>
+    </references>
+    <?rfc needLines="100"?>
+    <section title="Changes between revisions">
+      <t> Initial version
+      </t>
+    </section>
+    <section title="Acknowledgements" numbered="no">
+      <t>
+          ...
+        </t>
+    </section>
+  </back>
+</rfc>
+<!-- Local Variables: -->
+<!-- fill-column:72 -->
+<!-- End: -->
