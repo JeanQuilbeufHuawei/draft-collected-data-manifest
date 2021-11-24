@@ -164,7 +164,6 @@ module: ietf-collected-data-platform-manifest
               +--rw name        yang:yang-identifier
               +--rw revision?   revision-identifier
               +--rw location*   inet:uri
-
                 ]]></artwork>
             </figure>
         </t>
@@ -182,7 +181,7 @@ module: ietf-collected-data-platform-manifest
           <artwork><![CDATA[
 module ietf-collected-data-platform-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-plaftorm-manifest";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
   prefix platform-manifest;
 
   import ietf-yang-library {
@@ -282,7 +281,6 @@ module ietf-collected-data-platform-manifest {
     }
   }
 }
-
             ]]></artwork>
         </figure>
         <t>&lt;CODE ENDS&gt;</t>
@@ -303,7 +301,6 @@ module: ietf-collected-data-manifest
         +--rw current-period?        int64
         +--rw on-change?             boolean
         +--rw suppress-redundancy?   boolean
-
                 ]]></artwork>
             </figure>
           </t>
@@ -387,10 +384,11 @@ module ietf-collected-data-manifest {
     description
       "Defines the information for each collected objet";
     list mdt-collection-item {
+      key "sensor-path";
       description
         "Status of the collection for the given sensor-path";
-      key "sensor-path";
       leaf sensor-path {
+        type string;
         description
           "The sensor path that was configured to collect information about
            this object. Sensor path syntax is
@@ -402,37 +400,35 @@ module ietf-collected-data-manifest {
 
            Module name must be defined in /platform/module-set and every node
            name must definede in the preceding node in the path.";
-        type string;
       }
       leaf requested-period {
+        type int64;
         description
           "Requested period, in milisecond, between two succesive updates.";
-        type int64;
         // when on-change is false;
       }
       leaf current-period {
+        type int64;
         description
           "Current period, in milisecond, between two succesive update.s";
-        type int64;
         // when on-change is false;
       }
       leaf on-change {
+        type boolean;
         description
           "Whether the sensor path is collected only when there is a change,
            i.e. Event-Driven Telemetry is enabled.";
-        type boolean;
       }
       leaf suppress-redundancy {
+        type boolean;
         description
           "Whether the information is sent at every period or only when there
            is a change between two successive pollings..";
-        type boolean;
       }
     }
     // we could augment here with other kind of collection items
   }
 }
-
     ]]></artwork>
         </figure>
         <t>&lt;CODE ENDS&gt;</t>
