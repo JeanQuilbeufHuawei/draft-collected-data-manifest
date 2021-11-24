@@ -172,7 +172,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
    o  [I-D.claise-netconf-metadata-for-collection], which is based on
       the previous draft to define the optimal settings to stream
-      specfic items (i.e. per sensor-path).
+      specfic items (i.e. per path).
 
    While these YANG modules are important to discover the capabilities
    before applying the telemetry configuration (such as on-change), some
@@ -268,7 +268,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
    The platform manifest also includes the module-set, as defined in the
    YANG Library [RFC8525].  That module set is particularly useful to
-   define to define the sensor paths, as they are based on module names.
+   define to define the paths, as they are based on module names.
 
 
 
@@ -400,7 +400,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
       key "name";
       description
         "The list of all modules defined on the device. The name of the modules
-         can be used in sensor-paths to identfy a specific collected object.";
+         can be used in paths to identfy a specific collected object.";
       uses yanglib:module-set-parameters;
     }
   }
@@ -419,8 +419,8 @@ Internet-Draft           Telemetry Data Manifest           November 2021
      +--rw data-collection
         +--rw mdt-subscriptions* [subscription-id]
            +--rw subscription-id           uint64
-           +--rw mdt-path-data-manifest* [sensor-path]
-              +--rw sensor-path            string
+           +--rw mdt-path-data-manifest* [path]
+              +--rw path                   string
               +--rw requested-period?      int64
               +--rw current-period?        int64
               +--rw on-change?             boolean
@@ -435,7 +435,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
 
    MDT collection is organized in subscriptions.  A given collector can
    subscribe to one ore more subscriptions that usually contain a list
-   of sensor path.  Such a collector only needs the data manifest for
+   of paths.  Such a collector only needs the data manifest for
    subscriptions it subscribed to.  The data manifest for MDT is
    organized by subscriptions as well so that a collector can select
    only its subscriptions.  _We now have a chicken-and-egg issue if the
@@ -459,13 +459,12 @@ Internet-Draft           Telemetry Data Manifest           November 2021
    collector would have the information about subscription B here._
 
    Within a given collection subscription, the granularity of the
-   collection is defined by the sensor path.  Note that all devices do
-   not support an arbitrary granularity up to the leaf, usually for
-   performance reasons.  Each sensor-path currently collected by the
-   device should show up in the mdt-path-data-manifest list.
+   collection is defined by the path.  Note that all devices do not
+   support an arbitrary granularity up to the leaf, usually for
+   performance reasons.  Each path currently collected by the device
+   should show up in the mdt-path-data-manifest list.
 
-   For each sensor-path, the collection context must be specified
-   including:
+   For each path, the collection context must be specified including:
 
    o  on-change: when set to true, an update is sent as soon as and only
       when a value changes.  This is also known as Event-Driven
@@ -477,7 +476,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
       different from the previous update.
 
    o  requested-period (only when on-change is false): period between
-      two updates requested by the client for this sensor-path
+      two updates requested by the client for this path
 
    o  current-period (only when on-change is false): current period
       between two updates
@@ -498,6 +497,7 @@ module ietf-collected-data-manifest {
 
   organization
     "IETF NETCONF (Network Configuration) Working Group";
+  contact
 
 
 
@@ -506,7 +506,6 @@ Claise, et al.            Expires May 28, 2022                  [Page 9]
 Internet-Draft           Telemetry Data Manifest           November 2021
 
 
-  contact
     "WG Web:   <https://datatracker.ietf.org/wg/netconf/>
      WG List:  <mailto:netconf@ietf.org>
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
@@ -554,6 +553,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
     list mdt-subscriptions {
       key "subscription-id";
       description
+        "Contains the list of current subscriptions on the
 
 
 
@@ -562,7 +562,6 @@ Claise, et al.            Expires May 28, 2022                 [Page 10]
 Internet-Draft           Telemetry Data Manifest           November 2021
 
 
-        "Contains the list of current subscriptions on the
          local device. Enables the collector to select its own
          subscriptions in the list.";
       leaf subscription-id {
@@ -580,13 +579,13 @@ Internet-Draft           Telemetry Data Manifest           November 2021
             persistent-subscriptions/persistent-subscription/state/oid";
       }
       list mdt-path-data-manifest {
-        key "sensor-path";
+        key "path";
         description
-          "Status of the collection for the given sensor-path";
-        leaf sensor-path {
+          "Status of the collection for the given path";
+        leaf path {
           type string;
           description
-            "The sensor path that was configured to collect information
+            "The path that was configured to collect information
              about this object. Sensor path syntax is
                module_name:node_name ( / (module_name:)? node_name)*
              where module_name is the name of a module and node_name is
@@ -610,6 +609,7 @@ Internet-Draft           Telemetry Data Manifest           November 2021
           description
             "Current period, in milisecond, between two succesive
              updates.";
+          // when on-change is false;
 
 
 
@@ -618,12 +618,11 @@ Claise, et al.            Expires May 28, 2022                 [Page 11]
 Internet-Draft           Telemetry Data Manifest           November 2021
 
 
-          // when on-change is false;
         }
         leaf on-change {
           type boolean;
           description
-            "Whether the sensor path is collected only when there is a
+            "Whether the path is collected only when there is a
              change, i.e. Event-Driven Telemetry is enabled.";
         }
         leaf suppress-redundancy {
@@ -652,20 +651,21 @@ Internet-Draft           Telemetry Data Manifest           November 2021
    is updated.  So the platform manifest only need to be collected once
    per streaming session and updated after a device reboot.
 
-   With MDT, a particular datapoint is always associated to a sensor-
-   path that is itself part of a subscription.  In order to enable a
-   posteriori retrieval of the data manifest associated to a datapoint,
-   the collector must:
+   With MDT, a particular datapoint is always associated to a path that
+   is itself part of a subscription.  In order to enable a posteriori
+   retrieval of the data manifest associated to a datapoint, the
+   collector must:
 
-   o  keep the sensor path in the metadata of the collected values
+   o  keep the path in the metadata of the collected values
 
-   o  collect as well the data-manifest for the subscription and sensor-
-      path associated to the datapoint.
+   o  collect as well the data-manifest for the subscription and path
+      associated to the datapoint.
 
    With this information, to retrieve the data manifest from the
    datapoint, the following happens:
 
-   o  the sensor-path is retrieved from the datapoint metadata
+   o  the path is retrieved from the datapoint metadata
+
 
 
 
@@ -674,8 +674,8 @@ Claise, et al.            Expires May 28, 2022                 [Page 12]
 Internet-Draft           Telemetry Data Manifest           November 2021
 
 
-   o  the data-manifest for that sensor-path is retrieved by looking up
-      on the collected data-manifest.
+   o  the data-manifest for that path is retrieved by looking up on the
+      collected data-manifest.
 
    In that scenario, the reliability of the collection of the data
    manifest is the same as the reliability of the data collection
@@ -705,8 +705,8 @@ Internet-Draft           Telemetry Data Manifest           November 2021
       SNMP, CLI ? How do we map the collected data to the data-manifest
       ?
 
-   o  Align the terms with the YANG Push specifications.  Ex: sensor-
-      path to subscription (TBC)
+   o  Align the terms with the YANG Push specifications.  Ex: path to
+      subscription (TBC)
 
    o  Better explain the on-change example.
 

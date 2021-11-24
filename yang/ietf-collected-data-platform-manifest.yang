@@ -95,7 +95,7 @@ module ietf-collected-data-platform-manifest {
       key "name";
       description
         "The list of all modules defined on the device. The name of the modules
-         can be used in sensor-paths to identfy a specific collected object.";
+         can be used in paths to identfy a specific collected object.";
       uses yanglib:module-set-parameters;
     }
   }

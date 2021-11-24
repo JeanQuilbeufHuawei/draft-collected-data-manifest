@@ -70,13 +70,13 @@ module ietf-collected-data-manifest {
             persistent-subscriptions/persistent-subscription/state/oid";
       }
       list mdt-path-data-manifest {
-        key "sensor-path";
+        key "path";
         description
-          "Status of the collection for the given sensor-path";
-        leaf sensor-path {
+          "Status of the collection for the given path";
+        leaf path {
           type string;
           description
-            "The sensor path that was configured to collect information
+            "The path that was configured to collect information
              about this object. Sensor path syntax is
                module_name:node_name ( / (module_name:)? node_name)*
              where module_name is the name of a module and node_name is
@@ -105,7 +105,7 @@ module ietf-collected-data-manifest {
         leaf on-change {
           type boolean;
           description
-            "Whether the sensor path is collected only when there is a
+            "Whether the path is collected only when there is a
             change, i.e. Event-Driven Telemetry is enabled.";
         }
         leaf suppress-redundancy {
