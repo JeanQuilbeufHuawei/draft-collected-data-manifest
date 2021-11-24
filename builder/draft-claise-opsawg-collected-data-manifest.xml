@@ -106,7 +106,7 @@ This document specifies the data manifest, which contains the information how an
       <t>
          Some related YANG modules have been specified to discover the device capabilities:
          <list style="symbols"><t><xref target="I-D.ietf-netconf-notification-capabilities"/> which models the device capabilities regarding the production and export of telemetry data.
-           </t><t><xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specfic items (i.e. per sensor-path). 
+           </t><t><xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specfic items (i.e. per path).
            </t></list>
       </t>
 	  
@@ -144,7 +144,11 @@ This document specifies the data manifest, which contains the information how an
             The platform manifest contains all the information to unambiguously identify a device.  The platform is identified by a set of parameters (platform, software-version, software-flavor, os-version, os-type) that are aligned with the YANG Catalog www.yangcatalog.org draft <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
-            The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the sensor paths, as they are based on module names.
+            The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+          </t>
+          <t>
+              Alternatively, the set of available YANG modules on the device can be described via packages-set which
+              contains a list of references to YANG Packages <xref target="I-D.ietf-netmod-yang-packages"/>.
           </t>
         </section>
       <section anchor="platform-manifest-model" title="YANG module ietf-collected-data-platform-manifest">
@@ -174,16 +178,29 @@ This document specifies the data manifest, which contains the information how an
             It should be extended and extendable to represent other kinds of data collection.
           </t>
           <t>
-            With MDT collection, the granularity of the collection is defined by the sensor path.
-            Note that all devices do not support an arbitrary granularity up to the leaf, usually for performance reasons. 
-            Each sensor-path currently collected by the device should show up in the mdt-collection-item list.
+              MDT collection is organized in subscriptions.
+              A given collector can subscribe to one ore more subscriptions that usually contain a list of paths.
+              Such a collector only needs the data manifest for subscriptions it subscribed to.
+              The data manifest for MDT is organized by subscriptions as well so that a collector can select only its subscriptions.
+              <spanx>We now have a chicken-and-egg issue if the collector collects the data-manifest via MDT and wants the
+                  data-manifest for the data-manifest subscription.
+                  First the collector will collect the actual paths that it needs in subscription A.
+                  Once it has the subscription id for A, it will need an additional subscription for B the data manifest of paths in A.
+                  Then, it would need another subscription C to fetch the data manifest for the subscription B and so on...
+                  A possible solution would be to add an additional list that contains the data manifest for every path that is a data manifest.
+                  By including that list in subscription B, the collector would have the information about subscription B here.</spanx>
           </t>
           <t>
-            For each sensor-path, the collection context must be specified including:
+            Within a given collection subscription, the granularity of the collection is defined by the path.
+            Note that all devices do not support an arbitrary granularity up to the leaf, usually for performance reasons.
+            Each path currently collected by the device should show up in the mdt-path-data-manifest list.
+          </t>
+          <t>
+            For each path, the collection context must be specified including:
             <list style="symbols">
               <t> on-change: when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
-              <t> suppress-redundancy (only when on-change is false): reduce bandwith usage by sending a regular udpate only if the value is different from the previous udpate.</t>
-              <t> requested-period (only when on-change is false): period between two updates requested by the client for this sensor-path</t>
+              <t> suppress-redundancy (only when on-change is false): reduce bandwidth usage by sending a regular update only if the value is different from the previous update.</t>
+              <t> requested-period (only when on-change is false): period between two updates requested by the client for this path</t>
               <t> current-period (only when on-change is false): current period between two updates</t>
             </list>
           </t>
@@ -201,17 +218,30 @@ This document specifies the data manifest, which contains the information how an
         <t>&lt;CODE ENDS&gt;</t>
       </section>
     </section>
-
     <section anchor="mapping" title="Mapping data to data manifest">
-      <t>
-         The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it make sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
-      </t>
-      <t>
-        The platform manifest is likely to remain the same until the device is updated. So the platform manifest only need to be collected once per streaming session and updated after a device reboot.
-      </t>
-      <t> 
-        For MDT, we can rely on the sensor-path to map the collected data to the data manifest. In that sense, collecting one instance of the data-manifest per device is sufficient to get the data manifest of all data connected from that device. 
-      </t>
+       <t>
+           The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it make sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
+       </t>
+       <t>
+           The platform manifest is likely to remain the same until the device is updated. So the platform manifest only need to be collected once per streaming session and updated after a device reboot.
+       </t>
+       <t>
+           With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
+           In order to enable a posteriori retrieval of the data manifest associated to a datapoint, the collector must:
+           <list style="symbols">
+               <t>keep the path in the metadata of the collected values</t>
+               <t>collect as well the data-manifest for the subscription and path associated to the datapoint.</t>
+           </list>
+           With this information, to retrieve the data manifest from the datapoint, the following happens:
+           <list style="symbols">
+               <t>the path is retrieved from the datapoint metadata</t>
+               <t>the data-manifest for that path is retrieved by looking up on the collected data-manifest.</t>
+           </list>
+       </t>
+       <t>
+           In that scenario, the reliability of the collection of the data manifest is the same as the reliability of the data collection itself, since the data manifest is like any other data.
+           For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
+       </t>
     </section>
     <section anchor="security" title="Security Considerations">
     </section>
@@ -235,7 +265,7 @@ This document specifies the data manifest, which contains the information how an
             How do we handle other kinds of collection than MDT like netflow, SNMP, CLI ? How do we map the collected data to the data-manifest ?
           </t>
 		  <t>
-            Align the terms with the YANG Push specifications. Ex: sensor-path to subscription (TBC)
+            Align the terms with the YANG Push specifications. Ex: path to subscription (TBC)
           </t>
 		  <t>
             Better explain the on-change example.
@@ -246,17 +276,18 @@ This document specifies the data manifest, which contains the information how an
   </middle>
   <back>
     <references title="Normative References">
-      <?rfc include="reference.RFC.2119.xml"?>
-      <?rfc include="reference.RFC.8174.xml"?>
-      <?rfc include="reference.RFC.8340.xml"?>
-	  <?rfc include="reference.RFC.8525.xml"?>
-      <?rfc include="reference.RFC.8641.xml"?>
-	  <?rfc include="reference.I-D.ietf-netmod-yang-instance-file-format.xml"?>
+      <?rfc include="reference.RFC.2119"?>
+      <?rfc include="reference.RFC.8174"?>
+      <?rfc include="reference.RFC.8340"?>
+	  <?rfc include="reference.RFC.8525"?>
+      <?rfc include="reference.RFC.8641"?>
+	  <?rfc include="reference.I-D.ietf-netmod-yang-instance-file-format"?>
     </references>
     <references title="Informative References">
-      <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03.xml"?>
-      <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02.xml"?>
-      <?rfc include="reference.I-D.ietf-netconf-notification-capabilities.xml"?>
+      <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
+      <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
+      <?rfc include="reference.I-D.ietf-netconf-notification-capabilities"?>
+      <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>
     <section title="Changes between revisions">

@@ -66,6 +66,7 @@ def draft_content():
         for error in errors:
             print("************ERROR********************")
             print(error)
+        exit(1)
     return contents
 
 
