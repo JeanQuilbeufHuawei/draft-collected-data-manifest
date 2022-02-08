@@ -3,6 +3,11 @@ module ietf-collected-data-manifest {
   namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
   prefix data-manifest;
 
+  import ietf-datastores {
+    prefix ds;
+    reference "RFC 8342: Network Management Datastore Architecture.";
+  }
+
   organization
     "IETF NETCONF (Network Configuration) Working Group";
   contact
@@ -68,6 +73,12 @@ module ietf-collected-data-manifest {
            path to subscription id in openconfig:
            openconfig-telemetry:telemetry-system/subscriptions/
             persistent-subscriptions/persistent-subscription/state/oid";
+      }
+      leaf datastore {
+        type ds:datastore-ref;
+        description
+          "The datastore from which the data for this subscription has 
+          been collected.";
       }
       list mdt-path-data-manifest {
         key "path";

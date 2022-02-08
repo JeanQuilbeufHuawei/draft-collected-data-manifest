@@ -142,28 +142,35 @@ module: ietf-collected-data-platform-manifest
      +--rw software-flavor?    string
      +--rw os-version?         string
      +--rw os-type?            string
-     +--rw module-set* [name]
-     |  +--rw name                  string
-     |  +--rw module* [name]
-     |  |  +--rw name         yang:yang-identifier
-     |  |  +--rw revision?    revision-identifier
-     |  |  +--rw namespace    inet:uri
-     |  |  +--rw location*    inet:uri
-     |  |  +--rw submodule* [name]
-     |  |  |  +--rw name        yang:yang-identifier
-     |  |  |  +--rw revision?   revision-identifier
-     |  |  |  +--rw location*   inet:uri
-     |  |  +--rw feature*     yang:yang-identifier
-     |  |  +--rw deviation*   -> ../../module/name
-     |  +--rw import-only-module* [name revision]
-     |     +--rw name         yang:yang-identifier
-     |     +--rw revision     union
-     |     +--rw namespace    inet:uri
-     |     +--rw location*    inet:uri
-     |     +--rw submodule* [name]
-     |        +--rw name        yang:yang-identifier
-     |        +--rw revision?   revision-identifier
-     |        +--rw location*   inet:uri
+     +--rw yang-library
+     |  +--rw module-set* [name]
+     |  |  +--rw name                  string
+     |  |  +--rw module* [name]
+     |  |  |  +--rw name         yang:yang-identifier
+     |  |  |  +--rw revision?    revision-identifier
+     |  |  |  +--rw namespace    inet:uri
+     |  |  |  +--rw location*    inet:uri
+     |  |  |  +--rw submodule* [name]
+     |  |  |  |  +--rw name        yang:yang-identifier
+     |  |  |  |  +--rw revision?   revision-identifier
+     |  |  |  |  +--rw location*   inet:uri
+     |  |  |  +--rw feature*     yang:yang-identifier
+     |  |  |  +--rw deviation*   -> ../../module/name
+     |  |  +--rw import-only-module* [name revision]
+     |  |     +--rw name         yang:yang-identifier
+     |  |     +--rw revision     union
+     |  |     +--rw namespace    inet:uri
+     |  |     +--rw location*    inet:uri
+     |  |     +--rw submodule* [name]
+     |  |        +--rw name        yang:yang-identifier
+     |  |        +--rw revision?   revision-identifier
+     |  |        +--rw location*   inet:uri
+     |  +--rw schema* [name]
+     |  |  +--rw name          string
+     |  |  +--rw module-set*   -> ../../module-set/name
+     |  +--rw datastore* [name]
+     |     +--rw name      ds:datastore-ref
+     |     +--rw schema    -> ../../schema/name
      +--rw packages-set
         +--rw package* [name version]
            +--rw name        -> /pkgs:packages/package/name
@@ -177,7 +184,8 @@ module: ietf-collected-data-platform-manifest
             The platform manifest contains all the information to unambiguously identify a device.  The platform is identified by a set of parameters (platform, software-version, software-flavor, os-version, os-type) that are aligned with the YANG Catalog www.yangcatalog.org draft <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
-            The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+              The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+              Similarly, this module defines the available datastores, wich can be referred to from the data-manifiest, if necessary.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
@@ -288,13 +296,11 @@ module ietf-collected-data-platform-manifest {
          primarily useful if the software implementing the module is an
          application that requires a specific operating system type.";
     }
-    list module-set {
-      key "name";
+    container yang-library {
       description
-        "The list of all modules defined on the device. The name of the
-         modules can be used in paths to identfy a specific collected
-         object.";
-      uses yanglib:module-set-parameters;
+        "The YANG library of the device specfiying the modules available
+         in each of the datastores.";
+      uses yanglib:yang-library-parameters;
     }
     container packages-set {
       description
@@ -320,6 +326,7 @@ module: ietf-collected-data-manifest
   +--rw data-collection
      +--rw mdt-subscriptions* [subscription-id]
         +--rw subscription-id           uint64
+        +--rw datastore?                ds:datastore-ref
         +--rw mdt-path-data-manifest* [path]
            +--rw path                   string
            +--rw requested-period?      int64
@@ -342,10 +349,15 @@ module: ietf-collected-data-manifest
               <spanx>We now have a chicken-and-egg issue if the collector collects the data-manifest via MDT and wants the
                   data-manifest for the data-manifest subscription.
                   First the collector will collect the actual paths that it needs in subscription A.
-                  Once it has the subscription id for A, it will need an additional subscription for B the data manifest of paths in A.
+                  Once it has the subscription id for A, it will need an additional subscription B for the data manifest of paths in A.
                   Then, it would need another subscription C to fetch the data manifest for the subscription B and so on...
-                  A possible solution would be to add an additional list that contains the data manifest for every path that is a data manifest.
+                  A possible solution would be adding in the "mdt" container an
+                  additional list in that contains the data manifest for every
+                  path that is a data manifest.
                   By including that list in subscription B, the collector would have the information about subscription B here.</spanx>
+          </t>
+          <t>
+            The "datastore" leaf of the subscription container specifies from which datastore the yang paths are streamed.
           </t>
           <t>
             Within a given collection subscription, the granularity of the collection is defined by the path.
@@ -373,6 +385,12 @@ module ietf-collected-data-manifest {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
   prefix data-manifest;
+
+  import ietf-datastores {
+    prefix ds;
+    reference
+      "RFC 8342: Network Management Datastore Architecture.";
+  }
 
   organization
     "IETF NETCONF (Network Configuration) Working Group";
@@ -440,6 +458,12 @@ module ietf-collected-data-manifest {
            path to subscription id in openconfig:
            openconfig-telemetry:telemetry-system/subscriptions/
             persistent-subscriptions/persistent-subscription/state/oid";
+      }
+      leaf datastore {
+        type ds:datastore-ref;
+        description
+          "The datastore from which the data for this subscription has
+           been collected.";
       }
       list mdt-path-data-manifest {
         key "path";
