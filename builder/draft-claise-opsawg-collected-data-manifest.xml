@@ -144,7 +144,8 @@ This document specifies the data manifest, which contains the information how an
             The platform manifest contains all the information to unambiguously identify a device.  The platform is identified by a set of parameters (platform, software-version, software-flavor, os-version, os-type) that are aligned with the YANG Catalog www.yangcatalog.org draft <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
-            The platform manifest also includes the module-set, as defined in the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+              The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+              Similarly, this module defines the available datastores, wich can be referred to from the data-manifiest, if necessary.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
@@ -185,10 +186,15 @@ This document specifies the data manifest, which contains the information how an
               <spanx>We now have a chicken-and-egg issue if the collector collects the data-manifest via MDT and wants the
                   data-manifest for the data-manifest subscription.
                   First the collector will collect the actual paths that it needs in subscription A.
-                  Once it has the subscription id for A, it will need an additional subscription for B the data manifest of paths in A.
+                  Once it has the subscription id for A, it will need an additional subscription B for the data manifest of paths in A.
                   Then, it would need another subscription C to fetch the data manifest for the subscription B and so on...
-                  A possible solution would be to add an additional list that contains the data manifest for every path that is a data manifest.
+                  A possible solution would be adding in the "mdt" container an
+                  additional list in that contains the data manifest for every
+                  path that is a data manifest.
                   By including that list in subscription B, the collector would have the information about subscription B here.</spanx>
+          </t>
+          <t>
+            The "datastore" leaf of the subscription container specifies from which datastore the yang paths are streamed.
           </t>
           <t>
             Within a given collection subscription, the granularity of the collection is defined by the path.

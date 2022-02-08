@@ -97,13 +97,11 @@ module ietf-collected-data-platform-manifest {
          primarily useful if the software implementing the module is an
          application that requires a specific operating system type.";
     }
-    list module-set {
-      key "name";
+    container yang-library {
       description
-        "The list of all modules defined on the device. The name of the
-         modules can be used in paths to identfy a specific collected
-         object.";
-      uses yanglib:module-set-parameters;
+        "The YANG library of the device specfiying the modules available
+        in each of the datastores.";
+      uses yanglib:yang-library-parameters;
     }
     container packages-set{
       description
