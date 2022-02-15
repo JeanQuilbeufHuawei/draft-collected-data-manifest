@@ -59,7 +59,7 @@
 		  governed by YANG models. 
 		  These protocols provide the data itself, without any contextual information about the 
 		  collection method. This can render the data unusable if that context is lost, for 
-		  instance when the data is stored without the relevent information. This draft proposes a 
+		  instance when the data is stored without the relevant information. This draft proposes a 
 		  YANG model to store that contextual information, that must be stored along with the 
 		  collected data in order to keep the collected data exploitable.
       </t>
@@ -123,7 +123,7 @@ This document specifies the data manifest, which contains the information how an
 	  <t>
         This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
 		In case the data are moved to different place (typically a database), the data manifest MUST follow the collected data.
-        This can render the data unusable if that context is lost, for instance when the data is stored without the relevent information.
+        This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
 		The data manifest MUST be encoded with the YANG instance data file format <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
 		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
 		the new timestamps MUST be used <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
@@ -185,7 +185,7 @@ module: ietf-collected-data-platform-manifest
           </t>
           <t>
               The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
-              Similarly, this module defines the available datastores, wich can be referred to from the data-manifiest, if necessary.
+              Similarly, this module defines the available datastores, wich can be referred to from the data-manifest, if necessary.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
