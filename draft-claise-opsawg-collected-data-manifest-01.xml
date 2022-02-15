@@ -13,7 +13,7 @@
 <?rfc subcompact="no"?>
 <rfc category="std" ipr="trust200902" docName="draft-claise-opsawg-collected-data-manifest-01">
   <front>
-    <title abbrev="Telemetry Data Manifest">Data Manifest for Streaming Telemetry</title>
+    <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Huawei</organization>
       <address>
@@ -54,14 +54,14 @@
     <workgroup>OPSAWG</workgroup>
     <abstract>
       <t>
-          Most network equipments feature telemetry as a mean to monitoring their status. 
-		  Several protocols exist to this end; for example, the model-driven telemetry 
+          Most network equipment feature telemetry as a mean to monitoring their status. 
+		  Several protocols exist to this end, for example, the model-driven telemetry 
 		  governed by YANG models. 
-		  These protocols provide the data itself, without any contextual information about the 
+		  Some of these protocols provide the data itself, without any contextual information about the 
 		  collection method. This can render the data unusable if that context is lost, for 
-		  instance when the data is stored without the relevent information. This draft proposes a 
-		  YANG model to store that contextual information, that must be stored along with the 
-		  collected data in order to keep the collected data exploitable.
+		  instance when the data is stored without the relevant information. This document proposes a 
+		  YANG data model to store that contextual information along with the 
+		  collected data in order to keep the collected data exploitable in the future.
       </t>
     </abstract>
   </front>
@@ -75,58 +75,56 @@
          when, and only when, they appear in all capitals, as shown here.
       </t>
       <t>
-        Data Manifest: all the necessary metadata required to interpret the telemetry information.
+        Data Manifest: all the necessary ata required to interpret the telemetry information.
       </t>
       <t>
-        Platform Manifest: part of the Data Manifest that completely identifies the platform producing the data.
+        Platform Manifest: part of the Data Manifest that completely the platform producing the data.
       </t>
     </section>
     <section anchor="intro" title="Introduction">
       <t>
-        Network elements use Model-driven Telemetry (MDT) to continuously stream information, both counters and state information.  This streamed information is used for network monitoring, directly in the data collection, in a closed-loop automation systems, or in a database (sometimes called a big data lake) for further analysis.
+        Network elements use Model-driven Telemetry (MDT) to continuously stream information, including both counters and state information.  
+        This streamed information is used for network monitoring or closed-loop automation systems. Also that streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
      </t>
       <t>
-        When streaming YANG objects with YANG-PUSH <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition.  On top of that definition, it's also important to understand any contextual information about the collection environment.
+        When streaming YANG-structured data with YANG-Push <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition.  On top of that definition, it is also important to maintain contextual information about the collection environment.
      </t>
       <t>
         As an example, a database could contain a specific counter time series. When analyzing the data, it's important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
-        The same time series might report some values as 0, or might even omit some values in the series.  This might be explained by a too small observation period, compared to the minimum-observed-period 
+        The same time series might report some values as 0 or might even omit some values in the series.  This might be explained by a too small observation period, compared to the minimum-observed-period 
 <xref target="I-D.claise-netconf-metadata-for-collection"/>. 
-Again, knowing the conditions under which the counter was collected and streamed is key. Indeed, taking into account the value of 0 might lead to the wrong conclusion that the counter dropped to zero.
-This document specifies the data manifest, which contains the information how and when the telemetry information were metered.
+Again, knowing the conditions under which the counter was collected and streamed is key. Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero.
+This document specifies the data manifest, which contains the required information to characterize how and when the telemetry information was metered.
      </t>
      <t>
-         Precisely identifying the device used for producing the data (that is the platform manifest) is also key to complete the collection context. 
-		 As an example, knowing the exact device software specification might reveal a particularity in the observed data, 
-		 explained by a specific bug, or a specific bug fix. On top of that, in particular for MDT, it is crucial to know 
-		 the set of YANG modules supported by the device, along with their deviation. In some cases, there might even be 
-		 some backwards incompatible changes in native modules between one OS version to the next one. These information must 
-		 be compiled in a platform manifest that must be included in the data manifest.
+       Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the collection context. 
+       As an example, knowing the exact device software specification might reveal a particularity in the observed data, 
+       explained by a specific bug, or a specific bug fix. 
+       This is also key to ensure the reliability of the collected data.
+       On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviation. 
+       In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one. 
+       This information must be compiled in a platform manifest that must be included in the data manifest.
       </t>
       <t>
-         Some related YANG modules have been specified to discover the device capabilities:
-         <list style="symbols"><t><xref target="I-D.ietf-netconf-notification-capabilities"/> which models the device capabilities regarding the production and export of telemetry data.
-           </t><t><xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specfic items (i.e. per path).
-           </t></list>
+         Some related YANG modules have been specified to retrieve the device capabilities:
+        <list style="symbols">
+          <t>
+            <xref target="I-D.ietf-netconf-notification-capabilities"/> which models the device capabilities regarding the production and export of telemetry data.
+          </t>
+          <t>
+            <xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specific items (i.e., per path).
+          </t>
+        </list>
       </t>
-	  
-	  <t>
+      <t>
          While these YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
 		 some of this information is part of the context for the streaming data. Our goal is to represent the data manifest for a given device. 
-		 This manifest contains two parts, the platform manifest and the data-collection manifest. The platform manifest is pretty stable and 
+		 This manifest contains two parts, the platform manifest and the data-collection manifest. The platform manifest is "pretty" stable and 
 		 should change only when the device is updated or patched. On the other hand, the data collection is likely to change each time a new 
 		 MDT subscription is requested and might even change if the device load increases and collection periods are updated. To separate these 
 		 two parts, we enclose each of them in its own module. We first present the module for the platform manifest in <xref target="platform-manifest"/> 
 		 and then the module for the collection manifest in <xref target="collection-manifest"/>. The full data manifest is obtained by combining 
-		 these two modules.
-      </t>
-	  <t>
-        This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
-		In case the data are moved to different place (typically a database), the data manifest MUST follow the collected data.
-        This can render the data unusable if that context is lost, for instance when the data is stored without the relevent information.
-		The data manifest MUST be encoded with the YANG instance data file format <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
-		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
-		the new timestamps MUST be used <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+                   these two modules. We explain in <xref target="mapping" /> how the collected data is mapped to the data manifest.
       </t>
     </section>
     <section anchor="platform-manifest" title="Platform Manifest">
@@ -181,10 +179,11 @@ module: ietf-collected-data-platform-manifest
         </t>
           
           <t>
-            The platform manifest contains all the information to unambiguously identify a device.  The platform is identified by a set of parameters (platform, software-version, software-flavor, os-version, os-type) that are aligned with the YANG Catalog www.yangcatalog.org draft <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
+            The platform manifest contains a comprehensive set of  information characterize a data source.  The platform is identified by a set of parameters ('platform', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
-              The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. That module set is particularly useful to define to define the paths, as they are based on module names.
+            The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. 
+              That module set is particularly useful to define the paths, as they are based on module names.
               Similarly, this module defines the available datastores, wich can be referred to from the data-manifiest, if necessary.
           </t>
           <t>
@@ -236,7 +235,7 @@ module ietf-collected-data-platform-manifest {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -298,7 +297,7 @@ module ietf-collected-data-platform-manifest {
     }
     container yang-library {
       description
-        "The YANG library of the device specfiying the modules available
+        "The YANG library of the device specifying the modules available
          in each of the datastores.";
       uses yanglib:yang-library-parameters;
     }
@@ -329,8 +328,8 @@ module: ietf-collected-data-manifest
         +--rw datastore?                ds:datastore-ref
         +--rw mdt-path-data-manifest* [path]
            +--rw path                   string
-           +--rw requested-period?      int64
-           +--rw current-period?        int64
+           +--rw requested-period?      uint64
+           +--rw current-period?        uint64
            +--rw on-change?             boolean
            +--rw suppress-redundancy?   boolean
                 ]]></artwork>
@@ -367,14 +366,14 @@ module: ietf-collected-data-manifest
           <t>
             For each path, the collection context must be specified including:
             <list style="symbols">
-              <t> on-change: when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
-              <t> suppress-redundancy (only when on-change is false): reduce bandwidth usage by sending a regular update only if the value is different from the previous update.</t>
-              <t> requested-period (only when on-change is false): period between two updates requested by the client for this path</t>
-              <t> current-period (only when on-change is false): current period between two updates</t>
+              <t> 'on-change': when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
+              <t> 'suppress-redundancy' (only when 'on-change' is false): reduce bandwidth usage by sending a regular update only if the value is different from the previous update.</t>
+              <t> 'requested-period' (only when 'on-change' is false): period between two updates requested by the client for this path</t>
+              <t> 'current-period' (only when 'on-change 'is false): current period between two updates</t>
             </list>
           </t>
           <t> 
-            This information is crucial to understand the collected values. For instance, the on-change and suppress-redundancy options, if set, might remove a lot of messages from the database because values are sent only when there is a change.
+            This information is crucial to understand the collected values. For instance, the 'on-change' and 'suppress-redundancy' options, if set, might remove a lot of messages from the database because values are sent only when there is a change.
           </t>
       </section>
       <section anchor="module-code" title="YANG module ietf-collected-data-manifest">
@@ -402,7 +401,7 @@ module ietf-collected-data-manifest {
   description
     "This module describes the context of data collection from a
      given network element. The contents of this model must be
-     streamed along with the data streamed from the netkwork
+     streamed along with the data streamed from the network
      element so that the context of the data collection can
      be retrieved later.
 
@@ -417,7 +416,7 @@ module ietf-collected-data-manifest {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -438,7 +437,7 @@ module ietf-collected-data-manifest {
 
   container data-collection {
     description
-      "Defines the information for each collected objet";
+      "Defines the information for each collected object";
     list mdt-subscriptions {
       key "subscription-id";
       description
@@ -485,16 +484,16 @@ module ietf-collected-data-manifest {
              in the path.";
         }
         leaf requested-period {
-          type int64;
+          type uint64;
           description
-            "Requested period, in milisecond, between two succesive
+            "Requested period, in millisecond, between two successive
              updates.";
           // when on-change is false;
         }
         leaf current-period {
-          type int64;
+          type uint64;
           description
-            "Current period, in milisecond, between two succesive
+            "Current period, in millisecond, between two successive
              updates.";
           // when on-change is false;
         }
@@ -520,12 +519,20 @@ module ietf-collected-data-manifest {
         <t>&lt;CODE ENDS&gt;</t>
       </section>
     </section>
-    <section anchor="mapping" title="Mapping data to data manifest">
+    <section anchor="mapping" title="Mapping Data to Data Manifest">
+	  <t>
+        This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
+            In case the colected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
+        This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
+		The data manifest MUST be encoded with the YANG instance data file format <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
+		the new timestamps MUST be used <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+      </t>
        <t>
-           The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it make sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
+           The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
        </t>
        <t>
-           The platform manifest is likely to remain the same until the device is updated. So the platform manifest only need to be collected once per streaming session and updated after a device reboot.
+           The platform manifest is likely to remain the same until the device is updated. So, the platform manifest only needs to be collected once per streaming session and updated after a device reboot.
        </t>
        <t>
            With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
