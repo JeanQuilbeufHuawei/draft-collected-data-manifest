@@ -143,8 +143,8 @@ This document specifies the data manifest, which contains the required informati
           </t>
           <t>
             The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. 
-              That module set is particularly useful to define the paths, as they are based on module names.
-              Similarly, this module defines the available datastores, wich can be referred to from the data-manifiest, if necessary.
+            That module set is particularly useful to define the paths, as they are based on module names.
+            Similarly, this module defines the available datastores, wich can be referred to from the data-manifest, if necessary.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
@@ -268,8 +268,8 @@ This document specifies the data manifest, which contains the required informati
     <section title="Open Issues">
       <t>
         <list style="symbols">
-		  <t> 
-            Do we want to the hardware specifications, next to the OS information?
+	  <t> 
+            Do we want to the hardware specifications, next to the OS information? How to fully characterize a virtual device? Do we need to include the vendor (as PEN for instance https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers) ?
           </t>
           <t> 
             Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
@@ -277,10 +277,10 @@ This document specifies the data manifest, which contains the required informati
           <t>
             How do we handle other kinds of collection than MDT like netflow, SNMP, CLI ? How do we map the collected data to the data-manifest ?
           </t>
-		  <t>
+          <t>
             Align the terms with the YANG Push specifications. Ex: path to subscription (TBC)
           </t>
-		  <t>
+          <t>
             Better explain the on-change example.
           </t>
         </list>
@@ -304,7 +304,18 @@ This document specifies the data manifest, which contains the required informati
     </references>
     <?rfc needLines="100"?>
     <section title="Changes between revisions">
-      <t> Initial version
+      <t>
+        1 
+        <list>
+          <t> Adding more into data platform: yang datates, whole yanglib module to specify datastores </t>
+          <t> Setting the right type for periods: int64 -> uint64 </t>
+          <t> Specify the origin datastore for mdt subscription </t>
+          <t> Applying text comments from Med </t>
+        </list>
+
+      </t>
+      <t> 
+        0 Initial version
       </t>
     </section>
     <section title="Acknowledgements" numbered="no">

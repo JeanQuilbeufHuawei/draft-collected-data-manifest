@@ -5,11 +5,11 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: August 19, 2022                                        D. Lopez
+Expires: August 20, 2022                                        D. Lopez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                       February 15, 2022
+                                                       February 16, 2022
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 19, 2022.
+   This Internet-Draft will expire on August 20, 2022.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 1]
+Claise, et al.           Expires August 20, 2022                [Page 1]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -83,8 +83,8 @@ Table of Contents
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
    8.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  14
    9.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  14
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  14
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  15
      10.2.  Informative References . . . . . . . . . . . . . . . . .  15
    Appendix A.  Changes between revisions  . . . . . . . . . . . . .  16
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  16
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 2]
+Claise, et al.           Expires August 20, 2022                [Page 2]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -165,7 +165,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 3]
+Claise, et al.           Expires August 20, 2022                [Page 3]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -221,7 +221,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 4]
+Claise, et al.           Expires August 20, 2022                [Page 4]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -277,7 +277,7 @@ module: ietf-collected-data-platform-manifest
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 5]
+Claise, et al.           Expires August 20, 2022                [Page 5]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -290,7 +290,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
    [RFC8525].  That module set is particularly useful to define the
    paths, as they are based on module names.  Similarly, this module
    defines the available datastores, wich can be referred to from the
-   data-manifiest, if necessary.
+   data-manifest, if necessary.
 
    Alternatively, the set of available YANG modules on the device can be
    described via packages-set which contains a list of references to
@@ -333,7 +333,7 @@ module ietf-collected-data-platform-manifest {
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 6]
+Claise, et al.           Expires August 20, 2022                [Page 6]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -389,7 +389,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 7]
+Claise, et al.           Expires August 20, 2022                [Page 7]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 8]
+Claise, et al.           Expires August 20, 2022                [Page 8]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022                [Page 9]
+Claise, et al.           Expires August 20, 2022                [Page 9]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -557,7 +557,7 @@ module ietf-collected-data-manifest {
 
 
 
-Claise, et al.           Expires August 19, 2022               [Page 10]
+Claise, et al.           Expires August 20, 2022               [Page 10]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -613,7 +613,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022               [Page 11]
+Claise, et al.           Expires August 20, 2022               [Page 11]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -669,7 +669,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022               [Page 12]
+Claise, et al.           Expires August 20, 2022               [Page 12]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -725,7 +725,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022               [Page 13]
+Claise, et al.           Expires August 20, 2022               [Page 13]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
@@ -755,7 +755,10 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 9.  Open Issues
 
    o  Do we want to the hardware specifications, next to the OS
-      information?
+      information?  How to fully characterize a virtual device?  Do we
+      need to include the vendor (as PEN for instance
+      https://www.iana.org/assignments/enterprise-numbers/enterprise-
+      numbers) ?
 
    o  Do we want to handle the absence of values, i.e. add information
       about missed collection or errors in the collection context ? It
@@ -771,9 +774,6 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
    o  Better explain the on-change example.
 
-10.  References
-
-10.1.  Normative References
 
 
 
@@ -781,10 +781,14 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 
 
-Claise, et al.           Expires August 19, 2022               [Page 14]
+Claise, et al.           Expires August 20, 2022               [Page 14]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
+
+10.  References
+
+10.1.  Normative References
 
    [I-D.ietf-netmod-yang-instance-file-format]
               Lengyel, B. and B. Claise, "YANG Instance Data File
@@ -826,21 +830,23 @@ Internet-Draft           Telemetry Data Manifest           February 2022
               draft-claise-netconf-metadata-for-collection-02 (work in
               progress), July 2021.
 
+
+
+
+
+
+
+
+Claise, et al.           Expires August 20, 2022               [Page 15]
+
+Internet-Draft           Telemetry Data Manifest           February 2022
+
+
    [I-D.ietf-netconf-notification-capabilities]
               Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               describing Capabilities for Systems and Datastore Update
               Notifications", draft-ietf-netconf-notification-
               capabilities-21 (work in progress), October 2021.
-
-
-
-
-
-
-Claise, et al.           Expires August 19, 2022               [Page 15]
-
-Internet-Draft           Telemetry Data Manifest           February 2022
-
 
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
@@ -849,7 +855,18 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 Appendix A.  Changes between revisions
 
-   Initial version
+   1
+
+      Adding more into data platform: yang datates, whole yanglib module
+      to specify datastores
+
+      Setting the right type for periods: int64 -> uint64
+
+      Specify the origin datastore for mdt subscription
+
+      Applying text comments from Med
+
+   0 Initial version
 
 Acknowledgements
 
@@ -867,6 +884,18 @@ Authors' Addresses
    Huawei
 
    Email: jean.quilbeuf@huawei.com
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires August 20, 2022               [Page 16]
+
+Internet-Draft           Telemetry Data Manifest           February 2022
 
 
    Diego R. Lopez
@@ -893,4 +922,31 @@ Authors' Addresses
 
 
 
-Claise, et al.           Expires August 19, 2022               [Page 16]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires August 20, 2022               [Page 17]
