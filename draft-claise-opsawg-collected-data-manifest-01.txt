@@ -101,8 +101,8 @@ Table of Contents
    Data Manifest: all the necessary data required to interpret the
    telemetry information.
 
-   Platform Manifest: part of the Data Manifest that completely the
-   platform producing the data.
+   Platform Manifest: part of the Data Manifest that completely
+   characterizes the platform producing the data.
 
 
 
@@ -855,7 +855,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
 Appendix A.  Changes between revisions
 
-   1
+   Version 1
 
       Adding more into data platform: yang datates, whole yanglib module
       to specify datastores
@@ -864,13 +864,13 @@ Appendix A.  Changes between revisions
 
       Specify the origin datastore for mdt subscription
 
-      Applying text comments from Med
+      Applying text comments from Mohamed Boucadair
 
    0 Initial version
 
 Acknowledgements
 
-   ...
+   Thanks to Mohamed Boucadair for his review and comments.
 
 Authors' Addresses
 

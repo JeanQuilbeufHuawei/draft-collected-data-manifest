@@ -78,7 +78,7 @@
         Data Manifest: all the necessary data required to interpret the telemetry information.
       </t>
       <t>
-        Platform Manifest: part of the Data Manifest that completely the platform producing the data.
+        Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
       </t>
     </section>
     <section anchor="intro" title="Introduction">
@@ -305,12 +305,12 @@ This document specifies the data manifest, which contains the required informati
     <?rfc needLines="100"?>
     <section title="Changes between revisions">
       <t>
-        1 
+        Version 1 
         <list>
           <t> Adding more into data platform: yang datates, whole yanglib module to specify datastores </t>
           <t> Setting the right type for periods: int64 -> uint64 </t>
           <t> Specify the origin datastore for mdt subscription </t>
-          <t> Applying text comments from Med </t>
+          <t> Applying text comments from Mohamed Boucadair </t>
         </list>
 
       </t>
@@ -320,8 +320,8 @@ This document specifies the data manifest, which contains the required informati
     </section>
     <section title="Acknowledgements" numbered="no">
       <t>
-          ...
-        </t>
+          Thanks to Mohamed Boucadair for his review and comments.
+       </t>
     </section>
   </back>
 </rfc>
