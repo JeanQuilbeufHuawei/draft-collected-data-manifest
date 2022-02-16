@@ -75,7 +75,7 @@
          when, and only when, they appear in all capitals, as shown here.
       </t>
       <t>
-        Data Manifest: all the necessary ata required to interpret the telemetry information.
+        Data Manifest: all the necessary data required to interpret the telemetry information.
       </t>
       <t>
         Platform Manifest: part of the Data Manifest that completely the platform producing the data.
@@ -184,7 +184,7 @@ module: ietf-collected-data-platform-manifest
           <t>
             The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. 
             That module set is particularly useful to define the paths, as they are based on module names.
-            Similarly, this module defines the available datastores, wich can be referred to from the data-manifest, if necessary.
+            Similarly, this module defines the available datastores, which can be referred to from the data-manifest, if necessary.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
@@ -522,7 +522,7 @@ module ietf-collected-data-manifest {
     <section anchor="mapping" title="Mapping Data to Data Manifest">
 	  <t>
         This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
-            In case the colected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
+        In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
         This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
 		The data manifest MUST be encoded with the YANG instance data file format <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
 		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 

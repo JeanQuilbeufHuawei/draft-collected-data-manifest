@@ -98,7 +98,7 @@ Table of Contents
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   Data Manifest: all the necessary ata required to interpret the
+   Data Manifest: all the necessary data required to interpret the
    telemetry information.
 
    Platform Manifest: part of the Data Manifest that completely the
@@ -289,7 +289,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
    The platform manifest also includes the contents of the YANG Library
    [RFC8525].  That module set is particularly useful to define the
    paths, as they are based on module names.  Similarly, this module
-   defines the available datastores, wich can be referred to from the
+   defines the available datastores, which can be referred to from the
    data-manifest, if necessary.
 
    Alternatively, the set of available YANG modules on the device can be
@@ -692,7 +692,7 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 5.  Mapping Data to Data Manifest
 
    This data manifest instance file MUST be streamed all with the data
-   and stored along with the collected data.  In case the colected data
+   and stored along with the collected data.  In case the collected data
    are moved to a different place (typically a database), the data
    manifest MUST follow the collected data.  This can render the data
    unusable if that context is lost, for instance when the data is
