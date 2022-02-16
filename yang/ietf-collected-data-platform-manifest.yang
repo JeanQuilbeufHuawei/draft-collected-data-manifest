@@ -37,7 +37,7 @@ module ietf-collected-data-platform-manifest {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
 
-     Copyright (c) 2021 IETF Trust and the persons identified as
+     Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -99,7 +99,7 @@ module ietf-collected-data-platform-manifest {
     }
     container yang-library {
       description
-        "The YANG library of the device specfiying the modules available
+        "The YANG library of the device specifying the modules available
         in each of the datastores.";
       uses yanglib:yang-library-parameters;
     }
