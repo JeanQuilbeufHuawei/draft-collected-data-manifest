@@ -1,3 +1,4 @@
+import json
 import os.path
 import subprocess
 from typing import List
@@ -6,6 +7,8 @@ from jinja2 import Environment, select_autoescape, FileSystemLoader
 
 BUILDER_DIR = os.path.dirname(os.path.abspath(__file__))
 YANG_DIR = os.path.join(os.path.dirname(BUILDER_DIR), "yang")
+JSON_DIR = os.path.join(os.path.dirname(BUILDER_DIR), "json")
+
 
 env = Environment(
     loader=FileSystemLoader(BUILDER_DIR),
@@ -45,9 +48,16 @@ def _find_yang_file(prefix: str):
     raise Exception(f"Yang file with prefix {prefix} not found.")
 
 
+def _format_json(filename):
+    try:
+        return "", json.dumps(json.load(open(filename)), indent=2)
+    except Exception as e:
+        return str(e), ""
+
+
 PLATFORM_MANIFEST = _find_yang_file("ietf-collected-data-platform")
 DATA_MANIFEST = _find_yang_file("ietf-collected-data-manifest")
-
+DATA_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "data-manifest-example.json")
 
 def draft_content():
     pyang_results = {
@@ -55,6 +65,7 @@ def draft_content():
         "data_manifest_yang": _format_yang([DATA_MANIFEST]),
         "platform_manifest_tree": _build_tree([PLATFORM_MANIFEST]),
         "platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
+        "data_manifest_example": _format_json(DATA_MANIFEST_EXAMPLE)
         }
     errors = []
     contents = {}
