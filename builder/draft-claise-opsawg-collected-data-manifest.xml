@@ -151,6 +151,7 @@
             The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. 
             That module set is particularly useful to define the paths, as they are based on module names.
             Similarly, this module defines the available datastores, which can be referred to from the data-manifest, if necessary.
+            If supported by the device, fetching metrics from a specific datastore could enable some specific usecases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
@@ -181,22 +182,29 @@
           <t>
             The data-collection container contains the information related to individual items collection.
             This subtree currently contains only information about MDT collection.
-            It should be extended and extendable to represent other kinds of data collection.
+            It could be extended and extendable to represent other kinds of data collection.
           </t>
           <t>
               MDT collection is organized in subscriptions.
               A given collector can subscribe to one ore more subscriptions that usually contain a list of paths.
               Such a collector only needs the data manifest for subscriptions it subscribed to.
               The data manifest for MDT is organized by subscriptions as well so that a collector can select only its subscriptions.
-              <spanx>We now have a chicken-and-egg issue if the collector collects the data-manifest via MDT and wants the
-                  data-manifest for the data-manifest subscription.
-                  First the collector will collect the actual paths that it needs in subscription A.
-                  Once it has the subscription id for A, it will need an additional subscription B for the data manifest of paths in A.
-                  Then, it would need another subscription C to fetch the data manifest for the subscription B and so on...
-                  A possible solution would be adding in the "mdt" container an
-                  additional list in that contains the data manifest for every
-                  path that is a data manifest.
-                  By including that list in subscription B, the collector would have the information about subscription B here.</spanx>
+          </t>
+          <t>
+            We now have a chicken-and-egg issue if the collector collects the
+            data-manifest via MDT and wants the data-manifest
+            for the data-manifest subscription. First the
+            collector will collect the actual paths that it needs in
+            subscription A. Once it has the subscription id
+            for A, it will need an additional subscription B for the data
+            manifest of paths in A. Then, it would need
+            another subscription C to fetch the data manifest for the
+            subscription B and so on... A possible solution
+            would be adding in the "mdt" container an
+            additional list in that contains the data manifest for every
+            path that is a data manifest.
+            By including that list in subscription B, the collector would have
+            the information about subscription B here.
           </t>
           <t>
             The "datastore" leaf of the subscription container specifies from which datastore the yang paths are streamed.
@@ -306,6 +314,12 @@
           </t>
           <t>
             Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-libary from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
+          </t>
+          <t>
+            Henk: how does this interact with SBOM effort?
+          </t>
+          <t>
+             Eliot: important to give integrity of the information a lot of thought
           </t>
         </list>
       </t>
