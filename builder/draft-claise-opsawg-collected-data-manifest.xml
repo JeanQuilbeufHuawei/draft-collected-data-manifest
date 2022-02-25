@@ -304,6 +304,9 @@
           <t>
             Better explain the on-change example.
           </t>
+          <t>
+            Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-libary from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
+          </t>
         </list>
       </t>
     </section>
@@ -332,6 +335,7 @@
           <t> Setting the right type for periods: int64 -> uint64 </t>
           <t> Specify the origin datastore for mdt subscription </t>
           <t> Applying text comments from Mohamed Boucadair </t>
+          <t> Adding an example of data-manifest file </t>
         </list>
 
       </t>

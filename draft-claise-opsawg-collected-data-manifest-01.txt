@@ -872,6 +872,13 @@ Internet-Draft           Telemetry Data Manifest           February 2022
 
    o  Better explain the on-change example.
 
+   o  Regarding the inclusion of ietf-yang-library in our module, do we
+      want to include as well the changes from ietf-yang-library-
+      revisions?  What if other information are present in the yang-
+      libary from the platform?  Should we use a YANG mount to capture
+      them as well (they would not be captured with our use of the main
+      yang-library grouping).
+
 11.  References
 
 11.1.  Normative References
@@ -881,13 +888,6 @@ Internet-Draft           Telemetry Data Manifest           February 2022
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-   [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
-              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
-              <https://www.rfc-editor.org/info/rfc8340>.
 
 
 
@@ -897,6 +897,14 @@ Claise, et al.           Expires August 29, 2022               [Page 16]
 
 Internet-Draft           Telemetry Data Manifest           February 2022
 
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
+              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
+              <https://www.rfc-editor.org/info/rfc8340>.
 
    [RFC8525]  Bierman, A., Bjorklund, M., Schoenwaelder, J., Watsen, K.,
               and R. Wilton, "YANG Library", RFC 8525,
@@ -939,14 +947,6 @@ Appendix A.  Changes between revisions
 
    Version 1
 
-      Adding more into data platform: yang datates, whole yanglib module
-      to specify datastores
-
-      Setting the right type for periods: int64 -> uint64
-
-      Specify the origin datastore for mdt subscription
-
-
 
 
 Claise, et al.           Expires August 29, 2022               [Page 17]
@@ -954,7 +954,16 @@ Claise, et al.           Expires August 29, 2022               [Page 17]
 Internet-Draft           Telemetry Data Manifest           February 2022
 
 
+      Adding more into data platform: yang datates, whole yanglib module
+      to specify datastores
+
+      Setting the right type for periods: int64 -> uint64
+
+      Specify the origin datastore for mdt subscription
+
       Applying text comments from Mohamed Boucadair
+
+      Adding an example of data-manifest file
 
    0 Initial version
 
@@ -992,15 +1001,6 @@ Authors' Addresses
    Switzerland
 
    Email: thomas.graf@swisscom.com
-
-
-
-
-
-
-
-
-
 
 
 
