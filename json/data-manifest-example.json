@@ -1,0 +1,35 @@
+{
+  "ietf-yang-instance-data:instance-data-set": {
+    "name": "data-manifest-example",
+    "content-schema": {
+      "module": "ietf-collected-data-manifest@2021-10-15"
+    },
+    "timestamp": "2022-02-24T09:45:03Z",
+    "description": ["Data manifest for the subscription 4242"],
+    "content-data": {
+      "ietf-collected-data-manifest:data-collection": {
+        "mdt-subscriptions": [
+          {
+            "subscription-id": 4242,
+            "mdt-path-data-manifest": [
+              {
+                "path": "/ietf-interfaces:interfaces/interface/enabled",
+                "requested-period": 100,
+                "current-period": 10000,
+                "on-change": false,
+                "suppress-redundancy": false
+              },
+              {
+                "path": "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+                "requested-period": 100,
+                "current-period": 100,
+                "on-change": false,
+                "suppress-redundancy": false
+              }
+            ]
+          }
+        ]
+      }
+    }
+ }
+}

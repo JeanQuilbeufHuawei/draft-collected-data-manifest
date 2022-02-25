@@ -84,24 +84,26 @@
     <section anchor="intro" title="Introduction">
       <t>
         Network elements use Model-driven Telemetry (MDT) to continuously stream information, including both counters and state information.  
-        This streamed information is used for network monitoring or closed-loop automation systems. Also that streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
+        This streamed information is used for network monitoring or closed-loop automation. 
+        This streamed data can also be stored in a database (sometimes called a big data lake) for further analysis.
      </t>
       <t>
         When streaming YANG-structured data with YANG-Push <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition.  On top of that definition, it is also important to maintain contextual information about the collection environment.
      </t>
       <t>
-        As an example, a database could contain a specific counter time series. When analyzing the data, it's important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
-        The same time series might report some values as 0 or might even omit some values in the series.  This might be explained by a too small observation period, compared to the minimum-observed-period 
-<xref target="I-D.claise-netconf-metadata-for-collection"/>. 
-Again, knowing the conditions under which the counter was collected and streamed is key. Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero.
-This document specifies the data manifest, which contains the required information to characterize how and when the telemetry information was metered.
+        As an example, a database could store a time series representing the evolution of a specific counter. 
+        When analyzing the data, it's important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
+        The same time series might report some values as 0 or might even omit some values.  
+        This might be explained by a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. 
+        Again, knowing the conditions under which the counter was collected and streamed is crucial. 
+        Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero.
+        This document specifies the data manifest, which contains the required information to characterize how and when the telemetry information was metered.
      </t>
      <t>
        Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the collection context. 
-       As an example, knowing the exact device software specification might reveal a particularity in the observed data, 
-       explained by a specific bug, or a specific bug fix. 
-       This is also key to ensure the reliability of the collected data.
-       On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviation. 
+       As an example, knowing the exact device software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
+       This is also necessary to ensure the reliability of the collected data.
+       On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviations. 
        In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one. 
        This information must be compiled in a platform manifest that must be included in the data manifest.
       </t>
@@ -117,14 +119,17 @@ This document specifies the data manifest, which contains the required informati
         </list>
       </t>
       <t>
-         While these YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
-		 some of this information is part of the context for the streaming data. Our goal is to represent the data manifest for a given device. 
-		 This manifest contains two parts, the platform manifest and the data-collection manifest. The platform manifest is "pretty" stable and 
-		 should change only when the device is updated or patched. On the other hand, the data collection is likely to change each time a new 
-		 MDT subscription is requested and might even change if the device load increases and collection periods are updated. To separate these 
-		 two parts, we enclose each of them in its own module. We first present the module for the platform manifest in <xref target="platform-manifest"/> 
-		 and then the module for the collection manifest in <xref target="collection-manifest"/>. The full data manifest is obtained by combining 
-                   these two modules. We explain in <xref target="mapping" /> how the collected data is mapped to the data manifest.
+        While these related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
+        some of their content is part of the context for the streamed data. 
+        Our goal is to compile the data manifest for a given device. 
+        This manifest contains two parts, the platform manifest and the data-collection manifest. 
+        The platform manifest is "pretty" stable and should change only when the device is updated or patched. 
+        On the other hand, the data collection is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
+        To separate these two parts, we enclose each of them in its own module. 
+        We first present the module for the platform manifest in <xref target="platform-manifest"/> 
+        and then the module for the collection manifest in <xref target="collection-manifest"/>. 
+        The full data manifest is obtained by combining these two modules. 
+        We explain in <xref target="mapping" /> how the collected data is mapped to the data manifest.
       </t>
     </section>
     <section anchor="platform-manifest" title="Platform Manifest">
@@ -139,7 +144,8 @@ This document specifies the data manifest, which contains the required informati
         </t>
           
           <t>
-            The platform manifest contains a comprehensive set of  information characterize a data source.  The platform is identified by a set of parameters ('platform', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
+            The platform manifest contains a comprehensive set of  information characterize a data source.  
+            The platform is identified by a set of parameters ('platform', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
             The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. 
@@ -228,9 +234,9 @@ This document specifies the data manifest, which contains the required informati
         This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
         In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
         This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
-		The data manifest MUST be encoded with the YANG instance data file format <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+		The data manifest MUST be encoded with the YANG instance data file format <xref target="RFC9195"/>.
 		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
-		the new timestamps MUST be used <xref target="I-D.ietf-netmod-yang-instance-file-format"/>.
+		the new timestamps MUST be used <xref target="RFC9195"/>.
       </t>
        <t>
            The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
@@ -255,6 +261,21 @@ This document specifies the data manifest, which contains the required informati
            In that scenario, the reliability of the collection of the data manifest is the same as the reliability of the data collection itself, since the data manifest is like any other data.
            For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
        </t>
+    </section>
+    <section anchor="example" title="Example">
+      <t> Below is an example of a data-manifest file:</t>
+      <t>&lt;CODE BEGINS&gt; file "ietf-collected-data-manifest@2021-10-15.yang"</t>
+      <figure>
+        <artwork><![CDATA[
+{{data_manifest_example}}
+  ]]></artwork>
+      </figure>
+      <t>&lt;CODE ENDS&gt;</t>
+      <t>
+        The file above contains the data manifest for paths collected in the subscription with id 4242. 
+        The requested period for both path is this subscription was 100ms, however the status of the interface could only be collected every 10s.
+      </t>
+
     </section>
     <section anchor="security" title="Security Considerations">
     </section>
@@ -292,9 +313,9 @@ This document specifies the data manifest, which contains the required informati
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8340"?>
-	  <?rfc include="reference.RFC.8525"?>
+      <?rfc include="reference.RFC.8525"?>
       <?rfc include="reference.RFC.8641"?>
-	  <?rfc include="reference.I-D.ietf-netmod-yang-instance-file-format"?>
+      <?rfc include="reference.RFC.9195"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
