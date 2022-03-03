@@ -37,6 +37,17 @@
         <email>diego.r.lopez@telefonica.com</email>
       </address>
     </author>
+    <author fullname="Ignacio Dominguez"  initials="I" surname="Dominguez">
+      <organization>Telefonica I+D</organization>
+      <address>
+        <postal>
+          <street>Don Ramon de la Cruz, 82</street>
+          <city>Madrid  28006</city>
+          <country>Spain</country>
+        </postal>
+        <email>i.dominguezm@upm.es</email>
+      </address>
+    </author>
     <author fullname="Thomas Graf" initials="T. " surname="Graf">
       <organization>Swisscom</organization>
       <address>
