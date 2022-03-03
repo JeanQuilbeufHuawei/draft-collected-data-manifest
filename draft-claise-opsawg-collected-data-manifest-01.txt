@@ -6,8 +6,9 @@ OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
 Expires: September 4, 2022                                      D. Lopez
-                                                            I. Dominguez
                                                           Telefonica I+D
+                                                            I. Dominguez
+                                       Universidad Politecnica de Madrid
                                                                  T. Graf
                                                                 Swisscom
                                                            March 3, 2022
@@ -45,10 +46,9 @@ Status of This Memo
 
    This Internet-Draft will expire on September 4, 2022.
 
-Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
-   document authors.  All rights reserved.
+
+
 
 
 
@@ -57,6 +57,11 @@ Claise, et al.          Expires September 4, 2022               [Page 1]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+Copyright Notice
+
+   Copyright (c) 2022 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
@@ -102,17 +107,15 @@ Table of Contents
    Data Manifest: all the necessary data required to interpret the
    telemetry information.
 
-   Platform Manifest: part of the Data Manifest that completely
-   characterizes the platform producing the data.
-
-
-
 
 
 Claise, et al.          Expires September 4, 2022               [Page 2]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+   Platform Manifest: part of the Data Manifest that completely
+   characterizes the platform producing the data.
 
 2.  Introduction
 
@@ -158,9 +161,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    Some related YANG modules have been specified to retrieve the device
    capabilities:
 
-   o  [I-D.ietf-netconf-notification-capabilities] which models the
-      device capabilities regarding the production and export of
-      telemetry data.
 
 
 
@@ -169,6 +169,10 @@ Claise, et al.          Expires September 4, 2022               [Page 3]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+   o  [I-D.ietf-netconf-notification-capabilities] which models the
+      device capabilities regarding the production and export of
+      telemetry data.
 
    o  [I-D.claise-netconf-metadata-for-collection], which is based on
       the previous draft to define the optimal settings to stream
@@ -197,10 +201,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    Figure 1 contains the YANG tree diagram [RFC8340] of the ietf-
    collected-data-platform-manifest module.
-
-
-
-
 
 
 
@@ -995,9 +995,9 @@ Authors' Addresses
 
 
    Ignacio Dominguez
-   Telefonica I+D
-   Don Ramon de la Cruz, 82
-   Madrid  28006
+   Universidad Politecnica de Madrid
+   Avenida Complutense 30
+   Madrid  28040
    Spain
 
    Email: i.dominguezm@upm.es
