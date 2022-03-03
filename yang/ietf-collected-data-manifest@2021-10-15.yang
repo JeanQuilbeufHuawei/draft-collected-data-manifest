@@ -91,19 +91,7 @@ module ietf-collected-data-manifest {
         leaf path {
           type yang:xpath1.0;
           description
-            "The path that was configured to collect information
-             about this object. Path syntax is
-               module_name:node_name ( / (module_name:)? node_name)*
-             where module_name is the name of a module and node_name is
-             the name of a node (list, container or leaf). Module name
-             is only necessary if the preceding node in the path is not
-             defined in the same module.
-
-             Module name must be defined in /platform/module-set and
-             every node name must be defined in the preceding node
-             in the path.
-
-             The XPath context in which this XPath expression is 
+            "The XPath context in which this XPath expression is 
              evaluated is the datastore selected for the containing 
              subscription object. If the datastore is not specified
              then the context is the operational datastore context.";

@@ -640,19 +640,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
         leaf path {
           type yang:xpath1.0;
           description
-            "The path that was configured to collect information
-             about this object. Path syntax is
-               module_name:node_name ( / (module_name:)? node_name)*
-             where module_name is the name of a module and node_name is
-             the name of a node (list, container or leaf). Module name
-             is only necessary if the preceding node in the path is not
-             defined in the same module.
-
-             Module name must be defined in /platform/module-set and
-             every node name must be defined in the preceding node
-             in the path.
-
-             The XPath context in which this XPath expression is
+            "The XPath context in which this XPath expression is
              evaluated is the datastore selected for the containing
              subscription object. If the datastore is not specified
              then the context is the operational datastore context.";
@@ -666,14 +654,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
         }
         leaf current-period {
           type uint64;
-
-
-
-Claise, et al.          Expires September 4, 2022              [Page 12]
-
-Internet-Draft           Telemetry Data Manifest              March 2022
-
-
           description
             "Current period, in millisecond, between two successive
              updates.";
@@ -686,6 +666,14 @@ Internet-Draft           Telemetry Data Manifest              March 2022
              change, i.e. Event-Driven Telemetry is enabled.";
         }
         leaf suppress-redundancy {
+
+
+
+Claise, et al.          Expires September 4, 2022              [Page 12]
+
+Internet-Draft           Telemetry Data Manifest              March 2022
+
+
           type boolean;
           description
             "Whether the information is sent at every period or only
@@ -722,14 +710,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    is updated.  So, the platform manifest only needs to be collected
    once per streaming session and updated after a device reboot.
 
-
-
-
-Claise, et al.          Expires September 4, 2022              [Page 13]
-
-Internet-Draft           Telemetry Data Manifest              March 2022
-
-
    With MDT, a particular datapoint is always associated to a path that
    is itself part of a subscription.  In order to enable a posteriori
    retrieval of the data manifest associated to a datapoint, the
@@ -742,6 +722,13 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    With this information, to retrieve the data manifest from the
    datapoint, the following happens:
+
+
+
+Claise, et al.          Expires September 4, 2022              [Page 13]
+
+Internet-Draft           Telemetry Data Manifest              March 2022
+
 
    o  the path is retrieved from the datapoint metadata
 
@@ -759,6 +746,19 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    Below is an example of a data-manifest file:
 
    <CODE BEGINS> file "ietf-collected-data-manifest@2021-10-15.yang"
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
