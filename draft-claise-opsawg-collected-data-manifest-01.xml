@@ -37,6 +37,17 @@
         <email>diego.r.lopez@telefonica.com</email>
       </address>
     </author>
+    <author fullname="Ignacio Dominguez"  initials="I" surname="Dominguez">
+      <organization>Universidad Politecnica de Madrid</organization>
+      <address>
+        <postal>
+          <street>Avenida Complutense 30</street>
+          <city>Madrid  28040</city>
+          <country>Spain</country>
+        </postal>
+        <email>i.dominguezm@upm.es</email>
+      </address>
+    </author>
     <author fullname="Thomas Graf" initials="T. " surname="Graf">
       <organization>Swisscom</organization>
       <address>
@@ -111,7 +122,7 @@
          Some related YANG modules have been specified to retrieve the device capabilities:
         <list style="symbols">
           <t>
-            <xref target="I-D.ietf-netconf-notification-capabilities"/> which models the device capabilities regarding the production and export of telemetry data.
+            <xref target="RFC9196"/> which models the device capabilities regarding the production and export of telemetry data.
           </t>
           <t>
             <xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specific items (i.e., per path).
@@ -334,7 +345,7 @@ module: ietf-collected-data-manifest
         +--rw subscription-id           uint64
         +--rw datastore?                ds:datastore-ref
         +--rw mdt-path-data-manifest* [path]
-           +--rw path                   string
+           +--rw path                   yang:xpath1.0
            +--rw requested-period?      uint64
            +--rw current-period?        uint64
            +--rw on-change?             boolean
@@ -403,6 +414,9 @@ module ietf-collected-data-manifest {
     prefix ds;
     reference
       "RFC 8342: Network Management Datastore Architecture.";
+  }
+  import ietf-yang-types {
+    prefix yang;
   }
 
   organization
@@ -483,19 +497,12 @@ module ietf-collected-data-manifest {
         description
           "Status of the collection for the given path";
         leaf path {
-          type string;
+          type yang:xpath1.0;
           description
-            "The path that was configured to collect information
-             about this object. Sensor path syntax is
-               module_name:node_name ( / (module_name:)? node_name)*
-             where module_name is the name of a module and node_name is
-             the name of a node (list, container or leaf). Module name
-             is only necessary if the preceding node in the path is not
-             defined in the same module.
-
-             Module name must be defined in /platform/module-set and
-             every node name must be defined in the preceding node
-             in the path.";
+            "The XPath context in which this XPath expression is
+             evaluated is the datastore selected for the containing
+             subscription object. If the datastore is not specified
+             then the context is the operational datastore context.";
         }
         leaf requested-period {
           type uint64;
@@ -669,7 +676,7 @@ module ietf-collected-data-manifest {
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
-      <?rfc include="reference.I-D.ietf-netconf-notification-capabilities"?>
+      <?rfc include="reference.RFC.9196"?>
       <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>

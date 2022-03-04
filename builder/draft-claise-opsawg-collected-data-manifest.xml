@@ -37,6 +37,17 @@
         <email>diego.r.lopez@telefonica.com</email>
       </address>
     </author>
+    <author fullname="Ignacio Dominguez"  initials="I" surname="Dominguez">
+      <organization>Universidad Politecnica de Madrid</organization>
+      <address>
+        <postal>
+          <street>Avenida Complutense 30</street>
+          <city>Madrid  28040</city>
+          <country>Spain</country>
+        </postal>
+        <email>i.dominguezm@upm.es</email>
+      </address>
+    </author>
     <author fullname="Thomas Graf" initials="T. " surname="Graf">
       <organization>Swisscom</organization>
       <address>
@@ -111,7 +122,7 @@
          Some related YANG modules have been specified to retrieve the device capabilities:
         <list style="symbols">
           <t>
-            <xref target="I-D.ietf-netconf-notification-capabilities"/> which models the device capabilities regarding the production and export of telemetry data.
+            <xref target="RFC9196"/> which models the device capabilities regarding the production and export of telemetry data.
           </t>
           <t>
             <xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specific items (i.e., per path).
@@ -337,7 +348,7 @@
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
-      <?rfc include="reference.I-D.ietf-netconf-notification-capabilities"?>
+      <?rfc include="reference.RFC.9196"?>
       <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>
