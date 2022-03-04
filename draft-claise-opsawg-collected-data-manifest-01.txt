@@ -5,13 +5,13 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: September 4, 2022                                      D. Lopez
+Expires: September 5, 2022                                      D. Lopez
                                                           Telefonica I+D
                                                             I. Dominguez
                                        Universidad Politecnica de Madrid
                                                                  T. Graf
                                                                 Swisscom
-                                                           March 3, 2022
+                                                           March 4, 2022
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 4, 2022.
+   This Internet-Draft will expire on September 5, 2022.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 1]
+Claise, et al.          Expires September 5, 2022               [Page 1]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 2]
+Claise, et al.          Expires September 5, 2022               [Page 2]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -165,14 +165,13 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 3]
+Claise, et al.          Expires September 5, 2022               [Page 3]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
-   o  [I-D.ietf-netconf-notification-capabilities] which models the
-      device capabilities regarding the production and export of
-      telemetry data.
+   o  [RFC9196] which models the device capabilities regarding the
+      production and export of telemetry data.
 
    o  [I-D.claise-netconf-metadata-for-collection], which is based on
       the previous draft to define the optimal settings to stream
@@ -221,7 +220,8 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 4]
+
+Claise, et al.          Expires September 5, 2022               [Page 4]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -277,7 +277,7 @@ module: ietf-collected-data-platform-manifest
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 5]
+Claise, et al.          Expires September 5, 2022               [Page 5]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -333,7 +333,7 @@ module ietf-collected-data-platform-manifest {
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 6]
+Claise, et al.          Expires September 5, 2022               [Page 6]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -389,7 +389,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 7]
+Claise, et al.          Expires September 5, 2022               [Page 7]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 8]
+Claise, et al.          Expires September 5, 2022               [Page 8]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022               [Page 9]
+Claise, et al.          Expires September 5, 2022               [Page 9]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -557,7 +557,7 @@ module ietf-collected-data-manifest {
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 10]
+Claise, et al.          Expires September 5, 2022              [Page 10]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -613,7 +613,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 11]
+Claise, et al.          Expires September 5, 2022              [Page 11]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -669,7 +669,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 12]
+Claise, et al.          Expires September 5, 2022              [Page 12]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -725,7 +725,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 13]
+Claise, et al.          Expires September 5, 2022              [Page 13]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -781,7 +781,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 14]
+Claise, et al.          Expires September 5, 2022              [Page 14]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -837,7 +837,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 15]
+Claise, et al.          Expires September 5, 2022              [Page 15]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -893,7 +893,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 16]
+Claise, et al.          Expires September 5, 2022              [Page 16]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -932,16 +932,15 @@ Internet-Draft           Telemetry Data Manifest              March 2022
               draft-claise-netconf-metadata-for-collection-02 (work in
               progress), July 2021.
 
-   [I-D.ietf-netconf-notification-capabilities]
-              Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
-              Describing Capabilities for Systems and Datastore Update
-              Notifications", draft-ietf-netconf-notification-
-              capabilities-21 (work in progress), October 2021.
-
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
               "YANG Packages", draft-ietf-netmod-yang-packages-02 (work
               in progress), October 2021.
+
+   [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
+              Describing Capabilities for Systems and Datastore Update
+              Notifications", RFC 9196, DOI 10.17487/RFC9196, February
+              2022, <https://www.rfc-editor.org/info/rfc9196>.
 
 Appendix A.  Changes between revisions
 
@@ -949,7 +948,8 @@ Appendix A.  Changes between revisions
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 17]
+
+Claise, et al.          Expires September 5, 2022              [Page 17]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -1005,7 +1005,7 @@ Authors' Addresses
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 18]
+Claise, et al.          Expires September 5, 2022              [Page 18]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -1061,4 +1061,4 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 4, 2022              [Page 19]
+Claise, et al.          Expires September 5, 2022              [Page 19]
