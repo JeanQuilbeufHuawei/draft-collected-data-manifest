@@ -140,7 +140,7 @@
         We first present the module for the platform manifest in <xref target="platform-manifest"/> 
         and then the module for the collection manifest in <xref target="collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
-        We explain in <xref target="mapping" /> how the collected data is mapped to the data manifest.
+        We explain in <xref target="mapping" /> how the data-manifest can be collected and how collected data is mapped to the data manifest.
       </t>
     </section>
     <section anchor="platform-manifest" title="Platform Manifest">
@@ -540,8 +540,13 @@ module ietf-collected-data-manifest {
         <t>&lt;CODE ENDS&gt;</t>
       </section>
     </section>
-    <section anchor="mapping" title="Mapping Data to Data Manifest">
-	  <t>
+    <section anchor="mapping" title="Collecting Data Manifest and Mapping Data to Data Manifest">
+      <t>
+        The previous sections define the content of the data and platform manifests.
+        This section proposes a way to collect these manifests in <xref target="collecting_dm"/>
+        and a way to map the collected data to the corresponding manifests in <xref target="mapping_dm"/>.
+      </t>
+      <t>
         This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
         In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
         This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
@@ -555,23 +560,39 @@ module ietf-collected-data-manifest {
        <t>
            The platform manifest is likely to remain the same until the device is updated. So, the platform manifest only needs to be collected once per streaming session and updated after a device reboot.
        </t>
-       <t>
-           With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
-           In order to enable a posteriori retrieval of the data manifest associated to a datapoint, the collector must:
-           <list style="symbols">
-               <t>keep the path in the metadata of the collected values</t>
-               <t>collect as well the data-manifest for the subscription and path associated to the datapoint.</t>
-           </list>
-           With this information, to retrieve the data manifest from the datapoint, the following happens:
-           <list style="symbols">
-               <t>the path is retrieved from the datapoint metadata</t>
-               <t>the data-manifest for that path is retrieved by looking up on the collected data-manifest.</t>
-           </list>
-       </t>
-       <t>
-           In that scenario, the reliability of the collection of the data manifest is the same as the reliability of the data collection itself, since the data manifest is like any other data.
-           For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
-       </t>
+      <section anchor="collecting_dm" title="Collecting the Data Manifest">
+        <t>
+          As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
+          Collecting the data and platform manifests can be done either by reusing that streaming telemetry system (in-band)
+          or using another system (out-of-band), for instance by adding headers or saving manifests into files.
+        </t>
+        <t>
+          We propose to reuse the existing telemetry system (in-band approach) in order to lower the efforts for implementing this draft.
+          To enable a platform supporting streaming telemetry to also support collection manifests, it is sufficient that this device supports
+          the models from <xref target="platform-manifest"/> and <xref target="collection-manifest"/>.
+          Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the platform manifest and at new subscription or CPU load variation for the data manifest.
+          This variability can be natively handled by the existing streaming telemetry system on the device, assuming it supports on-change (also called event-driven) telemetry.
+        </t>
+      </section>
+      <section anchor="mapping_dm" title="Mapping Collectd Data to the Data Manifest">
+        <t>
+             With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
+             In order to enable a posteriori retrieval of the data manifest associated to a datapoint, the collector must:
+             <list style="symbols">
+                 <t>keep the path in the metadata of the collected values</t>
+                 <t>collect as well the data-manifest for the subscription and path associated to the datapoint.</t>
+             </list>
+             With this information, to retrieve the data manifest from the datapoint, the following happens:
+             <list style="symbols">
+                 <t>the path is retrieved from the datapoint metadata</t>
+                 <t>the data-manifest for that path is retrieved by looking up on the collected data-manifest.</t>
+             </list>
+         </t>
+         <t>
+             In that scenario, the reliability of the collection of the data manifest is the same as the reliability of the data collection itself, since the data manifest is like any other data.
+             For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
+         </t>
+      </section>
     </section>
     <section anchor="example" title="Example">
       <t> Below is an example of a data-manifest file:</t>
@@ -619,12 +640,16 @@ module ietf-collected-data-manifest {
       </figure>
       <t>&lt;CODE ENDS&gt;</t>
       <t>
-        The file above contains the data manifest for paths collected in the subscription with id 4242. 
+        The file above contains the data manifest for paths collected in the subscription with id 4242.
         The requested period for both path is this subscription was 100ms, however the status of the interface could only be collected every 10s.
       </t>
 
     </section>
     <section anchor="security" title="Security Considerations">
+      <t>
+        As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
+        Appropriate access control must be associated to the corresponding leafs and containers.
+      </t>
     </section>
     <section anchor="iana" title="IANA Considerations">
       <t>
@@ -660,6 +685,9 @@ module ietf-collected-data-manifest {
           <t>
              Eliot: important to give integrity of the information a lot of thought
           </t>
+          <t>
+            Attacker model to be considered.
+          </t>
         </list>
       </t>
     </section>
@@ -689,6 +717,8 @@ module ietf-collected-data-manifest {
           <t> Specify the origin datastore for mdt subscription </t>
           <t> Applying text comments from Mohamed Boucadair </t>
           <t> Adding an example of data-manifest file </t>
+          <t> Adding rationale for reusing telemetry system for collection of the manifests</t>
+          <t> </t>
         </list>
 
       </t>

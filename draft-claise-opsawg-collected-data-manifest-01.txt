@@ -5,13 +5,13 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: September 5, 2022                                      D. Lopez
+Expires: September 8, 2022                                      D. Lopez
                                                           Telefonica I+D
                                                             I. Dominguez
                                        Universidad Politecnica de Madrid
                                                                  T. Graf
                                                                 Swisscom
-                                                           March 4, 2022
+                                                           March 7, 2022
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 5, 2022.
+   This Internet-Draft will expire on September 8, 2022.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 1]
+Claise, et al.          Expires September 8, 2022               [Page 1]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -83,13 +83,15 @@ Table of Contents
    4.  Collection Manifest . . . . . . . . . . . . . . . . . . . . .   8
      4.1.  Overview of the model . . . . . . . . . . . . . . . . . .   9
      4.2.  YANG module ietf-collected-data-manifest  . . . . . . . .  10
-   5.  Mapping Data to Data Manifest . . . . . . . . . . . . . . . .  13
-   6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  14
+   5.  Collecting Data Manifest and Mapping Data to Data Manifest  .  13
+     5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  14
+     5.2.  Mapping Collectd Data to the Data Manifest  . . . . . . .  14
+   6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  15
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
    9.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  16
    10. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  16
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  17
      11.2.  Informative References . . . . . . . . . . . . . . . . .  17
    Appendix A.  Changes between revisions  . . . . . . . . . . . . .  18
@@ -104,15 +106,16 @@ Table of Contents
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   Data Manifest: all the necessary data required to interpret the
-   telemetry information.
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 2]
+Claise, et al.          Expires September 8, 2022               [Page 2]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+   Data Manifest: all the necessary data required to interpret the
+   telemetry information.
 
    Platform Manifest: part of the Data Manifest that completely
    characterizes the platform producing the data.
@@ -158,17 +161,17 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    information must be compiled in a platform manifest that must be
    included in the data manifest.
 
-   Some related YANG modules have been specified to retrieve the device
-   capabilities:
 
 
 
 
-
-Claise, et al.          Expires September 5, 2022               [Page 3]
+Claise, et al.          Expires September 8, 2022               [Page 3]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+   Some related YANG modules have been specified to retrieve the device
+   capabilities:
 
    o  [RFC9196] which models the device capabilities regarding the
       production and export of telemetry data.
@@ -191,8 +194,8 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    We first present the module for the platform manifest in Section 3
    and then the module for the collection manifest in Section 4.  The
    full data manifest is obtained by combining these two modules.  We
-   explain in Section 5 how the collected data is mapped to the data
-   manifest.
+   explain in Section 5 how the data-manifest can be collected and how
+   collected data is mapped to the data manifest.
 
 3.  Platform Manifest
 
@@ -218,10 +221,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-
-
-
-Claise, et al.          Expires September 5, 2022               [Page 4]
+Claise, et al.          Expires September 8, 2022               [Page 4]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -277,7 +277,7 @@ module: ietf-collected-data-platform-manifest
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 5]
+Claise, et al.          Expires September 8, 2022               [Page 5]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -333,7 +333,7 @@ module ietf-collected-data-platform-manifest {
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 6]
+Claise, et al.          Expires September 8, 2022               [Page 6]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -389,7 +389,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 7]
+Claise, et al.          Expires September 8, 2022               [Page 7]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 8]
+Claise, et al.          Expires September 8, 2022               [Page 8]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 5, 2022               [Page 9]
+Claise, et al.          Expires September 8, 2022               [Page 9]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -557,7 +557,7 @@ module ietf-collected-data-manifest {
 
 
 
-Claise, et al.          Expires September 5, 2022              [Page 10]
+Claise, et al.          Expires September 8, 2022              [Page 10]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -613,7 +613,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 5, 2022              [Page 11]
+Claise, et al.          Expires September 8, 2022              [Page 11]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -669,7 +669,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-Claise, et al.          Expires September 5, 2022              [Page 12]
+Claise, et al.          Expires September 8, 2022              [Page 12]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
@@ -693,7 +693,12 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    <CODE ENDS>
 
-5.  Mapping Data to Data Manifest
+5.  Collecting Data Manifest and Mapping Data to Data Manifest
+
+   The previous sections define the content of the data and platform
+   manifests.  This section proposes a way to collect these manifests in
+   Section 5.1 and a way to map the collected data to the corresponding
+   manifests in Section 5.2.
 
    This data manifest instance file MUST be streamed all with the data
    and stored along with the collected data.  In case the collected data
@@ -716,19 +721,43 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    is updated.  So, the platform manifest only needs to be collected
    once per streaming session and updated after a device reboot.
 
+
+
+
+
+Claise, et al.          Expires September 8, 2022              [Page 13]
+
+Internet-Draft           Telemetry Data Manifest              March 2022
+
+
+5.1.  Collecting the Data Manifest
+
+   As this draft specifically focuses on giving context on data
+   collected via streamed telemetry, we can assume that a streaming
+   telemetry system is available.  Collecting the data and platform
+   manifests can be done either by reusing that streaming telemetry
+   system (in-band) or using another system (out-of-band), for instance
+   by adding headers or saving manifests into files.
+
+   We propose to reuse the existing telemetry system (in-band approach)
+   in order to lower the efforts for implementing this draft.  To enable
+   a platform supporting streaming telemetry to also support collection
+   manifests, it is sufficient that this device supports the models from
+   Section 3 and Section 4.  Recall that each type of manifest has its
+   own rough frequency update, i.e. at reboot for the platform manifest
+   and at new subscription or CPU load variation for the data manifest.
+   This variability can be natively handled by the existing streaming
+   telemetry system on the device, assuming it supports on-change (also
+   called event-driven) telemetry.
+
+5.2.  Mapping Collectd Data to the Data Manifest
+
    With MDT, a particular datapoint is always associated to a path that
    is itself part of a subscription.  In order to enable a posteriori
    retrieval of the data manifest associated to a datapoint, the
    collector must:
 
    o  keep the path in the metadata of the collected values
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 13]
-
-Internet-Draft           Telemetry Data Manifest              March 2022
-
 
    o  collect as well the data-manifest for the subscription and path
       associated to the datapoint.
@@ -747,44 +776,21 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    telemetry based on gRPC for instance, a disconnection to the server
    would be detected as the HTTP connection would fail.
 
+
+
+
+
+
+Claise, et al.          Expires September 8, 2022              [Page 14]
+
+Internet-Draft           Telemetry Data Manifest              March 2022
+
+
 6.  Example
 
    Below is an example of a data-manifest file:
 
    <CODE BEGINS> file "ietf-collected-data-manifest@2021-10-15.yang"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 14]
-
-Internet-Draft           Telemetry Data Manifest              March 2022
-
 
 {
   "ietf-yang-instance-data:instance-data-set": {
@@ -828,21 +834,23 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    The file above contains the data manifest for paths collected in the
    subscription with id 4242.  The requested period for both path is
-   this subscription was 100ms, however the status of the interface
-   could only be collected every 10s.
 
 
 
-
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 15]
+Claise, et al.          Expires September 8, 2022              [Page 15]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+   this subscription was 100ms, however the status of the interface
+   could only be collected every 10s.
+
 7.  Security Considerations
+
+   As we are reusing an existing telemetry system, the security
+   considerations lies with the new content divulged in the new
+   manifests.  Appropriate access control must be associated to the
+   corresponding leafs and containers.
 
 8.  IANA Considerations
 
@@ -881,22 +889,21 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    o  Henk: how does this interact with SBOM effort?
 
-   o  Eliot: important to give integrity of the information a lot of
-      thought
-
-11.  References
 
 
 
 
-
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 16]
+Claise, et al.          Expires September 8, 2022              [Page 16]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+   o  Eliot: important to give integrity of the information a lot of
+      thought
+
+   o  Attacker model to be considered.
+
+11.  References
 
 11.1.  Normative References
 
@@ -939,20 +946,18 @@ Internet-Draft           Telemetry Data Manifest              March 2022
               draft-claise-netconf-metadata-for-collection-02 (work in
               progress), July 2021.
 
+
+
+
+Claise, et al.          Expires September 8, 2022              [Page 17]
+
+Internet-Draft           Telemetry Data Manifest              March 2022
+
+
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
               "YANG Packages", draft-ietf-netmod-yang-packages-02 (work
               in progress), October 2021.
-
-
-
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 17]
-
-Internet-Draft           Telemetry Data Manifest              March 2022
-
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
@@ -974,6 +979,11 @@ Appendix A.  Changes between revisions
 
       Adding an example of data-manifest file
 
+      Adding rationale for reusing telemetry system for collection of
+      the manifests
+
+
+
    0 Initial version
 
 Acknowledgements
@@ -994,6 +1004,12 @@ Authors' Addresses
    Email: jean.quilbeuf@huawei.com
 
 
+
+Claise, et al.          Expires September 8, 2022              [Page 18]
+
+Internet-Draft           Telemetry Data Manifest              March 2022
+
+
    Diego R. Lopez
    Telefonica I+D
    Don Ramon de la Cruz, 82
@@ -1001,13 +1017,6 @@ Authors' Addresses
    Spain
 
    Email: diego.r.lopez@telefonica.com
-
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 18]
-
-Internet-Draft           Telemetry Data Manifest              March 2022
 
 
    Ignacio Dominguez
@@ -1052,13 +1061,4 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-
-
-
-
-
-
-
-
-
-Claise, et al.          Expires September 5, 2022              [Page 19]
+Claise, et al.          Expires September 8, 2022              [Page 19]
