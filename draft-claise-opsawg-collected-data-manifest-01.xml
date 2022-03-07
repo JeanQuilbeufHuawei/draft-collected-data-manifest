@@ -546,17 +546,10 @@ module ietf-collected-data-manifest {
     </section>
     <section anchor="mapping" title="Collecting Data Manifest and Mapping Data to Data Manifest">
       <t>
-        The previous sections define the content of the data and platform manifests.
-        This section proposes a way to collect these manifests in <xref target="collecting_dm"/>
-        and a way to map the collected data to the corresponding manifests in <xref target="mapping_dm"/>.
-      </t>
-      <t>
-        This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
-        In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
-        This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
-		The data manifest MUST be encoded with the YANG instance data file format <xref target="RFC9195"/>.
-		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
-		the new timestamps MUST be used <xref target="RFC9195"/>.
+          This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
+          In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
+          This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
+		      The data manifest MUST be updated when the data manifest information changes (for example, when a router is upgraded), when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
       </t>
        <t>
            The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
@@ -564,7 +557,6 @@ module ietf-collected-data-manifest {
        <t>
            The platform manifest is likely to remain the same until the device is updated. So, the platform manifest only needs to be collected once per streaming session and updated after a device reboot.
        </t>
-      <section anchor="collecting_dm" title="Collecting the Data Manifest">
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
           Collecting the data and platform manifests can be done either by reusing that streaming telemetry system (in-band)
@@ -575,9 +567,8 @@ module ietf-collected-data-manifest {
           To enable a platform supporting streaming telemetry to also support data collection manifests, it is sufficient that this device supports
           the models from <xref target="platform-manifest"/> and <xref target="data-collection-manifest"/>.
           Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the platform manifest and at new subscription or CPU load variation for the data manifest.
-          This variability can be natively handled by the existing streaming telemetry system on the device, assuming it supports on-change (also called event-driven) telemetry.
+          The data manifest MUST be streamed with the YANG-Push on-change feature <xref target="RFC8641"/> (also called event-driven telemetry).
         </t>
-      </section>
       <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
         <t>
              With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
@@ -703,7 +694,6 @@ module ietf-collected-data-manifest {
       <?rfc include="reference.RFC.8340"?>
       <?rfc include="reference.RFC.8525"?>
       <?rfc include="reference.RFC.8641"?>
-      <?rfc include="reference.RFC.9195"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
