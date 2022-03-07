@@ -80,7 +80,7 @@ Table of Contents
    3.  Platform Manifest . . . . . . . . . . . . . . . . . . . . . .   4
      3.1.  Overview of the model . . . . . . . . . . . . . . . . . .   4
      3.2.  YANG module ietf-collected-data-platform-manifest . . . .   6
-   4.  Collection Manifest . . . . . . . . . . . . . . . . . . . . .   8
+   4.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .   8
      4.1.  Overview of the model . . . . . . . . . . . . . . . . . .   9
      4.2.  YANG module ietf-collected-data-manifest  . . . . . . . .  10
    5.  Collecting Data Manifest and Mapping Data to Data Manifest  .  13
@@ -120,6 +120,9 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    Platform Manifest: part of the Data Manifest that completely
    characterizes the platform producing the data.
 
+   Data Collection Manifest: part of the Data Manifest that completely
+   characterizes how and when the telemetry information was metered.
+
 2.  Introduction
 
    Network elements use Model-driven Telemetry (MDT) to continuously
@@ -145,11 +148,12 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    the conditions under which the counter was collected and streamed is
    crucial.  Indeed, taking into account the value of 0 might lead to a
    wrong conclusion that the counter dropped to zero.  This document
-   specifies the data manifest, which contains the required information
-   to characterize how and when the telemetry information was metered.
+   specifies the data collection manifest, which contains the required
+   information to characterize how and when the telemetry information
+   was metered.
 
    Precisely characterizing the source used for producing the data (that
-   is the platform manifest) may also be useful to complete the
+   is the platform manifest) may also be useful to complete the data
    collection context.  As an example, knowing the exact device software
    specification might reveal a particularity in the observed data,
    explained by a specific bug, or a specific bug fix.  This is also
@@ -158,10 +162,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    modules supported by the device, along with their deviations.  In
    some cases, there might even be some backwards incompatible changes
    in native modules between one OS version to the next one.  This
-   information must be compiled in a platform manifest that must be
-   included in the data manifest.
-
-
 
 
 
@@ -169,6 +169,9 @@ Claise, et al.          Expires September 8, 2022               [Page 3]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
+
+   information must be compiled in a platform manifest that must be
+   included in the data manifest.
 
    Some related YANG modules have been specified to retrieve the device
    capabilities:
@@ -185,17 +188,17 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    change), some of their content is part of the context for the
    streamed data.  Our goal is to compile the data manifest for a given
    device.  This manifest contains two parts, the platform manifest and
-   the data-collection manifest.  The platform manifest is "pretty"
+   the data collection manifest.  The platform manifest is "pretty"
    stable and should change only when the device is updated or patched.
-   On the other hand, the data collection is likely to change each time
-   a new MDT subscription is requested and might even change if the
-   device load increases and collection periods are updated.  To
+   On the other hand, the data collection manifest is likely to change
+   each time a new MDT subscription is requested and might even change
+   if the device load increases and collection periods are updated.  To
    separate these two parts, we enclose each of them in its own module.
    We first present the module for the platform manifest in Section 3
-   and then the module for the collection manifest in Section 4.  The
-   full data manifest is obtained by combining these two modules.  We
-   explain in Section 5 how the data-manifest can be collected and how
-   collected data is mapped to the data manifest.
+   and then the module for the data collection manifest in Section 4.
+   The full data manifest is obtained by combining these two modules.
+   We explain in Section 5 how the data-manifest can be collected and
+   how collected data is mapped to the data manifest.
 
 3.  Platform Manifest
 
@@ -203,9 +206,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    Figure 1 contains the YANG tree diagram [RFC8340] of the ietf-
    collected-data-platform-manifest module.
-
-
-
 
 
 
@@ -437,7 +437,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    <CODE ENDS>
 
-4.  Collection Manifest
+4.  Data Collection Manifest
 
 
 
@@ -741,14 +741,14 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    We propose to reuse the existing telemetry system (in-band approach)
    in order to lower the efforts for implementing this draft.  To enable
-   a platform supporting streaming telemetry to also support collection
-   manifests, it is sufficient that this device supports the models from
-   Section 3 and Section 4.  Recall that each type of manifest has its
-   own rough frequency update, i.e. at reboot for the platform manifest
-   and at new subscription or CPU load variation for the data manifest.
-   This variability can be natively handled by the existing streaming
-   telemetry system on the device, assuming it supports on-change (also
-   called event-driven) telemetry.
+   a platform supporting streaming telemetry to also support data
+   collection manifests, it is sufficient that this device supports the
+   models from Section 3 and Section 4.  Recall that each type of
+   manifest has its own rough frequency update, i.e. at reboot for the
+   platform manifest and at new subscription or CPU load variation for
+   the data manifest.  This variability can be natively handled by the
+   existing streaming telemetry system on the device, assuming it
+   supports on-change (also called event-driven) telemetry.
 
 5.2.  Mapping Collected Data to the Data Manifest
 
@@ -956,8 +956,8 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
-              "YANG Packages", draft-ietf-netmod-yang-packages-02 (work
-              in progress), October 2021.
+              "YANG Packages", draft-ietf-netmod-yang-packages-03 (work
+              in progress), March 2022.
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
@@ -984,7 +984,11 @@ Appendix A.  Changes between revisions
 
 
 
-   0 Initial version
+   Version 0
+
+      Initial version
+
+
 
 Acknowledgements
 
@@ -998,16 +1002,18 @@ Authors' Addresses
    Email: benoit.claise@huawei.com
 
 
-   Jean Quilbeuf
-   Huawei
-
-   Email: jean.quilbeuf@huawei.com
 
 
 
 Claise, et al.          Expires September 8, 2022              [Page 18]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
+
+
+   Jean Quilbeuf
+   Huawei
+
+   Email: jean.quilbeuf@huawei.com
 
 
    Diego R. Lopez
@@ -1035,12 +1041,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    Switzerland
 
    Email: thomas.graf@swisscom.com
-
-
-
-
-
-
 
 
 

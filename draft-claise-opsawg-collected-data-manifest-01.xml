@@ -91,6 +91,10 @@
       <t>
         Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
       </t>
+      <t>
+        Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry 
+        information was metered.
+      </t>
     </section>
     <section anchor="intro" title="Introduction">
       <t>
@@ -108,10 +112,10 @@
         This might be explained by a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. 
         Again, knowing the conditions under which the counter was collected and streamed is crucial. 
         Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero.
-        This document specifies the data manifest, which contains the required information to characterize how and when the telemetry information was metered.
+        This document specifies the data collection manifest, which contains the required information to characterize how and when the telemetry information was metered.
      </t>
      <t>
-       Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the collection context. 
+       Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the data collection context. 
        As an example, knowing the exact device software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
        This is also necessary to ensure the reliability of the collected data.
        On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviations. 
@@ -133,12 +137,12 @@
         While these related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
         some of their content is part of the context for the streamed data. 
         Our goal is to compile the data manifest for a given device. 
-        This manifest contains two parts, the platform manifest and the data-collection manifest. 
+        This manifest contains two parts, the platform manifest and the data collection manifest. 
         The platform manifest is "pretty" stable and should change only when the device is updated or patched. 
-        On the other hand, the data collection is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
+        On the other hand, the data collection manifest is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
         To separate these two parts, we enclose each of them in its own module. 
         We first present the module for the platform manifest in <xref target="platform-manifest"/> 
-        and then the module for the collection manifest in <xref target="collection-manifest"/>. 
+        and then the module for the data collection manifest in <xref target="data-collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
         We explain in <xref target="mapping" /> how the data-manifest can be collected and how collected data is mapped to the data manifest.
       </t>
@@ -333,7 +337,7 @@ module ietf-collected-data-platform-manifest {
       </section>
     </section>
 
-     <section anchor="collection-manifest" title="Collection Manifest">
+     <section anchor="data-collection-manifest" title="Data Collection Manifest">
         <section anchor="model-tree" title="Overview of the model">
           <t>
             <xref target="collected-data-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-collected-data-manifest module.
@@ -568,8 +572,8 @@ module ietf-collected-data-manifest {
         </t>
         <t>
           We propose to reuse the existing telemetry system (in-band approach) in order to lower the efforts for implementing this draft.
-          To enable a platform supporting streaming telemetry to also support collection manifests, it is sufficient that this device supports
-          the models from <xref target="platform-manifest"/> and <xref target="collection-manifest"/>.
+          To enable a platform supporting streaming telemetry to also support data collection manifests, it is sufficient that this device supports
+          the models from <xref target="platform-manifest"/> and <xref target="data-collection-manifest"/>.
           Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the platform manifest and at new subscription or CPU load variation for the data manifest.
           This variability can be natively handled by the existing streaming telemetry system on the device, assuming it supports on-change (also called event-driven) telemetry.
         </t>
@@ -723,7 +727,11 @@ module ietf-collected-data-manifest {
 
       </t>
       <t> 
-        0 Initial version
+        Version 0
+          <list>
+          <t> Initial version </t>
+          <t> </t>
+        </list>
       </t>
     </section>
     <section title="Acknowledgements" numbered="no">
