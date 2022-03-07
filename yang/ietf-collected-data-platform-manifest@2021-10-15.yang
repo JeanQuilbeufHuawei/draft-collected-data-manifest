@@ -57,6 +57,7 @@ module ietf-collected-data-platform-manifest {
   }
 
   container platform {
+    config false;
     description
       "Contains information about the platform that allows to identify
        and understand the individual data collection information.  ";

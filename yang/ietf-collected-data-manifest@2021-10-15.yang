@@ -57,6 +57,7 @@ module ietf-collected-data-manifest {
   }
 
   container data-collection {
+    config false;
     description
       "Defines the information for each collected object";
     list mdt-subscriptions {
@@ -103,11 +104,13 @@ module ietf-collected-data-manifest {
             updates.";
           // when on-change is false;
         }
-        leaf current-period {
+        leaf actual-period {
           type uint64;
           description
-            "Current period, in millisecond, between two successive
-            updates.";
+            "Period in milisecond between two successive updates
+            actually applied by the plaftorm at configuration time.
+            This period can be larger than the requested period as the
+            platform might adjust it for performance reasons.";
           // when on-change is false;
         }
         leaf on-change {

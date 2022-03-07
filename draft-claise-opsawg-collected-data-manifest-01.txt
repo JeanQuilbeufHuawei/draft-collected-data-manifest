@@ -80,12 +80,11 @@ Table of Contents
    3.  Platform Manifest . . . . . . . . . . . . . . . . . . . . . .   4
      3.1.  Overview of the model . . . . . . . . . . . . . . . . . .   4
      3.2.  YANG module ietf-collected-data-platform-manifest . . . .   6
-   4.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .   8
+   4.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .   9
      4.1.  Overview of the model . . . . . . . . . . . . . . . . . .   9
      4.2.  YANG module ietf-collected-data-manifest  . . . . . . . .  10
    5.  Collecting Data Manifest and Mapping Data to Data Manifest  .  13
-     5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  14
-     5.2.  Mapping Collected Data to the Data Manifest . . . . . . .  14
+     5.1.  Mapping Collected Data to the Data Manifest . . . . . . .  14
    6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  15
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
@@ -105,6 +104,7 @@ Table of Contents
    "OPTIONAL" in this document are to be interpreted as described in BCP
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
+
 
 
 
@@ -227,46 +227,46 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 module: ietf-collected-data-platform-manifest
-  +--rw platform
-     +--rw platform?           string
-     +--rw software-version?   string
-     +--rw software-flavor?    string
-     +--rw os-version?         string
-     +--rw os-type?            string
-     +--rw yang-library
-     |  +--rw module-set* [name]
-     |  |  +--rw name                  string
-     |  |  +--rw module* [name]
-     |  |  |  +--rw name         yang:yang-identifier
-     |  |  |  +--rw revision?    revision-identifier
-     |  |  |  +--rw namespace    inet:uri
-     |  |  |  +--rw location*    inet:uri
-     |  |  |  +--rw submodule* [name]
-     |  |  |  |  +--rw name        yang:yang-identifier
-     |  |  |  |  +--rw revision?   revision-identifier
-     |  |  |  |  +--rw location*   inet:uri
-     |  |  |  +--rw feature*     yang:yang-identifier
-     |  |  |  +--rw deviation*   -> ../../module/name
-     |  |  +--rw import-only-module* [name revision]
-     |  |     +--rw name         yang:yang-identifier
-     |  |     +--rw revision     union
-     |  |     +--rw namespace    inet:uri
-     |  |     +--rw location*    inet:uri
-     |  |     +--rw submodule* [name]
-     |  |        +--rw name        yang:yang-identifier
-     |  |        +--rw revision?   revision-identifier
-     |  |        +--rw location*   inet:uri
-     |  +--rw schema* [name]
-     |  |  +--rw name          string
-     |  |  +--rw module-set*   -> ../../module-set/name
-     |  +--rw datastore* [name]
-     |     +--rw name      ds:datastore-ref
-     |     +--rw schema    -> ../../schema/name
-     +--rw packages-set
-        +--rw package* [name version]
-           +--rw name        -> /pkgs:packages/package/name
-           +--rw version     -> /pkgs:packages/package[pkgs:name = current()/../name]/version
-           +--rw checksum?   -> /pkgs:packages/package[pkgs:name = current()/../name][pkgs:version = current()/../version]/pkgs:checksum
+  +--ro platform
+     +--ro platform?           string
+     +--ro software-version?   string
+     +--ro software-flavor?    string
+     +--ro os-version?         string
+     +--ro os-type?            string
+     +--ro yang-library
+     |  +--ro module-set* [name]
+     |  |  +--ro name                  string
+     |  |  +--ro module* [name]
+     |  |  |  +--ro name         yang:yang-identifier
+     |  |  |  +--ro revision?    revision-identifier
+     |  |  |  +--ro namespace    inet:uri
+     |  |  |  +--ro location*    inet:uri
+     |  |  |  +--ro submodule* [name]
+     |  |  |  |  +--ro name        yang:yang-identifier
+     |  |  |  |  +--ro revision?   revision-identifier
+     |  |  |  |  +--ro location*   inet:uri
+     |  |  |  +--ro feature*     yang:yang-identifier
+     |  |  |  +--ro deviation*   -> ../../module/name
+     |  |  +--ro import-only-module* [name revision]
+     |  |     +--ro name         yang:yang-identifier
+     |  |     +--ro revision     union
+     |  |     +--ro namespace    inet:uri
+     |  |     +--ro location*    inet:uri
+     |  |     +--ro submodule* [name]
+     |  |        +--ro name        yang:yang-identifier
+     |  |        +--ro revision?   revision-identifier
+     |  |        +--ro location*   inet:uri
+     |  +--ro schema* [name]
+     |  |  +--ro name          string
+     |  |  +--ro module-set*   -> ../../module-set/name
+     |  +--ro datastore* [name]
+     |     +--ro name      ds:datastore-ref
+     |     +--ro schema    -> ../../schema/name
+     +--ro packages-set
+        +--ro package* [name version]
+           +--ro name        -> /pkgs:packages/package/name
+           +--ro version     -> /pkgs:packages/package[pkgs:name = current()/../name]/version
+           +--ro checksum?   -> /pkgs:packages/package[pkgs:name = current()/../name][pkgs:version = current()/../version]/pkgs:checksum
 
    Figure 1: YANG tree diagram for ietf-collected-data-platform-manifest
                                   module
@@ -372,6 +372,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
   }
 
   container platform {
+    config false;
     description
       "Contains information about the platform that allows to identify
        and understand the individual data collection information.  ";
@@ -385,7 +386,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
       description
         "Name of the version of software. With respect to most network
          device appliances, this will be the operating system version.
-         But for other YANG module implementation, this would be a
 
 
 
@@ -394,6 +394,7 @@ Claise, et al.          Expires September 8, 2022               [Page 7]
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+         But for other YANG module implementation, this would be a
          version of appliance software. Ultimately, this should
          correspond to a version string that will be recognizable by the
          consumers of the platform.";
@@ -437,7 +438,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
    <CODE ENDS>
 
-4.  Data Collection Manifest
 
 
 
@@ -450,22 +450,24 @@ Claise, et al.          Expires September 8, 2022               [Page 8]
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+4.  Data Collection Manifest
+
 4.1.  Overview of the model
 
    Figure 2 contains the YANG tree diagram [RFC8340] of the ietf-
    collected-data-manifest module.
 
    module: ietf-collected-data-manifest
-     +--rw data-collection
-        +--rw mdt-subscriptions* [subscription-id]
-           +--rw subscription-id           uint64
-           +--rw datastore?                ds:datastore-ref
-           +--rw mdt-path-data-manifest* [path]
-              +--rw path                   yang:xpath1.0
-              +--rw requested-period?      uint64
-              +--rw current-period?        uint64
-              +--rw on-change?             boolean
-              +--rw suppress-redundancy?   boolean
+     +--ro data-collection
+        +--ro mdt-subscriptions* [subscription-id]
+           +--ro subscription-id           uint64
+           +--ro datastore?                ds:datastore-ref
+           +--ro mdt-path-data-manifest* [path]
+              +--ro path                   yang:xpath1.0
+              +--ro requested-period?      uint64
+              +--ro actual-period?         uint64
+              +--ro on-change?             boolean
+              +--ro suppress-redundancy?   boolean
 
     Figure 2: YANG tree diagram for ietf-collected-data-manifest module
 
@@ -496,8 +498,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    The "datastore" leaf of the subscription container specifies from
    which datastore the yang paths are streamed.
 
-   Within a given collection subscription, the granularity of the
-   collection is defined by the path.  Note that all devices do not
 
 
 
@@ -506,6 +506,8 @@ Claise, et al.          Expires September 8, 2022               [Page 9]
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+   Within a given collection subscription, the granularity of the
+   collection is defined by the path.  Note that all devices do not
    support an arbitrary granularity up to the leaf, usually for
    performance reasons.  Each path currently collected by the device
    should show up in the mdt-path-data-manifest list.
@@ -524,8 +526,10 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    o  'requested-period' (only when 'on-change' is false): period
       between two updates requested by the client for this path
 
-   o  'current-period' (only when 'on-change 'is false): current period
-      between two updates
+   o  'actual-period' (only when 'on-change 'is false): actual period
+      retained by the platform between two updates.  That period could
+      be larger than the requested one as the router can adjust it for
+      performance reasons.
 
    This information is crucial to understand the collected values.  For
    instance, the 'on-change' and 'suppress-redundancy' options, if set,
@@ -550,10 +554,6 @@ module ietf-collected-data-manifest {
     prefix yang;
   }
 
-  organization
-    "IETF NETCONF (Network Configuration) Working Group";
-  contact
-    "WG Web:   <https://datatracker.ietf.org/wg/netconf/>
 
 
 
@@ -562,6 +562,10 @@ Claise, et al.          Expires September 8, 2022              [Page 10]
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+  organization
+    "IETF NETCONF (Network Configuration) Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/netconf/>
      WG List:  <mailto:netconf@ietf.org>
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
      Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
@@ -603,13 +607,9 @@ Internet-Draft           Telemetry Data Manifest              March 2022
   }
 
   container data-collection {
+    config false;
     description
       "Defines the information for each collected object";
-    list mdt-subscriptions {
-      key "subscription-id";
-      description
-        "Contains the list of current subscriptions on the
-         local device. Enables the collector to select its own
 
 
 
@@ -618,6 +618,11 @@ Claise, et al.          Expires September 8, 2022              [Page 11]
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+    list mdt-subscriptions {
+      key "subscription-id";
+      description
+        "Contains the list of current subscriptions on the
+         local device. Enables the collector to select its own
          subscriptions in the list.";
       leaf subscription-id {
         type uint64;
@@ -658,14 +663,9 @@ Internet-Draft           Telemetry Data Manifest              March 2022
              updates.";
           // when on-change is false;
         }
-        leaf current-period {
+        leaf actual-period {
           type uint64;
           description
-            "Current period, in millisecond, between two successive
-             updates.";
-          // when on-change is false;
-        }
-        leaf on-change {
 
 
 
@@ -674,6 +674,13 @@ Claise, et al.          Expires September 8, 2022              [Page 12]
 Internet-Draft           Telemetry Data Manifest              March 2022
 
 
+            "Period in milisecond between two successive updates
+             actually applied by the plaftorm at configuration time.
+             This period can be larger than the requested period as the
+             platform might adjust it for performance reasons.";
+          // when on-change is false;
+        }
+        leaf on-change {
           type boolean;
           description
             "Whether the path is collected only when there is a
@@ -695,21 +702,15 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 5.  Collecting Data Manifest and Mapping Data to Data Manifest
 
-   The previous sections define the content of the data and platform
-   manifests.  This section proposes a way to collect these manifests in
-   Section 5.1 and a way to map the collected data to the corresponding
-   manifests in Section 5.2.
-
    This data manifest instance file MUST be streamed all with the data
    and stored along with the collected data.  In case the collected data
    are moved to a different place (typically a database), the data
    manifest MUST follow the collected data.  This can render the data
    unusable if that context is lost, for instance when the data is
    stored without the relevant information.  The data manifest MUST be
-   encoded with the YANG instance data file format [RFC9195].  The YANG
-   instance data file MUST be updated when the data manifest information
-   changes (for example, when a router is upgraded), and the new
-   timestamps MUST be used [RFC9195].
+   updated when the data manifest information changes (for example, when
+   a router is upgraded), when a new telemetry subscription is
+   configured, or when the telemetry subscription paremeters change.
 
    The data should be mapped to the data manifest.  Since the data
    manifest will not change as frequently as the data itself, it makes
@@ -724,13 +725,10 @@ Internet-Draft           Telemetry Data Manifest              March 2022
 
 
 
-
 Claise, et al.          Expires September 8, 2022              [Page 13]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
-
-5.1.  Collecting the Data Manifest
 
    As this draft specifically focuses on giving context on data
    collected via streamed telemetry, we can assume that a streaming
@@ -746,11 +744,11 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    models from Section 3 and Section 4.  Recall that each type of
    manifest has its own rough frequency update, i.e. at reboot for the
    platform manifest and at new subscription or CPU load variation for
-   the data manifest.  This variability can be natively handled by the
-   existing streaming telemetry system on the device, assuming it
-   supports on-change (also called event-driven) telemetry.
+   the data manifest.  The data manifest MUST be streamed with the YANG-
+   Push on-change feature [RFC8641] (also called event-driven
+   telemetry).
 
-5.2.  Mapping Collected Data to the Data Manifest
+5.1.  Mapping Collected Data to the Data Manifest
 
    With MDT, a particular datapoint is always associated to a path that
    is itself part of a subscription.  In order to enable a posteriori
@@ -775,6 +773,8 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    itself, since the data manifest is like any other data.  For
    telemetry based on gRPC for instance, a disconnection to the server
    would be detected as the HTTP connection would fail.
+
+
 
 
 
@@ -929,10 +929,6 @@ Internet-Draft           Telemetry Data Manifest              March 2022
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
               September 2019, <https://www.rfc-editor.org/info/rfc8641>.
 
-   [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
-              Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
-              2022, <https://www.rfc-editor.org/info/rfc9195>.
-
 11.2.  Informative References
 
    [I-D.clacla-netmod-model-catalog]
@@ -946,6 +942,10 @@ Internet-Draft           Telemetry Data Manifest              March 2022
               draft-claise-netconf-metadata-for-collection-02 (work in
               progress), July 2021.
 
+   [I-D.ietf-netmod-yang-packages]
+              Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
+              "YANG Packages", draft-ietf-netmod-yang-packages-02 (work
+              in progress), October 2021.
 
 
 
@@ -953,11 +953,6 @@ Claise, et al.          Expires September 8, 2022              [Page 17]
 
 Internet-Draft           Telemetry Data Manifest              March 2022
 
-
-   [I-D.ietf-netmod-yang-packages]
-              Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
-              "YANG Packages", draft-ietf-netmod-yang-packages-03 (work
-              in progress), March 2022.
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
@@ -968,12 +963,14 @@ Appendix A.  Changes between revisions
 
    Version 1
 
-      Adding more into data platform: yang datates, whole yanglib module
-      to specify datastores
+      Adding more into data platform: yang packages, whole yanglib
+      module to specify datastores
 
       Setting the right type for periods: int64 -> uint64
 
       Specify the origin datastore for mdt subscription
+
+      Set both models to config false
 
       Applying text comments from Mohamed Boucadair
 
@@ -981,6 +978,9 @@ Appendix A.  Changes between revisions
 
       Adding rationale for reusing telemetry system for collection of
       the manifests
+
+      Export manifest with on change telemetry as opposed to YANG
+      instance file
 
 
 

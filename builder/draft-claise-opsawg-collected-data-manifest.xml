@@ -91,6 +91,10 @@
       <t>
         Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
       </t>
+      <t>
+        Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry 
+        information was metered.
+      </t>
     </section>
     <section anchor="intro" title="Introduction">
       <t>
@@ -108,10 +112,10 @@
         This might be explained by a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. 
         Again, knowing the conditions under which the counter was collected and streamed is crucial. 
         Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero.
-        This document specifies the data manifest, which contains the required information to characterize how and when the telemetry information was metered.
+        This document specifies the data collection manifest, which contains the required information to characterize how and when the telemetry information was metered.
      </t>
      <t>
-       Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the collection context. 
+       Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the data collection context. 
        As an example, knowing the exact device software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
        This is also necessary to ensure the reliability of the collected data.
        On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviations. 
@@ -133,12 +137,12 @@
         While these related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
         some of their content is part of the context for the streamed data. 
         Our goal is to compile the data manifest for a given device. 
-        This manifest contains two parts, the platform manifest and the data-collection manifest. 
+        This manifest contains two parts, the platform manifest and the data collection manifest. 
         The platform manifest is "pretty" stable and should change only when the device is updated or patched. 
-        On the other hand, the data collection is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
+        On the other hand, the data collection manifest is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
         To separate these two parts, we enclose each of them in its own module. 
         We first present the module for the platform manifest in <xref target="platform-manifest"/> 
-        and then the module for the collection manifest in <xref target="collection-manifest"/>. 
+        and then the module for the data collection manifest in <xref target="data-collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
         We explain in <xref target="mapping" /> how the data-manifest can be collected and how collected data is mapped to the data manifest.
       </t>
@@ -180,7 +184,7 @@
       </section>
     </section>
 
-     <section anchor="collection-manifest" title="Collection Manifest">
+     <section anchor="data-collection-manifest" title="Data Collection Manifest">
         <section anchor="model-tree" title="Overview of the model">
           <t>
             <xref target="collected-data-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-collected-data-manifest module.
@@ -231,7 +235,7 @@
               <t> 'on-change': when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
               <t> 'suppress-redundancy' (only when 'on-change' is false): reduce bandwidth usage by sending a regular update only if the value is different from the previous update.</t>
               <t> 'requested-period' (only when 'on-change' is false): period between two updates requested by the client for this path</t>
-              <t> 'current-period' (only when 'on-change 'is false): current period between two updates</t>
+              <t> 'actual-period' (only when 'on-change 'is false): actual period retained by the platform between two updates. That period could be larger than the requested one as the router can adjust it for performance reasons.</t>
             </list>
           </t>
           <t> 
@@ -250,17 +254,10 @@
     </section>
     <section anchor="mapping" title="Collecting Data Manifest and Mapping Data to Data Manifest">
       <t>
-        The previous sections define the content of the data and platform manifests.
-        This section proposes a way to collect these manifests in <xref target="collecting_dm"/>
-        and a way to map the collected data to the corresponding manifests in <xref target="mapping_dm"/>.
-      </t>
-      <t>
-        This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
-        In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
-        This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
-		The data manifest MUST be encoded with the YANG instance data file format <xref target="RFC9195"/>.
-		The YANG instance data file MUST be updated when the data manifest information changes (for example, when a router is upgraded), and 
-		the new timestamps MUST be used <xref target="RFC9195"/>.
+          This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
+          In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
+          This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
+		      The data manifest MUST be updated when the data manifest information changes (for example, when a router is upgraded), when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
       </t>
        <t>
            The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
@@ -268,7 +265,6 @@
        <t>
            The platform manifest is likely to remain the same until the device is updated. So, the platform manifest only needs to be collected once per streaming session and updated after a device reboot.
        </t>
-      <section anchor="collecting_dm" title="Collecting the Data Manifest">
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
           Collecting the data and platform manifests can be done either by reusing that streaming telemetry system (in-band)
@@ -276,12 +272,11 @@
         </t>
         <t>
           We propose to reuse the existing telemetry system (in-band approach) in order to lower the efforts for implementing this draft.
-          To enable a platform supporting streaming telemetry to also support collection manifests, it is sufficient that this device supports
-          the models from <xref target="platform-manifest"/> and <xref target="collection-manifest"/>.
+          To enable a platform supporting streaming telemetry to also support data collection manifests, it is sufficient that this device supports
+          the models from <xref target="platform-manifest"/> and <xref target="data-collection-manifest"/>.
           Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the platform manifest and at new subscription or CPU load variation for the data manifest.
-          This variability can be natively handled by the existing streaming telemetry system on the device, assuming it supports on-change (also called event-driven) telemetry.
+          The data manifest MUST be streamed with the YANG-Push on-change feature <xref target="RFC8641"/> (also called event-driven telemetry).
         </t>
-      </section>
       <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
         <t>
              With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
@@ -371,7 +366,6 @@
       <?rfc include="reference.RFC.8340"?>
       <?rfc include="reference.RFC.8525"?>
       <?rfc include="reference.RFC.8641"?>
-      <?rfc include="reference.RFC.9195"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
@@ -384,18 +378,24 @@
       <t>
         Version 1 
         <list>
-          <t> Adding more into data platform: yang datates, whole yanglib module to specify datastores </t>
+          <t> Adding more into data platform: yang packages, whole yanglib module to specify datastores </t>
           <t> Setting the right type for periods: int64 -> uint64 </t>
           <t> Specify the origin datastore for mdt subscription </t>
+          <t> Set both models to config false </t>
           <t> Applying text comments from Mohamed Boucadair </t>
           <t> Adding an example of data-manifest file </t>
-          <t> Adding rationale for reusing telemetry system for collection of the manifests</t>
+          <t> Adding rationale for reusing telemetry system for collection of the manifests </t>
+          <t> Export manifest with on change telemetry as opposed to YANG instance file </t>
           <t> </t>
         </list>
 
       </t>
       <t> 
-        0 Initial version
+        Version 0
+          <list>
+          <t> Initial version </t>
+          <t> </t>
+        </list>
       </t>
     </section>
     <section title="Acknowledgements" numbered="no">
