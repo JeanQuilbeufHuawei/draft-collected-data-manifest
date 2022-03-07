@@ -85,7 +85,7 @@ Table of Contents
      4.2.  YANG module ietf-collected-data-manifest  . . . . . . . .  10
    5.  Collecting Data Manifest and Mapping Data to Data Manifest  .  13
      5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  14
-     5.2.  Mapping Collectd Data to the Data Manifest  . . . . . . .  14
+     5.2.  Mapping Collected Data to the Data Manifest . . . . . . .  14
    6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  15
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
@@ -750,7 +750,7 @@ Internet-Draft           Telemetry Data Manifest              March 2022
    telemetry system on the device, assuming it supports on-change (also
    called event-driven) telemetry.
 
-5.2.  Mapping Collectd Data to the Data Manifest
+5.2.  Mapping Collected Data to the Data Manifest
 
    With MDT, a particular datapoint is always associated to a path that
    is itself part of a subscription.  In order to enable a posteriori

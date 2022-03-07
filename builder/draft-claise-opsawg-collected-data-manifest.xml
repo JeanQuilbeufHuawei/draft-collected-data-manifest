@@ -282,7 +282,7 @@
           This variability can be natively handled by the existing streaming telemetry system on the device, assuming it supports on-change (also called event-driven) telemetry.
         </t>
       </section>
-      <section anchor="mapping_dm" title="Mapping Collectd Data to the Data Manifest">
+      <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
         <t>
              With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
              In order to enable a posteriori retrieval of the data manifest associated to a datapoint, the collector must:
