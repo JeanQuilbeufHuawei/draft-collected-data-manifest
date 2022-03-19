@@ -11,7 +11,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" ipr="trust200902" docName="draft-claise-opsawg-collected-data-manifest-01">
+<rfc category="std" ipr="trust200902" docName="draft-claise-opsawg-collected-data-manifest-02">
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
@@ -70,9 +70,7 @@
 		  governed by YANG models. 
 		  Some of these protocols provide the data itself, without any contextual information about the 
 		  collection method. This can render the data unusable if that context is lost, for 
-		  instance when the data is stored without the relevant information. This document proposes a 
-		  YANG data model to store that contextual information along with the 
-		  collected data in order to keep the collected data exploitable in the future.
+		  instance when the data is stored without the relevant information. This document proposes a data manifest, composed of two YANG data models, to store that contextual information along with the collected data, in order to keep the collected data exploitable in the future.
       </t>
     </abstract>
   </front>
@@ -115,12 +113,12 @@
         This document specifies the data collection manifest, which contains the required information to characterize how and when the telemetry information was metered.
      </t>
      <t>
-       Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the data collection context. 
-       As an example, knowing the exact device software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
-       This is also necessary to ensure the reliability of the collected data.
-       On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviations. 
-       In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one. 
-       This information must be compiled in a platform manifest that must be included in the data manifest.
+        Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the data collection context. 
+        As an example, knowing the exact device software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
+        This is also necessary to ensure the reliability of the collected data.
+        On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviations. 
+        In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one. 
+        This information must be compiled in a platform manifest.
       </t>
       <t>
          Some related YANG modules have been specified to retrieve the device capabilities:
@@ -134,13 +132,13 @@
         </list>
       </t>
       <t>
-        While these related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), 
-        some of their content is part of the context for the streamed data. 
-        Our goal is to compile the data manifest for a given device. 
+        While these related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), some of their content is part of the context for the streamed data. The goal behind this specification is not to expose new information via YANG objects but rather to define what needs to be kept as metadata (the data manifest) to ensure that the collected data can still be interpreted correctly, even if the source device is not accesible (from the collection system), or if the device has been updated (new operating system or new configuration). 
         This manifest contains two parts, the platform manifest and the data collection manifest. 
         The platform manifest is "pretty" stable and should change only when the device is updated or patched. 
         On the other hand, the data collection manifest is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
         To separate these two parts, we enclose each of them in its own module. 
+      <t>
+      </t>
         We first present the module for the platform manifest in <xref target="platform-manifest"/> 
         and then the module for the data collection manifest in <xref target="data-collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
@@ -155,7 +153,7 @@
               <artwork><![CDATA[
 module: ietf-collected-data-platform-manifest
   +--ro platform
-     +--ro platform?           string
+     +--ro name?           string
      +--ro software-version?   string
      +--ro software-flavor?    string
      +--ro os-version?         string
@@ -200,13 +198,13 @@ module: ietf-collected-data-platform-manifest
           
           <t>
             The platform manifest contains a comprehensive set of  information characterize a data source.  
-            The platform is identified by a set of parameters ('platform', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
+            The platform is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
             The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>. 
             That module set is particularly useful to define the paths, as they are based on module names.
             Similarly, this module defines the available datastores, which can be referred to from the data-manifest, if necessary.
-            If supported by the device, fetching metrics from a specific datastore could enable some specific usecases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
+            If supported by the device, fetching metrics from a specific datastore could enable some specific use cases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
           </t>
           <t>
               Alternatively, the set of available YANG modules on the device can be described via packages-set which
@@ -281,10 +279,15 @@ module ietf-collected-data-platform-manifest {
     description
       "Contains information about the platform that allows to identify
        and understand the individual data collection information.  ";
-    leaf platform {
+    leaf name {
       type string;
       description
         "Platform on which this module is implemented.";
+    }
+    leaf vendor {
+      type string;
+      description
+        "Organization that implements that platform.";
     }
     leaf software-version {
       type string;
@@ -386,7 +389,7 @@ module: ietf-collected-data-manifest
             the information about subscription B here.
           </t>
           <t>
-            The "datastore" leaf of the subscription container specifies from which datastore the yang paths are streamed.
+            The "datastore" leaf of the subscription container specifies from which datastore the YANG paths are streamed.
           </t>
           <t>
             Within a given collection subscription, the granularity of the collection is defined by the path.
@@ -550,27 +553,26 @@ module ietf-collected-data-manifest {
     </section>
     <section anchor="mapping" title="Collecting Data Manifest and Mapping Data to Data Manifest">
       <t>
-          This data manifest instance file MUST be streamed all with the data and stored along with the collected data. 
+          The data manifest MUST be streamed all with the data and stored along with the collected data. 
           In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
           This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
 		      The data manifest MUST be updated when the data manifest information changes (for example, when a router is upgraded), when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
       </t>
        <t>
-           The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
+          The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
        </t>
        <t>
-           The platform manifest is likely to remain the same until the device is updated. So, the platform manifest only needs to be collected once per streaming session and updated after a device reboot.
+          The platform manifest is likely to remain the same until the device is updated. So, the platform manifest only needs to be collected once per streaming session and updated after a device reboot.
        </t>
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
-          Collecting the data and platform manifests can be done either by reusing that streaming telemetry system (in-band)
-          or using another system (out-of-band), for instance by adding headers or saving manifests into files.
+          Collecting the data and platform manifests can be done either by reusing that streaming telemetry system (in-band) or using another system (out-of-band), for instance by adding headers or saving manifests into a YANG instace file <xref target="RFC9195"/>.
         </t>
         <t>
           We propose to reuse the existing telemetry system (in-band approach) in order to lower the efforts for implementing this draft.
           To enable a platform supporting streaming telemetry to also support data collection manifests, it is sufficient that this device supports
           the models from <xref target="platform-manifest"/> and <xref target="data-collection-manifest"/>.
-          Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the platform manifest and at new subscription or CPU load variation for the data manifest.
+          Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the platform manifest and at new subscription or CPU load variation for the data collection manifest.
           The data manifest MUST be streamed with the YANG-Push on-change feature <xref target="RFC8641"/> (also called event-driven telemetry).
         </t>
       <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
@@ -682,10 +684,7 @@ module ietf-collected-data-manifest {
             Henk: how does this interact with SBOM effort?
           </t>
           <t>
-             Eliot: important to give integrity of the information a lot of thought
-          </t>
-          <t>
-            Attacker model to be considered.
+            Eliot: important to give integrity of the information a lot of thought. Threat model to be considered.
           </t>
         </list>
       </t>
@@ -698,6 +697,7 @@ module ietf-collected-data-manifest {
       <?rfc include="reference.RFC.8340"?>
       <?rfc include="reference.RFC.8525"?>
       <?rfc include="reference.RFC.8641"?>
+      <?rfc include="reference.RFC.9195"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
@@ -707,6 +707,15 @@ module ietf-collected-data-manifest {
     </references>
     <?rfc needLines="100"?>
     <section title="Changes between revisions">
+      <t>
+        Version 2
+        <list>
+          <t> Alignment with YANGCatalog YANG module: name, vendor </t>
+          <t> Clarify the use of YANG instance file </t>
+          <t> Editorial improvements </t>
+          <t> </t>
+        </list>
+      </t>
       <t>
         Version 1 
         <list>
@@ -720,7 +729,6 @@ module ietf-collected-data-manifest {
           <t> Export manifest with on change telemetry as opposed to YANG instance file </t>
           <t> </t>
         </list>
-
       </t>
       <t> 
         Version 0
