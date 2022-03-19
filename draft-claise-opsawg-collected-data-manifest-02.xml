@@ -99,10 +99,10 @@
         Network elements use Model-driven Telemetry (MDT) to continuously stream information, including both counters and state information.  
         This streamed information is used for network monitoring or closed-loop automation. 
         This streamed data can also be stored in a database (sometimes called a big data lake) for further analysis.
-     </t>
+      </t>
       <t>
         When streaming YANG-structured data with YANG-Push <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition.  On top of that definition, it is also important to maintain contextual information about the collection environment.
-     </t>
+      </t>
       <t>
         As an example, a database could store a time series representing the evolution of a specific counter. 
         When analyzing the data, it is important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
@@ -111,8 +111,8 @@
         Again, knowing the conditions under which the counter was collected and streamed is crucial. 
         Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero.
         This document specifies the data collection manifest, which contains the required information to characterize how and when the telemetry information was metered.
-     </t>
-     <t>
+      </t>
+      <t>
         Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the data collection context. 
         As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
         This is also necessary to ensure the reliability of the collected data.
@@ -137,8 +137,8 @@
         The platform manifest is "pretty" stable and should change only when the device is updated or patched. 
         On the other hand, the data collection manifest is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
         To separate these two parts, we enclose each of them in its own module. 
-      <t>
       </t>
+      <t>
         We first present the module for the platform manifest in <xref target="platform-manifest"/> 
         and then the module for the data collection manifest in <xref target="data-collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
