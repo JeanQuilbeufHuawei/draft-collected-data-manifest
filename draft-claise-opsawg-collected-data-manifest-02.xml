@@ -105,7 +105,7 @@
      </t>
       <t>
         As an example, a database could store a time series representing the evolution of a specific counter. 
-        When analyzing the data, it's important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
+        When analyzing the data, it is important to understand that this counter was requested from the network element at specific cadence, as this exact cadence might not be observed in the time series, potentially implying that the network element was under stress.
         The same time series might report some values as 0 or might even omit some values.  
         This might be explained by a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. 
         Again, knowing the conditions under which the counter was collected and streamed is crucial. 
@@ -114,7 +114,7 @@
      </t>
      <t>
         Precisely characterizing the source used for producing the data (that is the platform manifest) may also be useful to complete the data collection context. 
-        As an example, knowing the exact device software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
+        As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, or a specific bug fix. 
         This is also necessary to ensure the reliability of the collected data.
         On top of that, in particular for MDT, it is crucial to know the set of YANG modules supported by the device, along with their deviations. 
         In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one. 
@@ -740,7 +740,7 @@ module ietf-collected-data-manifest {
     </section>
     <section title="Acknowledgements" numbered="no">
       <t>
-          Thanks to Mohamed Boucadair for his review and comments.
+          Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and comments.
        </t>
     </section>
   </back>
