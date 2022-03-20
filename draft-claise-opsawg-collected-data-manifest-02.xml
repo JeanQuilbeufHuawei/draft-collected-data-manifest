@@ -153,7 +153,8 @@
               <artwork><![CDATA[
 module: ietf-collected-data-platform-manifest
   +--ro platform
-     +--ro name?           string
+     +--ro name?               string
+     +--ro vendor?             string
      +--ro software-version?   string
      +--ro software-flavor?    string
      +--ro os-version?         string
