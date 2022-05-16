@@ -98,6 +98,7 @@ module ietf-collected-data-manifest {
              then the context is the operational datastore context.";
         }
         leaf requested-period {
+          when "../on-change = 'false'";
           type uint64;
           description
             "Requested period, in millisecond, between two successive
@@ -105,13 +106,13 @@ module ietf-collected-data-manifest {
           // when on-change is false;
         }
         leaf actual-period {
+          when "../on-change = 'false'";
           type uint64;
           description
             "Period in milisecond between two successive updates
             actually applied by the plaftorm at configuration time.
             This period can be larger than the requested period as the
             platform might adjust it for performance reasons.";
-          // when on-change is false;
         }
         leaf on-change {
           type boolean;
