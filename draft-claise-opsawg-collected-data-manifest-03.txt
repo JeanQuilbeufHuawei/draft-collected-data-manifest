@@ -226,48 +226,48 @@ Claise, et al.          Expires November 17, 2022               [Page 4]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
-module: ietf-collected-data-platform-manifest
-  +--ro platform
-     +--ro name?               string
-     +--ro vendor?             string
-     +--ro software-version?   string
-     +--ro software-flavor?    string
-     +--ro os-version?         string
-     +--ro os-type?            string
-     +--ro yang-library
-     |  +--ro module-set* [name]
-     |  |  +--ro name                  string
-     |  |  +--ro module* [name]
-     |  |  |  +--ro name         yang:yang-identifier
-     |  |  |  +--ro revision?    revision-identifier
-     |  |  |  +--ro namespace    inet:uri
-     |  |  |  +--ro location*    inet:uri
-     |  |  |  +--ro submodule* [name]
-     |  |  |  |  +--ro name        yang:yang-identifier
-     |  |  |  |  +--ro revision?   revision-identifier
-     |  |  |  |  +--ro location*   inet:uri
-     |  |  |  +--ro feature*     yang:yang-identifier
-     |  |  |  +--ro deviation*   -> ../../module/name
-     |  |  +--ro import-only-module* [name revision]
-     |  |     +--ro name         yang:yang-identifier
-     |  |     +--ro revision     union
-     |  |     +--ro namespace    inet:uri
-     |  |     +--ro location*    inet:uri
-     |  |     +--ro submodule* [name]
-     |  |        +--ro name        yang:yang-identifier
-     |  |        +--ro revision?   revision-identifier
-     |  |        +--ro location*   inet:uri
-     |  +--ro schema* [name]
-     |  |  +--ro name          string
-     |  |  +--ro module-set*   -> ../../module-set/name
-     |  +--ro datastore* [name]
-     |     +--ro name      ds:datastore-ref
-     |     +--ro schema    -> ../../schema/name
-     +--ro packages-set
-        +--ro package* [name version]
-           +--ro name        -> /pkgs:packages/package/name
-           +--ro version     -> /pkgs:packages/package[pkgs:name = current()/../name]/version
-           +--ro checksum?   -> /pkgs:packages/package[pkgs:name = current()/../name][pkgs:version = current()/../version]/pkgs:checksum
+   module: ietf-collected-data-platform-manifest
+     +--ro platform
+        +--ro name?               string
+        +--ro vendor?             string
+        +--ro software-version?   string
+        +--ro software-flavor?    string
+        +--ro os-version?         string
+        +--ro os-type?            string
+        +--ro yang-library
+        |  +--ro module-set* [name]
+        |  |  +--ro name                  string
+        |  |  +--ro module* [name]
+        |  |  |  +--ro name         yang:yang-identifier
+        |  |  |  +--ro revision?    revision-identifier
+        |  |  |  +--ro namespace    inet:uri
+        |  |  |  +--ro location*    inet:uri
+        |  |  |  +--ro submodule* [name]
+        |  |  |  |  +--ro name        yang:yang-identifier
+        |  |  |  |  +--ro revision?   revision-identifier
+        |  |  |  |  +--ro location*   inet:uri
+        |  |  |  +--ro feature*     yang:yang-identifier
+        |  |  |  +--ro deviation*   -> ../../module/name
+        |  |  +--ro import-only-module* [name revision]
+        |  |     +--ro name         yang:yang-identifier
+        |  |     +--ro revision     union
+        |  |     +--ro namespace    inet:uri
+        |  |     +--ro location*    inet:uri
+        |  |     +--ro submodule* [name]
+        |  |        +--ro name        yang:yang-identifier
+        |  |        +--ro revision?   revision-identifier
+        |  |        +--ro location*   inet:uri
+        |  +--ro schema* [name]
+        |  |  +--ro name          string
+        |  |  +--ro module-set*   -> ../../module-set/name
+        |  +--ro datastore* [name]
+        |     +--ro name      ds:datastore-ref
+        |     +--ro schema    -> ../../schema/name
+        +--ro packages-set
+           +--ro package* [name version]
+              +--ro name        -> /pkgs:packages/package/name
+              +--ro version     leafref
+              +--ro checksum?   leafref
 
    Figure 1: YANG tree diagram for ietf-collected-data-platform-manifest
                                   module
@@ -307,7 +307,8 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 module ietf-collected-data-platform-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
+  namespace
+    "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
   prefix platform-manifest;
 
   import ietf-yang-library {
@@ -329,7 +330,6 @@ module ietf-collected-data-platform-manifest {
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
      Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
   description
-    "This module describes the platform information to be used as
 
 
 
@@ -338,6 +338,7 @@ Claise, et al.          Expires November 17, 2022               [Page 6]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
+    "This module describes the platform information to be used as
      context of data collection from a given network element. The
      contents of this model must be streamed along with the data
      streamed from the network element so that the platform context
@@ -385,7 +386,6 @@ Internet-Draft           Telemetry Data Manifest                May 2022
     leaf vendor {
       type string;
       description
-        "Organization that implements that platform.";
 
 
 
@@ -394,6 +394,7 @@ Claise, et al.          Expires November 17, 2022               [Page 7]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
+        "Organization that implements that platform.";
     }
     leaf software-version {
       type string;
@@ -441,7 +442,6 @@ Internet-Draft           Telemetry Data Manifest                May 2022
     }
   }
 }
-
 
 
 
@@ -545,7 +545,8 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 module ietf-collected-data-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
+  namespace
+    "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
   prefix data-manifest;
 
   import ietf-datastores {
@@ -553,7 +554,6 @@ module ietf-collected-data-manifest {
     reference
       "RFC 8342: Network Management Datastore Architecture.";
   }
-  import ietf-yang-types {
 
 
 
@@ -562,6 +562,7 @@ Claise, et al.          Expires November 17, 2022              [Page 10]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
+  import ietf-yang-types {
     prefix yang;
   }
 
@@ -609,7 +610,6 @@ Internet-Draft           Telemetry Data Manifest                May 2022
       "RFC xxxx: Title to be completed";
   }
 
-  container data-collection {
 
 
 
@@ -618,6 +618,7 @@ Claise, et al.          Expires November 17, 2022              [Page 11]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
+  container data-collection {
     config false;
     description
       "Defines the information for each collected object";
@@ -665,7 +666,6 @@ Internet-Draft           Telemetry Data Manifest                May 2022
           description
             "Requested period, in millisecond, between two successive
              updates.";
-          // when on-change is false;
 
 
 
@@ -674,6 +674,7 @@ Claise, et al.          Expires November 17, 2022              [Page 12]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
+          // when on-change is false;
         }
         leaf actual-period {
           when "../on-change = 'false'";
@@ -721,7 +722,6 @@ Internet-Draft           Telemetry Data Manifest                May 2022
    sense to map several data to the same data manifest.  Somehow, the
    collected data must include a metadata pointing to the corresponding
    data manifest.
-
 
 
 

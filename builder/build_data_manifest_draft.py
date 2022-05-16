@@ -34,11 +34,13 @@ def _execute_pyang(options: List[str], filenames: List[str]):
 
 
 def _build_tree(filenames):
-    return _execute_pyang(["-f", "tree"], filenames)
+    return _execute_pyang(["-f", "tree", "--tree-line-length", "69"], filenames)
 
 
 def _format_yang(filenames):
-    return _execute_pyang(["--ietf", "-f", "yang"], filenames)
+    return _execute_pyang(["--ietf", "-f", "yang",
+                           "--yang-canonical",
+                           "--yang-line-length", "69"], filenames)
 
 
 def _find_yang_file(prefix: str):

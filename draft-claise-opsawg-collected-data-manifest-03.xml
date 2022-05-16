@@ -191,8 +191,8 @@ module: ietf-collected-data-platform-manifest
      +--ro packages-set
         +--ro package* [name version]
            +--ro name        -> /pkgs:packages/package/name
-           +--ro version     -> /pkgs:packages/package[pkgs:name = current()/../name]/version
-           +--ro checksum?   -> /pkgs:packages/package[pkgs:name = current()/../name][pkgs:version = current()/../version]/pkgs:checksum
+           +--ro version     leafref
+           +--ro checksum?   leafref
                 ]]></artwork>
             </figure>
         </t>
@@ -218,7 +218,8 @@ module: ietf-collected-data-platform-manifest
           <artwork><![CDATA[
 module ietf-collected-data-platform-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
+  namespace
+    "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
   prefix platform-manifest;
 
   import ietf-yang-library {
@@ -416,7 +417,8 @@ module: ietf-collected-data-manifest
           <artwork><![CDATA[
 module ietf-collected-data-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
+  namespace
+    "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
   prefix data-manifest;
 
   import ietf-datastores {
