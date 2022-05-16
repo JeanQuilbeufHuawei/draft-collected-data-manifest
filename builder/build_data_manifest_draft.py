@@ -82,7 +82,7 @@ def draft_content():
 
 
 if __name__ == '__main__':
-    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-claise-opsawg-collected-data-manifest-01.xml")
+    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-claise-opsawg-collected-data-manifest-02.xml")
     draft_text = env.get_template("draft-claise-opsawg-collected-data-manifest.xml")
     with open(output, 'w') as xml_generated:
         xml_generated.write(draft_text.render(**draft_content()))
