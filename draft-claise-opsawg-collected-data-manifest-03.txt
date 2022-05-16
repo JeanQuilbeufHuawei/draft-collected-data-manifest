@@ -674,7 +674,6 @@ Claise, et al.          Expires November 17, 2022              [Page 12]
 Internet-Draft           Telemetry Data Manifest                May 2022
 
 
-          // when on-change is false;
         }
         leaf actual-period {
           when "../on-change = 'false'";
@@ -722,6 +721,7 @@ Internet-Draft           Telemetry Data Manifest                May 2022
    sense to map several data to the same data manifest.  Somehow, the
    collected data must include a metadata pointing to the corresponding
    data manifest.
+
 
 
 

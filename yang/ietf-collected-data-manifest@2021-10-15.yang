@@ -103,7 +103,6 @@ module ietf-collected-data-manifest {
           description
             "Requested period, in millisecond, between two successive
             updates.";
-          // when on-change is false;
         }
         leaf actual-period {
           when "../on-change = 'false'";
