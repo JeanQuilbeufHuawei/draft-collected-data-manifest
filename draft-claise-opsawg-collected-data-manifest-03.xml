@@ -711,6 +711,12 @@ module ietf-collected-data-manifest {
     <?rfc needLines="100"?>
     <section title="Changes between revisions">
       <t>
+        Version 3
+        <list>
+          <t> Add when clause in YANG model</t>
+        </list>
+      </t>
+      <t>
         Version 2
         <list>
           <t> Alignment with YANGCatalog YANG module: name, vendor </t>

@@ -966,6 +966,10 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 Appendix A.  Changes between revisions
 
+   Version 3
+
+      Add when clause in YANG model
+
    Version 2
 
       Alignment with YANGCatalog YANG module: name, vendor
@@ -999,15 +1003,17 @@ Appendix A.  Changes between revisions
 
 
 
-   Version 0
-
-      Initial version
-
 
 
 Claise, et al.          Expires November 17, 2022              [Page 18]
 
 Internet-Draft           Telemetry Data Manifest                May 2022
+
+
+   Version 0
+
+      Initial version
+
 
 
 Acknowledgements
@@ -1047,6 +1053,19 @@ Authors' Addresses
    Email: i.dominguezm@upm.es
 
 
+
+
+
+
+
+
+
+
+Claise, et al.          Expires November 17, 2022              [Page 19]
+
+Internet-Draft           Telemetry Data Manifest                May 2022
+
+
    Thomas Graf
    Swisscom
    Binzring 17
@@ -1061,4 +1080,41 @@ Authors' Addresses
 
 
 
-Claise, et al.          Expires November 17, 2022              [Page 19]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.          Expires November 17, 2022              [Page 20]
