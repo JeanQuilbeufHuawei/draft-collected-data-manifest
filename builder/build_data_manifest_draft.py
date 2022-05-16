@@ -34,11 +34,13 @@ def _execute_pyang(options: List[str], filenames: List[str]):
 
 
 def _build_tree(filenames):
-    return _execute_pyang(["-f", "tree"], filenames)
+    return _execute_pyang(["-f", "tree", "--tree-line-length", "69"], filenames)
 
 
 def _format_yang(filenames):
-    return _execute_pyang(["--ietf", "-f", "yang"], filenames)
+    return _execute_pyang(["--ietf", "-f", "yang",
+                           "--yang-canonical",
+                           "--yang-line-length", "69"], filenames)
 
 
 def _find_yang_file(prefix: str):
@@ -82,7 +84,7 @@ def draft_content():
 
 
 if __name__ == '__main__':
-    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-claise-opsawg-collected-data-manifest-02.xml")
+    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-claise-opsawg-collected-data-manifest-03.xml")
     draft_text = env.get_template("draft-claise-opsawg-collected-data-manifest.xml")
     with open(output, 'w') as xml_generated:
         xml_generated.write(draft_text.render(**draft_content()))
