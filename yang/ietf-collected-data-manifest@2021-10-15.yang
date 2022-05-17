@@ -10,13 +10,14 @@ module ietf-collected-data-manifest {
 
   import ietf-yang-types {
     prefix yang;
+    reference "RFC 6991: Common YANG Data Types";
   }
 
   organization
-    "IETF NETCONF (Network Configuration) Working Group";
+    "IETF OPSAWG (Network Configuration) Working Group";
   contact
-    "WG Web:   <https://datatracker.ietf.org/wg/netconf/>
-     WG List:  <mailto:netconf@ietf.org>
+    "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
+     WG List:  <mailto:opsawg@ietf.org>
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
      Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
   description
