@@ -831,6 +831,8 @@ module ietf-collected-data-manifest {
         Version 3
         <list>
           <t> Add when clause in YANG model</t>
+          <t> Fix validation errors on YANG modules</t>
+          <t> Augment YANG library to handle semantic versioning</t>
         </list>
       </t>
       <t>

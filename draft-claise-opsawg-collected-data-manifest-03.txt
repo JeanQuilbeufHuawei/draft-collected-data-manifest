@@ -5,13 +5,13 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: November 18, 2022                                      D. Lopez
+Expires: January 12, 2023                                       D. Lopez
                                                           Telefonica I+D
                                                             I. Dominguez
                                        Universidad Politecnica de Madrid
                                                                  T. Graf
                                                                 Swisscom
-                                                            May 17, 2022
+                                                           July 11, 2022
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 18, 2022.
+   This Internet-Draft will expire on January 12, 2023.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 1]
+Claise, et al.          Expires January 12, 2023                [Page 1]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 2]
+Claise, et al.          Expires January 12, 2023                [Page 2]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
    Data Manifest: all the necessary data required to interpret the
@@ -165,9 +165,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 3]
+Claise, et al.          Expires January 12, 2023                [Page 3]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
    changes in native modules between one OS version to the next one.
@@ -221,9 +221,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 4]
+Claise, et al.          Expires January 12, 2023                [Page 4]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
         +--ro software-flavor?    string
@@ -277,9 +277,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 5]
+Claise, et al.          Expires January 12, 2023                [Page 5]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
    The platform manifest contains a comprehensive set of information
@@ -333,9 +333,9 @@ module ietf-collected-data-platform-manifest {
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 6]
+Claise, et al.          Expires January 12, 2023                [Page 6]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
     "IETF OPSAWG (Network Configuration) Working Group";
@@ -389,9 +389,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 7]
+Claise, et al.          Expires January 12, 2023                [Page 7]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
     description
@@ -445,9 +445,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 8]
+Claise, et al.          Expires January 12, 2023                [Page 8]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
   augment "/p-mf:platform/p-mf:yang-library/p-mf:module-set/"
@@ -501,9 +501,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022               [Page 9]
+Claise, et al.          Expires January 12, 2023                [Page 9]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
   container platform {
@@ -557,9 +557,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 10]
+Claise, et al.          Expires January 12, 2023               [Page 10]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
       description
@@ -613,9 +613,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 11]
+Claise, et al.          Expires January 12, 2023               [Page 11]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
    We now have a chicken-and-egg issue if the collector collects the
@@ -669,9 +669,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 12]
+Claise, et al.          Expires January 12, 2023               [Page 12]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
 4.2.  YANG module ietf-collected-data-manifest
@@ -725,9 +725,9 @@ module ietf-collected-data-manifest {
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 13]
+Claise, et al.          Expires January 12, 2023               [Page 13]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
      Redistribution and use in source and binary forms, with or
@@ -781,9 +781,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 14]
+Claise, et al.          Expires January 12, 2023               [Page 14]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
         description
@@ -837,9 +837,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 15]
+Claise, et al.          Expires January 12, 2023               [Page 15]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
 5.  Collecting Data Manifest and Mapping Data to Data Manifest
@@ -893,9 +893,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 16]
+Claise, et al.          Expires January 12, 2023               [Page 16]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
    o  keep the path in the metadata of the collected values
@@ -949,9 +949,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 17]
+Claise, et al.          Expires January 12, 2023               [Page 17]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
 {
@@ -1005,9 +1005,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 18]
+Claise, et al.          Expires January 12, 2023               [Page 18]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
 7.  Security Considerations
@@ -1061,9 +1061,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 19]
+Claise, et al.          Expires January 12, 2023               [Page 19]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
 11.  References
@@ -1117,9 +1117,9 @@ Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 20]
+Claise, et al.          Expires January 12, 2023               [Page 20]
 
-Internet-Draft           Telemetry Data Manifest                May 2022
+Internet-Draft           Telemetry Data Manifest               July 2022
 
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
@@ -1132,6 +1132,10 @@ Appendix A.  Changes between revisions
    Version 3
 
       Add when clause in YANG model
+
+      Fix validation errors on YANG modules
+
+      Augment YANG library to handle semantic versioning
 
    Version 2
 
@@ -1166,16 +1170,18 @@ Appendix A.  Changes between revisions
 
 
 
+
+
+
+Claise, et al.          Expires January 12, 2023               [Page 21]
+
+Internet-Draft           Telemetry Data Manifest               July 2022
+
+
    Version 0
 
       Initial version
 
-
-
-
-Claise, et al.          Expires November 18, 2022              [Page 21]
-
-Internet-Draft           Telemetry Data Manifest                May 2022
 
 
 Acknowledgements
@@ -1215,6 +1221,19 @@ Authors' Addresses
    Email: i.dominguezm@upm.es
 
 
+
+
+
+
+
+
+
+
+Claise, et al.          Expires January 12, 2023               [Page 22]
+
+Internet-Draft           Telemetry Data Manifest               July 2022
+
+
    Thomas Graf
    Swisscom
    Binzring 17
@@ -1229,4 +1248,41 @@ Authors' Addresses
 
 
 
-Claise, et al.          Expires November 18, 2022              [Page 22]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.          Expires January 12, 2023               [Page 23]
