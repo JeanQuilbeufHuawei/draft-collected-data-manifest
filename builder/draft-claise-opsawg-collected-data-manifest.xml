@@ -75,25 +75,6 @@
     </abstract>
   </front>
   <middle>
-    <section title="Terminology" anchor="terminology">
-      <t>
-         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-         NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
-         "MAY", and "OPTIONAL" in this document are to be interpreted as
-         described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
-         when, and only when, they appear in all capitals, as shown here.
-      </t>
-      <t>
-        Data Manifest: all the necessary data required to interpret the telemetry information.
-      </t>
-      <t>
-        Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
-      </t>
-      <t>
-        Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry 
-        information was metered.
-      </t>
-    </section>
     <section anchor="intro" title="Introduction">
       <t>
         Network elements use Model-driven Telemetry (MDT) to continuously stream information, including both counters and state information.  
@@ -143,6 +124,25 @@
         and then the module for the data collection manifest in <xref target="data-collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
         We explain in <xref target="mapping" /> how the data-manifest can be collected and how collected data is mapped to the data manifest.
+      </t>
+    </section>
+    <section title="Terminology" anchor="terminology">
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+        when, and only when, they appear in all capitals, as shown here.
+      </t>
+      <t>
+        Data Manifest: all the necessary data required to interpret the telemetry information.
+      </t>
+      <t>
+        Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
+      </t>
+      <t>
+        Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry
+        information was metered.
       </t>
     </section>
     <section anchor="platform-manifest" title="Platform Manifest">
@@ -378,6 +378,7 @@
         v03 -> v04
         <list>
           <t> Fix xym error</t>
+          <t> Moved terminology after introduction</t>
         </list>
       </t>
       <t>
