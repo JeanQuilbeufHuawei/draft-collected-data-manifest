@@ -75,25 +75,6 @@
     </abstract>
   </front>
   <middle>
-    <section title="Terminology" anchor="terminology">
-      <t>
-         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-         NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
-         "MAY", and "OPTIONAL" in this document are to be interpreted as
-         described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
-         when, and only when, they appear in all capitals, as shown here.
-      </t>
-      <t>
-        Data Manifest: all the necessary data required to interpret the telemetry information.
-      </t>
-      <t>
-        Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
-      </t>
-      <t>
-        Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry 
-        information was metered.
-      </t>
-    </section>
     <section anchor="intro" title="Introduction">
       <t>
         Network elements use Model-driven Telemetry (MDT) to continuously stream information, including both counters and state information.  
@@ -130,10 +111,21 @@
             <xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specific items (i.e., per path).
           </t>
         </list>
+        These related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change).
+        Some of their content is part of the context for the streamed data.
       </t>
       <t>
-        While these related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change), some of their content is part of the context for the streamed data. The goal behind this specification is not to expose new information via YANG objects but rather to define what needs to be kept as metadata (the data manifest) to ensure that the collected data can still be interpreted correctly, even if the source device is not accesible (from the collection system), or if the device has been updated (new operating system or new configuration). 
-        This manifest contains two parts, the platform manifest and the data collection manifest. 
+        The goal of the current document is to define what needs to be kept as metadata (the data manifest) to ensure that the collected data can still be interpreted correctly.
+        The proposed YANG modules in the data manifest do not expose many new information but rather define what should be exposed by a device streaming telemetry.
+        It is expected that the data manifest is streamed directly from the the network equipment, along with the telemetry feature.
+        If a device streaming telemetry does not support yet the YANG modules from the data manifest specified in this document, the collector could populate the data manifest from available information from the device.
+        However this option requires efforts on the collector side, as the information gathered in the data manifest proposed in this document could be scattered among various standard and vendor-specific YANG modules <xref target="RFC8199"/>, that depend on the device.
+      </t>
+      <t>
+        That data manifest should be kept and available even if the source device is not accessible (from the collection system), or if the device has been updated (new operating system or new configuration).
+      </t>
+      <t>
+        The data manifest contains two parts, the platform manifest and the data collection manifest.
         The platform manifest is "pretty" stable and should change only when the device is updated or patched. 
         On the other hand, the data collection manifest is likely to change each time a new MDT subscription is requested and might even change if the device load increases and collection periods are updated. 
         To separate these two parts, we enclose each of them in its own module. 
@@ -143,6 +135,25 @@
         and then the module for the data collection manifest in <xref target="data-collection-manifest"/>. 
         The full data manifest is obtained by combining these two modules. 
         We explain in <xref target="mapping" /> how the data-manifest can be collected and how collected data is mapped to the data manifest.
+      </t>
+    </section>
+    <section title="Terminology" anchor="terminology">
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/>
+        when, and only when, they appear in all capitals, as shown here.
+      </t>
+      <t>
+        Data Manifest: all the necessary data required to interpret the telemetry information.
+      </t>
+      <t>
+        Platform Manifest: part of the Data Manifest that completely characterizes the platform producing the data.
+      </t>
+      <t>
+        Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry
+        information was metered.
       </t>
     </section>
     <section anchor="platform-manifest" title="Platform Manifest">
@@ -222,7 +233,7 @@ module: ietf-collected-data-platform-manifest
       <section anchor="platform-manifest-model" title="YANG module ietf-collected-data-platform-manifest">
         <t>
           &lt;CODE BEGINS&gt;
-          <vspace/> <!-- vspace needed to force filename on a single line, needed for xym -->
+          <vspace/> <!-- force filename on a single line, needed for xym -->
           file "ietf-collected-data-platform-manifest@2021-10-15.yang"
         </t>
         <figure>
@@ -680,7 +691,7 @@ module ietf-collected-data-manifest {
           The data manifest MUST be streamed all with the data and stored along with the collected data. 
           In case the collected data are moved to a different place (typically a database), the data manifest MUST follow the collected data.
           This can render the data unusable if that context is lost, for instance when the data is stored without the relevant information.
-		      The data manifest MUST be updated when the data manifest information changes (for example, when a router is upgraded), when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
+          The data manifest MUST be updated when the data manifest information changes (for example, when a router is upgraded), when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
       </t>
        <t>
           The data should be mapped to the data manifest. Since the data manifest will not change as frequently as the data itself, it makes sense to map several data to the same data manifest. Somehow, the collected data must include a metadata pointing to the corresponding data manifest.
@@ -827,6 +838,7 @@ module ietf-collected-data-manifest {
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
       <?rfc include="reference.RFC.9196"?>
+      <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>
@@ -835,6 +847,8 @@ module ietf-collected-data-manifest {
         v03 -> v04
         <list>
           <t> Fix xym error</t>
+          <t> Moved terminology after introduction</t>
+          <t> Clarified the role of the module</t>
         </list>
       </t>
       <t>
