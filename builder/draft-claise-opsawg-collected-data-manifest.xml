@@ -116,10 +116,13 @@
       </t>
       <t>
         The goal of the current document is to define what needs to be kept as metadata (the data manifest) to ensure that the collected data can still be interpreted correctly.
+        The proposed YANG modules in the data manifest do not expose many new information but rather define what should be exposed by a device streaming telemetry.
+        It is expected that the data manifest is streamed directly from the the network equipment, along with the telemetry feature.
+        If a device streaming telemetry does not support yet the YANG modules from the data manifest specified in this document, the collector could populate the data manifest from available information from the device.
+        However this option requires efforts on the collector side, as the information gathered in the data manifest proposed in this document could be scattered among various standard and vendor-specific YANG modules <xref target="RFC8199"/>, that depend on the device.
+      </t>
+      <t>
         That data manifest should be kept and available even if the source device is not accessible (from the collection system), or if the device has been updated (new operating system or new configuration).
-        As such, the proposed YANG modules do not expose many new information but rather define what should be exposed by a device streaming telemetry.
-        If a device streaming telemetry does not support yet the modules defined in this document, the collector could populate the data manifest from available information from the device.
-        However that last option requires efforts on the collector side, as the information gathered in the data manifest proposed in this document could be scattered among various standard and vendor-specific YANG modules <xref target="RFC8199"/>, that depend on the device.
       </t>
       <t>
         The data manifest contains two parts, the platform manifest and the data collection manifest.
