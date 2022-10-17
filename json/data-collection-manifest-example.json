@@ -1,13 +1,13 @@
 {
   "ietf-yang-instance-data:instance-data-set": {
-    "name": "data-manifest-example",
+    "name": "data-collection-manifest-example",
     "content-schema": {
-      "module": "ietf-collected-data-manifest@2021-10-15"
+      "module": "ietf-data-collection-manifest@2021-10-15"
     },
     "timestamp": "2022-02-24T09:45:03Z",
-    "description": ["Data manifest for the subscription 4242"],
+    "description": ["Data collection manifest for the subscription 4242"],
     "content-data": {
-      "ietf-collected-data-manifest:data-collection": {
+      "ietf-data-collection-manifest:data-collection": {
         "mdt-subscriptions": [
           {
             "subscription-id": 4242,

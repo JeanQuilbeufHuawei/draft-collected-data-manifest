@@ -3,7 +3,7 @@ import os.path
 import subprocess
 from typing import List
 
-from jinja2 import Environment, select_autoescape, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 BUILDER_DIR = os.path.dirname(os.path.abspath(__file__))
 YANG_DIR = os.path.join(os.path.dirname(BUILDER_DIR), "yang")
@@ -57,17 +57,17 @@ def _format_json(filename):
         return str(e), ""
 
 
-PLATFORM_MANIFEST = _find_yang_file("ietf-collected-data-platform")
-DATA_MANIFEST = _find_yang_file("ietf-collected-data-manifest")
-DATA_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "data-manifest-example.json")
+PLATFORM_MANIFEST = _find_yang_file("ietf-platform-manifest")
+DATA_COLLECTION_MANIFEST = _find_yang_file("ietf-data-collection-manifest")
+DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "data-collection-manifest-example.json")
 
 def draft_content():
     pyang_results = {
-        "data_manifest_tree": _build_tree([DATA_MANIFEST]),
-        "data_manifest_yang": _format_yang([DATA_MANIFEST]),
+        "data_collection_manifest_tree": _build_tree([DATA_COLLECTION_MANIFEST]),
+        "data_collection_manifest_yang": _format_yang([DATA_COLLECTION_MANIFEST]),
         "platform_manifest_tree": _build_tree([PLATFORM_MANIFEST]),
         "platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
-        "data_manifest_example": _format_json(DATA_MANIFEST_EXAMPLE)
+        "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE)
         }
     errors = []
     contents = {}
@@ -84,7 +84,7 @@ def draft_content():
 
 
 if __name__ == '__main__':
-    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-claise-opsawg-collected-data-manifest-04.xml")
+    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-claise-opsawg-collected-data-manifest-05.xml")
     draft_text = env.get_template("draft-claise-opsawg-collected-data-manifest.xml")
     with open(output, 'w') as xml_generated:
         xml_generated.write(draft_text.render(**draft_content()))
