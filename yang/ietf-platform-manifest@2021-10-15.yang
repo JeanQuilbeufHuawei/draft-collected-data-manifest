@@ -1,6 +1,6 @@
-module ietf-collected-data-platform-manifest {
+module ietf-platform-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-platform-manifest";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
   prefix p-mf;
 
   import ietf-yang-library {

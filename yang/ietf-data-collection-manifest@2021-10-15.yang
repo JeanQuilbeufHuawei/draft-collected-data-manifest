@@ -1,6 +1,6 @@
-module ietf-collected-data-manifest {
+module ietf-data-collection-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-collected-data-manifest";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
   prefix data-manifest;
 
   import ietf-datastores {
@@ -28,7 +28,7 @@ module ietf-collected-data-manifest {
      be retrieved later.
 
      This module must be completed with
-     ietf-collected-data-platform-manifest
+     ietf-platform-manifest
      to capture the whole context of a data collection session.
 
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
@@ -83,7 +83,7 @@ module ietf-collected-data-manifest {
       leaf datastore {
         type ds:datastore-ref;
         description
-          "The datastore from which the data for this subscription has 
+          "The datastore from which the data for this subscription has
           been collected.";
       }
       list mdt-path-data-manifest {
@@ -93,8 +93,8 @@ module ietf-collected-data-manifest {
         leaf path {
           type yang:xpath1.0;
           description
-            "The XPath context in which this XPath expression is 
-             evaluated is the datastore selected for the containing 
+            "The XPath context in which this XPath expression is
+             evaluated is the datastore selected for the containing
              subscription object. If the datastore is not specified
              then the context is the operational datastore context.";
         }
