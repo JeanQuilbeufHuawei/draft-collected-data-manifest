@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: April 20, 2023                                         D. Lopez
+Expires: April 27, 2023                                         D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                        October 17, 2022
+                                                        October 24, 2022
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 20, 2023.
+   This Internet-Draft will expire on April 27, 2023.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 1]
+Claise, et al.           Expires April 27, 2023                 [Page 1]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -94,9 +94,10 @@ Table of Contents
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  20
      11.2.  Informative References . . . . . . . . . . . . . . . . .  20
-   Appendix A.  Changes between revisions  . . . . . . . . . . . . .  21
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  22
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+   Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  21
+   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  23
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Introduction
 
@@ -108,8 +109,7 @@ Table of Contents
 
 
 
-
-Claise, et al.           Expires April 20, 2023                 [Page 2]
+Claise, et al.           Expires April 27, 2023                 [Page 2]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -165,7 +165,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 3]
+Claise, et al.           Expires April 27, 2023                 [Page 3]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -221,7 +221,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 4]
+Claise, et al.           Expires April 27, 2023                 [Page 4]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -277,7 +277,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 5]
+Claise, et al.           Expires April 27, 2023                 [Page 5]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -333,7 +333,7 @@ module ietf-platform-manifest {
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 6]
+Claise, et al.           Expires April 27, 2023                 [Page 6]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -389,7 +389,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 7]
+Claise, et al.           Expires April 27, 2023                 [Page 7]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 8]
+Claise, et al.           Expires April 27, 2023                 [Page 8]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                 [Page 9]
+Claise, et al.           Expires April 27, 2023                 [Page 9]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -557,7 +557,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 10]
+Claise, et al.           Expires April 27, 2023                [Page 10]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -613,7 +613,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 11]
+Claise, et al.           Expires April 27, 2023                [Page 11]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -669,7 +669,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 12]
+Claise, et al.           Expires April 27, 2023                [Page 12]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -725,7 +725,7 @@ module ietf-data-collection-manifest {
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 13]
+Claise, et al.           Expires April 27, 2023                [Page 13]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -781,7 +781,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 14]
+Claise, et al.           Expires April 27, 2023                [Page 14]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -837,7 +837,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 15]
+Claise, et al.           Expires April 27, 2023                [Page 15]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -893,7 +893,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 16]
+Claise, et al.           Expires April 27, 2023                [Page 16]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -949,7 +949,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 17]
+Claise, et al.           Expires April 27, 2023                [Page 17]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -1005,7 +1005,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 18]
+Claise, et al.           Expires April 27, 2023                [Page 18]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -1061,7 +1061,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 19]
+Claise, et al.           Expires April 27, 2023                [Page 19]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -1117,7 +1117,7 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-Claise, et al.           Expires April 20, 2023                [Page 20]
+Claise, et al.           Expires April 27, 2023                [Page 20]
 
 Internet-Draft           Telemetry Data Manifest            October 2022
 
@@ -1133,14 +1133,135 @@ Internet-Draft           Telemetry Data Manifest            October 2022
               Classification", RFC 8199, DOI 10.17487/RFC8199, July
               2017, <https://www.rfc-editor.org/info/rfc8199>.
 
+   [RFC8343]  Bjorklund, M., "A YANG Data Model for Interface
+              Management", RFC 8343, DOI 10.17487/RFC8343, March 2018,
+              <https://www.rfc-editor.org/info/rfc8343>.
+
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
               Notifications", RFC 9196, DOI 10.17487/RFC9196, February
               2022, <https://www.rfc-editor.org/info/rfc9196>.
 
-Appendix A.  Changes between revisions
+Appendix A.  Example of use based on MDT
+
+   In this example, the goal is to collect the administrative status and
+   number of received bytes for the interfaces of a fictional ACME
+   device, and store the result in a Influx database.  The metrics are
+   collected via MDT, which is configured by specifying their paths and
+   when they should be collected (polling period or on-change).  More
+   precisely, we want collect "ietf-interfaces:interfaces/interface/
+   enabled" on every change and "ietf-
+   interfaces:interfaces/interface/statistics/in-octets" every 100
+   milliseconds.  The paths here are referring to the YANG module from
+   [RFC8343].  The configuration of MDT is out of scope for this
+   document, we assume that both paths above are configured in the same
+   subscription.  Figure 3 presents an example for such a collection.
+
+        +------------+                +----------+
+        |   MDT      |                |  Influx  |
+        | Collector  |--------------> |   DB     |
+        +------------+                +----------+
+             ^
+             |
+             |
+         +---------+
+         | Device  |
+         +---------+
+
+        Figure 3: Example of collection from a device to Influx DB
+
+
+
+
+Claise, et al.           Expires April 27, 2023                [Page 21]
+
+Internet-Draft           Telemetry Data Manifest            October 2022
+
+
+   In the scenario from Figure 3, the collector receives MDT from the
+   device and stores it into InfluxDB.  We first present a version
+   without data manifest and then how to enrich it with the data
+   manifest.
+
+   In InfluxDB, a datapoint is specified by giving the name of the
+   measurement, zero or more key value entries named tags, one or more
+   named values called fields and the timestamp for the datapoint.  In
+   our case a measurement could be "admin-status".  The tags, whose aim
+   to identify a particular instance of the measurement could be the
+   name of the device and the name of the interface.  The fields contain
+   the values to store.  InfluxDb defines a textual notation, named line
+   protocol, to represent one datapoint per line.  We use this line
+   protocol in Figure 4 and Figure 6 to represent the way data could be
+   fed to InfluxDB, omitting the timestamp for readability.  See
+   <https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-
+   protocol/> for more details.
+
+   Without the data manifest, the MDT collector is likely to store
+   something similar to Figure 4 in InfluxDB.  In that case, only the
+   value is stored, without any way to know how the value was obtained.
+
+   admin_status,device="PE1",interface="gig1" val=T
+   sent_bytes,device="PE1",interface="gig1" val=1234
+
+            Figure 4: Storing datapoints without data manifest
+
+   A possibility for keeping the data manifest with the data is to store
+   it directly into InfluxDB.  In that case, the collector can subscribe
+   to the data exported by the module presented in this draft and store
+   it inside influxDB.  For the Platform Manifest, the collector
+   subscribes to the path "ietf-platform-manifest:platform".  For the
+   Data Collection Manifest, assuming the subscription id is 42, the
+   collector subscribes to the path "ietf-data-collection-manifest:data-
+   collection/mdt-subscriptions[subscription-id=42]".  The data, for
+   instance serialized in JSON, can be stored in InfluxDB as shown in
+   Figure 5 where "<platform-manifest>" and "<data-manifest>" represent
+   the contents of respectively the Platform Manifest and the Data
+   Collection Manifest.
+
+   platform-manifest,device="PE1" val=<plaftorm-manifest>
+   collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
+
+                      Figure 5: Storing data manifest
+
+   The link between a collected datapoint and the corresponding Platform
+   Manifest is done via the common "device" tag.  In order to link a
+   datapoint with the corresponding Data Collection Manifest, the
+
+
+
+Claise, et al.           Expires April 27, 2023                [Page 22]
+
+Internet-Draft           Telemetry Data Manifest            October 2022
+
+
+   collector can add fields to specify where the Data Collection
+   Manifest is located for that specific datapoint.  For instance, the
+   same datapoints as in Figure 4 could be stored as in Figure 6, where
+   "<path>" represents the path used for collecting the current
+   datapoint.
+
+  admin_status,device="PE1",interface="gig1" val=T,subId=42,path=<path>
+  sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
+
+              Figure 6: Storing datapoints with data manifest
+
+   In our simple example, from the "admin_status" datapoint, one can
+   retrieve the corresponding Platform Manifest by looking at the last
+   value for the "platform-manifest" measurement with the same value for
+   the "device" tag.  From the "admin-status" datapoint, one can
+   retrieve the corresponding Data Collection Manifest by looking at the
+   last value for the "data-manifest" measurement with tags "device" and
+   "subId" matching respectively with the tag "device" and the field
+   "subId" of the measurement.  For that manifest, one can obtain
+   information for the subscription and the specific information for the
+   path by looking up the value of the "path" field in the "mdt-path-
+   data-manifest" list.
+
+Appendix B.  Changes between revisions
 
    v04 -> v05
+
+      First version of example scenario
 
       Updated affiliation
 
@@ -1161,6 +1282,14 @@ Appendix A.  Changes between revisions
 
       Clarified the role of the module
 
+
+
+
+Claise, et al.           Expires April 27, 2023                [Page 23]
+
+Internet-Draft           Telemetry Data Manifest            October 2022
+
+
    v02 -> v03
 
       Add when clause in YANG model
@@ -1170,13 +1299,6 @@ Appendix A.  Changes between revisions
       Augment YANG library to handle semantic versioning
 
    v01 -> v02
-
-
-
-Claise, et al.           Expires April 20, 2023                [Page 21]
-
-Internet-Draft           Telemetry Data Manifest            October 2022
-
 
       Alignment with YANGCatalog YANG module: name, vendor
 
@@ -1217,6 +1339,13 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 Acknowledgements
 
+
+
+Claise, et al.           Expires April 27, 2023                [Page 24]
+
+Internet-Draft           Telemetry Data Manifest            October 2022
+
+
    Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and
    comments.
 
@@ -1226,12 +1355,6 @@ Authors' Addresses
    Huawei
 
    Email: benoit.claise@huawei.com
-
-
-
-Claise, et al.           Expires April 20, 2023                [Page 22]
-
-Internet-Draft           Telemetry Data Manifest            October 2022
 
 
    Jean Quilbeuf
@@ -1274,15 +1397,4 @@ Internet-Draft           Telemetry Data Manifest            October 2022
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Claise, et al.           Expires April 20, 2023                [Page 23]
+Claise, et al.           Expires April 27, 2023                [Page 25]

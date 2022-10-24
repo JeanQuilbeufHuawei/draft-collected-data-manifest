@@ -837,15 +837,95 @@ module ietf-data-collection-manifest {
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
+      <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
     </references>
     <?rfc needLines="100"?>
+    <section title="Example of use based on MDT">
+      <t>
+        In this example, the goal is to collect the administrative status and number of received bytes for the interfaces of a fictional ACME device, and store the result in a Influx database.
+        The metrics are collected via MDT, which is configured by specifying their paths and when they should be collected (polling period or on-change).
+        More precisely, we want collect "ietf-interfaces:interfaces/interface/enabled" on every change and "ietf-interfaces:interfaces/interface/statistics/in-octets" every 100 milliseconds.
+        The paths here are referring to the YANG module from <xref target="RFC8343"/>.
+        The configuration of MDT is out of scope for this document, we assume that both paths above are configured in the same subscription.
+        <xref target="collection_example"/> presents an example for such a collection.
+      </t>
+      <figure anchor="collection_example" title="Example of collection from a device to Influx DB">
+        <artwork><![CDATA[
+     +------------+                +----------+
+     |   MDT      |                |  Influx  |
+     | Collector  |--------------> |   DB     |
+     +------------+                +----------+
+          ^
+          |
+          |
+      +---------+
+      | Device  |
+      +---------+
+          ]]></artwork>
+      </figure>
+      <t>
+        In the scenario from <xref target="collection_example"/>, the collector receives MDT from the device and stores it into InfluxDB.
+        We first present a version without data manifest and then how to enrich it with the data manifest.
+      </t>
+      <t>
+        In InfluxDB, a datapoint is specified by giving the name of the measurement, zero or more key value entries named tags, one or more named values called fields and the timestamp for the datapoint.
+        In our case a measurement could be "admin-status".
+        The tags, whose aim to identify a particular instance of the measurement could be the name of the device and the name of the interface.
+        The fields contain the values to store.
+        InfluxDb defines a textual notation, named line protocol, to represent one datapoint per line.
+        We use this line protocol in <xref target="influx_before"/> and <xref target="influx_after"/> to represent the way data could be fed to InfluxDB, omitting the timestamp for readability.
+        See <eref target="https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-protocol/"/> for more details.
+      </t>
+      <t>
+        Without the data manifest, the MDT collector is likely to store something similar to <xref target="influx_before"/> in InfluxDB.
+        In that case, only the value is stored, without any way to know how the value was obtained.
+        <figure anchor="influx_before" title="Storing datapoints without data manifest">
+            <artwork><![CDATA[
+admin_status,device="PE1",interface="gig1" val=T
+sent_bytes,device="PE1",interface="gig1" val=1234
+            ]]></artwork>
+        </figure>
+      </t>
+      <t>
+        A possibility for keeping the data manifest with the data is to store it directly into InfluxDB.
+        In that case, the collector can subscribe to the data exported by the module presented in this draft and store it inside influxDB.
+        For the Platform Manifest, the collector subscribes to the path "ietf-platform-manifest:platform".
+        For the Data Collection Manifest, assuming the subscription id is 42, the collector subscribes to the path "ietf-data-collection-manifest:data-collection/mdt-subscriptions[subscription-id=42]".
+        The data, for instance serialized in JSON, can be stored in InfluxDB as shown in <xref target="influx_manifest"/> where "&lt;platform-manifest&gt;" and "&lt;data-manifest&gt;" represent the contents of respectively the Platform Manifest and the Data Collection Manifest.
+        <figure anchor="influx_manifest" title="Storing data manifest">
+          <artwork><![CDATA[
+platform-manifest,device="PE1" val=<plaftorm-manifest>
+collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
+            ]]></artwork>
+        </figure>
+      </t>
+      <t>
+        The link between a collected datapoint and the corresponding Platform Manifest is done via the common "device" tag.
+        In order to link a datapoint with the corresponding Data Collection Manifest, the collector can add fields to specify where the Data Collection Manifest is located for that specific datapoint.
+        For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>, where "&lt;path&gt;" represents the path used for collecting the current datapoint.
+        <figure anchor="influx_after" title="Storing datapoints with data manifest">
+          <artwork><![CDATA[
+admin_status,device="PE1",interface="gig1" val=T,subId=42,path=<path>
+sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
+            ]]></artwork>
+        </figure>
+      </t>
+      <t>
+        In our simple example, from the "admin_status" datapoint, one can retrieve the corresponding Platform Manifest by looking at the last value for the "platform-manifest" measurement with the same value for the "device" tag.
+
+        From the "admin-status" datapoint, one can retrieve the corresponding Data Collection Manifest by looking at the last value for the "data-manifest" measurement with tags "device" and "subId" matching respectively with the tag "device" and the field "subId" of the measurement.
+        For that manifest, one can obtain information for the subscription and the specific information for the path by looking up the value of the "path" field in the "mdt-path-data-manifest" list.
+      </t>
+
+    </section>
     <section title="Changes between revisions">
       <t>
         v04 -> v05
         <list>
+          <t> First version of example scenario</t>
           <t> Updated affiliation</t>
           <t> Updated YANG module names to ietf-platform-manifest and ietf-data-collection-manifest </t>
           <t> Unify used terms as defined in the terminology section</t>
