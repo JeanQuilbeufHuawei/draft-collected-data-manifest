@@ -11,7 +11,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" ipr="trust200902" docName="draft-claise-opsawg-collected-data-manifest-04">
+<rfc category="std" ipr="trust200902" docName="draft-claise-opsawg-collected-data-manifest-05">
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
     <author fullname="Benoit Claise" initials="B" surname="Claise">

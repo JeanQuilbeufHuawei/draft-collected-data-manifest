@@ -14,7 +14,7 @@ Expires: April 27, 2023                                         D. Lopez
 
 
            A Data Manifest for Contextualized Telemetry Data
-             draft-claise-opsawg-collected-data-manifest-04
+             draft-claise-opsawg-collected-data-manifest-05
 
 Abstract
 
