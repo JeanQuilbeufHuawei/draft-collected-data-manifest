@@ -77,6 +77,11 @@ module ietf-platform-manifest {
       description
         "Organization that implements that platform.";
     }
+    leaf vendor-pen {
+	  type uint32;
+	  description "Vendor''s registered Private Enterprise Number as
+	  maintained by IANA";
+    }
     leaf software-version {
       type string;
       description
