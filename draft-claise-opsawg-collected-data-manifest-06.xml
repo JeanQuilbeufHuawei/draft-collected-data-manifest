@@ -712,7 +712,7 @@ module ietf-data-collection-manifest {
       </section>
       <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
         <t>
-             With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
+             With MDT or gNMI, a particular datapoint is always associated to a path that is itself part of a subscription.
              In order to enable a posteriori retrieval of the Data Manifest associated to a datapoint, the collector must:
              <list style="symbols">
                  <t>Keep the path in the metadata of the collected values</t>
@@ -728,6 +728,14 @@ module ietf-data-collection-manifest {
              In that scenario, the reliability of the collection of the Data Manifest is the same as the reliability of the data collection itself, since the Data Manifest is like any other data.
              For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
          </t>
+          <t>
+            YANG-push also has a notion of subscription ID that can be used to retrieve the Data Manifest of a particular datapoint.
+            Only the subscription ID needs to be linked to the collected datapoint.
+          </t>
+          <t>
+            In order to support other protocols, the YANG module representing the data manifest needs to be populated with a correct value for the subscription-id key.
+            This value depends on the use case.
+          </t>
       </section>
     </section>
     <section anchor="example" title="Example">

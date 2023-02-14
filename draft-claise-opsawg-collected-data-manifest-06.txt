@@ -86,7 +86,7 @@ Table of Contents
    5.  Data Manifest and the Collected Data  . . . . . . . . . . . .  16
      5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  16
      5.2.  Mapping Collected Data to the Data Manifest . . . . . . .  17
-   6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+   6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  18
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
    9.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  19
@@ -97,7 +97,7 @@ Table of Contents
    Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  21
    Appendix B.  Changes between revisions  . . . . . . . . . . . . .  23
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Introduction
 
@@ -916,10 +916,10 @@ Internet-Draft           Telemetry Data Manifest           February 2023
 
 5.2.  Mapping Collected Data to the Data Manifest
 
-   With MDT, a particular datapoint is always associated to a path that
-   is itself part of a subscription.  In order to enable a posteriori
-   retrieval of the Data Manifest associated to a datapoint, the
-   collector must:
+   With MDT or gNMI, a particular datapoint is always associated to a
+   path that is itself part of a subscription.  In order to enable a
+   posteriori retrieval of the Data Manifest associated to a datapoint,
+   the collector must:
 
    o  Keep the path in the metadata of the collected values
 
@@ -940,11 +940,11 @@ Internet-Draft           Telemetry Data Manifest           February 2023
    telemetry based on gRPC for instance, a disconnection to the server
    would be detected as the HTTP connection would fail.
 
-6.  Example
+   YANG-push also has a notion of subscription ID that can be used to
+   retrieve the Data Manifest of a particular datapoint.  Only the
+   subscription ID needs to be linked to the collected datapoint.
 
-   Below is an example of a Data Collection Manifest file:
 
-   <CODE BEGINS> file "ietf-data-collection-manifest@2021-10-15.yang"
 
 
 
@@ -953,6 +953,16 @@ Claise, et al.           Expires August 18, 2023               [Page 17]
 
 Internet-Draft           Telemetry Data Manifest           February 2023
 
+
+   In order to support other protocols, the YANG module representing the
+   data manifest needs to be populated with a correct value for the
+   subscription-id key.  This value depends on the use case.
+
+6.  Example
+
+   Below is an example of a Data Collection Manifest file:
+
+   <CODE BEGINS> file "ietf-data-collection-manifest@2021-10-15.yang"
 
 {
   "ietf-yang-instance-data:instance-data-set": {
@@ -992,16 +1002,6 @@ Internet-Draft           Telemetry Data Manifest           February 2023
   }
 }
 
-   <CODE ENDS>
-
-   The file above contains the Data Collection Manifest for paths
-   collected in the subscription with id 4242.  The requested period for
-   both path is this subscription was 100ms, however the status of the
-   interface could only be collected every 10s.
-
-
-
-
 
 
 
@@ -1009,6 +1009,13 @@ Claise, et al.           Expires August 18, 2023               [Page 18]
 
 Internet-Draft           Telemetry Data Manifest           February 2023
 
+
+   <CODE ENDS>
+
+   The file above contains the Data Collection Manifest for paths
+   collected in the subscription with id 4242.  The requested period for
+   both path is this subscription was 100ms, however the status of the
+   interface could only be collected every 10s.
 
 7.  Security Considerations
 
@@ -1052,19 +1059,17 @@ Internet-Draft           Telemetry Data Manifest           February 2023
       them as well (they would not be captured with our use of the main
       yang-library grouping).
 
-   o  Henk: how does this interact with SBOM effort?
-
-   o  Eliot: important to give integrity of the information a lot of
-      thought.  Threat model to be considered.
-
-
-
 
 
 Claise, et al.           Expires August 18, 2023               [Page 19]
 
 Internet-Draft           Telemetry Data Manifest           February 2023
 
+
+   o  Henk: how does this interact with SBOM effort?
+
+   o  Eliot: important to give integrity of the information a lot of
+      thought.  Threat model to be considered.
 
 11.  References
 
@@ -1106,6 +1111,17 @@ Internet-Draft           Telemetry Data Manifest           February 2023
               draft-claise-netconf-metadata-for-collection-02 (work in
               progress), July 2021.
 
+
+
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 20]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
               "YANG Packages", draft-ietf-netmod-yang-packages-03 (work
@@ -1114,13 +1130,6 @@ Internet-Draft           Telemetry Data Manifest           February 2023
    [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
               Classification", RFC 8199, DOI 10.17487/RFC8199, July
               2017.
-
-
-
-Claise, et al.           Expires August 18, 2023               [Page 20]
-
-Internet-Draft           Telemetry Data Manifest           February 2023
-
 
    [RFC8343]  Bjorklund, M., "A YANG Data Model for Interface
               Management", RFC 8343, DOI 10.17487/RFC8343, March 2018.
@@ -1160,6 +1169,15 @@ Appendix A.  Example of use based on MDT
 
    In the scenario from Figure 3, the collector receives MDT from the
    device and stores it into InfluxDB.  We first present a version
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 21]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
    without data manifest and then how to enrich it with the data
    manifest.
 
@@ -1170,14 +1188,6 @@ Appendix A.  Example of use based on MDT
    to identify a particular instance of the measurement could be the
    name of the device and the name of the interface.  The fields contain
    the values to store.  InfluxDb defines a textual notation, named line
-
-
-
-Claise, et al.           Expires August 18, 2023               [Page 21]
-
-Internet-Draft           Telemetry Data Manifest           February 2023
-
-
    protocol, to represent one datapoint per line.  We use this line
    protocol in Figure 4 and Figure 6 to represent the way data could be
    fed to InfluxDB, omitting the timestamp for readability.  See
@@ -1216,6 +1226,14 @@ Internet-Draft           Telemetry Data Manifest           February 2023
    datapoint with the corresponding Data Collection Manifest, the
    collector can add fields to specify where the Data Collection
    Manifest is located for that specific datapoint.  For instance, the
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 22]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
    same datapoints as in Figure 4 could be stored as in Figure 6, where
    "<path>" represents the path used for collecting the current
    datapoint.
@@ -1224,15 +1242,6 @@ Internet-Draft           Telemetry Data Manifest           February 2023
   sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
 
               Figure 6: Storing datapoints with data manifest
-
-
-
-
-
-Claise, et al.           Expires August 18, 2023               [Page 22]
-
-Internet-Draft           Telemetry Data Manifest           February 2023
-
 
    In our simple example, from the "admin_status" datapoint, one can
    retrieve the corresponding Platform Manifest by looking at the last
@@ -1273,6 +1282,14 @@ Appendix B.  Changes between revisions
 
    v02 -> v03
 
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 23]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
       Add when clause in YANG model
 
       Fix validation errors on YANG modules
@@ -1282,13 +1299,6 @@ Appendix B.  Changes between revisions
    v01 -> v02
 
       Alignment with YANGCatalog YANG module: name, vendor
-
-
-
-Claise, et al.           Expires August 18, 2023               [Page 23]
-
-Internet-Draft           Telemetry Data Manifest           February 2023
-
 
       Clarify the use of YANG instance file
 
@@ -1327,6 +1337,15 @@ Internet-Draft           Telemetry Data Manifest           February 2023
 
 Acknowledgements
 
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 24]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
    Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and
    comments.
 
@@ -1336,14 +1355,6 @@ Authors' Addresses
    Huawei
 
    Email: benoit.claise@huawei.com
-
-
-
-
-
-Claise, et al.           Expires August 18, 2023               [Page 24]
-
-Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    Jean Quilbeuf
@@ -1377,17 +1388,6 @@ Internet-Draft           Telemetry Data Manifest           February 2023
    Switzerland
 
    Email: thomas.graf@swisscom.com
-
-
-
-
-
-
-
-
-
-
-
 
 
 
