@@ -8,10 +8,10 @@ module ietf-platform-manifest {
     reference "RFC8525: YANG Library";
   }
 
-  import ietf-yang-packages {
-    prefix pkgs;
-    reference "RFC  XXXX: YANG Packages.";
-  }
+  //import ietf-yang-packages {
+  //  prefix pkgs;
+  //  reference "RFC  XXXX: YANG Packages.";
+  //}
 
   import ietf-yang-revisions {
     prefix rev;
@@ -80,7 +80,8 @@ module ietf-platform-manifest {
     leaf vendor-pen {
 	  type uint32;
 	  description "Vendor''s registered Private Enterprise Number as
-	  maintained by IANA";
+	  maintained by IANA at
+	  https://www.iana.org/assignments/enterprise-numbers/";
     }
     leaf software-version {
       type string;
@@ -120,12 +121,12 @@ module ietf-platform-manifest {
         in each of the datastores.";
       uses yanglib:yang-library-parameters;
     }
-    container packages-set{
-      description
-        "Alternatively to module-set, use a list of yang packages to
-         describe the list of available schema on the platform";
-      uses pkgs:yang-ds-pkg-ref;
-    }
+    //container packages-set{
+    //  description
+    //    "Alternatively to module-set, use a list of yang packages to
+    //     describe the list of available schema on the platform";
+    //  uses pkgs:yang-ds-pkg-ref;
+    //}
   }
 
   // This is a copy-paste of the augments from the module
