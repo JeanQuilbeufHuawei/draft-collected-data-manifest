@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: May 12, 2023                                           D. Lopez
+Expires: August 18, 2023                                        D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                        November 8, 2022
+                                                       February 14, 2023
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 12, 2023.
+   This Internet-Draft will expire on August 18, 2023.
 
 
 
@@ -53,14 +53,14 @@ Status of This Memo
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 1]
+Claise, et al.           Expires August 18, 2023                [Page 1]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
 Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -97,7 +97,7 @@ Table of Contents
    Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  21
    Appendix B.  Changes between revisions  . . . . . . . . . . . . .  23
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 2]
+Claise, et al.           Expires August 18, 2023                [Page 2]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    When streaming YANG-structured data with YANG-Push [RFC8641], there
@@ -165,9 +165,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 3]
+Claise, et al.           Expires August 18, 2023                [Page 3]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    The goal of the current document is to define what needs to be kept
@@ -221,9 +221,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 4]
+Claise, et al.           Expires August 18, 2023                [Page 4]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    Data Collection Manifest: part of the Data Manifest that completely
@@ -240,7 +240,6 @@ Internet-Draft           Telemetry Data Manifest           November 2022
      +--ro platform
         +--ro name?               string
         +--ro vendor?             string
-        +--ro vendor-pen?         uint32
         +--ro software-version?   string
         +--ro software-flavor?    string
         +--ro os-version?         string
@@ -274,15 +273,15 @@ Internet-Draft           Telemetry Data Manifest           November 2022
         |  |     +--ro revision-label?   rev:revision-label
         |  +--ro schema* [name]
         |  |  +--ro name                            string
-
-
-
-Claise, et al.            Expires May 12, 2023                  [Page 5]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
         |  |  +--ro module-set*
+
+
+
+Claise, et al.           Expires August 18, 2023                [Page 5]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
         |  |  |       -> ../../module-set/name
         |  |  +--ro deprecated-nodes-implemented?   boolean
         |  |  +--ro obsolete-nodes-absent?          boolean
@@ -330,15 +329,15 @@ module ietf-platform-manifest {
   import ietf-yang-library {
     prefix yanglib;
     reference
-
-
-
-Claise, et al.            Expires May 12, 2023                  [Page 6]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
       "RFC8525: YANG Library";
+
+
+
+Claise, et al.           Expires August 18, 2023                [Page 6]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
   }
   import ietf-yang-packages {
     prefix pkgs;
@@ -389,9 +388,10 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 7]
+
+Claise, et al.           Expires August 18, 2023                [Page 7]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
   revision 2021-10-15 {
@@ -445,9 +445,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 8]
+Claise, et al.           Expires August 18, 2023                [Page 8]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
       "Add a revision label to module information";
@@ -501,9 +501,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                  [Page 9]
+Claise, et al.           Expires August 18, 2023                [Page 9]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
     }
@@ -535,12 +535,6 @@ Internet-Draft           Telemetry Data Manifest           November 2022
       description
         "Organization that implements that platform.";
     }
-    leaf vendor-pen {
-      type uint32;
-      description
-        "Vendor''s registered Private Enterprise Number as
-         maintained by IANA";
-    }
     leaf software-version {
       type string;
       description
@@ -554,20 +548,20 @@ Internet-Draft           Telemetry Data Manifest           November 2022
     leaf software-flavor {
       type string;
       description
-
-
-
-Claise, et al.            Expires May 12, 2023                 [Page 10]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
         "A variation of a specific version where YANG model support
          may be different.  Depending on the vendor, this could be a
          license, additional software component, or a feature set.";
     }
     leaf os-version {
       type string;
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 10]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
       description
         "Version of the operating system using this module. This is
          primarily useful if the software implementing the module is an
@@ -613,9 +607,15 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 11]
+
+
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 11]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    module: ietf-data-collection-manifest
@@ -669,9 +669,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 12]
+Claise, et al.           Expires August 18, 2023               [Page 12]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    o  'on-change': when set to true, an update is sent as soon as and
@@ -725,9 +725,9 @@ module ietf-data-collection-manifest {
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 13]
+Claise, et al.           Expires August 18, 2023               [Page 13]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
@@ -781,9 +781,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 14]
+Claise, et al.           Expires August 18, 2023               [Page 14]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
          subscriptions in the list.";
@@ -837,9 +837,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 15]
+Claise, et al.           Expires August 18, 2023               [Page 15]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
         }
@@ -893,9 +893,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 16]
+Claise, et al.           Expires August 18, 2023               [Page 16]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    Manifest and Platform Manifest can be done either by reusing that
@@ -949,9 +949,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 17]
+Claise, et al.           Expires August 18, 2023               [Page 17]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
 {
@@ -1005,9 +1005,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 18]
+Claise, et al.           Expires August 18, 2023               [Page 18]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
 7.  Security Considerations
@@ -1061,9 +1061,9 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 19]
+Claise, et al.           Expires August 18, 2023               [Page 19]
 
-Internet-Draft           Telemetry Data Manifest           November 2022
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
 11.  References
@@ -1072,75 +1072,63 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
+              DOI 10.17487/RFC2119, March 1997.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+              May 2017.
 
    [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
-              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
-              <https://www.rfc-editor.org/info/rfc8340>.
+              BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018.
 
    [RFC8525]  Bierman, A., Bjorklund, M., Schoenwaelder, J., Watsen, K.,
               and R. Wilton, "YANG Library", RFC 8525,
-              DOI 10.17487/RFC8525, March 2019,
-              <https://www.rfc-editor.org/info/rfc8525>.
+              DOI 10.17487/RFC8525, March 2019.
 
    [RFC8641]  Clemm, A. and E. Voit, "Subscription to YANG Notifications
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
-              September 2019, <https://www.rfc-editor.org/info/rfc8641>.
+              September 2019.
 
    [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
-              2022, <https://www.rfc-editor.org/info/rfc9195>.
+              2022.
 
 11.2.  Informative References
 
    [I-D.clacla-netmod-model-catalog]
               Clarke, J. and B. Claise, "YANG module for
               yangcatalog.org", draft-clacla-netmod-model-catalog-03
-              (work in progress), April 2018,
-              <https://www.ietf.org/archive/id/draft-clacla-netmod-
-              model-catalog-03.txt>.
+              (work in progress), April 2018.
 
    [I-D.claise-netconf-metadata-for-collection]
-              Claise, B., Nayyar, M., and A. R. Sesani, "Per-Node
+              Claise, B., Nayyar, M., and A. Sesani, "Per-Node
               Capabilities for Optimum Operational Data Collection",
               draft-claise-netconf-metadata-for-collection-02 (work in
-              progress), July 2021, <https://www.ietf.org/archive/id/
-              draft-claise-netconf-metadata-for-collection-02.txt>.
-
-
-
-
-
-
-Claise, et al.            Expires May 12, 2023                 [Page 20]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
+              progress), July 2021.
 
    [I-D.ietf-netmod-yang-packages]
               Wilton, R., Rahman, R., Clarke, J., Sterne, J., and B. Wu,
               "YANG Packages", draft-ietf-netmod-yang-packages-03 (work
-              in progress), March 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-netmod-yang-
-              packages-03.txt>.
+              in progress), March 2022.
 
    [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
               Classification", RFC 8199, DOI 10.17487/RFC8199, July
-              2017, <https://www.rfc-editor.org/info/rfc8199>.
+              2017.
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 20]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
 
    [RFC8343]  Bjorklund, M., "A YANG Data Model for Interface
-              Management", RFC 8343, DOI 10.17487/RFC8343, March 2018,
-              <https://www.rfc-editor.org/info/rfc8343>.
+              Management", RFC 8343, DOI 10.17487/RFC8343, March 2018.
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
               Notifications", RFC 9196, DOI 10.17487/RFC9196, February
-              2022, <https://www.rfc-editor.org/info/rfc9196>.
+              2022.
 
 Appendix A.  Example of use based on MDT
 
@@ -1170,14 +1158,6 @@ Appendix A.  Example of use based on MDT
 
         Figure 3: Example of collection from a device to Influx DB
 
-
-
-
-Claise, et al.            Expires May 12, 2023                 [Page 21]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
    In the scenario from Figure 3, the collector receives MDT from the
    device and stores it into InfluxDB.  We first present a version
    without data manifest and then how to enrich it with the data
@@ -1190,6 +1170,14 @@ Internet-Draft           Telemetry Data Manifest           November 2022
    to identify a particular instance of the measurement could be the
    name of the device and the name of the interface.  The fields contain
    the values to store.  InfluxDb defines a textual notation, named line
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 21]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
+
    protocol, to represent one datapoint per line.  We use this line
    protocol in Figure 4 and Figure 6 to represent the way data could be
    fed to InfluxDB, omitting the timestamp for readability.  See
@@ -1226,14 +1214,6 @@ Internet-Draft           Telemetry Data Manifest           November 2022
    The link between a collected datapoint and the corresponding Platform
    Manifest is done via the common "device" tag.  In order to link a
    datapoint with the corresponding Data Collection Manifest, the
-
-
-
-Claise, et al.            Expires May 12, 2023                 [Page 22]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
    collector can add fields to specify where the Data Collection
    Manifest is located for that specific datapoint.  For instance, the
    same datapoints as in Figure 4 could be stored as in Figure 6, where
@@ -1244,6 +1224,15 @@ Internet-Draft           Telemetry Data Manifest           November 2022
   sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
 
               Figure 6: Storing datapoints with data manifest
+
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 22]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
 
    In our simple example, from the "admin_status" datapoint, one can
    retrieve the corresponding Platform Manifest by looking at the last
@@ -1282,14 +1271,6 @@ Appendix B.  Changes between revisions
 
       Clarified the role of the module
 
-
-
-
-Claise, et al.            Expires May 12, 2023                 [Page 23]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
    v02 -> v03
 
       Add when clause in YANG model
@@ -1301,6 +1282,13 @@ Internet-Draft           Telemetry Data Manifest           November 2022
    v01 -> v02
 
       Alignment with YANGCatalog YANG module: name, vendor
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 23]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
+
 
       Clarify the use of YANG instance file
 
@@ -1339,13 +1327,6 @@ Internet-Draft           Telemetry Data Manifest           November 2022
 
 Acknowledgements
 
-
-
-Claise, et al.            Expires May 12, 2023                 [Page 24]
-
-Internet-Draft           Telemetry Data Manifest           November 2022
-
-
    Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and
    comments.
 
@@ -1355,6 +1336,14 @@ Authors' Addresses
    Huawei
 
    Email: benoit.claise@huawei.com
+
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 24]
+
+Internet-Draft           Telemetry Data Manifest           February 2023
 
 
    Jean Quilbeuf
@@ -1397,4 +1386,15 @@ Authors' Addresses
 
 
 
-Claise, et al.            Expires May 12, 2023                 [Page 25]
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires August 18, 2023               [Page 25]

@@ -165,7 +165,6 @@ module: ietf-platform-manifest
   +--ro platform
      +--ro name?               string
      +--ro vendor?             string
-     +--ro vendor-pen?         uint32
      +--ro software-version?   string
      +--ro software-flavor?    string
      +--ro os-version?         string
@@ -419,12 +418,6 @@ module ietf-platform-manifest {
       type string;
       description
         "Organization that implements that platform.";
-    }
-    leaf vendor-pen {
-      type uint32;
-      description
-        "Vendor''s registered Private Enterprise Number as
-         maintained by IANA";
     }
     leaf software-version {
       type string;
