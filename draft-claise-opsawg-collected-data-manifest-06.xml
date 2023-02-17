@@ -195,51 +195,47 @@ module: ietf-platform-manifest
   +--ro platform
      +--ro name?               string
      +--ro vendor?             string
+     +--ro vendor-pen?         uint32
      +--ro software-version?   string
      +--ro software-flavor?    string
      +--ro os-version?         string
      +--ro os-type?            string
      +--ro yang-library
-     |  +--ro module-set* [name]
-     |  |  +--ro name                  string
-     |  |  +--ro module* [name]
-     |  |  |  +--ro name              yang:yang-identifier
-     |  |  |  +--ro revision?         revision-identifier
-     |  |  |  +--ro namespace         inet:uri
-     |  |  |  +--ro location*         inet:uri
-     |  |  |  +--ro submodule* [name]
-     |  |  |  |  +--ro name              yang:yang-identifier
-     |  |  |  |  +--ro revision?         revision-identifier
-     |  |  |  |  +--ro location*         inet:uri
-     |  |  |  |  +--ro revision-label?   rev:revision-label
-     |  |  |  +--ro feature*          yang:yang-identifier
-     |  |  |  +--ro deviation*        -> ../../module/name
-     |  |  |  +--ro revision-label?   rev:revision-label
-     |  |  +--ro import-only-module* [name revision]
-     |  |     +--ro name              yang:yang-identifier
-     |  |     +--ro revision          union
-     |  |     +--ro namespace         inet:uri
-     |  |     +--ro location*         inet:uri
-     |  |     +--ro submodule* [name]
-     |  |     |  +--ro name              yang:yang-identifier
-     |  |     |  +--ro revision?         revision-identifier
-     |  |     |  +--ro location*         inet:uri
-     |  |     |  +--ro revision-label?   rev:revision-label
-     |  |     +--ro revision-label?   rev:revision-label
-     |  +--ro schema* [name]
-     |  |  +--ro name                            string
-     |  |  +--ro module-set*
-     |  |  |       -> ../../module-set/name
-     |  |  +--ro deprecated-nodes-implemented?   boolean
-     |  |  +--ro obsolete-nodes-absent?          boolean
-     |  +--ro datastore* [name]
-     |     +--ro name      ds:datastore-ref
-     |     +--ro schema    -> ../../schema/name
-     +--ro packages-set
-        +--ro package* [name version]
-           +--ro name        -> /pkgs:packages/package/name
-           +--ro version     leafref
-           +--ro checksum?   leafref
+        +--ro module-set* [name]
+        |  +--ro name                  string
+        |  +--ro module* [name]
+        |  |  +--ro name              yang:yang-identifier
+        |  |  +--ro revision?         revision-identifier
+        |  |  +--ro namespace         inet:uri
+        |  |  +--ro location*         inet:uri
+        |  |  +--ro submodule* [name]
+        |  |  |  +--ro name              yang:yang-identifier
+        |  |  |  +--ro revision?         revision-identifier
+        |  |  |  +--ro location*         inet:uri
+        |  |  |  +--ro revision-label?   rev:revision-label
+        |  |  +--ro feature*          yang:yang-identifier
+        |  |  +--ro deviation*        -> ../../module/name
+        |  |  +--ro revision-label?   rev:revision-label
+        |  +--ro import-only-module* [name revision]
+        |     +--ro name              yang:yang-identifier
+        |     +--ro revision          union
+        |     +--ro namespace         inet:uri
+        |     +--ro location*         inet:uri
+        |     +--ro submodule* [name]
+        |     |  +--ro name              yang:yang-identifier
+        |     |  +--ro revision?         revision-identifier
+        |     |  +--ro location*         inet:uri
+        |     |  +--ro revision-label?   rev:revision-label
+        |     +--ro revision-label?   rev:revision-label
+        +--ro schema* [name]
+        |  +--ro name                            string
+        |  +--ro module-set*
+        |  |       -> ../../module-set/name
+        |  +--ro deprecated-nodes-implemented?   boolean
+        |  +--ro obsolete-nodes-absent?          boolean
+        +--ro datastore* [name]
+           +--ro name      ds:datastore-ref
+           +--ro schema    -> ../../schema/name
                 ]]></artwork>
             </figure>
         </t>
@@ -276,11 +272,12 @@ module ietf-platform-manifest {
     reference
       "RFC8525: YANG Library";
   }
-  import ietf-yang-packages {
-    prefix pkgs;
-    reference
-      "RFC  XXXX: YANG Packages.";
-  }
+
+  //import ietf-yang-packages {
+  //  prefix pkgs;
+  //  reference "RFC  XXXX: YANG Packages.";
+  //}
+
   import ietf-yang-revisions {
     prefix rev;
     reference
@@ -448,6 +445,13 @@ module ietf-platform-manifest {
       description
         "Organization that implements that platform.";
     }
+    leaf vendor-pen {
+      type uint32;
+      description
+        "Vendor''s registered Private Enterprise Number as
+         maintained by IANA at
+         https://www.iana.org/assignments/enterprise-numbers/";
+    }
     leaf software-version {
       type string;
       description
@@ -486,12 +490,12 @@ module ietf-platform-manifest {
          in each of the datastores.";
       uses yanglib:yang-library-parameters;
     }
-    container packages-set {
-      description
-        "Alternatively to module-set, use a list of yang packages to
-         describe the list of available schema on the platform";
-      uses pkgs:yang-ds-pkg-ref;
-    }
+    //container packages-set{
+    //  description
+    //    "Alternatively to module-set, use a list of yang packages to
+    //     describe the list of available schema on the platform";
+    //  uses pkgs:yang-ds-pkg-ref;
+    //}
   }
 }
             ]]></artwork>
