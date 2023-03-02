@@ -58,21 +58,28 @@ module ietf-platform-manifest {
   }
 
   container platforms{
+    config false;
     description
       "Top container including all platforms in scope. If this model is
       hosted on a single device, it should contain a single entry in
       the list. At the network level, it should contain an entry for
       every monitored platform.";
     list platform {
-      key name;
-      config false;
+      key id;
       description
         "Contains information about the platform that allows to identify
          and understand the individual data collection information.  ";
+      leaf id {
+        type string;
+        description
+          "Identifies a given platform on the network, for instance the
+          sysname of the plaftorm. The id has to be unique on the
+          network.";
+      }
       leaf name {
         type string;
         description
-          "Platform on which this module is implemented.";
+          "Model of the platform from which data is collected.";
       }
       leaf vendor {
         type string;
@@ -82,8 +89,7 @@ module ietf-platform-manifest {
       leaf vendor-pen {
   	  type uint32;
   	  description "Vendor''s registered Private Enterprise Number as
-  	  maintained by IANA at
-  	  https://www.iana.org/assignments/enterprise-numbers/";
+  	  described in RFC9371";
       }
       leaf software-version {
         type string;

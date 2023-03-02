@@ -13,6 +13,11 @@ module ietf-data-collection-manifest {
     reference "RFC 6991: Common YANG Data Types";
   }
 
+  import ietf-platform-manifest {
+    prefix p-mf;
+    reference "RFC XXXX: Title to be completed";
+  }
+
   organization
     "IETF OPSAWG (Network Configuration) Working Group";
   contact
@@ -63,8 +68,17 @@ module ietf-data-collection-manifest {
       "Contains the configuration and statistics for the collected data,
       per node in the network.";
     list data-collection {
+    key platform-id;
     description
       "Defines the information for each collected object";
+      leaf platform-id {
+        type leafref {
+            path "/p-mf:platforms/p-mf:platform/p-mf:id";
+        }
+        description
+          "Id of the platform collecting the data. This id is the same
+          as the one in the platform manifest.";
+      }
       list mdt-subscriptions {
         key "subscription-id";
         description "Contains the list of current subscriptions on the

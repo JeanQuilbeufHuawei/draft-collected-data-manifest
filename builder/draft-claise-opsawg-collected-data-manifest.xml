@@ -67,7 +67,7 @@
       <t>
       Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
 		  This document documents the metadata that ensure that the collected data can be interpreted correctly.
-		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest.) The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists. 
+		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest.) The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
       </t>
     </abstract>
   </front>
@@ -198,6 +198,7 @@
 
           <t>
             The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
+            The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
           </t>
           <t>
             The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
@@ -205,10 +206,6 @@
             Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
             If supported by the platform, fetching metrics from a specific datastore could enable some specific use cases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
           </t>
-          <!--t>
-              Alternatively, the set of available YANG modules on the platform can be described via packages-set which
-              contains a list of references to YANG Packages <xref target="I-D.ietf-netmod-yang-packages"/>.
-          </t-->
         </section>
       <section anchor="platform-manifest-model" title="YANG module ietf-platform-manifest">
         <t>
@@ -295,7 +292,7 @@
 
        </t>
        <t>
-          The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot. 
+          The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot.
        </t>
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
@@ -401,10 +398,23 @@
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
+      <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
-      <?rfc include="reference.RFC.8199"?>
-      <?rfc include="reference.I-D.ietf-netmod-yang-packages"?>
+      <reference anchor="RFC9371">
+        <front>
+          <title>Change to include when in ietf database</title>
+          <author></author>
+          <date/>
+        </front>
+      </reference>
+      <reference anchor="I-D.tgraf-netconf-notif-sequencing" target="https://github.com/network-analytics/draft-tgraf-netconf-notif-sequencing">
+        <front>
+          <title>Change to include when in ietf database</title>
+          <author />
+          <date />
+        </front>
+      </reference>
     </references>
     <?rfc needLines="100"?>
     <section title="Example of use based on MDT">
@@ -486,6 +496,14 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
 
     </section>
     <section title="Changes between revisions">
+      <t>
+        v05 -> v06
+        <list>
+          <t> Remove YANG packages </t>
+          <t> Switch YANG models from device view to network view </t>
+          <t> Add PEN number to identify vendors </t>
+        </list>
+      </t>
       <t>
         v04 -> v05
         <list>
