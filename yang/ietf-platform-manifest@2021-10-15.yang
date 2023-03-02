@@ -57,71 +57,80 @@ module ietf-platform-manifest {
       "RFC xxxx: Title to be completed";
   }
 
-  container platform {
-    config false;
+  container platforms{
     description
-      "Contains information about the platform that allows to identify
-       and understand the individual data collection information.  ";
-    leaf name {
-      type string;
+      "Top container including all platforms in scope. If this model is
+      hosted on a single device, it should contain a single entry in
+      the list. At the network level, it should contain an entry for
+      every monitored platform.";
+    list platform {
+      key name;
+      config false;
       description
-        "Platform on which this module is implemented.";
-    }
-    leaf vendor {
-      type string;
-      description
-        "Organization that implements that platform.";
-    }
-    leaf vendor-pen {
-	  type uint32;
-	  description "Vendor''s registered Private Enterprise Number as
-	  maintained by IANA at
-	  https://www.iana.org/assignments/enterprise-numbers/";
-    }
-    leaf software-version {
-      type string;
-      description
-        "Name of the version of software. With respect to most network
-         device appliances, this will be the operating system version.
-         But for other YANG module implementation, this would be a
-         version of appliance software. Ultimately, this should
-         correspond to a version string that will be recognizable by the
-         consumers of the platform.";
-    }
-    leaf software-flavor {
-      type string;
-      description
-        "A variation of a specific version where YANG model support
-         may be different.  Depending on the vendor, this could be a
-         license, additional software component, or a feature set.";
-    }
-    leaf os-version {
-      type string;
-      description
-        "Version of the operating system using this module. This is
-         primarily useful if the software implementing the module is an
-         application that requires a specific operating system
-         version.";
-    }
-    leaf os-type {
-      type string;
-      description
-        "Type of the operating system using this module. This is
-         primarily useful if the software implementing the module is an
-         application that requires a specific operating system type.";
-    }
-    container yang-library {
-      description
-        "The YANG library of the device specifying the modules available
-        in each of the datastores.";
-      uses yanglib:yang-library-parameters;
+        "Contains information about the platform that allows to identify
+         and understand the individual data collection information.  ";
+      leaf name {
+        type string;
+        description
+          "Platform on which this module is implemented.";
+      }
+      leaf vendor {
+        type string;
+        description
+          "Organization that implements that platform.";
+      }
+      leaf vendor-pen {
+  	  type uint32;
+  	  description "Vendor''s registered Private Enterprise Number as
+  	  maintained by IANA at
+  	  https://www.iana.org/assignments/enterprise-numbers/";
+      }
+      leaf software-version {
+        type string;
+        description
+          "Name of the version of software. With respect to most network
+           device appliances, this will be the operating system version.
+           But for other YANG module implementation, this would be a
+           version of appliance software. Ultimately, this should
+           correspond to a version string that will be recognizable by
+           the consumers of the platform.";
+      }
+      leaf software-flavor {
+        type string;
+        description
+          "A variation of a specific version where YANG model support
+           may be different.  Depending on the vendor, this could be a
+           license, additional software component, or a feature set.";
+      }
+      leaf os-version {
+        type string;
+        description
+          "Version of the operating system using this module. This is
+           primarily useful if the software implementing the module is
+           an application that requires a specific operating system
+           version.";
+      }
+      leaf os-type {
+        type string;
+        description
+          "Type of the operating system using this module. This is
+           primarily useful if the software implementing the module is
+           an application that requires a specific operating system
+           type.";
+      }
+      container yang-library {
+        description
+          "The YANG library of the device specifying the modules
+          available in each of the datastores.";
+        uses yanglib:yang-library-parameters;
+      }
     }
   }
 
   // This is a copy-paste of the augments from the module
   // ietf-yang-library-revisions.
   // We just changed the path to which the data is added
-  augment "/p-mf:platform/p-mf:yang-library/p-mf:module-set/p-mf:module" {
+  augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library/p-mf:module-set/p-mf:module" {
     description
       "Add a revision label to module information";
     leaf revision-label {
@@ -137,7 +146,8 @@ module ietf-platform-manifest {
     }
   }
 
-  augment "/p-mf:platform/p-mf:yang-library/p-mf:module-set/p-mf:module/" + "p-mf:submodule" {
+  augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library/"
+  + "p-mf:module-set/p-mf:module/p-mf:submodule" {
     description
       "Add a revision label to submodule information";
     leaf revision-label {
@@ -154,7 +164,7 @@ module ietf-platform-manifest {
     }
   }
 
-  augment "/p-mf:platform/p-mf:yang-library/p-mf:module-set/"
+  augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library/p-mf:module-set/"
           + "p-mf:import-only-module" {
     description
       "Add a revision label to module information";
@@ -171,7 +181,7 @@ module ietf-platform-manifest {
     }
   }
 
-  augment "/p-mf:platform/p-mf:yang-library/p-mf:module-set/"
+  augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library/p-mf:module-set/"
           + "p-mf:import-only-module/p-mf:submodule" {
     description
       "Add a revision label to submodule information";
@@ -189,7 +199,7 @@ module ietf-platform-manifest {
     }
   }
 
-  augment "/p-mf:platform/p-mf:yang-library/p-mf:schema" {
+  augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library/p-mf:schema" {
     description
       "Augmentations to the ietf-yang-library module to indicate how
        deprecated and obsoleted nodes are handled for each datastore
