@@ -250,10 +250,6 @@ module: ietf-platform-manifest
             Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
             If supported by the platform, fetching metrics from a specific datastore could enable some specific use cases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
           </t>
-          <!--t>
-              Alternatively, the set of available YANG modules on the platform can be described via packages-set which
-              contains a list of references to YANG Packages <xref target="I-D.ietf-netmod-yang-packages"/>.
-          </t-->
         </section>
       <section anchor="platform-manifest-model" title="YANG module ietf-platform-manifest">
         <t>
