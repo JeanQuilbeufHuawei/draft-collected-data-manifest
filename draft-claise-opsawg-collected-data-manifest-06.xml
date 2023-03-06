@@ -77,7 +77,7 @@
   <middle>
     <section anchor="intro" title="Introduction">
       <t>
-        Network elements use Model-driven Telemetry (MDT), and in particular YANG-Push [RFC8641], to continuously stream information, including both counters and state information.
+        Network elements use Model-driven Telemetry (MDT), and in particular YANG-Push <xref target="RFC8641"/>, to continuously stream information, including both counters and state information.
       </t>
       <t>
         This document specifies what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted  correctly throughout the collection and network analytics toolchain. When streaming YANG-structured data with YANG-Push [RFC8641], there is a semantic definition in the corresponding YANG module definition. This is the semantic information for the collected objects: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network element and collection environment contexts information is equally important to interpret the data.
