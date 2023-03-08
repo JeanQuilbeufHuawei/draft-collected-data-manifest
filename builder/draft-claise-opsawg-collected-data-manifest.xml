@@ -101,7 +101,7 @@
         These related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change). Some of their content is part of the context for the streamed data.
       </t>
       <t>
-        We first present the module for the Platform Manifest in Section 3 and then the module for the Data Collection Manifest in Section 4. The full Data Manifest is obtained by combining these two modules. We explain in Section 5 how the Data Manifest can be retrieved and how collected data is mapped to the Data Manifest.
+        We first present the module for the Platform Manifest in <xref target="platform-manifest"/> and then the module for the Data Collection Manifest in <xref target="data-collection-manifest"/>. The full Data Manifest is obtained by combining these two modules. We explain in <xref target="mapping"/> how the Data Manifest can be retrieved and how collected data is mapped to the Data Manifest.
       </t>
 
       <section anchor="use-cases" title="Use Cases">
@@ -128,7 +128,7 @@
               Characterizing the source used for producing the data (vendor, platform, and OS) is useful to complement the data.  As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, a specific bug fix, or simply a particular specific behavior.  This is also necessary to ensure the reliability of the collected data. On top of that, in particular for YANG-Push <xref target="RFC8641"/>, it is crucial to know the set of YANG modules supported by the platform, along with their deviations. In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one.  This information is captured by the proposed Platform Manifest.
           </t>
            <t>
-              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network element as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period [I-D.claise-netconf-metadata-for-collection]. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
+              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network element as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
           </t>
            <t>
               The goal of the current document is to define what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly. 
@@ -143,7 +143,7 @@
 
         <section anchor="data-mesh-principles-in-networking" title="Data Mesh Principles in Networking">
           <t>         
-             The concept behind the data mesh [https://www.datamesh-architecture.com/] are:
+             The concept behind the data mesh <eref target="https://www.datamesh-architecture.com/"/> are:
             <list style="symbols">
             <t>
               Principle of Domain Ownership: Architecturally and organizationally align business, technology, and analytical data, following the line of responsibility. Here, the Data Mesh principles adopt the boundary of bounded context to individual data products where each domain is responsible for (and owns) its data and models.
@@ -160,7 +160,7 @@
             </list>
           </t>
            <t>
-              The most relevant concept for this document is the "Data as a Product"principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
+              The most relevant concept for this document is the "Data as a Product" principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
           </t>
          </section>
 
@@ -195,9 +195,15 @@
                 ]]></artwork>
             </figure>
         </t>
+          <t>
+            The YANG module actually contains a list of Platform Manifests (in 'platforms/platform'), indexed by the identifier of the platform.
+            That identifier should be defined by the network manager so that each platform has a unique id.
+            As an example, the identifier could be the 'sysname' from the ietf-notification module presented in <xref target="I-D.tgraf-netconf-notif-sequencing"/>.
+            The scope of this module is the scope of the data collection, i.e. a given network, therefore it contains a collection of Platform Manifests, as opposed to the device scope, which would contain a single Platform Manifest.
+          </t>
 
           <t>
-            The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
+            The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog <eref target="www.yangcatalog.org"/> <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
             The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
           </t>
           <t>
@@ -211,7 +217,7 @@
         <t>
           &lt;CODE BEGINS&gt;
           <vspace/> <!-- force filename on a single line, needed for xym -->
-          file "ietf-platform-manifest@2021-10-15.yang"
+          file "ietf-platform-manifest@2023-03-08.yang"
         </t>
         <figure>
           <artwork><![CDATA[
@@ -233,44 +239,27 @@
             </figure>
           </t>
           <t>
-            The data-collection container contains the information related to YANG-Push individual items collection.
+            The 'data-collections' container contains the information related to each YANG-Push subscription.
+            As for the Platform Manifest, these subscriptions are indexed by the platform id, so that all subscriptions in the network can be represented in the module.
           </t>
           <t>
-            The YANG-Push MDT collection is organized in subscriptions.
-            A given collector can subscribe to one ore more subscriptions that usually contain a list of paths.
-            Such a collector only needs the Data Manifest for subscriptions it subscribed to.
-            The Data Manifest for MDT is organized by subscriptions as well so that a collector can select only its subscriptions.
+            The YANG-Push collection is organized in subscriptions, the parameters for such a subscription are specified in <xref target="RFC8639"/> and <xref target="RFC8641"/>.
+            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription' and reuses the YANG modules from these RFCs in order to characterize the subscription status.
+            The only additional node is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
           </t>
-          <t>
+          <!-- Can be removed for YANG-push as the subscription-id is config true. Therefore it’s possible to create a subscription that monitors itself.t>
             We now have a chicken-and-egg issue if the collector collects the Data Manifest via MDT and wants the Data Manifest
             for the Data Manifest subscription. First, the collector will collect the actual paths that it needs in subscription A. Once it has the subscription id
             for A, it will need an additional subscription B for the Data Manifest of paths in A. Then, it would need another subscription C to fetch the Data Manifest for the
             subscription B and so on... A possible solution would be adding in the "mdt" container an additional list in that contains the Data Manifest for every
             path that is a Data Manifest. By including that list in subscription B, the collector would have the information about subscription B here.
-          </t>
+          </t -->
           <t>
-            The "datastore" leaf of the subscription container specifies from which datastore the YANG paths are streamed.
-          </t>
-          <t>
-            Within a given collection subscription, the granularity of the collection is defined by the path.
-            Note that all network elements do not support an arbitrary granularity up to the leaf, usually for performance reasons.
-            Each path currently collected by the platform should show up in the mdt-path-data-manifest list.
-          </t>
-          <t>
-            For each path, the collection context must be specified including:
-            <list style="symbols">
-              <t> 'on-change': when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
-              <t> 'suppress-redundancy' (only when 'on-change' is false): reduce bandwidth usage by sending a regular update only if the value is different from the previous update.</t>
-              <t> 'requested-period' (only when 'on-change' is false): period between two updates requested by the client for this path</t>
-              <t> 'actual-period' (only when 'on-change 'is false): actual period retained by the platform between two updates. That period could be larger than the requested one as the router can adjust it for performance reasons.</t>
-            </list>
-          </t>
-          <t>
-            This information is crucial to understand the collected values. For instance, the 'on-change' and 'suppress-redundancy' options, if set, might remove a lot of messages from the database because values are sent only when there is a change.
+            This information is crucial to understand the collected values. For instance, the 'on-change' trigger, if used, might remove a lot of messages from the database because values are sent only when there is a change.
           </t>
       </section>
       <section anchor="module-code" title="YANG module ietf-data-collection-manifest">
-        <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2021-10-15.yang"</t>
+        <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2023-03-08.yang"</t>
         <figure>
           <artwork><![CDATA[
 {{data_collection_manifest_yang}}
@@ -286,17 +275,17 @@
           In case the collected data are moved to a different place (typically a database), the Data Manifest MUST follow the collected data.
           This can render the collected data unusable if that context is lost, for instance when the data is stored without the relevant information.
           The Data Manifest MUST be updated when the Data Manifest information changes, for example, when a router is upgraded, when a new telemetry subscription is configured, or when the telemetry subscription parameters change.
+          The Data Manifest can itself be considered as a time series, and stored in a similar fashion to the collected data.
       </t>
        <t>
-          The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest. In case of Data Manifest change, the collection system should keep the respective Data Manifest even with old data, and not assumed that the latest Data Manifest is valid for the entire time series.
-
+          The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest. In case of Data Manifest change, the system should keep the mapping between the data collected so far and the old Data Manifest, and not assume that the latest Data Manifest is valid for the entire time series.
        </t>
        <t>
           The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot.
        </t>
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
-          Retrieving the Data Collection Manifest and Platform Manifest can be done either by reusing that streaming telemetry system (in-band) or using another system (out-of-band), for instance by adding headers or saving manifests into a YANG instace file <xref target="RFC9195"/>.
+          Retrieving the Data Collection Manifest and Platform Manifest can be done either by reusing that streaming telemetry system (in-band) or using another system (out-of-band), for instance by adding headers or saving manifests into a YANG instance file <xref target="RFC9195"/>.
         </t>
         <t>
           We propose to reuse the existing telemetry system (in-band approach) in order to lower the efforts for implementing this draft.
@@ -309,36 +298,36 @@
 
       <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
         <t>
-             With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
+             With YANG-push, each notification sent by the device is part of a subscription, which is also one of the YANG keys used to retrieve the Data Manifest, the other key being the platform ID.
              In order to enable a posteriori retrieval of the Data Manifest associated to a datapoint, the collector must:
              <list style="symbols">
-                 <t>Keep the path in the metadata of the collected values</t>
-                 <t>Collect as well the Data Manifest for the subscription and path associated to the datapoint.</t>
+                 <t>Keep the subscription id and platform id in the metadata of the collected values</t>
+                 <t>Collect as well the Data Manifest for the subscription associated to the datapoint.</t>
              </list>
              With this information, to retrieve the Data Manifest from the datapoint, the following happens:
              <list style="symbols">
-                 <t>The path is retrieved from the datapoint metadata</t>
-                 <t>The Data Manifest for that path is retrieved by looking up on the collected Data Manifest.</t>
+                 <t>The subscription id and platform id are retrieved from the datapoint metadata</t>
+                 <t>The Data Manifest for that datapoint is obtained by using the values above as keys.</t>
              </list>
          </t>
          <t>
+             We don’t focus on the timing aspect as storing both the data and their manifest in a time series database will allow the data scientists to look for the Data Manifest corresponding to the timestamp of the datapoint.
              In that scenario, the reliability of the collection of the Data Manifest is the same as the reliability of the data collection itself, since the Data Manifest is like any other data.
-             For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
          </t>
       </section>
 
       <section anchor="operational-considerations" title="Operational Considerations">
          <t>
-             It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network element streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules [RFC8199], that depend on the platform.
+             It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network element streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
          </t>
          <t>
              That Data Manifest should be kept and available even if the source platform is not accessible (from the collection system), or if the platform has been updated (new operating system or new configuration). The Platform Manifest is "pretty" stable and should change only when the platform is updated or patched. On the other hand, the Data Collection Manifest is likely to change each time a new YANG-Push subscription <xref target="RFC8641"/> is requested and might even change if the platform load increases and collection periods are updated. To separate these two parts, we enclose each of them in its own module.
          </t>
       </section>
     </section>
-    <section anchor="example" title="Example">
+    <!-- TODO update to YANG push section anchor="example" title="Example">
       <t> Below is an example of a Data Collection Manifest file:</t>
-      <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2021-10-15.yang"</t>
+      <t>&lt;CODE BEGINS&gt; file "example_data_collection.json"</t>
       <figure>
         <artwork><![CDATA[
 {{data_collection_manifest_example}}
@@ -350,7 +339,7 @@
         The requested period for both path is this subscription was 100ms, however the status of the interface could only be collected every 10s.
       </t>
 
-    </section>
+    </section-->
     <section anchor="security" title="Security Considerations">
       <t>
         As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
@@ -392,39 +381,29 @@
       <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8340"?>
       <?rfc include="reference.RFC.8525"?>
+      <?rfc include="reference.RFC.8639"?>
       <?rfc include="reference.RFC.8641"?>
       <?rfc include="reference.RFC.9195"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
+      <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
-      <reference anchor="RFC9371">
-        <front>
-          <title>Change to include when in ietf database</title>
-          <author></author>
-          <date/>
-        </front>
-      </reference>
-      <reference anchor="I-D.tgraf-netconf-notif-sequencing" target="https://github.com/network-analytics/draft-tgraf-netconf-notif-sequencing">
-        <front>
-          <title>Change to include when in ietf database</title>
-          <author />
-          <date />
-        </front>
-      </reference>
+      <?rfc include="reference.RFC.9371"?>
     </references>
     <?rfc needLines="100"?>
     <section title="Example of use based on MDT">
       <t>
         In this example, the goal is to collect the administrative status and number of received bytes for the interfaces of a fictional ACME device, and store the result in a Influx database.
-        The metrics are collected via MDT, which is configured by specifying their paths and when they should be collected (polling period or on-change).
+        The metrics are collected via YANG-Push, which is configured by specifying their XPaths and when they should be collected (periodically or on-change).
         More precisely, we want collect "ietf-interfaces:interfaces/interface/enabled" on every change and "ietf-interfaces:interfaces/interface/statistics/in-octets" every 100 milliseconds.
         The paths here are referring to the YANG module from <xref target="RFC8343"/>.
-        The configuration of MDT is out of scope for this document, we assume that both paths above are configured in the same subscription.
-        <xref target="collection_example"/> presents an example for such a collection.
+        The configuration of YANG push is out of scope for this document.
+        Since they don’t have the same trigger, each of the path must be collected in its own subscription.
+        <!-- TODO switch to YANG push <xref target="collection_example"/> presents an example for such a collection. -->
       </t>
       <figure anchor="collection_example" title="Example of collection from a device to Influx DB">
         <artwork><![CDATA[
@@ -441,7 +420,7 @@
           ]]></artwork>
       </figure>
       <t>
-        In the scenario from <xref target="collection_example"/>, the collector receives MDT from the device and stores it into InfluxDB.
+        In the scenario from <xref target="collection_example"/>, the collector receives YANG-push from the device and stores it into InfluxDB.
         We first present a version without data manifest and then how to enrich it with the data manifest.
       </t>
       <t>
@@ -454,7 +433,7 @@
         See <eref target="https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-protocol/"/> for more details.
       </t>
       <t>
-        Without the data manifest, the MDT collector is likely to store something similar to <xref target="influx_before"/> in InfluxDB.
+        Without the data manifest, the YANG-push collector is likely to store something similar to <xref target="influx_before"/> in InfluxDB.
         In that case, only the value is stored, without any way to know how the value was obtained.
         <figure anchor="influx_before" title="Storing datapoints without data manifest">
             <artwork><![CDATA[
@@ -466,8 +445,8 @@ sent_bytes,device="PE1",interface="gig1" val=1234
       <t>
         A possibility for keeping the data manifest with the data is to store it directly into InfluxDB.
         In that case, the collector can subscribe to the data exported by the module presented in this draft and store it inside influxDB.
-        For the Platform Manifest, the collector subscribes to the path "ietf-platform-manifest:platform".
-        For the Data Collection Manifest, assuming the subscription id is 42, the collector subscribes to the path "ietf-data-collection-manifest:data-collection/mdt-subscriptions[subscription-id=42]".
+        For the Platform Manifest, assuming the platform ID is "PE1", the collector subscribes to the path "ietf-platform-manifest:platforms/platform[id=PE1]".
+        For the Data Collection Manifest, assuming the subscription id is 42, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-subscriptions/subscription[id=42]".
         The data, for instance serialized in JSON, can be stored in InfluxDB as shown in <xref target="influx_manifest"/> where "&lt;platform-manifest&gt;" and "&lt;data-manifest&gt;" represent the contents of respectively the Platform Manifest and the Data Collection Manifest.
         <figure anchor="influx_manifest" title="Storing data manifest">
           <artwork><![CDATA[
@@ -477,13 +456,13 @@ collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
         </figure>
       </t>
       <t>
-        The link between a collected datapoint and the corresponding Platform Manifest is done via the common "device" tag.
+        In our example, The link between a collected datapoint and the corresponding Platform Manifest is done via the common "device" tag.
         In order to link a datapoint with the corresponding Data Collection Manifest, the collector can add fields to specify where the Data Collection Manifest is located for that specific datapoint.
-        For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>, where "&lt;path&gt;" represents the path used for collecting the current datapoint.
+        For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>.
         <figure anchor="influx_after" title="Storing datapoints with data manifest">
           <artwork><![CDATA[
-admin_status,device="PE1",interface="gig1" val=T,subId=42,path=<path>
-sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
+admin_status,device="PE1",interface="gig1" val=T,subId=42
+sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
             ]]></artwork>
         </figure>
       </t>
@@ -491,7 +470,6 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
         In our simple example, from the "admin_status" datapoint, one can retrieve the corresponding Platform Manifest by looking at the last value for the "platform-manifest" measurement with the same value for the "device" tag.
 
         From the "admin-status" datapoint, one can retrieve the corresponding Data Collection Manifest by looking at the last value for the "data-manifest" measurement with tags "device" and "subId" matching respectively with the tag "device" and the field "subId" of the measurement.
-        For that manifest, one can obtain information for the subscription and the specific information for the path by looking up the value of the "path" field in the "mdt-path-data-manifest" list.
       </t>
 
     </section>
@@ -502,6 +480,9 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
           <t> Remove YANG packages </t>
           <t> Switch YANG models from device view to network view </t>
           <t> Add PEN number to identify vendors </t>
+          <t> Intro rewritten with uses cases</t>
+          <t> Added an "Operational Considerations" section </t>
+          <t> Switch from MDT to YANG-push</t>
         </list>
       </t>
       <t>
@@ -561,6 +542,23 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
           <t> </t>
         </list>
       </t>
+    </section>
+    <section title="YANG module ietf-yang-push-modif">
+      <t>
+        This section is only here to ensure that the draft passes without compilations error.
+        It should be removed as soon as we can fix the issue.
+      </t>
+      <t>
+        &lt;CODE BEGINS&gt;
+        <vspace/> <!-- force filename on a single line, needed for xym -->
+        file "ietf-yang-push-modif@2023-03-08.yang"
+      </t>
+      <figure>
+        <artwork><![CDATA[
+{{yp_modif}}
+            ]]></artwork>
+      </figure>
+      <t>&lt;CODE ENDS&gt;</t>
     </section>
     <section title="Acknowledgements" numbered="no">
       <t>

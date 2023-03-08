@@ -101,7 +101,7 @@
         These related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change). Some of their content is part of the context for the streamed data.
       </t>
       <t>
-        We first present the module for the Platform Manifest in Section 3 and then the module for the Data Collection Manifest in Section 4. The full Data Manifest is obtained by combining these two modules. We explain in Section 5 how the Data Manifest can be retrieved and how collected data is mapped to the Data Manifest.
+        We first present the module for the Platform Manifest in <xref target="platform-manifest"/> and then the module for the Data Collection Manifest in <xref target="data-collection-manifest"/>. The full Data Manifest is obtained by combining these two modules. We explain in <xref target="mapping"/> how the Data Manifest can be retrieved and how collected data is mapped to the Data Manifest.
       </t>
 
       <section anchor="use-cases" title="Use Cases">
@@ -128,7 +128,7 @@
               Characterizing the source used for producing the data (vendor, platform, and OS) is useful to complement the data.  As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, a specific bug fix, or simply a particular specific behavior.  This is also necessary to ensure the reliability of the collected data. On top of that, in particular for YANG-Push <xref target="RFC8641"/>, it is crucial to know the set of YANG modules supported by the platform, along with their deviations. In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one.  This information is captured by the proposed Platform Manifest.
           </t>
            <t>
-              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network element as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period [I-D.claise-netconf-metadata-for-collection]. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
+              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network element as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
           </t>
            <t>
               The goal of the current document is to define what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly. 
@@ -143,7 +143,7 @@
 
         <section anchor="data-mesh-principles-in-networking" title="Data Mesh Principles in Networking">
           <t>         
-             The concept behind the data mesh [https://www.datamesh-architecture.com/] are:
+             The concept behind the data mesh <eref target="https://www.datamesh-architecture.com/"/> are:
             <list style="symbols">
             <t>
               Principle of Domain Ownership: Architecturally and organizationally align business, technology, and analytical data, following the line of responsibility. Here, the Data Mesh principles adopt the boundary of bounded context to individual data products where each domain is responsible for (and owns) its data and models.
@@ -160,7 +160,7 @@
             </list>
           </t>
            <t>
-              The most relevant concept for this document is the "Data as a Product"principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
+              The most relevant concept for this document is the "Data as a Product" principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
           </t>
          </section>
 
@@ -241,9 +241,15 @@ module: ietf-platform-manifest
                 ]]></artwork>
             </figure>
         </t>
+          <t>
+            The YANG module actually contains a list of Platform Manifests (in 'platforms/platform'), indexed by the identifier of the platform.
+            That identifier should be defined by the network manager so that each platform has a unique id.
+            As an example, the identifier could be the 'sysname' from the ietf-notification module presented in <xref target="I-D.tgraf-netconf-notif-sequencing"/>.
+            The scope of this module is the scope of the data collection, i.e. a given network, therefore it contains a collection of Platform Manifests, as opposed to the device scope, which would contain a single Platform Manifest.
+          </t>
 
           <t>
-            The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
+            The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog <eref target="www.yangcatalog.org"/> <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
             The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
           </t>
           <t>
@@ -257,7 +263,7 @@ module: ietf-platform-manifest
         <t>
           &lt;CODE BEGINS&gt;
           <vspace/> <!-- force filename on a single line, needed for xym -->
-          file "ietf-platform-manifest@2021-10-15.yang"
+          file "ietf-platform-manifest@2023-03-08.yang"
         </t>
         <figure>
           <artwork><![CDATA[
@@ -313,7 +319,7 @@ module ietf-platform-manifest {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2021-10-15 {
+  revision 2023-03-08 {
     description
       "Initial revision";
     reference
@@ -525,48 +531,53 @@ module: ietf-data-collection-manifest
               |       sn:subscription-id
               +--ro (target)
               |  +--:(stream)
-              |     +--ro (stream-filter)?
-              |     |  +--:(by-reference)
-              |     |  |  +--ro stream-filter-name
-              |     |  |          stream-filter-ref
-              |     |  +--:(within-subscription)
-              |     |     +--ro (filter-spec)?
-              |     |        +--:(stream-subtree-filter)
-              |     |        |  +--ro stream-subtree-filter?
-              |     |        |          <anydata> {subtree}?
-              |     |        +--:(stream-xpath-filter)
-              |     |           +--ro stream-xpath-filter?
-              |     |                   yang:xpath1.0 {xpath}?
-              |     +--ro stream
-              |     |       stream-ref
-              |     +--ro replay-start-time?
-              |             yang:date-and-time {replay}?
+              |  |  +--ro (stream-filter)?
+              |  |  |  +--:(by-reference)
+              |  |  |  |  +--ro stream-filter-name
+              |  |  |  |          stream-filter-ref
+              |  |  |  +--:(within-subscription)
+              |  |  |     +--ro (filter-spec)?
+              |  |  |        +--:(stream-subtree-filter)
+              |  |  |        |  +--ro stream-subtree-filter?
+              |  |  |        |          <anydata> {subtree}?
+              |  |  |        +--:(stream-xpath-filter)
+              |  |  |           +--ro stream-xpath-filter?
+              |  |  |                   yang:xpath1.0 {xpath}?
+              |  |  +--ro stream
+              |  |  |       stream-ref
+              |  |  +--ro replay-start-time?
+              |  |          yang:date-and-time {replay}?
+              |  +--:(datastore)
+              |     +--ro datastore
+              |     |       identityref
+              |     +--ro (selection-filter)?
+              |        +--:(by-reference)
+              |        |  +--ro selection-filter-ref
+              |        |          selection-filter-ref
+              |        +--:(within-subscription)
+              |           +--ro (filter-spec-yp)?
+              |              +--:(datastore-subtree-filter)
+              |              |  +--ro datastore-subtree-filter?
+              |              |          <anydata> {sn:subtree}?
+              |              +--:(datastore-xpath-filter)
+              |                 +--ro datastore-xpath-filter?
+              |                         yang:xpath1.0 {sn:xpath}?
               +--ro stop-time?
               |       yang:date-and-time
               +--ro dscp?
               |       inet:dscp {dscp}?
-              +--ro weighting?                                 uint8
-              |       {qos}?
+              +--ro weighting?
+              |       uint8 {qos}?
               +--ro dependency?
               |       subscription-id {qos}?
               +--ro transport?
               |       transport {configured}?
               +--ro encoding?
               |       encoding
-              +--ro purpose?                                   string
-              |       {configured}?
-              +--ro (notification-message-origin)? {sn:configured}?
-              |  +--:(interface-originated)
-              |  |  +--ro source-interface?
-              |  |          if:interface-ref
-              |  |          {sn:interface-designation}?
-              |  +--:(address-originated)
-              |     +--ro source-vrf?                          leafref
-              |     |       {sn:supports-vrf}?
-              |     +--ro source-address?
-              |             inet:ip-address-no-zone
-              +--ro configured-subscription-state?
-              |       enumeration {sn:configured}?
+              +--ro purpose?
+              |       string {configured}?
+              +--ro current-period?
+              |       yp:centiseconds
               +--ro (update-trigger)?
                  +--:(periodic)
                  |  +--ro periodic!
@@ -581,72 +592,35 @@ module: ietf-data-collection-manifest
             </figure>
           </t>
           <t>
-            The data-collection container contains the information related to YANG-Push individual items collection.
+            The 'data-collections' container contains the information related to each YANG-Push subscription.
+            As for the Platform Manifest, these subscriptions are indexed by the platform id, so that all subscriptions in the network can be represented in the module.
           </t>
           <t>
-            The YANG-Push MDT collection is organized in subscriptions.
-            A given collector can subscribe to one ore more subscriptions that usually contain a list of paths.
-            Such a collector only needs the Data Manifest for subscriptions it subscribed to.
-            The Data Manifest for MDT is organized by subscriptions as well so that a collector can select only its subscriptions.
+            The YANG-Push collection is organized in subscriptions, the parameters for such a subscription are specified in <xref target="RFC8639"/> and <xref target="RFC8641"/>.
+            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription' and reuses the YANG modules from these RFCs in order to characterize the subscription status.
+            The only additional node is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
           </t>
-          <t>
+          <!-- Can be removed for YANG-push as the subscription-id is config true. Therefore it’s possible to create a subscription that monitors itself.t>
             We now have a chicken-and-egg issue if the collector collects the Data Manifest via MDT and wants the Data Manifest
             for the Data Manifest subscription. First, the collector will collect the actual paths that it needs in subscription A. Once it has the subscription id
             for A, it will need an additional subscription B for the Data Manifest of paths in A. Then, it would need another subscription C to fetch the Data Manifest for the
             subscription B and so on... A possible solution would be adding in the "mdt" container an additional list in that contains the Data Manifest for every
             path that is a Data Manifest. By including that list in subscription B, the collector would have the information about subscription B here.
-          </t>
+          </t -->
           <t>
-            The "datastore" leaf of the subscription container specifies from which datastore the YANG paths are streamed.
-          </t>
-          <t>
-            Within a given collection subscription, the granularity of the collection is defined by the path.
-            Note that all network elements do not support an arbitrary granularity up to the leaf, usually for performance reasons.
-            Each path currently collected by the platform should show up in the mdt-path-data-manifest list.
-          </t>
-          <t>
-            For each path, the collection context must be specified including:
-            <list style="symbols">
-              <t> 'on-change': when set to true, an update is sent as soon as and only when a value changes. This is also known as Event-Driven Telemetry (EDT). When set to false, the values are sent regularly. </t>
-              <t> 'suppress-redundancy' (only when 'on-change' is false): reduce bandwidth usage by sending a regular update only if the value is different from the previous update.</t>
-              <t> 'requested-period' (only when 'on-change' is false): period between two updates requested by the client for this path</t>
-              <t> 'actual-period' (only when 'on-change 'is false): actual period retained by the platform between two updates. That period could be larger than the requested one as the router can adjust it for performance reasons.</t>
-            </list>
-          </t>
-          <t>
-            This information is crucial to understand the collected values. For instance, the 'on-change' and 'suppress-redundancy' options, if set, might remove a lot of messages from the database because values are sent only when there is a change.
+            This information is crucial to understand the collected values. For instance, the 'on-change' trigger, if used, might remove a lot of messages from the database because values are sent only when there is a change.
           </t>
       </section>
       <section anchor="module-code" title="YANG module ietf-data-collection-manifest">
-        <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2021-10-15.yang"</t>
+        <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2023-03-08.yang"</t>
         <figure>
           <artwork><![CDATA[
 module ietf-data-collection-manifest {
   yang-version 1.1;
   namespace
     "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
-  prefix data-manifest;
+  prefix d-mf;
 
-  /*import ietf-datastores {
-    prefix ds;
-    reference "RFC 8342: Network Management Datastore Architecture.";
-  }*/
-
-  import ietf-inet-types {
-    prefix inet;
-    reference
-      "RFC 6991: Common YANG Data Types";
-  }
-  import ietf-interfaces {
-    prefix if;
-    reference
-      "RFC 8343: A YANG Data Model for Interface Management";
-  }
-  import ietf-network-instance {
-    prefix ni;
-    reference
-      "RFC 8529: YANG Data Model for Network Instances";
-  }
   import ietf-platform-manifest {
     prefix p-mf;
     reference
@@ -658,10 +632,12 @@ module ietf-data-collection-manifest {
       "RFC 8639: A YANG Data Model for Subscriptions to
          Event Notifications";
   }
-  import ietf-yang-push {
+  import ietf-yang-push-modif {
     prefix yp;
     reference
-      "RFC 8641: Subscriptions to YANG Datastores";
+      "RFC 8641: Subscriptions to YANG Datastores. TODO fix and
+       used original version. This import is a modified version so that
+       it compiles.";
   }
 
   organization
@@ -701,7 +677,7 @@ module ietf-data-collection-manifest {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2021-10-15 {
+  revision 2023-03-08 {
     description
       "Initial revision";
     reference
@@ -709,18 +685,28 @@ module ietf-data-collection-manifest {
   }
 
   /*
-   *  Copy pasting here the augments from ietf-yang-push as we need
+   *  Augments similar to the ones in ietf-yang-push module as we need
    *  them for the subscription information.
    */
 
   augment "/data-collections/data-collection"
         + "/yang-push-subscriptions/subscription" {
-    //when 'yp:datastore';
+    when 'd-mf:datastore';
     description
       "This augmentation adds objects to a subscription that are
        specific to a datastore subscription, i.e., a subscription to
        a stream of datastore node updates.";
     uses yp:update-policy;
+  }
+
+  augment "/data-collections/data-collection"
+        + "/yang-push-subscriptions/subscription/target" {
+    description
+      "This augmentation allows the datastore to be included as
+       part of the selection-filtering criteria for a subscription.";
+    case datastore {
+      uses yp:datastore-criteria;
+    }
   }
 
   container data-collections {
@@ -743,9 +729,7 @@ module ietf-data-collection-manifest {
       container yang-push-subscriptions {
         /*
          * Copy-pasting here some of the contents of the "subscriptions"
-         * container from ietf-subscribed notification. We need
-         * a cleaner way to do this (i.e. a design-time schema-mount
-         * including augmenting modules).
+         * container from ietf-subscribed notification.
          */
         description
           "Contains the list of currently active subscriptions, i.e.,
@@ -771,101 +755,15 @@ module ietf-data-collection-manifest {
               "Identifier of a subscription; unique in a given
                publisher.";
           }
-          uses sn:subscription-policy {
-            refine "target/stream/stream" {
-              description
-                "Indicates the event stream to be considered for this
-                 subscription.  If an event stream has been removed
-                 and can no longer be referenced by an active
-                 subscription, send a 'subscription-terminated'
-                 notification with 'stream-unavailable' as the reason.
-                 If a configured subscription refers to a nonexistent
-                 event stream, move that subscription to the
-                 'invalid' state.";
-            }
-            refine "transport" {
-              description
-                "For a configured subscription, this leaf specifies the
-                 transport used to deliver messages destined for all
-                 receivers of that subscription.  This object is
-                 mandatory for subscriptions in the configuration
-                 datastore.  This object (1) is not mandatory for dynamic
-                 subscriptions in the operational state datastore and
-                 (2) should not be present for other types of dynamic
-                 subscriptions.";
-            }
-          }
-          choice notification-message-origin {
-            if-feature "sn:configured";
+          uses sn:subscription-policy;
+          leaf current-period {
+            when '../periodic';
+            type yp:centiseconds;
             description
-              "Identifies the egress interface on the publisher
-               from which notification messages are to be sent.";
-            case interface-originated {
-              description
-                "When notification messages are to egress a specific,
-                 designated interface on the publisher.";
-              leaf source-interface {
-                if-feature "sn:interface-designation";
-                type if:interface-ref;
-                description
-                  "References the interface for notification messages.";
-              }
-            }
-            case address-originated {
-              description
-                "When notification messages are to depart from a
-                 publisher using a specific originating address and/or
-                 routing context information.";
-              leaf source-vrf {
-                if-feature "sn:supports-vrf";
-                type leafref {
-                  path "/ni:network-instances/ni:network-instance"
-                     + "/ni:name";
-                }
-                description
-                  "VRF from which notification messages should egress a
-                   publisher.";
-              }
-              leaf source-address {
-                type inet:ip-address-no-zone;
-                description
-                  "The source address for the notification messages.
-                   If a source VRF exists but this object doesn't, a
-                   publisher's default address for that VRF must
-                   be used.";
-              }
-            }
-          }
-          leaf configured-subscription-state {
-            if-feature "sn:configured";
-            type enumeration {
-              enum valid {
-                value 1;
-                description
-                  "The subscription is supportable with its current
-                   parameters.";
-              }
-              enum invalid {
-                value 2;
-                description
-                  "The subscription as a whole is unsupportable with its
-                   current parameters.";
-              }
-              enum concluded {
-                value 3;
-                description
-                  "A subscription is inactive, as it has hit a
-                   stop time.  It no longer has receivers in the
-                   'active' or 'suspended' state, but the subscription
-                   has not yet been removed from configuration.";
-              }
-            }
-            config false;
-            description
-              "The presence of this leaf indicates that the subscription
-               originated from configuration, not through a control
-               channel or RPC.  The value indicates the state of the
-               subscription as established by the publisher.";
+              "Period during two succesive data collections, in the
+               current state. Might differ from the configured period
+               when the plaftorm might increase the period
+               automatically when it is overloaded.";
           }
         }
       }
@@ -885,17 +783,17 @@ module ietf-data-collection-manifest {
           In case the collected data are moved to a different place (typically a database), the Data Manifest MUST follow the collected data.
           This can render the collected data unusable if that context is lost, for instance when the data is stored without the relevant information.
           The Data Manifest MUST be updated when the Data Manifest information changes, for example, when a router is upgraded, when a new telemetry subscription is configured, or when the telemetry subscription parameters change.
+          The Data Manifest can itself be considered as a time series, and stored in a similar fashion to the collected data.
       </t>
        <t>
-          The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest. In case of Data Manifest change, the collection system should keep the respective Data Manifest even with old data, and not assumed that the latest Data Manifest is valid for the entire time series.
-
+          The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest. In case of Data Manifest change, the system should keep the mapping between the data collected so far and the old Data Manifest, and not assume that the latest Data Manifest is valid for the entire time series.
        </t>
        <t>
           The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot.
        </t>
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
-          Retrieving the Data Collection Manifest and Platform Manifest can be done either by reusing that streaming telemetry system (in-band) or using another system (out-of-band), for instance by adding headers or saving manifests into a YANG instace file <xref target="RFC9195"/>.
+          Retrieving the Data Collection Manifest and Platform Manifest can be done either by reusing that streaming telemetry system (in-band) or using another system (out-of-band), for instance by adding headers or saving manifests into a YANG instance file <xref target="RFC9195"/>.
         </t>
         <t>
           We propose to reuse the existing telemetry system (in-band approach) in order to lower the efforts for implementing this draft.
@@ -908,36 +806,36 @@ module ietf-data-collection-manifest {
 
       <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
         <t>
-             With MDT, a particular datapoint is always associated to a path that is itself part of a subscription.
+             With YANG-push, each notification sent by the device is part of a subscription, which is also one of the YANG keys used to retrieve the Data Manifest, the other key being the platform ID.
              In order to enable a posteriori retrieval of the Data Manifest associated to a datapoint, the collector must:
              <list style="symbols">
-                 <t>Keep the path in the metadata of the collected values</t>
-                 <t>Collect as well the Data Manifest for the subscription and path associated to the datapoint.</t>
+                 <t>Keep the subscription id and platform id in the metadata of the collected values</t>
+                 <t>Collect as well the Data Manifest for the subscription associated to the datapoint.</t>
              </list>
              With this information, to retrieve the Data Manifest from the datapoint, the following happens:
              <list style="symbols">
-                 <t>The path is retrieved from the datapoint metadata</t>
-                 <t>The Data Manifest for that path is retrieved by looking up on the collected Data Manifest.</t>
+                 <t>The subscription id and platform id are retrieved from the datapoint metadata</t>
+                 <t>The Data Manifest for that datapoint is obtained by using the values above as keys.</t>
              </list>
          </t>
          <t>
+             We don’t focus on the timing aspect as storing both the data and their manifest in a time series database will allow the data scientists to look for the Data Manifest corresponding to the timestamp of the datapoint.
              In that scenario, the reliability of the collection of the Data Manifest is the same as the reliability of the data collection itself, since the Data Manifest is like any other data.
-             For telemetry based on gRPC for instance, a disconnection to the server would be detected as the HTTP connection would fail.
          </t>
       </section>
 
       <section anchor="operational-considerations" title="Operational Considerations">
          <t>
-             It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network element streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules [RFC8199], that depend on the platform.
+             It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network element streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
          </t>
          <t>
              That Data Manifest should be kept and available even if the source platform is not accessible (from the collection system), or if the platform has been updated (new operating system or new configuration). The Platform Manifest is "pretty" stable and should change only when the platform is updated or patched. On the other hand, the Data Collection Manifest is likely to change each time a new YANG-Push subscription <xref target="RFC8641"/> is requested and might even change if the platform load increases and collection periods are updated. To separate these two parts, we enclose each of them in its own module.
          </t>
       </section>
     </section>
-    <section anchor="example" title="Example">
+    <!-- TODO update to YANG push section anchor="example" title="Example">
       <t> Below is an example of a Data Collection Manifest file:</t>
-      <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2021-10-15.yang"</t>
+      <t>&lt;CODE BEGINS&gt; file "example_data_collection.json"</t>
       <figure>
         <artwork><![CDATA[
 {
@@ -985,7 +883,7 @@ module ietf-data-collection-manifest {
         The requested period for both path is this subscription was 100ms, however the status of the interface could only be collected every 10s.
       </t>
 
-    </section>
+    </section-->
     <section anchor="security" title="Security Considerations">
       <t>
         As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
@@ -1027,39 +925,29 @@ module ietf-data-collection-manifest {
       <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8340"?>
       <?rfc include="reference.RFC.8525"?>
+      <?rfc include="reference.RFC.8639"?>
       <?rfc include="reference.RFC.8641"?>
       <?rfc include="reference.RFC.9195"?>
     </references>
     <references title="Informative References">
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
+      <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
-      <reference anchor="RFC9371">
-        <front>
-          <title>Change to include when in ietf database</title>
-          <author></author>
-          <date/>
-        </front>
-      </reference>
-      <reference anchor="I-D.tgraf-netconf-notif-sequencing" target="https://github.com/network-analytics/draft-tgraf-netconf-notif-sequencing">
-        <front>
-          <title>Change to include when in ietf database</title>
-          <author />
-          <date />
-        </front>
-      </reference>
+      <?rfc include="reference.RFC.9371"?>
     </references>
     <?rfc needLines="100"?>
     <section title="Example of use based on MDT">
       <t>
         In this example, the goal is to collect the administrative status and number of received bytes for the interfaces of a fictional ACME device, and store the result in a Influx database.
-        The metrics are collected via MDT, which is configured by specifying their paths and when they should be collected (polling period or on-change).
+        The metrics are collected via YANG-Push, which is configured by specifying their XPaths and when they should be collected (periodically or on-change).
         More precisely, we want collect "ietf-interfaces:interfaces/interface/enabled" on every change and "ietf-interfaces:interfaces/interface/statistics/in-octets" every 100 milliseconds.
         The paths here are referring to the YANG module from <xref target="RFC8343"/>.
-        The configuration of MDT is out of scope for this document, we assume that both paths above are configured in the same subscription.
-        <xref target="collection_example"/> presents an example for such a collection.
+        The configuration of YANG push is out of scope for this document.
+        Since they don’t have the same trigger, each of the path must be collected in its own subscription.
+        <!-- TODO switch to YANG push <xref target="collection_example"/> presents an example for such a collection. -->
       </t>
       <figure anchor="collection_example" title="Example of collection from a device to Influx DB">
         <artwork><![CDATA[
@@ -1076,7 +964,7 @@ module ietf-data-collection-manifest {
           ]]></artwork>
       </figure>
       <t>
-        In the scenario from <xref target="collection_example"/>, the collector receives MDT from the device and stores it into InfluxDB.
+        In the scenario from <xref target="collection_example"/>, the collector receives YANG-push from the device and stores it into InfluxDB.
         We first present a version without data manifest and then how to enrich it with the data manifest.
       </t>
       <t>
@@ -1089,7 +977,7 @@ module ietf-data-collection-manifest {
         See <eref target="https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-protocol/"/> for more details.
       </t>
       <t>
-        Without the data manifest, the MDT collector is likely to store something similar to <xref target="influx_before"/> in InfluxDB.
+        Without the data manifest, the YANG-push collector is likely to store something similar to <xref target="influx_before"/> in InfluxDB.
         In that case, only the value is stored, without any way to know how the value was obtained.
         <figure anchor="influx_before" title="Storing datapoints without data manifest">
             <artwork><![CDATA[
@@ -1101,8 +989,8 @@ sent_bytes,device="PE1",interface="gig1" val=1234
       <t>
         A possibility for keeping the data manifest with the data is to store it directly into InfluxDB.
         In that case, the collector can subscribe to the data exported by the module presented in this draft and store it inside influxDB.
-        For the Platform Manifest, the collector subscribes to the path "ietf-platform-manifest:platform".
-        For the Data Collection Manifest, assuming the subscription id is 42, the collector subscribes to the path "ietf-data-collection-manifest:data-collection/mdt-subscriptions[subscription-id=42]".
+        For the Platform Manifest, assuming the platform ID is "PE1", the collector subscribes to the path "ietf-platform-manifest:platforms/platform[id=PE1]".
+        For the Data Collection Manifest, assuming the subscription id is 42, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-subscriptions/subscription[id=42]".
         The data, for instance serialized in JSON, can be stored in InfluxDB as shown in <xref target="influx_manifest"/> where "&lt;platform-manifest&gt;" and "&lt;data-manifest&gt;" represent the contents of respectively the Platform Manifest and the Data Collection Manifest.
         <figure anchor="influx_manifest" title="Storing data manifest">
           <artwork><![CDATA[
@@ -1112,13 +1000,13 @@ collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
         </figure>
       </t>
       <t>
-        The link between a collected datapoint and the corresponding Platform Manifest is done via the common "device" tag.
+        In our example, The link between a collected datapoint and the corresponding Platform Manifest is done via the common "device" tag.
         In order to link a datapoint with the corresponding Data Collection Manifest, the collector can add fields to specify where the Data Collection Manifest is located for that specific datapoint.
-        For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>, where "&lt;path&gt;" represents the path used for collecting the current datapoint.
+        For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>.
         <figure anchor="influx_after" title="Storing datapoints with data manifest">
           <artwork><![CDATA[
-admin_status,device="PE1",interface="gig1" val=T,subId=42,path=<path>
-sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
+admin_status,device="PE1",interface="gig1" val=T,subId=42
+sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
             ]]></artwork>
         </figure>
       </t>
@@ -1126,7 +1014,6 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
         In our simple example, from the "admin_status" datapoint, one can retrieve the corresponding Platform Manifest by looking at the last value for the "platform-manifest" measurement with the same value for the "device" tag.
 
         From the "admin-status" datapoint, one can retrieve the corresponding Data Collection Manifest by looking at the last value for the "data-manifest" measurement with tags "device" and "subId" matching respectively with the tag "device" and the field "subId" of the measurement.
-        For that manifest, one can obtain information for the subscription and the specific information for the path by looking up the value of the "path" field in the "mdt-path-data-manifest" list.
       </t>
 
     </section>
@@ -1137,6 +1024,9 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
           <t> Remove YANG packages </t>
           <t> Switch YANG models from device view to network view </t>
           <t> Add PEN number to identify vendors </t>
+          <t> Intro rewritten with uses cases</t>
+          <t> Added an "Operational Considerations" section </t>
+          <t> Switch from MDT to YANG-push</t>
         </list>
       </t>
       <t>
@@ -1196,6 +1086,821 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
           <t> </t>
         </list>
       </t>
+    </section>
+    <section title="YANG module ietf-yang-push-modif">
+      <t>
+        This section is only here to ensure that the draft passes without compilations error.
+        It should be removed as soon as we can fix the issue.
+      </t>
+      <t>
+        &lt;CODE BEGINS&gt;
+        <vspace/> <!-- force filename on a single line, needed for xym -->
+        file "ietf-yang-push-modif@2023-03-08.yang"
+      </t>
+      <figure>
+        <artwork><![CDATA[
+module ietf-yang-push-modif {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-yang-push-modif";
+  prefix yp;
+
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 6991: Common YANG Data Types";
+  }
+  import ietf-subscribed-notifications {
+    prefix sn;
+    reference
+      "RFC 8639: Subscription to YANG Notifications";
+  }
+  import ietf-datastores {
+    prefix ds;
+    reference
+      "RFC 8342: Network Management Datastore Architecture (NMDA)";
+  }
+  import ietf-restconf {
+    prefix rc;
+    reference
+      "RFC 8040: RESTCONF Protocol";
+  }
+  import ietf-yang-patch {
+    prefix ypatch;
+    reference
+      "RFC 8072: YANG Patch Media Type";
+  }
+
+  organization
+    "IETF NETCONF (Network Configuration) Working Group";
+  contact
+    "WG Web:  <https:/datatracker.ietf.org/wg/netconf/>
+     WG List: <mailto:netconf@ietf.org>
+
+     Author:  Alexander Clemm
+              <mailto:ludwig@clemm.org>
+
+     Author:  Eric Voit
+              <mailto:evoit@cisco.com>";
+  description
+    "This module contains YANG specifications for YANG-Push.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.
+
+     Copyright (c) 2019 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Simplified BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC 8641; see the
+     RFC itself for full legal notices.";
+
+  revision 2023-03-08 {
+    description
+      "Hack so that ietf-data-collection-manifest compiles.";
+    reference
+      "RFC 8641: Subscriptions to YANG Datastores";
+  }
+  revision 2019-09-09 {
+    description
+      "Initial revision.";
+    reference
+      "RFC 8641: Subscriptions to YANG Datastores";
+  }
+
+  /*
+   * FEATURES
+   */
+
+  feature on-change {
+    description
+      "This feature indicates that on-change triggered subscriptions
+       are supported.";
+  }
+
+  /*
+   * IDENTITIES
+   */
+  /* Error type identities for datastore subscription */
+
+  identity resync-subscription-error {
+    description
+      "Problem found while attempting to fulfill a
+       'resync-subscription' RPC request.";
+  }
+
+  identity cant-exclude {
+    base sn:establish-subscription-error;
+    description
+      "Unable to remove the set of 'excluded-change' parameters.
+       This means that the publisher is unable to restrict
+       'push-change-update' notifications to just the change types
+       requested for this subscription.";
+  }
+
+  identity datastore-not-subscribable {
+    base sn:establish-subscription-error;
+    base sn:subscription-terminated-reason;
+    description
+      "This is not a subscribable datastore.";
+  }
+
+  identity no-such-subscription-resync {
+    base resync-subscription-error;
+    description
+      "The referenced subscription doesn't exist.  This may be as a
+       result of a nonexistent subscription ID, an ID that belongs to
+       another subscriber, or an ID for a configured subscription.";
+  }
+
+  identity on-change-unsupported {
+    base sn:establish-subscription-error;
+    description
+      "On-change is not supported for any objects that are
+       selectable by this filter.";
+  }
+
+  identity on-change-sync-unsupported {
+    base sn:establish-subscription-error;
+    description
+      "Neither 'sync-on-start' nor resynchronization is supported for
+       this subscription.  This error will be used for two reasons:
+       (1) if an 'establish-subscription' RPC includes
+       'sync-on-start' but the publisher can't support sending a
+       'push-update' for this subscription for reasons other than
+       'on-change-unsupported' or 'sync-too-big'
+       (2) if the 'resync-subscription' RPC is invoked for either an
+       existing periodic subscription or an on-change subscription
+       that can't support resynchronization.";
+  }
+
+  identity period-unsupported {
+    base sn:establish-subscription-error;
+    base sn:modify-subscription-error;
+    base sn:subscription-suspended-reason;
+    description
+      "The requested time period or 'dampening-period' is too short.
+       This can be for both periodic and on-change subscriptions
+       (with or without dampening).  Hints suggesting alternative
+       periods may be returned as supplemental information.";
+  }
+
+  identity update-too-big {
+    base sn:establish-subscription-error;
+    base sn:modify-subscription-error;
+    base sn:subscription-suspended-reason;
+    description
+      "Periodic or on-change push update data trees exceed a maximum
+       size limit.  Hints on the estimated size of what was too big
+       may be returned as supplemental information.";
+  }
+
+  identity sync-too-big {
+    base sn:establish-subscription-error;
+    base sn:modify-subscription-error;
+    base resync-subscription-error;
+    base sn:subscription-suspended-reason;
+    description
+      "The 'sync-on-start' or resynchronization data tree exceeds a
+       maximum size limit.  Hints on the estimated size of what was
+       too big may be returned as supplemental information.";
+  }
+
+  identity unchanging-selection {
+    base sn:establish-subscription-error;
+    base sn:modify-subscription-error;
+    base sn:subscription-terminated-reason;
+    description
+      "The selection filter is unlikely to ever select data tree
+       nodes.  This means that based on the subscriber's current
+       access rights, the publisher recognizes that the selection
+       filter is unlikely to ever select data tree nodes that change.
+       Examples for this might be that the node or subtree doesn't
+       exist, read access is not permitted for a receiver, or static
+       objects that only change at reboot have been chosen.";
+  }
+
+  /*
+   * TYPE DEFINITIONS
+   */
+
+  typedef change-type {
+    type enumeration {
+      enum create {
+        description
+          "A change that refers to the creation of a new
+           datastore node.";
+      }
+      enum delete {
+        description
+          "A change that refers to the deletion of a
+           datastore node.";
+      }
+      enum insert {
+        description
+          "A change that refers to the insertion of a new
+           user-ordered datastore node.";
+      }
+      enum move {
+        description
+          "A change that refers to a reordering of the target
+           datastore node.";
+      }
+      enum replace {
+        description
+          "A change that refers to a replacement of the target
+           datastore node's value.";
+      }
+    }
+    description
+      "Specifies different types of datastore changes.
+
+       This type is based on the edit operations defined for
+       YANG Patch, with the difference that it is valid for a
+       receiver to process an update record that performs a
+       'create' operation on a datastore node the receiver believes
+       exists or to process a delete on a datastore node the
+       receiver believes is missing.";
+    reference
+      "RFC 8072: YANG Patch Media Type, Section 2.5";
+  }
+
+  typedef selection-filter-ref {
+    type leafref {
+      path "/sn:filters/yp:selection-filter/yp:filter-id";
+    }
+    description
+      "This type is used to reference a selection filter.";
+  }
+
+  typedef centiseconds {
+    type uint32;
+    description
+      "A period of time, measured in units of 0.01 seconds.";
+  }
+
+  /*
+   * GROUP DEFINITIONS
+   */
+
+  grouping datastore-criteria {
+    description
+      "A grouping to define criteria for which selected objects from
+       a targeted datastore should be included in push updates.";
+    leaf datastore {
+      type identityref {
+        base ds:datastore;
+      }
+      mandatory true;
+      description
+        "Datastore from which to retrieve data.";
+    }
+    uses selection-filter-objects;
+  }
+
+  grouping selection-filter-types {
+    description
+      "This grouping defines the types of selectors for objects
+       from a datastore.";
+    choice filter-spec-yp {
+      description
+        "The content filter specification for this request.";
+      anydata datastore-subtree-filter {
+        if-feature "sn:subtree";
+        description
+          "This parameter identifies the portions of the
+           target datastore to retrieve.";
+        reference
+          "RFC 6241: Network Configuration Protocol (NETCONF),
+                     Section 6";
+      }
+      leaf datastore-xpath-filter {
+        if-feature "sn:xpath";
+        type yang:xpath1.0;
+        description
+          "This parameter contains an XPath expression identifying
+           the portions of the target datastore to retrieve.
+
+           If the expression returns a node set, all nodes in the
+           node set are selected by the filter.  Otherwise, if the
+           expression does not return a node set, the filter
+           doesn't select any nodes.
+
+           The expression is evaluated in the following XPath
+           context:
+
+           o  The set of namespace declarations is the set of prefix
+              and namespace pairs for all YANG modules implemented
+              by the server, where the prefix is the YANG module
+              name and the namespace is as defined by the
+              'namespace' statement in the YANG module.
+
+              If the leaf is encoded in XML, all namespace
+              declarations in scope on the 'stream-xpath-filter'
+              leaf element are added to the set of namespace
+              declarations.  If a prefix found in the XML is
+              already present in the set of namespace declarations,
+              the namespace in the XML is used.
+
+           o  The set of variable bindings is empty.
+
+           o  The function library is comprised of the core
+              function library and the XPath functions defined in
+              Section 10 in RFC 7950.
+
+           o  The context node is the root node of the target
+              datastore.";
+        reference
+          "XML Path Language (XPath) Version 1.0
+           (https://www.w3.org/TR/1999/REC-xpath-19991116)
+           RFC 7950: The YANG 1.1 Data Modeling Language,
+                     Section 10";
+      }
+    }
+  }
+
+  grouping selection-filter-objects {
+    description
+      "This grouping defines a selector for objects from a
+       datastore.";
+    choice selection-filter {
+      description
+        "The source of the selection filter applied to the
+         subscription.  This will either (1) come referenced from a
+         global list or (2) be provided in the subscription itself.";
+      case by-reference {
+        description
+          "Incorporates a filter that has been configured
+           separately.";
+        leaf selection-filter-ref {
+          type selection-filter-ref;
+          mandatory true;
+          description
+            "References an existing selection filter that is to be
+             applied to the subscription.";
+        }
+      }
+      case within-subscription {
+        description
+          "A local definition allows a filter to have the same
+           lifecycle as the subscription.";
+        uses selection-filter-types;
+      }
+    }
+  }
+
+  grouping update-policy-modifiable {
+    description
+      "This grouping describes the datastore-specific subscription
+       conditions that can be changed during the lifetime of the
+       subscription.";
+    choice update-trigger {
+      description
+        "Defines necessary conditions for sending an event record to
+         the subscriber.";
+      case periodic {
+        container periodic {
+          presence "indicates a periodic subscription";
+          description
+            "The publisher is requested to periodically notify the
+             receiver regarding the current values of the datastore
+             as defined by the selection filter.";
+          leaf period {
+            type centiseconds;
+            mandatory true;
+            description
+              "Duration of time that should occur between periodic
+               push updates, in units of 0.01 seconds.";
+          }
+          leaf anchor-time {
+            type yang:date-and-time;
+            description
+              "Designates a timestamp before or after which a series
+               of periodic push updates are determined.  The next
+               update will take place at a point in time that is a
+               multiple of a period from the 'anchor-time'.
+               For example, for an 'anchor-time' that is set for the
+               top of a particular minute and a period interval of a
+               minute, updates will be sent at the top of every
+               minute that this subscription is active.";
+          }
+        }
+      }
+      case on-change {
+        if-feature "on-change";
+        container on-change {
+          presence "indicates an on-change subscription";
+          description
+            "The publisher is requested to notify the receiver
+             regarding changes in values in the datastore subset as
+             defined by a selection filter.";
+          leaf dampening-period {
+            type centiseconds;
+            default "0";
+            description
+              "Specifies the minimum interval between the assembly of
+               successive update records for a single receiver of a
+               subscription.  Whenever subscribed objects change and
+               a dampening-period interval (which may be zero) has
+               elapsed since the previous update record creation for
+               a receiver, any subscribed objects and properties
+               that have changed since the previous update record
+               will have their current values marshalled and placed
+               in a new update record.";
+          }
+        }
+      }
+    }
+  }
+
+  grouping update-policy {
+    description
+      "This grouping describes the datastore-specific subscription
+       conditions of a subscription.";
+    uses update-policy-modifiable {
+      augment "update-trigger/on-change/on-change" {
+        description
+          "Includes objects that are not modifiable once a
+           subscription is established.";
+        leaf sync-on-start {
+          type boolean;
+          default "true";
+          description
+            "When this object is set to 'false', (1) it restricts an
+             on-change subscription from sending 'push-update'
+             notifications and (2) pushing a full selection per the
+             terms of the selection filter MUST NOT be done for
+             this subscription.  Only updates about changes
+             (i.e., only 'push-change-update' notifications)
+             are sent.  When set to 'true' (the default behavior),
+             in order to facilitate a receiver's synchronization,
+             a full update is sent, via a 'push-update' notification,
+             when the subscription starts.  After that,
+             'push-change-update' notifications are exclusively sent,
+             unless the publisher chooses to resync the subscription
+             via a new 'push-update' notification.";
+        }
+        leaf-list excluded-change {
+          type change-type;
+          description
+            "Used to restrict which changes trigger an update.  For
+             example, if a 'replace' operation is excluded, only the
+             creation and deletion of objects are reported.";
+        }
+      }
+    }
+  }
+
+  grouping hints {
+    description
+      "Parameters associated with an error for a subscription
+       made upon a datastore.";
+    leaf period-hint {
+      type centiseconds;
+      description
+        "Returned when the requested time period is too short.  This
+         hint can assert a viable period for either a periodic push
+         cadence or an on-change dampening interval.";
+    }
+    leaf filter-failure-hint {
+      type string;
+      description
+        "Information describing where and/or why a provided filter
+         was unsupportable for a subscription.";
+    }
+    leaf object-count-estimate {
+      type uint32;
+      description
+        "If there are too many objects that could potentially be
+         returned by the selection filter, this identifies the
+         estimate of the number of objects that the filter would
+         potentially pass.";
+    }
+    leaf object-count-limit {
+      type uint32;
+      description
+        "If there are too many objects that could be returned by
+         the selection filter, this identifies the upper limit of
+         the publisher's ability to service this subscription.";
+    }
+    leaf kilobytes-estimate {
+      type uint32;
+      description
+        "If the returned information could be beyond the capacity
+         of the publisher, this would identify the estimated
+         data size that could result from this selection filter.";
+    }
+    leaf kilobytes-limit {
+      type uint32;
+      description
+        "If the returned information would be beyond the capacity
+         of the publisher, this identifies the upper limit of the
+         publisher's ability to service this subscription.";
+    }
+  }
+
+  /*
+   * RPCs
+   */
+
+  rpc resync-subscription {
+    if-feature "on-change";
+    description
+      "This RPC allows a subscriber of an active on-change
+       subscription to request a full push of objects.
+
+       A successful invocation results in a 'push-update' of all
+       datastore nodes that the subscriber is permitted to access.
+       This RPC can only be invoked on the same session on which the
+       subscription is currently active.  In the case of an error, a
+       'resync-subscription-error' is sent as part of an error
+       response.";
+    input {
+      leaf id {
+        type sn:subscription-id;
+        mandatory true;
+        description
+          "Identifier of the subscription that is to be resynced.";
+      }
+    }
+  }
+
+  /*
+   * NOTIFICATIONS
+   */
+
+  notification push-update {
+    description
+      "This notification contains a push update that in turn contains
+       data subscribed to via a subscription.  In the case of a
+       periodic subscription, this notification is sent for periodic
+       updates.  It can also be used for synchronization updates of
+       an on-change subscription.  This notification shall only be
+       sent to receivers of a subscription.  It does not constitute
+       a general-purpose notification that would be subscribable as
+       part of the NETCONF event stream by any receiver.";
+    anydata datastore-contents {
+      description
+        "This contains the updated data.  It constitutes a snapshot
+         at the time of update of the set of data that has been
+         subscribed to.  The snapshot corresponds to the same
+         snapshot that would be returned in a corresponding 'get'
+         operation with the same selection filter parameters
+         applied.";
+    }
+    leaf id {
+      type sn:subscription-id;
+      description
+        "This references the subscription that drove the
+         notification to be sent.";
+    }
+    leaf incomplete-update {
+      type empty;
+      description
+        "This is a flag that indicates that not all datastore
+         nodes subscribed to are included with this update.  In
+         other words, the publisher has failed to fulfill its full
+         subscription obligations and, despite its best efforts, is
+         providing an incomplete set of objects.";
+    }
+  }
+
+  notification push-change-update {
+    if-feature "on-change";
+    description
+      "This notification contains an on-change push update.  This
+       notification shall only be sent to the receivers of a
+       subscription.  It does not constitute a general-purpose
+       notification that would be subscribable as part of the
+       NETCONF event stream by any receiver.";
+    leaf id {
+      type sn:subscription-id;
+      description
+        "This references the subscription that drove the
+         notification to be sent.";
+    }
+    container datastore-changes {
+      description
+        "This contains the set of datastore changes of the target
+         datastore, starting at the time of the previous update, per
+         the terms of the subscription.";
+      uses ypatch:yang-patch;
+    }
+    leaf incomplete-update {
+      type empty;
+      description
+        "The presence of this object indicates that not all changes
+         that have occurred since the last update are included with
+         this update.  In other words, the publisher has failed to
+         fulfill its full subscription obligations -- for example,
+         in cases where it was not able to keep up with a burst of
+         changes.";
+    }
+  }
+
+  augment "/sn:establish-subscription/sn:input" {
+    description
+      "This augmentation adds additional subscription parameters
+       that apply specifically to datastore updates to RPC input.";
+    uses update-policy;
+  }
+
+  augment "/sn:establish-subscription/sn:input/sn:target" {
+    description
+      "This augmentation adds the datastore as a valid target
+       for the subscription to RPC input.";
+    case datastore {
+      description
+        "Information specifying the parameters of a request for a
+         datastore subscription.";
+      uses datastore-criteria;
+    }
+  }
+
+  augment "/sn:modify-subscription/sn:input" {
+    description
+      "This augmentation adds additional subscription parameters
+       specific to datastore updates.";
+    uses update-policy-modifiable;
+  }
+
+  augment "/sn:modify-subscription/sn:input/sn:target" {
+    description
+      "This augmentation adds the datastore as a valid target
+       for the subscription to RPC input.";
+    case datastore {
+      description
+        "Information specifying the parameters of a request for a
+         datastore subscription.";
+      uses datastore-criteria;
+    }
+  }
+
+  augment "/sn:subscription-started" {
+    description
+      "This augmentation adds datastore-specific objects to
+       the notification that a subscription has started.";
+    uses update-policy;
+  }
+
+  augment "/sn:subscription-started/sn:target" {
+    description
+      "This augmentation allows the datastore to be included as
+       part of the notification that a subscription has started.";
+    case datastore {
+      uses datastore-criteria {
+        refine "selection-filter/within-subscription" {
+          description
+            "Specifies the selection filter and where it originated
+             from.  If the 'selection-filter-ref' is populated, the
+             filter in the subscription came from the 'filters'
+             container.  Otherwise, it is populated in-line as part
+             of the subscription itself.";
+        }
+      }
+    }
+  }
+
+  augment "/sn:subscription-modified" {
+    description
+      "This augmentation adds datastore-specific objects to
+       the notification that a subscription has been modified.";
+    uses update-policy;
+  }
+
+  augment "/sn:subscription-modified/sn:target" {
+    description
+      "This augmentation allows the datastore to be included as
+       part of the notification that a subscription has been
+       modified.";
+    case datastore {
+      uses datastore-criteria {
+        refine "selection-filter/within-subscription" {
+          description
+            "Specifies the selection filter and where it originated
+             from.  If the 'selection-filter-ref' is populated, the
+             filter in the subscription came from the 'filters'
+             container.  Otherwise, it is populated in-line as part
+             of the subscription itself.";
+        }
+      }
+    }
+  }
+
+  /*
+   * DATA NODES
+   */
+
+  augment "/sn:filters" {
+    description
+      "This augmentation allows the datastore to be included as part
+       of the selection-filtering criteria for a subscription.";
+    list selection-filter {
+      key "filter-id";
+      description
+        "A list of preconfigured filters that can be applied
+         to datastore subscriptions.";
+      leaf filter-id {
+        type string;
+        description
+          "An identifier to differentiate between selection
+           filters.";
+      }
+      uses selection-filter-types;
+    }
+  }
+
+  augment "/sn:subscriptions/sn:subscription" {
+    when 'yp:datastore';
+    description
+      "This augmentation adds objects to a subscription that are
+       specific to a datastore subscription, i.e., a subscription to
+       a stream of datastore node updates.";
+    uses update-policy;
+  }
+
+  augment "/sn:subscriptions/sn:subscription/sn:target" {
+    description
+      "This augmentation allows the datastore to be included as
+       part of the selection-filtering criteria for a subscription.";
+    case datastore {
+      uses datastore-criteria;
+    }
+  }
+
+  rc:yang-data resync-subscription-error {
+    container resync-subscription-error {
+      description
+        "If a 'resync-subscription' RPC fails, the subscription is
+         not resynced and the RPC error response MUST indicate the
+         reason for this failure.  This yang-data MAY be inserted as
+         structured data in a subscription's RPC error response
+         to indicate the reason for the failure.";
+      leaf reason {
+        type identityref {
+          base resync-subscription-error;
+        }
+        mandatory true;
+        description
+          "Indicates the reason why the publisher has declined a
+           request for subscription resynchronization.";
+      }
+      uses hints;
+    }
+  }
+  rc:yang-data establish-subscription-datastore-error-info {
+    container establish-subscription-datastore-error-info {
+      description
+        "If any 'establish-subscription' RPC parameters are
+         unsupportable against the datastore, a subscription is not
+         created and the RPC error response MUST indicate the reason
+         why the subscription failed to be created.  This yang-data
+         MAY be inserted as structured data in a subscription's
+         RPC error response to indicate the reason for the failure.
+         This yang-data MUST be inserted if hints are to be provided
+         back to the subscriber.";
+      leaf reason {
+        type identityref {
+          base sn:establish-subscription-error;
+        }
+        description
+          "Indicates the reason why the subscription has failed to
+           be created to a targeted datastore.";
+      }
+      uses hints;
+    }
+  }
+  rc:yang-data modify-subscription-datastore-error-info {
+    container modify-subscription-datastore-error-info {
+      description
+        "This yang-data MAY be provided as part of a subscription's
+         RPC error response when there is a failure of a
+         'modify-subscription' RPC that has been made against a
+         datastore.  This yang-data MUST be used if hints are to be
+         provided back to the subscriber.";
+      leaf reason {
+        type identityref {
+          base sn:modify-subscription-error;
+        }
+        description
+          "Indicates the reason why the subscription has failed to
+           be modified.";
+      }
+      uses hints;
+    }
+  }
+}
+            ]]></artwork>
+      </figure>
+      <t>&lt;CODE ENDS&gt;</t>
     </section>
     <section title="Acknowledgements" numbered="no">
       <t>

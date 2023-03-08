@@ -59,6 +59,7 @@ def _format_json(filename):
 
 PLATFORM_MANIFEST = _find_yang_file("ietf-platform-manifest")
 DATA_COLLECTION_MANIFEST = _find_yang_file("ietf-data-collection-manifest")
+YANG_PUSH_MODIF = _find_yang_file("ietf-yang-push-modif")
 DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "data-collection-manifest-example.json")
 
 def draft_content():
@@ -67,7 +68,8 @@ def draft_content():
         "data_collection_manifest_yang": _format_yang([DATA_COLLECTION_MANIFEST]),
         "platform_manifest_tree": _build_tree([PLATFORM_MANIFEST]),
         "platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
-        "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE)
+        "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE),
+        "yp_modif": _format_yang([YANG_PUSH_MODIF])
         }
     errors = []
     contents = {}

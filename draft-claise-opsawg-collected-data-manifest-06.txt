@@ -82,22 +82,22 @@ Table of Contents
    4.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .  13
      4.1.  Overview of the Model . . . . . . . . . . . . . . . . . .  13
      4.2.  YANG module ietf-data-collection-manifest . . . . . . . .  15
-   5.  Data Manifest and the Collected Data  . . . . . . . . . . . .  21
-     5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  21
-     5.2.  Mapping Collected Data to the Data Manifest . . . . . . .  22
-     5.3.  Operational Considerations  . . . . . . . . . . . . . . .  22
-   6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  23
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
-   9.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  25
-   10. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  25
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  25
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  25
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  26
-   Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  27
-   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  29
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  30
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  31
+   5.  Data Manifest and the Collected Data  . . . . . . . . . . . .  18
+     5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  18
+     5.2.  Mapping Collected Data to the Data Manifest . . . . . . .  19
+     5.3.  Operational Considerations  . . . . . . . . . . . . . . .  20
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
+   8.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  21
+   9.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  21
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  21
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  22
+   Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  23
+   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  25
+   Appendix C.  YANG module ietf-yang-push-modif . . . . . . . . . .  27
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  44
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  44
 
 1.  Introduction
 
@@ -212,12 +212,12 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    this time series might report some values as 0 or might even omit
    some values.  The reason for this behavior might be diverse: the
    network element was under stress, with a too small observation
-   period, compared to the minimum-observed-period [I-D.claise-netconf-
-   metadata-for-collection].  Again, knowing the conditions under which
-   the counter was collected and streamed (along with the platform
-   details) help drawing the right conclusions.  As an example, taking
-   into account the value of 0 might lead to a wrong conclusion that the
-   counter dropped to zero.  This document specifies the Data Collection
+   period, compared to the minimum-observed-period
+   [I-D.claise-netconf-metadata-for-collection].  Again, knowing the
+   conditions under which the counter was collected and streamed (along
+   with the platform details) help drawing the right conclusions.  As an
+   example, taking into account the value of 0 might lead to a wrong
+   conclusion that the counter dropped to zero.  This document specifies
 
 
 
@@ -226,8 +226,8 @@ Claise, et al.          Expires September 9, 2023               [Page 4]
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
-   Manifest, which contains the required information to characterize how
-   and when the telemetry information was metered.
+   the Data Collection Manifest, which contains the required information
+   to characterize how and when the telemetry information was metered.
 
    The goal of the current document is to define what needs to be kept
    as metadata (i.e., the Data Manifest) to ensure that the collected
@@ -245,8 +245,8 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
 1.1.3.  Data Mesh Principles in Networking
 
-   The concept behind the data mesh [https://www.datamesh-
-   architecture.com/] are:
+   The concept behind the data mesh <https://www.datamesh-
+   architecture.com/> are:
 
    o  Principle of Domain Ownership: Architecturally and
       organizationally align business, technology, and analytical data,
@@ -272,7 +272,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
       across a mesh of data products.
 
    The most relevant concept for this document is the "Data as a
-   Product"principle.  The Data Manifest fulfills this principle as the
+   Product" principle.  The Data Manifest fulfills this principle as the
    two YANG data models, Platform Manifest and the Data Collection
 
 
@@ -367,23 +367,23 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
        Figure 1: YANG tree diagram for ietf-platform-manifest module
 
+   The YANG module actually contains a list of Platform Manifests (in
+   'platforms/platform'), indexed by the identifier of the platform.
+   That identifier should be defined by the network manager so that each
+   platform has a unique id.  As an example, the identifier could be the
+   'sysname' from the ietf-notification module presented in
+   [I-D.tgraf-netconf-notif-sequencing].  The scope of this module is
+   the scope of the data collection, i.e. a given network, therefore it
+   contains a collection of Platform Manifests, as opposed to the device
+   scope, which would contain a single Platform Manifest.
+
    The Platform Manifest is identified by a set of parameters ('name',
    'software-version', 'software-flavor', 'os-version', 'os-type') that
-   are aligned with the YANG Catalog www.yangcatalog.org
+   are aligned with the YANG Catalog <www.yangcatalog.org>
    [I-D.clacla-netmod-model-catalog] so that the YANG Catalog could be
    used to retrieve the YANG modules a posteriori.  The vendor of the
    platform can be identified via its name 'vendor' or its PEN number
    'vendor-pen', as described in [RFC9371].
-
-   The Platform Manifest also includes the contents of the YANG Library
-   [RFC8525].  That module set is particularly useful to define the
-   paths, as they are based on module names.  Similarly, this module
-   defines the available datastores, which can be referred to from the
-   Data Manifest, if necessary.  If supported by the platform, fetching
-   metrics from a specific datastore could enable some specific use
-   cases: monitoring configuration before it is committed, comparing
-   between the configuration and operational datastore.
-
 
 
 
@@ -394,10 +394,19 @@ Claise, et al.          Expires September 9, 2023               [Page 7]
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
+   The Platform Manifest also includes the contents of the YANG Library
+   [RFC8525].  That module set is particularly useful to define the
+   paths, as they are based on module names.  Similarly, this module
+   defines the available datastores, which can be referred to from the
+   Data Manifest, if necessary.  If supported by the platform, fetching
+   metrics from a specific datastore could enable some specific use
+   cases: monitoring configuration before it is committed, comparing
+   between the configuration and operational datastore.
+
 3.2.  YANG module ietf-platform-manifest
 
    <CODE BEGINS>
-   file "ietf-platform-manifest@2021-10-15.yang"
+   file "ietf-platform-manifest@2023-03-08.yang"
 
 module ietf-platform-manifest {
   yang-version 1.1;
@@ -433,6 +442,14 @@ module ietf-platform-manifest {
      upgrade or patching of the device.
 
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+
+
+
+Claise, et al.          Expires September 9, 2023               [Page 8]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
      are to be interpreted as described in BCP 14 (RFC 2119)
@@ -441,14 +458,6 @@ module ietf-platform-manifest {
 
      Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
-
-
-
-
-Claise, et al.          Expires September 9, 2023               [Page 8]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
 
      Redistribution and use in source and binary forms, with or
      without modification, is permitted pursuant to, and subject
@@ -459,7 +468,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2021-10-15 {
+  revision 2023-03-08 {
     description
       "Initial revision";
     reference
@@ -489,6 +498,14 @@ Internet-Draft           Telemetry Data Manifest              March 2023
   augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library/"
         + "p-mf:module-set/p-mf:module/p-mf:submodule" {
     description
+
+
+
+Claise, et al.          Expires September 9, 2023               [Page 9]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
       "Add a revision label to submodule information";
     leaf revision-label {
       type rev:revision-label;
@@ -498,14 +515,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
          specific revision of the submodule included by the module
          loaded in this module-set.";
       reference
-
-
-
-Claise, et al.          Expires September 9, 2023               [Page 9]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
         "XXXX: Updated YANG Module Revision Handling;
          Section 5.2.1, Advertising revision-label";
     }
@@ -546,6 +555,13 @@ Internet-Draft           Telemetry Data Manifest              March 2023
     }
   }
 
+
+
+Claise, et al.          Expires September 9, 2023              [Page 10]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
   augment "/p-mf:platforms/p-mf:platform/p-mf:yang-library"
         + "/p-mf:schema" {
     description
@@ -554,14 +570,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
        schema supported by the server.";
     leaf deprecated-nodes-implemented {
       type boolean;
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 10]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
       description
         "If set to true, this leaf indicates that all schema nodes with
          a status 'deprecated' are implemented
@@ -602,14 +610,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
       leaf id {
         type string;
         description
-          "Identifies a given platform on the network, for instance the
-           sysname of the plaftorm. The id has to be unique on the
-           network.";
-      }
-      leaf name {
-        type string;
-        description
-          "Model of the platform from which data is collected.";
 
 
 
@@ -618,6 +618,14 @@ Claise, et al.          Expires September 9, 2023              [Page 11]
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
+          "Identifies a given platform on the network, for instance the
+           sysname of the plaftorm. The id has to be unique on the
+           network.";
+      }
+      leaf name {
+        type string;
+        description
+          "Model of the platform from which data is collected.";
       }
       leaf vendor {
         type string;
@@ -658,14 +666,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
       leaf os-type {
         type string;
         description
-          "Type of the operating system using this module. This is
-           primarily useful if the software implementing the module is
-           an application that requires a specific operating system
-           type.";
-      }
-      container yang-library {
-        description
-          "The YANG library of the device specifying the modules
 
 
 
@@ -674,6 +674,14 @@ Claise, et al.          Expires September 9, 2023              [Page 12]
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
+          "Type of the operating system using this module. This is
+           primarily useful if the software implementing the module is
+           an application that requires a specific operating system
+           type.";
+      }
+      container yang-library {
+        description
+          "The YANG library of the device specifying the modules
            available in each of the datastores.";
         uses yanglib:yang-library-parameters;
       }
@@ -690,38 +698,30 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    Figure 2 contains the YANG tree diagram [RFC8340] of the ietf-data-
    collection-manifest module.
 
-  module: ietf-data-collection-manifest
-    +--ro data-collections
-       +--ro data-collection* [platform-id]
-          +--ro platform-id
-          |       -> /p-mf:platforms/platform/id
-          +--ro yang-push-subscriptions
-             +--ro subscription* [id]
-                +--ro id
-                |       sn:subscription-id
-                +--ro (target)
-                |  +--:(stream)
-                |     +--ro (stream-filter)?
-                |     |  +--:(by-reference)
-                |     |  |  +--ro stream-filter-name
-                |     |  |          stream-filter-ref
-                |     |  +--:(within-subscription)
-                |     |     +--ro (filter-spec)?
-                |     |        +--:(stream-subtree-filter)
-                |     |        |  +--ro stream-subtree-filter?
-                |     |        |          <anydata> {subtree}?
-                |     |        +--:(stream-xpath-filter)
-                |     |           +--ro stream-xpath-filter?
-                |     |                   yang:xpath1.0 {xpath}?
-                |     +--ro stream
-                |     |       stream-ref
-                |     +--ro replay-start-time?
-                |             yang:date-and-time {replay}?
-                +--ro stop-time?
-                |       yang:date-and-time
-                +--ro dscp?
-                |       inet:dscp {dscp}?
-                +--ro weighting?                                 uint8
+   module: ietf-data-collection-manifest
+     +--ro data-collections
+        +--ro data-collection* [platform-id]
+           +--ro platform-id
+           |       -> /p-mf:platforms/platform/id
+           +--ro yang-push-subscriptions
+              +--ro subscription* [id]
+                 +--ro id
+                 |       sn:subscription-id
+                 +--ro (target)
+                 |  +--:(stream)
+                 |  |  +--ro (stream-filter)?
+                 |  |  |  +--:(by-reference)
+                 |  |  |  |  +--ro stream-filter-name
+                 |  |  |  |          stream-filter-ref
+                 |  |  |  +--:(within-subscription)
+                 |  |  |     +--ro (filter-spec)?
+                 |  |  |        +--:(stream-subtree-filter)
+                 |  |  |        |  +--ro stream-subtree-filter?
+                 |  |  |        |          <anydata> {subtree}?
+                 |  |  |        +--:(stream-xpath-filter)
+                 |  |  |           +--ro stream-xpath-filter?
+                 |  |  |                   yang:xpath1.0 {xpath}?
+                 |  |  +--ro stream
 
 
 
@@ -730,54 +730,54 @@ Claise, et al.          Expires September 9, 2023              [Page 13]
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
-                |       {qos}?
-                +--ro dependency?
-                |       subscription-id {qos}?
-                +--ro transport?
-                |       transport {configured}?
-                +--ro encoding?
-                |       encoding
-                +--ro purpose?                                   string
-                |       {configured}?
-                +--ro (notification-message-origin)? {sn:configured}?
-                |  +--:(interface-originated)
-                |  |  +--ro source-interface?
-                |  |          if:interface-ref
-                |  |          {sn:interface-designation}?
-                |  +--:(address-originated)
-                |     +--ro source-vrf?                          leafref
-                |     |       {sn:supports-vrf}?
-                |     +--ro source-address?
-                |             inet:ip-address-no-zone
-                +--ro configured-subscription-state?
-                |       enumeration {sn:configured}?
-                +--ro (update-trigger)?
-                   +--:(periodic)
-                   |  +--ro periodic!
-                   |     +--ro period         centiseconds
-                   |     +--ro anchor-time?   yang:date-and-time
-                   +--:(on-change) {on-change}?
-                      +--ro on-change!
-                         +--ro dampening-period?   centiseconds
-                         +--ro sync-on-start?      boolean
-                         +--ro excluded-change*    change-type
+                 |  |  |       stream-ref
+                 |  |  +--ro replay-start-time?
+                 |  |          yang:date-and-time {replay}?
+                 |  +--:(datastore)
+                 |     +--ro datastore
+                 |     |       identityref
+                 |     +--ro (selection-filter)?
+                 |        +--:(by-reference)
+                 |        |  +--ro selection-filter-ref
+                 |        |          selection-filter-ref
+                 |        +--:(within-subscription)
+                 |           +--ro (filter-spec-yp)?
+                 |              +--:(datastore-subtree-filter)
+                 |              |  +--ro datastore-subtree-filter?
+                 |              |          <anydata> {sn:subtree}?
+                 |              +--:(datastore-xpath-filter)
+                 |                 +--ro datastore-xpath-filter?
+                 |                         yang:xpath1.0 {sn:xpath}?
+                 +--ro stop-time?
+                 |       yang:date-and-time
+                 +--ro dscp?
+                 |       inet:dscp {dscp}?
+                 +--ro weighting?
+                 |       uint8 {qos}?
+                 +--ro dependency?
+                 |       subscription-id {qos}?
+                 +--ro transport?
+                 |       transport {configured}?
+                 +--ro encoding?
+                 |       encoding
+                 +--ro purpose?
+                 |       string {configured}?
+                 +--ro current-period?
+                 |       yp:centiseconds
+                 +--ro (update-trigger)?
+                    +--:(periodic)
+                    |  +--ro periodic!
+                    |     +--ro period         centiseconds
+                    |     +--ro anchor-time?   yang:date-and-time
+                    +--:(on-change) {on-change}?
+                       +--ro on-change!
+                          +--ro dampening-period?   centiseconds
+                          +--ro sync-on-start?      boolean
+                          +--ro excluded-change*    change-type
 
    Figure 2: YANG tree diagram for ietf-data-collection-manifest module
 
-   The data-collection container contains the information related to
-   YANG-Push individual items collection.
 
-   The YANG-Push MDT collection is organized in subscriptions.  A given
-   collector can subscribe to one ore more subscriptions that usually
-   contain a list of paths.  Such a collector only needs the Data
-   Manifest for subscriptions it subscribed to.  The Data Manifest for
-   MDT is organized by subscriptions as well so that a collector can
-   select only its subscriptions.
-
-   We now have a chicken-and-egg issue if the collector collects the
-   Data Manifest via MDT and wants the Data Manifest for the Data
-   Manifest subscription.  First, the collector will collect the actual
-   paths that it needs in subscription A.  Once it has the subscription
 
 
 
@@ -786,85 +786,36 @@ Claise, et al.          Expires September 9, 2023              [Page 14]
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
-   id for A, it will need an additional subscription B for the Data
-   Manifest of paths in A.  Then, it would need another subscription C
-   to fetch the Data Manifest for the subscription B and so on... A
-   possible solution would be adding in the "mdt" container an
-   additional list in that contains the Data Manifest for every path
-   that is a Data Manifest.  By including that list in subscription B,
-   the collector would have the information about subscription B here.
+   The 'data-collections' container contains the information related to
+   each YANG-Push subscription.  As for the Platform Manifest, these
+   subscriptions are indexed by the platform id, so that all
+   subscriptions in the network can be represented in the module.
 
-   The "datastore" leaf of the subscription container specifies from
-   which datastore the YANG paths are streamed.
-
-   Within a given collection subscription, the granularity of the
-   collection is defined by the path.  Note that all network elements do
-   not support an arbitrary granularity up to the leaf, usually for
-   performance reasons.  Each path currently collected by the platform
-   should show up in the mdt-path-data-manifest list.
-
-   For each path, the collection context must be specified including:
-
-   o  'on-change': when set to true, an update is sent as soon as and
-      only when a value changes.  This is also known as Event-Driven
-      Telemetry (EDT).  When set to false, the values are sent
-      regularly.
-
-   o  'suppress-redundancy' (only when 'on-change' is false): reduce
-      bandwidth usage by sending a regular update only if the value is
-      different from the previous update.
-
-   o  'requested-period' (only when 'on-change' is false): period
-      between two updates requested by the client for this path
-
-   o  'actual-period' (only when 'on-change 'is false): actual period
-      retained by the platform between two updates.  That period could
-      be larger than the requested one as the router can adjust it for
-      performance reasons.
+   The YANG-Push collection is organized in subscriptions, the
+   parameters for such a subscription are specified in [RFC8639] and
+   [RFC8641].  The list of subscription from a given platform is stored
+   in '/data-collection/data-collection/yang-push-subscriptions/
+   subscription' and reuses the YANG modules from these RFCs in order to
+   characterize the subscription status.  The only additional node is
+   the 'current-period', which might differ from the requested period
+   (when in periodic collection mode) if the platform implements a
+   mechanism to increase the collection period when it is overloaded.
 
    This information is crucial to understand the collected values.  For
-   instance, the 'on-change' and 'suppress-redundancy' options, if set,
-   might remove a lot of messages from the database because values are
-   sent only when there is a change.
+   instance, the 'on-change' trigger, if used, might remove a lot of
+   messages from the database because values are sent only when there is
+   a change.
 
 4.2.  YANG module ietf-data-collection-manifest
 
-   <CODE BEGINS> file "ietf-data-collection-manifest@2021-10-15.yang"
+   <CODE BEGINS> file "ietf-data-collection-manifest@2023-03-08.yang"
 
 module ietf-data-collection-manifest {
   yang-version 1.1;
   namespace
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 15]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
     "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
-  prefix data-manifest;
+  prefix d-mf;
 
-  /*import ietf-datastores {
-    prefix ds;
-    reference "RFC 8342: Network Management Datastore Architecture.";
-  }*/
-
-  import ietf-inet-types {
-    prefix inet;
-    reference
-      "RFC 6991: Common YANG Data Types";
-  }
-  import ietf-interfaces {
-    prefix if;
-    reference
-      "RFC 8343: A YANG Data Model for Interface Management";
-  }
-  import ietf-network-instance {
-    prefix ni;
-    reference
-      "RFC 8529: YANG Data Model for Network Instances";
-  }
   import ietf-platform-manifest {
     prefix p-mf;
     reference
@@ -876,11 +827,20 @@ Internet-Draft           Telemetry Data Manifest              March 2023
       "RFC 8639: A YANG Data Model for Subscriptions to
          Event Notifications";
   }
-  import ietf-yang-push {
+  import ietf-yang-push-modif {
     prefix yp;
     reference
-      "RFC 8641: Subscriptions to YANG Datastores";
+      "RFC 8641: Subscriptions to YANG Datastores. TODO fix and
+       used original version. This import is a modified version so that
+       it compiles.";
   }
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 15]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
 
   organization
     "IETF OPSAWG (Network Configuration) Working Group";
@@ -890,14 +850,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
      Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
      Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
   description
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 16]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
     "This module describes the context of data collection from a
      given network element. The contents of this model must be
      streamed along with the data streamed from the network
@@ -927,7 +879,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2021-10-15 {
+  revision 2023-03-08 {
     description
       "Initial revision";
     reference
@@ -935,26 +887,35 @@ Internet-Draft           Telemetry Data Manifest              March 2023
   }
 
   /*
-   *  Copy pasting here the augments from ietf-yang-push as we need
+   *  Augments similar to the ones in ietf-yang-push module as we need
    *  them for the subscription information.
    */
 
-  augment "/data-collections/data-collection"
-        + "/yang-push-subscriptions/subscription" {
-    //when 'yp:datastore';
-    description
-      "This augmentation adds objects to a subscription that are
-       specific to a datastore subscription, i.e., a subscription to
-       a stream of datastore node updates.";
 
 
-
-Claise, et al.          Expires September 9, 2023              [Page 17]
+Claise, et al.          Expires September 9, 2023              [Page 16]
 
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
+  augment "/data-collections/data-collection"
+        + "/yang-push-subscriptions/subscription" {
+    when 'd-mf:datastore';
+    description
+      "This augmentation adds objects to a subscription that are
+       specific to a datastore subscription, i.e., a subscription to
+       a stream of datastore node updates.";
     uses yp:update-policy;
+  }
+
+  augment "/data-collections/data-collection"
+        + "/yang-push-subscriptions/subscription/target" {
+    description
+      "This augmentation allows the datastore to be included as
+       part of the selection-filtering criteria for a subscription.";
+    case datastore {
+      uses yp:datastore-criteria;
+    }
   }
 
   container data-collections {
@@ -977,9 +938,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
       container yang-push-subscriptions {
         /*
          * Copy-pasting here some of the contents of the "subscriptions"
-         * container from ietf-subscribed notification. We need
-         * a cleaner way to do this (i.e. a design-time schema-mount
-         * including augmenting modules).
+         * container from ietf-subscribed notification.
          */
         description
           "Contains the list of currently active subscriptions, i.e.,
@@ -987,6 +946,14 @@ Internet-Draft           Telemetry Data Manifest              March 2023
            subscription management and monitoring purposes.  This
            includes subscriptions that have been set up via
            RPC primitives as well as subscriptions that have been
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 17]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
            established via configuration.";
         list subscription {
           key "id";
@@ -1002,128 +969,18 @@ Internet-Draft           Telemetry Data Manifest              March 2023
           leaf id {
             type sn:subscription-id;
             description
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 18]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
               "Identifier of a subscription; unique in a given
                publisher.";
           }
-          uses sn:subscription-policy {
-            refine "target/stream/stream" {
-              description
-                "Indicates the event stream to be considered for this
-                 subscription.  If an event stream has been removed
-                 and can no longer be referenced by an active
-                 subscription, send a 'subscription-terminated'
-                 notification with 'stream-unavailable' as the reason.
-                 If a configured subscription refers to a nonexistent
-                 event stream, move that subscription to the
-                 'invalid' state.";
-            }
-            refine "transport" {
-              description
-                "For a configured subscription, this leaf specifies the
-                 transport used to deliver messages destined for all
-                 receivers of that subscription.  This object is
-                 mandatory for subscriptions in the configuration
-                 datastore.  This object (1) is not mandatory for dynamic
-                 subscriptions in the operational state datastore and
-                 (2) should not be present for other types of dynamic
-                 subscriptions.";
-            }
-          }
-          choice notification-message-origin {
-            if-feature "sn:configured";
+          uses sn:subscription-policy;
+          leaf current-period {
+            when '../periodic';
+            type yp:centiseconds;
             description
-              "Identifies the egress interface on the publisher
-               from which notification messages are to be sent.";
-            case interface-originated {
-              description
-                "When notification messages are to egress a specific,
-                 designated interface on the publisher.";
-              leaf source-interface {
-                if-feature "sn:interface-designation";
-                type if:interface-ref;
-                description
-                  "References the interface for notification messages.";
-              }
-            }
-            case address-originated {
-              description
-                "When notification messages are to depart from a
-                 publisher using a specific originating address and/or
-                 routing context information.";
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 19]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
-              leaf source-vrf {
-                if-feature "sn:supports-vrf";
-                type leafref {
-                  path "/ni:network-instances/ni:network-instance"
-                     + "/ni:name";
-                }
-                description
-                  "VRF from which notification messages should egress a
-                   publisher.";
-              }
-              leaf source-address {
-                type inet:ip-address-no-zone;
-                description
-                  "The source address for the notification messages.
-                   If a source VRF exists but this object doesn't, a
-                   publisher's default address for that VRF must
-                   be used.";
-              }
-            }
-          }
-          leaf configured-subscription-state {
-            if-feature "sn:configured";
-            type enumeration {
-              enum valid {
-                value 1;
-                description
-                  "The subscription is supportable with its current
-                   parameters.";
-              }
-              enum invalid {
-                value 2;
-                description
-                  "The subscription as a whole is unsupportable with its
-                   current parameters.";
-              }
-              enum concluded {
-                value 3;
-                description
-                  "A subscription is inactive, as it has hit a
-                   stop time.  It no longer has receivers in the
-                   'active' or 'suspended' state, but the subscription
-                   has not yet been removed from configuration.";
-              }
-            }
-            config false;
-            description
-              "The presence of this leaf indicates that the subscription
-               originated from configuration, not through a control
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 20]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
-               channel or RPC.  The value indicates the state of the
-               subscription as established by the publisher.";
+              "Period during two succesive data collections, in the
+               current state. Might differ from the configured period
+               when the plaftorm might increase the period
+               automatically when it is overloaded.";
           }
         }
       }
@@ -1145,17 +1002,27 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    context is lost, for instance when the data is stored without the
    relevant information.  The Data Manifest MUST be updated when the
    Data Manifest information changes, for example, when a router is
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 18]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
    upgraded, when a new telemetry subscription is configured, or when
-   the telemetry subscription parameters change.
+   the telemetry subscription parameters change.  The Data Manifest can
+   itself be considered as a time series, and stored in a similar
+   fashion to the collected data.
 
    The collected data should be mapped to the Data Manifest.  Since the
    Data Manifest will not change as frequently as the collected data
    itself, it makes sense to map several data to the same Data Manifest.
    Somehow, the collected data must include a metadata pointing to the
    corresponding Data Manifest.  In case of Data Manifest change, the
-   collection system should keep the respective Data Manifest even with
-   old data, and not assumed that the latest Data Manifest is valid for
-   the entire time series.
+   system should keep the mapping between the data collected so far and
+   the old Data Manifest, and not assume that the latest Data Manifest
+   is valid for the entire time series.
 
    The Platform Manifest is likely to remain the same until the platform
    is updated.  Thus, the Platform Manifest only needs to be collected
@@ -1167,16 +1034,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    Manifest and Platform Manifest can be done either by reusing that
    streaming telemetry system (in-band) or using another system (out-of-
    band), for instance by adding headers or saving manifests into a YANG
-   instace file [RFC9195].
-
-
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 21]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
+   instance file [RFC9195].
 
    We propose to reuse the existing telemetry system (in-band approach)
    in order to lower the efforts for implementing this draft.  To enable
@@ -1191,29 +1049,42 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
 5.2.  Mapping Collected Data to the Data Manifest
 
-   With MDT, a particular datapoint is always associated to a path that
-   is itself part of a subscription.  In order to enable a posteriori
-   retrieval of the Data Manifest associated to a datapoint, the
-   collector must:
+   With YANG-push, each notification sent by the device is part of a
+   subscription, which is also one of the YANG keys used to retrieve the
+   Data Manifest, the other key being the platform ID.  In order to
+   enable a posteriori retrieval of the Data Manifest associated to a
+   datapoint, the collector must:
 
-   o  Keep the path in the metadata of the collected values
+   o  Keep the subscription id and platform id in the metadata of the
+      collected values
 
-   o  Collect as well the Data Manifest for the subscription and path
-      associated to the datapoint.
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 19]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+   o  Collect as well the Data Manifest for the subscription associated
+      to the datapoint.
 
    With this information, to retrieve the Data Manifest from the
    datapoint, the following happens:
 
-   o  The path is retrieved from the datapoint metadata
+   o  The subscription id and platform id are retrieved from the
+      datapoint metadata
 
-   o  The Data Manifest for that path is retrieved by looking up on the
-      collected Data Manifest.
+   o  The Data Manifest for that datapoint is obtained by using the
+      values above as keys.
 
-   In that scenario, the reliability of the collection of the Data
-   Manifest is the same as the reliability of the data collection
-   itself, since the Data Manifest is like any other data.  For
-   telemetry based on gRPC for instance, a disconnection to the server
-   would be detected as the HTTP connection would fail.
+   We don't focus on the timing aspect as storing both the data and
+   their manifest in a time series database will allow the data
+   scientists to look for the Data Manifest corresponding to the
+   timestamp of the datapoint.  In that scenario, the reliability of the
+   collection of the Data Manifest is the same as the reliability of the
+   data collection itself, since the Data Manifest is like any other
+   data.
 
 5.3.  Operational Considerations
 
@@ -1225,15 +1096,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    information collected from the platform.  However, this option
    requires efforts on the telemetry collector side, as the information
    gathered in the Data Manifest proposed in this document could be
-
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 22]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
    scattered among various standard and vendor- specific YANG modules
    [RFC8199], that depend on the platform.
 
@@ -1248,11 +1110,6 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    updated.  To separate these two parts, we enclose each of them in its
    own module.
 
-6.  Example
-
-   Below is an example of a Data Collection Manifest file:
-
-   <CODE BEGINS> file "ietf-data-collection-manifest@2021-10-15.yang"
 
 
 
@@ -1260,106 +1117,25 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 23]
+Claise, et al.          Expires September 9, 2023              [Page 20]
 
 Internet-Draft           Telemetry Data Manifest              March 2023
 
 
-{
-  "ietf-yang-instance-data:instance-data-set": {
-    "name": "data-collection-manifest-example",
-    "content-schema": {
-      "module": "ietf-data-collection-manifest@2021-10-15"
-    },
-    "timestamp": "2022-02-24T09:45:03Z",
-    "description": [
-      "Data collection manifest for the subscription 4242"
-    ],
-    "content-data": {
-      "ietf-data-collection-manifest:data-collection": {
-        "mdt-subscriptions": [
-          {
-            "subscription-id": 4242,
-            "mdt-path-data-manifest": [
-              {
-                "path": "/ietf-interfaces:interfaces/interface/enabled",
-                "requested-period": 100,
-                "current-period": 10000,
-                "on-change": false,
-                "suppress-redundancy": false
-              },
-              {
-                "path": "/ietf-interfaces:interfaces/interface/statistics/in-octets",
-                "requested-period": 100,
-                "current-period": 100,
-                "on-change": false,
-                "suppress-redundancy": false
-              }
-            ]
-          }
-        ]
-      }
-    }
-  }
-}
-
-   <CODE ENDS>
-
-   The file above contains the Data Collection Manifest for paths
-   collected in the subscription with id 4242.  The requested period for
-   both path is this subscription was 100ms, however the status of the
-   interface could only be collected every 10s.
-
-
-
-
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 24]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
-7.  Security Considerations
+6.  Security Considerations
 
    As we are reusing an existing telemetry system, the security
    considerations lies with the new content divulged in the new
    manifests.  Appropriate access control must be associated to the
    corresponding leafs and containers.
 
-8.  IANA Considerations
+7.  IANA Considerations
 
    This document includes no request to IANA.
 
-9.  Contributors
+8.  Contributors
 
-10.  Open Issues
+9.  Open Issues
 
    o  Do we want to handle the absence of values, i.e. add information
       about missed collection or errors in the collection context ? It
@@ -1381,9 +1157,9 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    o  Eliot: important to give integrity of the information a lot of
       thought.  Threat model to be considered.
 
-11.  References
+10.  References
 
-11.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1397,7 +1173,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
 
 
-Claise, et al.          Expires September 9, 2023              [Page 25]
+Claise, et al.          Expires September 9, 2023              [Page 21]
 
 Internet-Draft           Telemetry Data Manifest              March 2023
 
@@ -1411,6 +1187,11 @@ Internet-Draft           Telemetry Data Manifest              March 2023
               DOI 10.17487/RFC8525, March 2019,
               <https://www.rfc-editor.org/info/rfc8525>.
 
+   [RFC8639]  Voit, E., Clemm, A., Gonzalez Prieto, A., Nilsen-Nygaard,
+              E., and A. Tripathy, "Subscription to YANG Notifications",
+              RFC 8639, DOI 10.17487/RFC8639, September 2019,
+              <https://www.rfc-editor.org/info/rfc8639>.
+
    [RFC8641]  Clemm, A. and E. Voit, "Subscription to YANG Notifications
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
               September 2019, <https://www.rfc-editor.org/info/rfc8641>.
@@ -1419,7 +1200,7 @@ Internet-Draft           Telemetry Data Manifest              March 2023
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
               2022, <https://www.rfc-editor.org/info/rfc9195>.
 
-11.2.  Informative References
+10.2.  Informative References
 
    [I-D.clacla-netmod-model-catalog]
               Clarke, J. and B. Claise, "YANG module for
@@ -1437,9 +1218,21 @@ Internet-Draft           Telemetry Data Manifest              March 2023
               netconf-metadata-for-collection-02>.
 
    [I-D.tgraf-netconf-notif-sequencing]
-              "Change to include when in ietf database",
-              <https://github.com/network-analytics/draft-tgraf-netconf-
-              notif-sequencing>.
+              Graf, T., Quilbeuf, J., and A. Feng, "Support of Hostname
+              and Sequencing in YANG Notifications", draft-tgraf-
+              netconf-notif-sequencing-00 (work in progress), March
+              2023, <https://datatracker.ietf.org/doc/html/draft-tgraf-
+              netconf-notif-sequencing-00>.
+
+
+
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 22]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
 
    [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
               Classification", RFC 8199, DOI 10.17487/RFC8199, July
@@ -1449,36 +1242,30 @@ Internet-Draft           Telemetry Data Manifest              March 2023
               Management", RFC 8343, DOI 10.17487/RFC8343, March 2018,
               <https://www.rfc-editor.org/info/rfc8343>.
 
-
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 26]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
               Notifications", RFC 9196, DOI 10.17487/RFC9196, February
               2022, <https://www.rfc-editor.org/info/rfc9196>.
 
-   [RFC9371]  "Change to include when in ietf database".
+   [RFC9371]  Baber, A. and P. Hoffman, "Registration Procedures for
+              Private Enterprise Numbers (PENs)", RFC 9371,
+              DOI 10.17487/RFC9371, March 2023,
+              <https://www.rfc-editor.org/info/rfc9371>.
 
 Appendix A.  Example of use based on MDT
 
    In this example, the goal is to collect the administrative status and
    number of received bytes for the interfaces of a fictional ACME
    device, and store the result in a Influx database.  The metrics are
-   collected via MDT, which is configured by specifying their paths and
-   when they should be collected (polling period or on-change).  More
-   precisely, we want collect "ietf-interfaces:interfaces/interface/
-   enabled" on every change and "ietf-
+   collected via YANG-Push, which is configured by specifying their
+   XPaths and when they should be collected (periodically or on-change).
+   More precisely, we want collect "ietf-
+   interfaces:interfaces/interface/enabled" on every change and "ietf-
    interfaces:interfaces/interface/statistics/in-octets" every 100
    milliseconds.  The paths here are referring to the YANG module from
-   [RFC8343].  The configuration of MDT is out of scope for this
-   document, we assume that both paths above are configured in the same
-   subscription.  Figure 3 presents an example for such a collection.
+   [RFC8343].  The configuration of YANG push is out of scope for this
+   document.  Since they don't have the same trigger, each of the path
+   must be collected in its own subscription.
 
         +------------+                +----------+
         |   MDT      |                |  Influx  |
@@ -1493,8 +1280,16 @@ Appendix A.  Example of use based on MDT
 
         Figure 3: Example of collection from a device to Influx DB
 
-   In the scenario from Figure 3, the collector receives MDT from the
-   device and stores it into InfluxDB.  We first present a version
+   In the scenario from Figure 3, the collector receives YANG-push from
+   the device and stores it into InfluxDB.  We first present a version
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 23]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
    without data manifest and then how to enrich it with the data
    manifest.
 
@@ -1506,20 +1301,12 @@ Appendix A.  Example of use based on MDT
    name of the device and the name of the interface.  The fields contain
    the values to store.  InfluxDb defines a textual notation, named line
    protocol, to represent one datapoint per line.  We use this line
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 27]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
    protocol in Figure 4 and Figure 6 to represent the way data could be
    fed to InfluxDB, omitting the timestamp for readability.  See
    <https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-
    protocol/> for more details.
 
-   Without the data manifest, the MDT collector is likely to store
+   Without the data manifest, the YANG-push collector is likely to store
    something similar to Figure 4 in InfluxDB.  In that case, only the
    value is stored, without any way to know how the value was obtained.
 
@@ -1531,14 +1318,16 @@ Internet-Draft           Telemetry Data Manifest              March 2023
    A possibility for keeping the data manifest with the data is to store
    it directly into InfluxDB.  In that case, the collector can subscribe
    to the data exported by the module presented in this draft and store
-   it inside influxDB.  For the Platform Manifest, the collector
-   subscribes to the path "ietf-platform-manifest:platform".  For the
-   Data Collection Manifest, assuming the subscription id is 42, the
-   collector subscribes to the path "ietf-data-collection-manifest:data-
-   collection/mdt-subscriptions[subscription-id=42]".  The data, for
-   instance serialized in JSON, can be stored in InfluxDB as shown in
-   Figure 5 where "<platform-manifest>" and "<data-manifest>" represent
-   the contents of respectively the Platform Manifest and the Data
+   it inside influxDB.  For the Platform Manifest, assuming the platform
+   ID is "PE1", the collector subscribes to the path "ietf-platform-
+   manifest:platforms/platform[id=PE1]".  For the Data Collection
+   Manifest, assuming the subscription id is 42, the collector
+   subscribes to the path "ietf-data-collection-manifest:data-
+   collections/data-collection[platform-id="PE1"]/yang-push-
+   subscriptions/subscription[id=42]".  The data, for instance
+   serialized in JSON, can be stored in InfluxDB as shown in Figure 5
+   where "<platform-manifest>" and "<data-manifest>" represent the
+   contents of respectively the Platform Manifest and the Data
    Collection Manifest.
 
    platform-manifest,device="PE1" val=<plaftorm-manifest>
@@ -1546,39 +1335,35 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
                       Figure 5: Storing data manifest
 
-   The link between a collected datapoint and the corresponding Platform
-   Manifest is done via the common "device" tag.  In order to link a
-   datapoint with the corresponding Data Collection Manifest, the
-   collector can add fields to specify where the Data Collection
-   Manifest is located for that specific datapoint.  For instance, the
-   same datapoints as in Figure 4 could be stored as in Figure 6, where
-   "<path>" represents the path used for collecting the current
-   datapoint.
+   In our example, The link between a collected datapoint and the
+   corresponding Platform Manifest is done via the common "device" tag.
+   In order to link a datapoint with the corresponding Data Collection
 
-  admin_status,device="PE1",interface="gig1" val=T,subId=42,path=<path>
-  sent_bytes,device="PE1",interface="gig1" val=1234,subId=42,path=<path>
+
+
+Claise, et al.          Expires September 9, 2023              [Page 24]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+   Manifest, the collector can add fields to specify where the Data
+   Collection Manifest is located for that specific datapoint.  For
+   instance, the same datapoints as in Figure 4 could be stored as in
+   Figure 6.
+
+   admin_status,device="PE1",interface="gig1" val=T,subId=42
+   sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
 
               Figure 6: Storing datapoints with data manifest
 
    In our simple example, from the "admin_status" datapoint, one can
    retrieve the corresponding Platform Manifest by looking at the last
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 28]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
-
    value for the "platform-manifest" measurement with the same value for
    the "device" tag.  From the "admin-status" datapoint, one can
    retrieve the corresponding Data Collection Manifest by looking at the
    last value for the "data-manifest" measurement with tags "device" and
    "subId" matching respectively with the tag "device" and the field
-   "subId" of the measurement.  For that manifest, one can obtain
-   information for the subscription and the specific information for the
-   path by looking up the value of the "path" field in the "mdt-path-
-   data-manifest" list.
+   "subId" of the measurement.
 
 Appendix B.  Changes between revisions
 
@@ -1589,6 +1374,12 @@ Appendix B.  Changes between revisions
       Switch YANG models from device view to network view
 
       Add PEN number to identify vendors
+
+      Intro rewritten with uses cases
+
+      Added an "Operational Considerations" section
+
+      Switch from MDT to YANG-push
 
    v04 -> v05
 
@@ -1602,6 +1393,14 @@ Appendix B.  Changes between revisions
       Unify used terms as defined in the terminology section
 
       Replaced 'device' with 'platform'
+
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 25]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
 
       Split Section 5 into two sections for better readibility
 
@@ -1618,13 +1417,6 @@ Appendix B.  Changes between revisions
       Add when clause in YANG model
 
       Fix validation errors on YANG modules
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 29]
-
-Internet-Draft           Telemetry Data Manifest              March 2023
-
 
       Augment YANG library to handle semantic versioning
 
@@ -1661,19 +1453,227 @@ Internet-Draft           Telemetry Data Manifest              March 2023
 
 
 
+Claise, et al.          Expires September 9, 2023              [Page 26]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
    v00
 
       Initial version
 
 
 
-Acknowledgements
+Appendix C.  YANG module ietf-yang-push-modif
 
-   Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and
-   comments.
+   This section is only here to ensure that the draft passes without
+   compilations error.  It should be removed as soon as we can fix the
+   issue.
+
+   <CODE BEGINS>
+   file "ietf-yang-push-modif@2023-03-08.yang"
+
+   module ietf-yang-push-modif {
+     yang-version 1.1;
+     namespace "urn:ietf:params:xml:ns:yang:ietf-yang-push-modif";
+     prefix yp;
+
+     import ietf-yang-types {
+       prefix yang;
+       reference
+         "RFC 6991: Common YANG Data Types";
+     }
+     import ietf-subscribed-notifications {
+       prefix sn;
+       reference
+         "RFC 8639: Subscription to YANG Notifications";
+     }
+     import ietf-datastores {
+       prefix ds;
+       reference
+         "RFC 8342: Network Management Datastore Architecture (NMDA)";
+     }
+     import ietf-restconf {
+       prefix rc;
+       reference
+         "RFC 8040: RESTCONF Protocol";
+     }
+     import ietf-yang-patch {
+       prefix ypatch;
+       reference
+         "RFC 8072: YANG Patch Media Type";
+     }
+
+     organization
+       "IETF NETCONF (Network Configuration) Working Group";
 
 
 
+Claise, et al.          Expires September 9, 2023              [Page 27]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+     contact
+       "WG Web:  <https:/datatracker.ietf.org/wg/netconf/>
+        WG List: <mailto:netconf@ietf.org>
+
+        Author:  Alexander Clemm
+                 <mailto:ludwig@clemm.org>
+
+        Author:  Eric Voit
+                 <mailto:evoit@cisco.com>";
+     description
+       "This module contains YANG specifications for YANG-Push.
+
+        The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+        NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+        'MAY', and 'OPTIONAL' in this document are to be interpreted as
+        described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+        they appear in all capitals, as shown here.
+
+        Copyright (c) 2019 IETF Trust and the persons identified as
+        authors of the code.  All rights reserved.
+
+        Redistribution and use in source and binary forms, with or
+        without modification, is permitted pursuant to, and subject to
+        the license terms contained in, the Simplified BSD License set
+        forth in Section 4.c of the IETF Trust's Legal Provisions
+        Relating to IETF Documents
+        (https://trustee.ietf.org/license-info).
+
+        This version of this YANG module is part of RFC 8641; see the
+        RFC itself for full legal notices.";
+
+     revision 2023-03-08 {
+       description
+         "Hack so that ietf-data-collection-manifest compiles.";
+       reference
+         "RFC 8641: Subscriptions to YANG Datastores";
+     }
+     revision 2019-09-09 {
+       description
+         "Initial revision.";
+       reference
+         "RFC 8641: Subscriptions to YANG Datastores";
+     }
+
+     /*
+      * FEATURES
+      */
+
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 28]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+     feature on-change {
+       description
+         "This feature indicates that on-change triggered subscriptions
+          are supported.";
+     }
+
+     /*
+      * IDENTITIES
+      */
+     /* Error type identities for datastore subscription */
+
+     identity resync-subscription-error {
+       description
+         "Problem found while attempting to fulfill a
+          'resync-subscription' RPC request.";
+     }
+
+     identity cant-exclude {
+       base sn:establish-subscription-error;
+       description
+         "Unable to remove the set of 'excluded-change' parameters.
+          This means that the publisher is unable to restrict
+          'push-change-update' notifications to just the change types
+          requested for this subscription.";
+     }
+
+     identity datastore-not-subscribable {
+       base sn:establish-subscription-error;
+       base sn:subscription-terminated-reason;
+       description
+         "This is not a subscribable datastore.";
+     }
+
+     identity no-such-subscription-resync {
+       base resync-subscription-error;
+       description
+         "The referenced subscription doesn't exist.  This may be as a
+          result of a nonexistent subscription ID, an ID that belongs to
+          another subscriber, or an ID for a configured subscription.";
+     }
+
+     identity on-change-unsupported {
+       base sn:establish-subscription-error;
+       description
+         "On-change is not supported for any objects that are
+          selectable by this filter.";
+     }
+
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 29]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+     identity on-change-sync-unsupported {
+       base sn:establish-subscription-error;
+       description
+         "Neither 'sync-on-start' nor resynchronization is supported for
+          this subscription.  This error will be used for two reasons:
+          (1) if an 'establish-subscription' RPC includes
+          'sync-on-start' but the publisher can't support sending a
+          'push-update' for this subscription for reasons other than
+          'on-change-unsupported' or 'sync-too-big'
+          (2) if the 'resync-subscription' RPC is invoked for either an
+          existing periodic subscription or an on-change subscription
+          that can't support resynchronization.";
+     }
+
+     identity period-unsupported {
+       base sn:establish-subscription-error;
+       base sn:modify-subscription-error;
+       base sn:subscription-suspended-reason;
+       description
+         "The requested time period or 'dampening-period' is too short.
+          This can be for both periodic and on-change subscriptions
+          (with or without dampening).  Hints suggesting alternative
+          periods may be returned as supplemental information.";
+     }
+
+     identity update-too-big {
+       base sn:establish-subscription-error;
+       base sn:modify-subscription-error;
+       base sn:subscription-suspended-reason;
+       description
+         "Periodic or on-change push update data trees exceed a maximum
+          size limit.  Hints on the estimated size of what was too big
+          may be returned as supplemental information.";
+     }
+
+     identity sync-too-big {
+       base sn:establish-subscription-error;
+       base sn:modify-subscription-error;
+       base resync-subscription-error;
+       base sn:subscription-suspended-reason;
+       description
+         "The 'sync-on-start' or resynchronization data tree exceeds a
+          maximum size limit.  Hints on the estimated size of what was
+          too big may be returned as supplemental information.";
+     }
+
+     identity unchanging-selection {
+       base sn:establish-subscription-error;
 
 
 
@@ -1681,6 +1681,739 @@ Claise, et al.          Expires September 9, 2023              [Page 30]
 
 Internet-Draft           Telemetry Data Manifest              March 2023
 
+
+       base sn:modify-subscription-error;
+       base sn:subscription-terminated-reason;
+       description
+         "The selection filter is unlikely to ever select data tree
+          nodes.  This means that based on the subscriber's current
+          access rights, the publisher recognizes that the selection
+          filter is unlikely to ever select data tree nodes that change.
+          Examples for this might be that the node or subtree doesn't
+          exist, read access is not permitted for a receiver, or static
+          objects that only change at reboot have been chosen.";
+     }
+
+     /*
+      * TYPE DEFINITIONS
+      */
+
+     typedef change-type {
+       type enumeration {
+         enum create {
+           description
+             "A change that refers to the creation of a new
+              datastore node.";
+         }
+         enum delete {
+           description
+             "A change that refers to the deletion of a
+              datastore node.";
+         }
+         enum insert {
+           description
+             "A change that refers to the insertion of a new
+              user-ordered datastore node.";
+         }
+         enum move {
+           description
+             "A change that refers to a reordering of the target
+              datastore node.";
+         }
+         enum replace {
+           description
+             "A change that refers to a replacement of the target
+              datastore node's value.";
+         }
+       }
+       description
+         "Specifies different types of datastore changes.
+
+          This type is based on the edit operations defined for
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 31]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+          YANG Patch, with the difference that it is valid for a
+          receiver to process an update record that performs a
+          'create' operation on a datastore node the receiver believes
+          exists or to process a delete on a datastore node the
+          receiver believes is missing.";
+       reference
+         "RFC 8072: YANG Patch Media Type, Section 2.5";
+     }
+
+     typedef selection-filter-ref {
+       type leafref {
+         path "/sn:filters/yp:selection-filter/yp:filter-id";
+       }
+       description
+         "This type is used to reference a selection filter.";
+     }
+
+     typedef centiseconds {
+       type uint32;
+       description
+         "A period of time, measured in units of 0.01 seconds.";
+     }
+
+     /*
+      * GROUP DEFINITIONS
+      */
+
+     grouping datastore-criteria {
+       description
+         "A grouping to define criteria for which selected objects from
+          a targeted datastore should be included in push updates.";
+       leaf datastore {
+         type identityref {
+           base ds:datastore;
+         }
+         mandatory true;
+         description
+           "Datastore from which to retrieve data.";
+       }
+       uses selection-filter-objects;
+     }
+
+     grouping selection-filter-types {
+       description
+         "This grouping defines the types of selectors for objects
+          from a datastore.";
+       choice filter-spec-yp {
+         description
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 32]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+           "The content filter specification for this request.";
+         anydata datastore-subtree-filter {
+           if-feature "sn:subtree";
+           description
+             "This parameter identifies the portions of the
+              target datastore to retrieve.";
+           reference
+             "RFC 6241: Network Configuration Protocol (NETCONF),
+                        Section 6";
+         }
+         leaf datastore-xpath-filter {
+           if-feature "sn:xpath";
+           type yang:xpath1.0;
+           description
+             "This parameter contains an XPath expression identifying
+              the portions of the target datastore to retrieve.
+
+              If the expression returns a node set, all nodes in the
+              node set are selected by the filter.  Otherwise, if the
+              expression does not return a node set, the filter
+              doesn't select any nodes.
+
+              The expression is evaluated in the following XPath
+              context:
+
+              o  The set of namespace declarations is the set of prefix
+                 and namespace pairs for all YANG modules implemented
+                 by the server, where the prefix is the YANG module
+                 name and the namespace is as defined by the
+                 'namespace' statement in the YANG module.
+
+                 If the leaf is encoded in XML, all namespace
+                 declarations in scope on the 'stream-xpath-filter'
+                 leaf element are added to the set of namespace
+                 declarations.  If a prefix found in the XML is
+                 already present in the set of namespace declarations,
+                 the namespace in the XML is used.
+
+              o  The set of variable bindings is empty.
+
+              o  The function library is comprised of the core
+                 function library and the XPath functions defined in
+                 Section 10 in RFC 7950.
+
+              o  The context node is the root node of the target
+                 datastore.";
+           reference
+             "XML Path Language (XPath) Version 1.0
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 33]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+              (https://www.w3.org/TR/1999/REC-xpath-19991116)
+              RFC 7950: The YANG 1.1 Data Modeling Language,
+                        Section 10";
+         }
+       }
+     }
+
+     grouping selection-filter-objects {
+       description
+         "This grouping defines a selector for objects from a
+          datastore.";
+       choice selection-filter {
+         description
+           "The source of the selection filter applied to the
+            subscription.  This will either (1) come referenced from a
+            global list or (2) be provided in the subscription itself.";
+         case by-reference {
+           description
+             "Incorporates a filter that has been configured
+              separately.";
+           leaf selection-filter-ref {
+             type selection-filter-ref;
+             mandatory true;
+             description
+               "References an existing selection filter that is to be
+                applied to the subscription.";
+           }
+         }
+         case within-subscription {
+           description
+             "A local definition allows a filter to have the same
+              lifecycle as the subscription.";
+           uses selection-filter-types;
+         }
+       }
+     }
+
+     grouping update-policy-modifiable {
+       description
+         "This grouping describes the datastore-specific subscription
+          conditions that can be changed during the lifetime of the
+          subscription.";
+       choice update-trigger {
+         description
+           "Defines necessary conditions for sending an event record to
+            the subscriber.";
+         case periodic {
+           container periodic {
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 34]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+             presence "indicates a periodic subscription";
+             description
+               "The publisher is requested to periodically notify the
+                receiver regarding the current values of the datastore
+                as defined by the selection filter.";
+             leaf period {
+               type centiseconds;
+               mandatory true;
+               description
+                 "Duration of time that should occur between periodic
+                  push updates, in units of 0.01 seconds.";
+             }
+             leaf anchor-time {
+               type yang:date-and-time;
+               description
+                 "Designates a timestamp before or after which a series
+                  of periodic push updates are determined.  The next
+                  update will take place at a point in time that is a
+                  multiple of a period from the 'anchor-time'.
+                  For example, for an 'anchor-time' that is set for the
+                  top of a particular minute and a period interval of a
+                  minute, updates will be sent at the top of every
+                  minute that this subscription is active.";
+             }
+           }
+         }
+         case on-change {
+           if-feature "on-change";
+           container on-change {
+             presence "indicates an on-change subscription";
+             description
+               "The publisher is requested to notify the receiver
+                regarding changes in values in the datastore subset as
+                defined by a selection filter.";
+             leaf dampening-period {
+               type centiseconds;
+               default "0";
+               description
+                 "Specifies the minimum interval between the assembly of
+                  successive update records for a single receiver of a
+                  subscription.  Whenever subscribed objects change and
+                  a dampening-period interval (which may be zero) has
+                  elapsed since the previous update record creation for
+                  a receiver, any subscribed objects and properties
+                  that have changed since the previous update record
+                  will have their current values marshalled and placed
+                  in a new update record.";
+             }
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 35]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+           }
+         }
+       }
+     }
+
+     grouping update-policy {
+       description
+         "This grouping describes the datastore-specific subscription
+          conditions of a subscription.";
+       uses update-policy-modifiable {
+         augment "update-trigger/on-change/on-change" {
+           description
+             "Includes objects that are not modifiable once a
+              subscription is established.";
+           leaf sync-on-start {
+             type boolean;
+             default "true";
+             description
+               "When this object is set to 'false', (1) it restricts an
+                on-change subscription from sending 'push-update'
+                notifications and (2) pushing a full selection per the
+                terms of the selection filter MUST NOT be done for
+                this subscription.  Only updates about changes
+                (i.e., only 'push-change-update' notifications)
+                are sent.  When set to 'true' (the default behavior),
+                in order to facilitate a receiver's synchronization,
+                a full update is sent, via a 'push-update' notification,
+                when the subscription starts.  After that,
+                'push-change-update' notifications are exclusively sent,
+                unless the publisher chooses to resync the subscription
+                via a new 'push-update' notification.";
+           }
+           leaf-list excluded-change {
+             type change-type;
+             description
+               "Used to restrict which changes trigger an update.  For
+                example, if a 'replace' operation is excluded, only the
+                creation and deletion of objects are reported.";
+           }
+         }
+       }
+     }
+
+     grouping hints {
+       description
+         "Parameters associated with an error for a subscription
+          made upon a datastore.";
+       leaf period-hint {
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 36]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+         type centiseconds;
+         description
+           "Returned when the requested time period is too short.  This
+            hint can assert a viable period for either a periodic push
+            cadence or an on-change dampening interval.";
+       }
+       leaf filter-failure-hint {
+         type string;
+         description
+           "Information describing where and/or why a provided filter
+            was unsupportable for a subscription.";
+       }
+       leaf object-count-estimate {
+         type uint32;
+         description
+           "If there are too many objects that could potentially be
+            returned by the selection filter, this identifies the
+            estimate of the number of objects that the filter would
+            potentially pass.";
+       }
+       leaf object-count-limit {
+         type uint32;
+         description
+           "If there are too many objects that could be returned by
+            the selection filter, this identifies the upper limit of
+            the publisher's ability to service this subscription.";
+       }
+       leaf kilobytes-estimate {
+         type uint32;
+         description
+           "If the returned information could be beyond the capacity
+            of the publisher, this would identify the estimated
+            data size that could result from this selection filter.";
+       }
+       leaf kilobytes-limit {
+         type uint32;
+         description
+           "If the returned information would be beyond the capacity
+            of the publisher, this identifies the upper limit of the
+            publisher's ability to service this subscription.";
+       }
+     }
+
+     /*
+      * RPCs
+      */
+
+     rpc resync-subscription {
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 37]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+       if-feature "on-change";
+       description
+         "This RPC allows a subscriber of an active on-change
+          subscription to request a full push of objects.
+
+          A successful invocation results in a 'push-update' of all
+          datastore nodes that the subscriber is permitted to access.
+          This RPC can only be invoked on the same session on which the
+          subscription is currently active.  In the case of an error, a
+          'resync-subscription-error' is sent as part of an error
+          response.";
+       input {
+         leaf id {
+           type sn:subscription-id;
+           mandatory true;
+           description
+             "Identifier of the subscription that is to be resynced.";
+         }
+       }
+     }
+
+     /*
+      * NOTIFICATIONS
+      */
+
+     notification push-update {
+       description
+         "This notification contains a push update that in turn contains
+          data subscribed to via a subscription.  In the case of a
+          periodic subscription, this notification is sent for periodic
+          updates.  It can also be used for synchronization updates of
+          an on-change subscription.  This notification shall only be
+          sent to receivers of a subscription.  It does not constitute
+          a general-purpose notification that would be subscribable as
+          part of the NETCONF event stream by any receiver.";
+       anydata datastore-contents {
+         description
+           "This contains the updated data.  It constitutes a snapshot
+            at the time of update of the set of data that has been
+            subscribed to.  The snapshot corresponds to the same
+            snapshot that would be returned in a corresponding 'get'
+            operation with the same selection filter parameters
+            applied.";
+       }
+       leaf id {
+         type sn:subscription-id;
+         description
+           "This references the subscription that drove the
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 38]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+            notification to be sent.";
+       }
+       leaf incomplete-update {
+         type empty;
+         description
+           "This is a flag that indicates that not all datastore
+            nodes subscribed to are included with this update.  In
+            other words, the publisher has failed to fulfill its full
+            subscription obligations and, despite its best efforts, is
+            providing an incomplete set of objects.";
+       }
+     }
+
+     notification push-change-update {
+       if-feature "on-change";
+       description
+         "This notification contains an on-change push update.  This
+          notification shall only be sent to the receivers of a
+          subscription.  It does not constitute a general-purpose
+          notification that would be subscribable as part of the
+          NETCONF event stream by any receiver.";
+       leaf id {
+         type sn:subscription-id;
+         description
+           "This references the subscription that drove the
+            notification to be sent.";
+       }
+       container datastore-changes {
+         description
+           "This contains the set of datastore changes of the target
+            datastore, starting at the time of the previous update, per
+            the terms of the subscription.";
+         uses ypatch:yang-patch;
+       }
+       leaf incomplete-update {
+         type empty;
+         description
+           "The presence of this object indicates that not all changes
+            that have occurred since the last update are included with
+            this update.  In other words, the publisher has failed to
+            fulfill its full subscription obligations -- for example,
+            in cases where it was not able to keep up with a burst of
+            changes.";
+       }
+     }
+
+     augment "/sn:establish-subscription/sn:input" {
+       description
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 39]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+         "This augmentation adds additional subscription parameters
+          that apply specifically to datastore updates to RPC input.";
+       uses update-policy;
+     }
+
+     augment "/sn:establish-subscription/sn:input/sn:target" {
+       description
+         "This augmentation adds the datastore as a valid target
+          for the subscription to RPC input.";
+       case datastore {
+         description
+           "Information specifying the parameters of a request for a
+            datastore subscription.";
+         uses datastore-criteria;
+       }
+     }
+
+     augment "/sn:modify-subscription/sn:input" {
+       description
+         "This augmentation adds additional subscription parameters
+          specific to datastore updates.";
+       uses update-policy-modifiable;
+     }
+
+     augment "/sn:modify-subscription/sn:input/sn:target" {
+       description
+         "This augmentation adds the datastore as a valid target
+          for the subscription to RPC input.";
+       case datastore {
+         description
+           "Information specifying the parameters of a request for a
+            datastore subscription.";
+         uses datastore-criteria;
+       }
+     }
+
+     augment "/sn:subscription-started" {
+       description
+         "This augmentation adds datastore-specific objects to
+          the notification that a subscription has started.";
+       uses update-policy;
+     }
+
+     augment "/sn:subscription-started/sn:target" {
+       description
+         "This augmentation allows the datastore to be included as
+          part of the notification that a subscription has started.";
+       case datastore {
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 40]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+         uses datastore-criteria {
+           refine "selection-filter/within-subscription" {
+             description
+               "Specifies the selection filter and where it originated
+                from.  If the 'selection-filter-ref' is populated, the
+                filter in the subscription came from the 'filters'
+                container.  Otherwise, it is populated in-line as part
+                of the subscription itself.";
+           }
+         }
+       }
+     }
+
+     augment "/sn:subscription-modified" {
+       description
+         "This augmentation adds datastore-specific objects to
+          the notification that a subscription has been modified.";
+       uses update-policy;
+     }
+
+     augment "/sn:subscription-modified/sn:target" {
+       description
+         "This augmentation allows the datastore to be included as
+          part of the notification that a subscription has been
+          modified.";
+       case datastore {
+         uses datastore-criteria {
+           refine "selection-filter/within-subscription" {
+             description
+               "Specifies the selection filter and where it originated
+                from.  If the 'selection-filter-ref' is populated, the
+                filter in the subscription came from the 'filters'
+                container.  Otherwise, it is populated in-line as part
+                of the subscription itself.";
+           }
+         }
+       }
+     }
+
+     /*
+      * DATA NODES
+      */
+
+     augment "/sn:filters" {
+       description
+         "This augmentation allows the datastore to be included as part
+          of the selection-filtering criteria for a subscription.";
+       list selection-filter {
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 41]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+         key "filter-id";
+         description
+           "A list of preconfigured filters that can be applied
+            to datastore subscriptions.";
+         leaf filter-id {
+           type string;
+           description
+             "An identifier to differentiate between selection
+              filters.";
+         }
+         uses selection-filter-types;
+       }
+     }
+
+     augment "/sn:subscriptions/sn:subscription" {
+       when 'yp:datastore';
+       description
+         "This augmentation adds objects to a subscription that are
+          specific to a datastore subscription, i.e., a subscription to
+          a stream of datastore node updates.";
+       uses update-policy;
+     }
+
+     augment "/sn:subscriptions/sn:subscription/sn:target" {
+       description
+         "This augmentation allows the datastore to be included as
+          part of the selection-filtering criteria for a subscription.";
+       case datastore {
+         uses datastore-criteria;
+       }
+     }
+
+     rc:yang-data resync-subscription-error {
+       container resync-subscription-error {
+         description
+           "If a 'resync-subscription' RPC fails, the subscription is
+            not resynced and the RPC error response MUST indicate the
+            reason for this failure.  This yang-data MAY be inserted as
+            structured data in a subscription's RPC error response
+            to indicate the reason for the failure.";
+         leaf reason {
+           type identityref {
+             base resync-subscription-error;
+           }
+           mandatory true;
+           description
+             "Indicates the reason why the publisher has declined a
+              request for subscription resynchronization.";
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 42]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+         }
+         uses hints;
+       }
+     }
+     rc:yang-data establish-subscription-datastore-error-info {
+       container establish-subscription-datastore-error-info {
+         description
+           "If any 'establish-subscription' RPC parameters are
+            unsupportable against the datastore, a subscription is not
+            created and the RPC error response MUST indicate the reason
+            why the subscription failed to be created.  This yang-data
+            MAY be inserted as structured data in a subscription's
+            RPC error response to indicate the reason for the failure.
+            This yang-data MUST be inserted if hints are to be provided
+            back to the subscriber.";
+         leaf reason {
+           type identityref {
+             base sn:establish-subscription-error;
+           }
+           description
+             "Indicates the reason why the subscription has failed to
+              be created to a targeted datastore.";
+         }
+         uses hints;
+       }
+     }
+     rc:yang-data modify-subscription-datastore-error-info {
+       container modify-subscription-datastore-error-info {
+         description
+           "This yang-data MAY be provided as part of a subscription's
+            RPC error response when there is a failure of a
+            'modify-subscription' RPC that has been made against a
+            datastore.  This yang-data MUST be used if hints are to be
+            provided back to the subscriber.";
+         leaf reason {
+           type identityref {
+             base sn:modify-subscription-error;
+           }
+           description
+             "Indicates the reason why the subscription has failed to
+              be modified.";
+         }
+         uses hints;
+       }
+     }
+   }
+
+   <CODE ENDS>
+
+
+
+Claise, et al.          Expires September 9, 2023              [Page 43]
+
+Internet-Draft           Telemetry Data Manifest              March 2023
+
+
+Acknowledgements
+
+   Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and
+   comments.
 
 Authors' Addresses
 
@@ -1728,9 +2461,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Claise, et al.          Expires September 9, 2023              [Page 31]
+Claise, et al.          Expires September 9, 2023              [Page 44]
