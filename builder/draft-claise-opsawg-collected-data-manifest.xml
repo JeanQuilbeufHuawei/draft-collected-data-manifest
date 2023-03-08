@@ -65,12 +65,9 @@
     <workgroup>OPSAWG</workgroup>
     <abstract>
       <t>
-      Most network equipment feature telemetry as a mean to monitoring their status.
-		  Several protocols exist to this end, for example, the model-driven telemetry
-		  governed by YANG models.
-		  Some of these protocols provide the data itself, without any contextual information about the
-		  collection method. This can render the data unusable if that context is lost, for
-		  instance when the data is stored without the relevant information. This document proposes the Data Manifest, which is composed of two YANG data models, namely, the Platform Manifest and the Data Collection Manifest, to store contextual information along with the collected data, in order to keep the collected data exploitable in the future.
+      Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
+		  This document documents the metadata that ensure that the collected data can be interpreted correctly.
+		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest.) The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists. 
       </t>
     </abstract>
   </front>
@@ -80,7 +77,7 @@
         Network elements use Model-driven Telemetry (MDT), and in particular YANG-Push <xref target="RFC8641"/>, to continuously stream information, including both counters and state information.
       </t>
       <t>
-        This document specifies what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted  correctly throughout the collection and network analytics toolchain. When streaming YANG-structured data with YANG-Push [RFC8641], there is a semantic definition in the corresponding YANG module definition. This is the semantic information for the collected objects: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network element and collection environment contexts information is equally important to interpret the data.
+        This document specifies what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly throughout the collection and network analytics toolchain. When streaming YANG-structured data with YANG-Push [RFC8641], there is a semantic definition in the corresponding YANG module definition. This is the semantic information for the collected objects: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network element and collection environment contexts information is equally important to interpret the data.
       </t>
       <t>
         This document proposes the Data Manifest, which is composed of two YANG data models, namely, the Platform Manifest and the Data Collection Manifest, in order to keep the collected data exploitable by the data scientists.
@@ -111,7 +108,7 @@
     
          <section anchor="network-analytics" title="Network Analytics">
            <t>
-            Streamed information from netowrk elmeents is used for network analytics, incident detection, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
+            Streamed information from network elements is used for network analytics, incident detections, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
           </t>
           <t>         
             As an example, a database could store a time series representing the evolution of a specific counter collected from a network element. When analyzing the data, the network operator/data scientist must understand the context information for these data:
@@ -123,7 +120,7 @@
               The network element specific vendor, platform, and OS.
             </t>
             <t>
-              The collection parameters such as the monitoring cadence.
+              The collection parameters.
             </t>
             </list>
           </t>
@@ -131,7 +128,7 @@
               Characterizing the source used for producing the data (vendor, platform, and OS) is useful to complement the data.  As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, a specific bug fix, or simply a particular specific behavior.  This is also necessary to ensure the reliability of the collected data. On top of that, in particular for YANG-Push [RFC8641], it is crucial to know the set of YANG modules supported by the platform, along with their deviations. In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one.  This information is captured by the proposed Platform Manifest.
           </t>
            <t>
-              From a collection paramaters point of view, the data scientist must know that this counter was requested from the network element at specific cadence, as this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period [I-D.claise-netconf-metadata-for-collection]. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. Indeed, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
+              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network element as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period [I-D.claise-netconf-metadata-for-collection]. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
           </t>
            <t>
               The goal of the current document is to define what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly. 
@@ -140,7 +137,7 @@
 
          <section anchor="new-device-onboarding" title="New Device Onboarding">
            <t>
-              When a new device is onbaorded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, and that the data is correctly ingested in the collection system,  and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifiest, which must follow the data up to the collection system, contains all the relevant information.
+              When a new device is onboarded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, and that the data is correctly ingested in the collection system,  and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifiest, which must be linked to the data up to the collection and analytics system, contains all the relevant information.
           </t>
          </section>
 
@@ -152,7 +149,7 @@
               Principle of Domain Ownership: Architecturally and organizationally align business, technology, and analytical data, following the line of responsibility. Here, the Data Mesh principles adopt the boundary of bounded context to individual data products where each domain is responsible for (and owns) its data and models.
             </t>
             <t>
-              Principle of Data as a Product: The “Domain” owners are responsible to provide the data in useful way (discoverable through a catalog, addressable with a permanent and unique address, understandable with well defined semantics, trustworthy and truthful, self-describing for easy consumption, interoperable by supporting standards, secure, self-contained, etc…) and should treat consumers of that data as customers. It requires and relies on the “Domain Ownership” principle.
+              Principle of Data as a Product: The “Domain” owners are responsible to provide the data in useful way (discoverable through a catalog, addressable with a permanent and unique address, understandable with well defined semantics, trustworthy and truthful, self-describing for easy consumption, interoperable by supporting standards, secure, self-contained, etc.) and should treat consumers of that data as customers. It requires and relies on the “Domain Ownership” principle.
             </t>
             <t>
               Principle of Self-serve Data Platform: This fosters the sharing of cross-domain data in order to create extra value.
@@ -163,7 +160,7 @@
             </list>
           </t>
            <t>
-              The most relevant concept for this document is the "Data as a Product"principle. The Data Manifest fullfils this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
+              The most relevant concept for this document is the "Data as a Product"principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
           </t>
          </section>
 
@@ -200,8 +197,7 @@
         </t>
 
           <t>
-            The Platform Manifest contains a comprehensive set of information that characterizes a data source.
-            The platform is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
+            The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog www.yangcatalog.org <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
           </t>
           <t>
             The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
@@ -240,38 +236,27 @@
             </figure>
           </t>
           <t>
-            The data-collection container contains the information related to individual items collection.
-            This subtree currently contains only information about MDT collection.
-            It could be extended to represent other kinds of data collection.
+            The data-collection container contains the information related to YANG-Push individual items collection.
           </t>
           <t>
-              MDT collection is organized in subscriptions.
-              A given collector can subscribe to one ore more subscriptions that usually contain a list of paths.
-              Such a collector only needs the Data Manifest for subscriptions it subscribed to.
-              The Data Manifest for MDT is organized by subscriptions as well so that a collector can select only its subscriptions.
+            The YANG-Push MDT collection is organized in subscriptions.
+            A given collector can subscribe to one ore more subscriptions that usually contain a list of paths.
+            Such a collector only needs the Data Manifest for subscriptions it subscribed to.
+            The Data Manifest for MDT is organized by subscriptions as well so that a collector can select only its subscriptions.
           </t>
           <t>
-            We now have a chicken-and-egg issue if the collector collects the
-            Data Manifest via MDT and wants the Data Manifest
-            for the Data Manifest subscription. First, the
-            collector will collect the actual paths that it needs in
-            subscription A. Once it has the subscription id
-            for A, it will need an additional subscription B for the Data
-            Manifest of paths in A. Then, it would need
-            another subscription C to fetch the Data Manifest for the
-            subscription B and so on... A possible solution
-            would be adding in the "mdt" container an
-            additional list in that contains the Data Manifest for every
-            path that is a Data Manifest.
-            By including that list in subscription B, the collector would have
-            the information about subscription B here.
+            We now have a chicken-and-egg issue if the collector collects the Data Manifest via MDT and wants the Data Manifest
+            for the Data Manifest subscription. First, the collector will collect the actual paths that it needs in subscription A. Once it has the subscription id
+            for A, it will need an additional subscription B for the Data Manifest of paths in A. Then, it would need another subscription C to fetch the Data Manifest for the
+            subscription B and so on... A possible solution would be adding in the "mdt" container an additional list in that contains the Data Manifest for every
+            path that is a Data Manifest. By including that list in subscription B, the collector would have the information about subscription B here.
           </t>
           <t>
             The "datastore" leaf of the subscription container specifies from which datastore the YANG paths are streamed.
           </t>
           <t>
             Within a given collection subscription, the granularity of the collection is defined by the path.
-            Note that all devices do not support an arbitrary granularity up to the leaf, usually for performance reasons.
+            Note that all network elements do not support an arbitrary granularity up to the leaf, usually for performance reasons.
             Each path currently collected by the platform should show up in the mdt-path-data-manifest list.
           </t>
           <t>
@@ -303,13 +288,14 @@
           The Data Manifest MUST be streamed and stored along with the collected data.
           In case the collected data are moved to a different place (typically a database), the Data Manifest MUST follow the collected data.
           This can render the collected data unusable if that context is lost, for instance when the data is stored without the relevant information.
-          The Data Manifest MUST be updated when the Data Manifest information changes, for example, when a router is upgraded, when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
+          The Data Manifest MUST be updated when the Data Manifest information changes, for example, when a router is upgraded, when a new telemetry subscription is configured, or when the telemetry subscription parameters change.
       </t>
        <t>
-          The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest.
+          The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest. In case of Data Manifest change, the collection system should keep the respective Data Manifest even with old data, and not assumed that the latest Data Manifest is valid for the entire time series.
+
        </t>
        <t>
-          The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot.
+          The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot. 
        </t>
         <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
@@ -384,23 +370,14 @@
     <section title="Open Issues">
       <t>
         <list style="symbols">
-	  <t>
-            Do we want to the hardware specifications, next to the OS information? How to fully characterize a virtual device? Do we need to include the vendor (as PEN for instance https://www.iana.org/assignments/enterprise-numbers/enterprise-numbers) ?
-          </t>
           <t>
             Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
-          </t>
-          <t>
-            How do we handle other kinds of collection than MDT like netflow, SNMP, CLI ? How do we map the collected data to the data-manifest ?
           </t>
           <t>
             Align the terms with the YANG Push specifications. Ex: path to subscription (TBC)
           </t>
           <t>
-            Better explain the on-change example.
-          </t>
-          <t>
-            Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-libary from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
+            Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
           </t>
           <t>
             Henk: how does this interact with SBOM effort?
