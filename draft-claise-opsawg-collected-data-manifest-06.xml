@@ -108,7 +108,7 @@
     
          <section anchor="network-analytics" title="Network Analytics">
            <t>
-            Streamed information from netowrk elmeents is used for network analytics, incident detections, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
+            Streamed information from network elements is used for network analytics, incident detections, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
           </t>
           <t>         
             As an example, a database could store a time series representing the evolution of a specific counter collected from a network element. When analyzing the data, the network operator/data scientist must understand the context information for these data:
@@ -137,7 +137,7 @@
 
          <section anchor="new-device-onboarding" title="New Device Onboarding">
            <t>
-              When a new device is onbaorded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, and that the data is correctly ingested in the collection system,  and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifiest, which must be linked to the data up to the collection and analytics system, contains all the relevant information.
+              When a new device is onboarded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, and that the data is correctly ingested in the collection system,  and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifiest, which must be linked to the data up to the collection and analytics system, contains all the relevant information.
           </t>
          </section>
 
@@ -160,7 +160,7 @@
             </list>
           </t>
            <t>
-              The most relevant concept for this document is the "Data as a Product"principle. The Data Manifest fullfils this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
+              The most relevant concept for this document is the "Data as a Product"principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
           </t>
          </section>
 
@@ -708,7 +708,7 @@ module ietf-data-collection-manifest {
           The Data Manifest MUST be streamed and stored along with the collected data.
           In case the collected data are moved to a different place (typically a database), the Data Manifest MUST follow the collected data.
           This can render the collected data unusable if that context is lost, for instance when the data is stored without the relevant information.
-          The Data Manifest MUST be updated when the Data Manifest information changes, for example, when a router is upgraded, when a new telemetry subscription is configured, or when the telemetry subscription paremeters change.
+          The Data Manifest MUST be updated when the Data Manifest information changes, for example, when a router is upgraded, when a new telemetry subscription is configured, or when the telemetry subscription parameters change.
       </t>
        <t>
           The collected data should be mapped to the Data Manifest. Since the Data Manifest will not change as frequently as the collected data itself, it makes sense to map several data to the same Data Manifest. Somehow, the collected data must include a metadata pointing to the corresponding Data Manifest. In case of Data Manifest change, the collection system should keep the respective Data Manifest even with old data, and not assumed that the latest Data Manifest is valid for the entire time series.
@@ -833,7 +833,7 @@ module ietf-data-collection-manifest {
             Align the terms with the YANG Push specifications. Ex: path to subscription (TBC)
           </t>
           <t>
-            Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-libary from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
+            Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
           </t>
           <t>
             Henk: how does this interact with SBOM effort?
