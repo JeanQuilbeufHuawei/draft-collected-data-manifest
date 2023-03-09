@@ -271,7 +271,7 @@ module ietf-yang-push-modif {
     description
       "This grouping defines the types of selectors for objects
        from a datastore.";
-    choice filter-spec-yp {
+    choice datastore-filter-spec {
       description
         "The content filter specification for this request.";
       anydata datastore-subtree-filter {

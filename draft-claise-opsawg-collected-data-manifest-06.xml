@@ -194,14 +194,18 @@
 module: ietf-platform-manifest
   +--ro platforms
      +--ro platform* [id]
-        +--ro id                  string
-        +--ro name?               string
-        +--ro vendor?             string
-        +--ro vendor-pen?         uint32
-        +--ro software-version?   string
-        +--ro software-flavor?    string
-        +--ro os-version?         string
-        +--ro os-type?            string
+        +--ro id                   string
+        +--ro name?                string
+        +--ro vendor?              string
+        +--ro vendor-pen?          uint32
+        +--ro software-version?    string
+        +--ro software-flavor?     string
+        +--ro os-version?          string
+        +--ro os-type?             string
+        +--ro yang-push-streams
+        |  +--ro stream* [name]
+        |     +--ro name           string
+        |     +--ro description?   string
         +--ro yang-library
            +--ro module-set* [name]
            |  +--ro name                  string
@@ -499,6 +503,34 @@ module ietf-platform-manifest {
            an application that requires a specific operating system
            type.";
       }
+      container yang-push-streams {
+        // copied from "streams" container of
+        // ietf-subscribed-notifications
+        config false;
+        description
+          "Contains information on the built-in event streams provided by
+           the platform.";
+        list stream {
+          key "name";
+          description
+            "Identifies the built-in event streams that are supported by
+             the publisher.";
+          leaf name {
+            type string;
+            description
+              "A handle for a system-provided event stream made up of a
+               sequential set of event records, each of which is
+               characterized by its own domain and semantics.";
+          }
+          leaf description {
+            type string;
+            description
+              "A description of the event stream, including such
+               information as the type of event records that are
+               available in this event stream.";
+          }
+        }
+      }
       container yang-library {
         description
           "The YANG library of the device specifying the modules
@@ -531,63 +563,34 @@ module: ietf-data-collection-manifest
               |       sn:subscription-id
               +--ro (target)
               |  +--:(stream)
-              |  |  +--ro (stream-filter)?
-              |  |  |  +--:(by-reference)
-              |  |  |  |  +--ro stream-filter-name
-              |  |  |  |          stream-filter-ref
-              |  |  |  +--:(within-subscription)
-              |  |  |     +--ro (filter-spec)?
-              |  |  |        +--:(stream-subtree-filter)
-              |  |  |        |  +--ro stream-subtree-filter?
-              |  |  |        |          <anydata> {subtree}?
-              |  |  |        +--:(stream-xpath-filter)
-              |  |  |           +--ro stream-xpath-filter?
-              |  |  |                   yang:xpath1.0 {xpath}?
-              |  |  +--ro stream
-              |  |  |       stream-ref
-              |  |  +--ro replay-start-time?
-              |  |          yang:date-and-time {replay}?
+              |  |  +--ro stream                            leafref
+              |  |  +--ro (filter-spec)?
+              |  |     +--:(stream-subtree-filter)
+              |  |     |  +--ro stream-subtree-filter?      <anydata>
+              |  |     |          {subtree}?
+              |  |     +--:(stream-xpath-filter)
+              |  |        +--ro stream-xpath-filter?
+              |  |                yang:xpath1.0 {xpath}?
               |  +--:(datastore)
               |     +--ro datastore
               |     |       identityref
-              |     +--ro (selection-filter)?
-              |        +--:(by-reference)
-              |        |  +--ro selection-filter-ref
-              |        |          selection-filter-ref
-              |        +--:(within-subscription)
-              |           +--ro (filter-spec-yp)?
-              |              +--:(datastore-subtree-filter)
-              |              |  +--ro datastore-subtree-filter?
-              |              |          <anydata> {sn:subtree}?
-              |              +--:(datastore-xpath-filter)
-              |                 +--ro datastore-xpath-filter?
-              |                         yang:xpath1.0 {sn:xpath}?
-              +--ro stop-time?
-              |       yang:date-and-time
-              +--ro dscp?
-              |       inet:dscp {dscp}?
-              +--ro weighting?
-              |       uint8 {qos}?
-              +--ro dependency?
-              |       subscription-id {qos}?
-              +--ro transport?
-              |       transport {configured}?
-              +--ro encoding?
-              |       encoding
-              +--ro purpose?
-              |       string {configured}?
-              +--ro current-period?
-              |       yp:centiseconds
+              |     +--ro (datastore-filter-spec)?
+              |        +--:(datastore-subtree-filter)
+              |        |  +--ro datastore-subtree-filter?   <anydata>
+              |        |          {sn:subtree}?
+              |        +--:(datastore-xpath-filter)
+              |           +--ro datastore-xpath-filter?
+              |                   yang:xpath1.0 {sn:xpath}?
               +--ro (update-trigger)?
-                 +--:(periodic)
-                 |  +--ro periodic!
-                 |     +--ro period         centiseconds
-                 |     +--ro anchor-time?   yang:date-and-time
-                 +--:(on-change) {on-change}?
-                    +--ro on-change!
-                       +--ro dampening-period?   centiseconds
-                       +--ro sync-on-start?      boolean
-                       +--ro excluded-change*    change-type
+              |  +--:(periodic)
+              |  |  +--ro periodic!
+              |  |     +--ro period         centiseconds
+              |  |     +--ro anchor-time?   yang:date-and-time
+              |  +--:(on-change) {on-change}?
+              |     +--ro on-change!
+              |        +--ro dampening-period?   centiseconds
+              +--ro current-period?
+                      yp:centiseconds
                 ]]></artwork>
             </figure>
           </t>
@@ -621,6 +624,11 @@ module ietf-data-collection-manifest {
     "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
   prefix d-mf;
 
+  import ietf-datastores {
+    prefix ds;
+    reference
+      "RFC 8342: Network Management Datastore Architecture (NMDA)";
+  }
   import ietf-platform-manifest {
     prefix p-mf;
     reference
@@ -684,31 +692,6 @@ module ietf-data-collection-manifest {
       "RFC xxxx: Title to be completed";
   }
 
-  /*
-   *  Augments similar to the ones in ietf-yang-push module as we need
-   *  them for the subscription information.
-   */
-
-  augment "/data-collections/data-collection"
-        + "/yang-push-subscriptions/subscription" {
-    when 'd-mf:datastore';
-    description
-      "This augmentation adds objects to a subscription that are
-       specific to a datastore subscription, i.e., a subscription to
-       a stream of datastore node updates.";
-    uses yp:update-policy;
-  }
-
-  augment "/data-collections/data-collection"
-        + "/yang-push-subscriptions/subscription/target" {
-    description
-      "This augmentation allows the datastore to be included as
-       part of the selection-filtering criteria for a subscription.";
-    case datastore {
-      uses yp:datastore-criteria;
-    }
-  }
-
   container data-collections {
     config false;
     description
@@ -755,7 +738,46 @@ module ietf-data-collection-manifest {
               "Identifier of a subscription; unique in a given
                publisher.";
           }
-          uses sn:subscription-policy;
+          choice target {
+            mandatory true;
+            description
+              "Identifies the source of information against which a
+               subscription is being applied as well as specifics on the
+               subset of information desired from that source.";
+            case stream {
+              description
+                "An event stream filter can be applied to a subscription.
+                 That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+              leaf stream {
+                type leafref {
+                  path "/p-mf:platforms"
+                     + "/p-mf:platform[p-mf:id=current()/../../.."
+                     + "/platform-id]/p-mf:yang-push-streams"
+                     + "/p-mf:stream/p-mf:name";
+                }
+                mandatory true;
+                description
+                  "Indicates the event stream to be considered for
+                   this subscription.";
+              }
+              uses sn:stream-filter-elements;
+            }
+            case datastore {
+              description
+                "Yang-push subscription from a datastore.
+                 That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+              leaf datastore {
+                type identityref {
+                  base ds:datastore;
+                }
+                mandatory true;
+                description
+                  "Datastore from which to retrieve data.";
+              }
+              uses yp:selection-filter-types;
+            }
+          }
+          uses yp:update-policy-modifiable;
           leaf current-period {
             when '../periodic';
             type yp:centiseconds;
@@ -770,6 +792,31 @@ module ietf-data-collection-manifest {
       // we could augment here with other kind of collection items
     }
   }
+
+  /*
+   *  Augments similar to the ones in ietf-yang-push module as we need
+   *  them for the subscription information.
+   */
+  /*
+   augment "/data-collections/data-collection/yang-push-subscriptions/subscription" {
+     when 'd-mf:datastore';
+     description
+       "This augmentation adds objects to a subscription that are
+        specific to a datastore subscription, i.e., a subscription to
+        a stream of datastore node updates.";
+     uses yp:update-policy;
+   }
+  
+  
+   augment "/data-collections/data-collection/yang-push-subscriptions/subscription/target" {
+     description
+       "This augmentation allows the datastore to be included as
+        part of the selection-filtering criteria for a subscription.";
+     case datastore {
+       uses yp:datastore-criteria;
+     }
+   }
+   */
 }
     ]]></artwork>
         </figure>
@@ -1370,7 +1417,7 @@ module ietf-yang-push-modif {
     description
       "This grouping defines the types of selectors for objects
        from a datastore.";
-    choice filter-spec-yp {
+    choice datastore-filter-spec {
       description
         "The content filter specification for this request.";
       anydata datastore-subtree-filter {

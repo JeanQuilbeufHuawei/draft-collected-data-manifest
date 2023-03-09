@@ -3,6 +3,12 @@ module ietf-data-collection-manifest {
   namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
   prefix d-mf;
 
+  import ietf-datastores {
+    prefix ds;
+    reference
+      "RFC 8342: Network Management Datastore Architecture (NMDA)";
+  }
+
   import ietf-platform-manifest {
     prefix p-mf;
     reference "RFC XXXX: Title to be completed";
@@ -111,7 +117,43 @@ module ietf-data-collection-manifest {
               "Identifier of a subscription; unique in a given
                publisher.";
           }
-          uses sn:subscription-policy;
+          choice target {
+            mandatory true;
+            description
+              "Identifies the source of information against which a
+               subscription is being applied as well as specifics on the
+               subset of information desired from that source.";
+            case stream {
+                description
+                  "An event stream filter can be applied to a subscription.
+                   That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+                leaf stream {
+                  type leafref {
+                    path "/p-mf:platforms/p-mf:platform[p-mf:id=current()/../../../platform-id]/p-mf:yang-push-streams/p-mf:stream/p-mf:name";
+                  }
+                  mandatory true;
+                  description
+                    "Indicates the event stream to be considered for
+                     this subscription.";
+                }
+                uses sn:stream-filter-elements;
+            }
+            case datastore {
+                description
+                  "Yang-push subscription from a datastore.
+                   That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+               leaf datastore {
+                 type identityref {
+                   base ds:datastore;
+                 }
+                 mandatory true;
+                 description
+                   "Datastore from which to retrieve data.";
+               }
+               uses yp:selection-filter-types;
+            }
+          }
+          uses yp:update-policy-modifiable;
           leaf current-period {
             when '../periodic';
             type yp:centiseconds;
@@ -133,7 +175,7 @@ module ietf-data-collection-manifest {
  *  them for the subscription information.
  */
 
-
+ /*
   augment "/data-collections/data-collection/yang-push-subscriptions/subscription" {
     when 'd-mf:datastore';
     description
@@ -152,6 +194,7 @@ module ietf-data-collection-manifest {
       uses yp:datastore-criteria;
     }
   }
+  */
 
 
 }

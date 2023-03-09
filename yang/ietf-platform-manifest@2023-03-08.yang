@@ -124,6 +124,34 @@ module ietf-platform-manifest {
            an application that requires a specific operating system
            type.";
       }
+      container yang-push-streams {
+        // copied from "streams" container of
+        // ietf-subscribed-notifications
+        config false;
+        description
+          "Contains information on the built-in event streams provided by
+           the platform.";
+        list stream {
+          key "name";
+          description
+            "Identifies the built-in event streams that are supported by
+             the publisher.";
+          leaf name {
+            type string;
+            description
+              "A handle for a system-provided event stream made up of a
+               sequential set of event records, each of which is
+               characterized by its own domain and semantics.";
+          }
+          leaf description {
+            type string;
+            description
+              "A description of the event stream, including such
+               information as the type of event records that are
+               available in this event stream.";
+          }
+        }
+      }
       container yang-library {
         description
           "The YANG library of the device specifying the modules
