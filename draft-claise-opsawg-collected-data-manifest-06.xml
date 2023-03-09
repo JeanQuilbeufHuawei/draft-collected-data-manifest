@@ -257,6 +257,10 @@ module: ietf-platform-manifest
             The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
           </t>
           <t>
+            In order to provide information for yang-push subscriptions based on streams, the Platform Manifest specifies the streams available on the platform within the 'yang-push-streams' container.
+            That container is similar to the one from the ietf-subscribed-notifications module, and the Data Collection Manifest uses it to refer to streams used by subscriptions.
+          </t>
+          <t>
             The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
             That module set is particularly useful to define the paths, as they are based on module names.
             Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
@@ -292,8 +296,12 @@ module ietf-platform-manifest {
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
      WG List:  <mailto:opsawg@ietf.org>
-     Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
-     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Grapf     <thomas.graf@swisscom.com>";
   description
     "This module describes the platform information to be used as
      context of data collection from a given network element. The
@@ -508,8 +516,8 @@ module ietf-platform-manifest {
         // ietf-subscribed-notifications
         config false;
         description
-          "Contains information on the built-in event streams provided by
-           the platform.";
+          "Contains information on the built-in event streams provided
+           by the platform.";
         list stream {
           key "name";
           description
@@ -572,8 +580,7 @@ module: ietf-data-collection-manifest
               |  |        +--ro stream-xpath-filter?
               |  |                yang:xpath1.0 {xpath}?
               |  +--:(datastore)
-              |     +--ro datastore
-              |     |       identityref
+              |     +--ro datastore                         leafref
               |     +--ro (datastore-filter-spec)?
               |        +--:(datastore-subtree-filter)
               |        |  +--ro datastore-subtree-filter?   <anydata>
@@ -581,6 +588,17 @@ module: ietf-data-collection-manifest
               |        +--:(datastore-xpath-filter)
               |           +--ro datastore-xpath-filter?
               |                   yang:xpath1.0 {sn:xpath}?
+              +--ro transport?
+              |       sn:transport
+              +--ro encoding?
+              |       sn:encoding
+              +--ro purpose?                                string
+              +--ro dscp?                                   inet:dscp
+              |       {dscp}?
+              +--ro weighting?                              uint8
+              |       {qos}?
+              +--ro dependency?
+              |       subscription-id {qos}?
               +--ro (update-trigger)?
               |  +--:(periodic)
               |  |  +--ro periodic!
@@ -590,7 +608,15 @@ module: ietf-data-collection-manifest
               |     +--ro on-change!
               |        +--ro dampening-period?   centiseconds
               +--ro current-period?
-                      yp:centiseconds
+              |       yp:centiseconds
+              +--ro receivers
+                 +--ro receiver* [name]
+                    +--ro name                      string
+                    +--ro sent-event-records?
+                    |       yang:zero-based-counter64
+                    +--ro excluded-event-records?
+                    |       yang:zero-based-counter64
+                    +--ro state                     enumeration
                 ]]></artwork>
             </figure>
           </t>
@@ -600,8 +626,31 @@ module: ietf-data-collection-manifest
           </t>
           <t>
             The YANG-Push collection is organized in subscriptions, the parameters for such a subscription are specified in <xref target="RFC8639"/> and <xref target="RFC8641"/>.
-            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription' and reuses the YANG modules from these RFCs in order to characterize the subscription status.
-            The only additional node is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
+            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription'.
+            Subscription metadata are the bulk of the Data Collection Manifest, they are heavily based on the two RFCs above.
+          </t>
+          <t>
+            The 'target' choice specify the selected contents for the subscription.
+            We did not include the target with a reference to a common filter as stored in 'filters' in ietf-subscribed-notfications.
+            The rationale for this choice is that otherwise we would need to store these filters in the Platform Manifest, which could cause changes in that manifest more often than needed.
+            If a stream based subscription is used <xref target="RFC8639"/>, the stream must exist in the 'yang-push-streams' container of Platform Manifest, which is modelled as a leafref in our module.
+            If a datastore based subscription is used <xref target="RFC8641"/>, the datastore must exist in the 'yang-library' container of the Platform Manifest, which is modelled by a leafref as well.
+          </t>
+          <t>
+            We also included 'transport', 'encoding' and 'purpose' as in ietf-subscribed-notification, but without the feature switches as we are not concerned about using this module for configuration.
+          </t>
+          <t>
+            We also included the 'dscp', 'weighting' and 'dependency' as in ietf-subscribed-notification, again without the feature switches.
+            This information might be useful to understand why the collection is failing or less frequent than expected for a given subscription.
+          </t>
+          <t>
+            The 'update-trigger' choice from ietf-yang-push is included as well, as it is crucial to understand the frequency at which notifications should arrive.
+          </t>
+          <t>
+            The only new content is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
+          </t>
+          <t>
+            Finally, we also included the state of the receivers for that subscription, as in ietf-subscribed-notifications.
           </t>
           <!-- Can be removed for YANG-push as the subscription-id is config true. Therefore it’s possible to create a subscription that monitors itself.t>
             We now have a chicken-and-egg issue if the collector collects the Data Manifest via MDT and wants the Data Manifest
@@ -624,11 +673,6 @@ module ietf-data-collection-manifest {
     "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
   prefix d-mf;
 
-  import ietf-datastores {
-    prefix ds;
-    reference
-      "RFC 8342: Network Management Datastore Architecture (NMDA)";
-  }
   import ietf-platform-manifest {
     prefix p-mf;
     reference
@@ -647,14 +691,23 @@ module ietf-data-collection-manifest {
        used original version. This import is a modified version so that
        it compiles.";
   }
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 6991: Common YANG Data Types";
+  }
 
   organization
     "IETF OPSAWG (Network Configuration) Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
      WG List:  <mailto:opsawg@ietf.org>
-     Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
-     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Grapf     <thomas.graf@swisscom.com>";
   description
     "This module describes the context of data collection from a
      given network element. The contents of this model must be
@@ -746,8 +799,10 @@ module ietf-data-collection-manifest {
                subset of information desired from that source.";
             case stream {
               description
-                "An event stream filter can be applied to a subscription.
-                 That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+                "An event stream filter can be applied to a
+                 subscription. That filter should always be fully
+                 included in the Data Collection manifest, i.e. common
+                 filters need to be added here.";
               leaf stream {
                 type leafref {
                   path "/p-mf:platforms"
@@ -765,10 +820,15 @@ module ietf-data-collection-manifest {
             case datastore {
               description
                 "Yang-push subscription from a datastore.
-                 That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+                 That filter should always be fully included in the
+                 Data Collection manifest, i.e. common filters need
+                 to be added here.";
               leaf datastore {
-                type identityref {
-                  base ds:datastore;
+                type leafref {
+                  path "/p-mf:platforms"
+                     + "/p-mf:platform[p-mf:id=current()/../../.."
+                     + "/platform-id]/p-mf:yang-library"
+                     + "/p-mf:datastore/p-mf:name";
                 }
                 mandatory true;
                 description
@@ -777,6 +837,31 @@ module ietf-data-collection-manifest {
               uses yp:selection-filter-types;
             }
           }
+          leaf transport {
+            type sn:transport;
+            description
+              "For a configured subscription, this leaf specifies the
+               transport used to deliver messages destined for all
+               receivers of that subscription.";
+          }
+          leaf encoding {
+            type sn:encoding;
+            description
+              "The type of encoding for notification messages.  For a
+               dynamic subscription, if not included as part of an
+               'establish-subscription' RPC, the encoding will be
+               populated with the encoding used by that RPC.  For a
+               configured subscription, if not explicitly configured,
+               the encoding will be the default encoding for an
+               underlying transport.";
+          }
+          leaf purpose {
+            type string;
+            description
+              "Open text allowing a configuring entity to embed the
+               originator or other specifics of this subscription.";
+          }
+          uses sn:update-qos;
           uses yp:update-policy-modifiable;
           leaf current-period {
             when '../periodic';
@@ -787,36 +872,91 @@ module ietf-data-collection-manifest {
                when the plaftorm might increase the period
                automatically when it is overloaded.";
           }
+          container receivers {
+            description
+              "Set of receivers in a subscription.";
+            list receiver {
+              key "name";
+              min-elements 1;
+              description
+                "A host intended as a recipient for the notification
+                 messages of a subscription.  For configured
+                 subscriptions, transport-specific network parameters
+                 (or a leafref to those parameters) may be augmented to
+                 a specific receiver in this list.";
+              leaf name {
+                type string;
+                description
+                  "Identifies a unique receiver for a subscription.";
+              }
+              leaf sent-event-records {
+                type yang:zero-based-counter64;
+                config false;
+                description
+                  "The number of event records sent to the receiver.
+                   The count is initialized when a dynamic subscription
+                   is established or when a configured receiver
+                   transitions to the 'valid' state.";
+              }
+              leaf excluded-event-records {
+                type yang:zero-based-counter64;
+                config false;
+                description
+                  "The number of event records explicitly removed via
+                   either an event stream filter or an access control
+                   filter so that they are not passed to a receiver.
+                   This count is set to zero each time
+                   'sent-event-records' is initialized.";
+              }
+              leaf state {
+                type enumeration {
+                  enum active {
+                    value 1;
+                    description
+                      "The receiver is currently being sent any
+                       applicable notification messages for the
+                       subscription.";
+                  }
+                  enum suspended {
+                    value 2;
+                    description
+                      "The receiver state is 'suspended', so the
+                       publisher is currently unable to provide
+                       notification messages for the subscription.";
+                  }
+                  enum connecting {
+                    value 3;
+                    description
+                      "A subscription has been configured, but a
+                       'subscription-started' subscription state change
+                       notification needs to be successfully received
+                       before notification messages are sent. ";
+                  }
+                  enum disconnected {
+                    value 4;
+                    description
+                      "A subscription has failed to send a
+                       'subscription-started' state change to the
+                       receiver.  Additional connection attempts are not
+                       currently being made.";
+                  }
+                }
+                config false;
+                mandatory true;
+                description
+                  "Specifies the state of a subscription from the
+                   perspective of a particular receiver.  With this
+                   information, it is possible to determine whether a
+                   publisher is currently generating notification
+                   messages intended for that receiver.";
+              }
+            }
+          }
         }
       }
       // we could augment here with other kind of collection items
     }
   }
-
-  /*
-   *  Augments similar to the ones in ietf-yang-push module as we need
-   *  them for the subscription information.
-   */
-  /*
-   augment "/data-collections/data-collection/yang-push-subscriptions/subscription" {
-     when 'd-mf:datastore';
-     description
-       "This augmentation adds objects to a subscription that are
-        specific to a datastore subscription, i.e., a subscription to
-        a stream of datastore node updates.";
-     uses yp:update-policy;
-   }
-  
-  
-   augment "/data-collections/data-collection/yang-push-subscriptions/subscription/target" {
-     description
-       "This augmentation allows the datastore to be included as
-        part of the selection-filtering criteria for a subscription.";
-     case datastore {
-       uses yp:datastore-criteria;
-     }
-   }
-   */
 }
     ]]></artwork>
         </figure>
@@ -951,10 +1091,9 @@ module ietf-data-collection-manifest {
             Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
           </t>
           <t>
-            Align the terms with the YANG Push specifications. Ex: path to subscription (TBC)
-          </t>
-          <t>
             Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
+            Similarly, the ietf-data-collection-manifest.yang includes many lines of copy-pasting from ietf-yang-push.yang and ietf-subscribed-notifications.yang since we want to include the information from these modules. Reusing groupings is not suitable as some leafrefs are pointing to nodes that are not at the same location in our network level module.
+            Maybe we need to find a solution (deviations + some kind of schema mount?) maybe we can live with similar modules since they have common nodes but different purposes?
           </t>
           <t>
             Henk: how does this interact with SBOM effort?

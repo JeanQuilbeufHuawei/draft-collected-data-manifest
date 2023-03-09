@@ -19,8 +19,12 @@ module ietf-platform-manifest {
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
      WG List:  <mailto:opsawg@ietf.org>
-     Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
-     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Grapf     <thomas.graf@swisscom.com>";
   description
     "This module describes the platform information to be used as
      context of data collection from a given network element. The
@@ -129,8 +133,8 @@ module ietf-platform-manifest {
         // ietf-subscribed-notifications
         config false;
         description
-          "Contains information on the built-in event streams provided by
-           the platform.";
+          "Contains information on the built-in event streams provided
+           by the platform.";
         list stream {
           key "name";
           description

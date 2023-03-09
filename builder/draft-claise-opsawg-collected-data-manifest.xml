@@ -207,6 +207,10 @@
             The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
           </t>
           <t>
+            In order to provide information for yang-push subscriptions based on streams, the Platform Manifest specifies the streams available on the platform within the 'yang-push-streams' container.
+            That container is similar to the one from the ietf-subscribed-notifications module, and the Data Collection Manifest uses it to refer to streams used by subscriptions.
+          </t>
+          <t>
             The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
             That module set is particularly useful to define the paths, as they are based on module names.
             Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
@@ -244,8 +248,31 @@
           </t>
           <t>
             The YANG-Push collection is organized in subscriptions, the parameters for such a subscription are specified in <xref target="RFC8639"/> and <xref target="RFC8641"/>.
-            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription' and reuses the YANG modules from these RFCs in order to characterize the subscription status.
-            The only additional node is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
+            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription'.
+            Subscription metadata are the bulk of the Data Collection Manifest, they are heavily based on the two RFCs above.
+          </t>
+          <t>
+            The 'target' choice specify the selected contents for the subscription.
+            We did not include the target with a reference to a common filter as stored in 'filters' in ietf-subscribed-notfications.
+            The rationale for this choice is that otherwise we would need to store these filters in the Platform Manifest, which could cause changes in that manifest more often than needed.
+            If a stream based subscription is used <xref target="RFC8639"/>, the stream must exist in the 'yang-push-streams' container of Platform Manifest, which is modelled as a leafref in our module.
+            If a datastore based subscription is used <xref target="RFC8641"/>, the datastore must exist in the 'yang-library' container of the Platform Manifest, which is modelled by a leafref as well.
+          </t>
+          <t>
+            We also included 'transport', 'encoding' and 'purpose' as in ietf-subscribed-notification, but without the feature switches as we are not concerned about using this module for configuration.
+          </t>
+          <t>
+            We also included the 'dscp', 'weighting' and 'dependency' as in ietf-subscribed-notification, again without the feature switches.
+            This information might be useful to understand why the collection is failing or less frequent than expected for a given subscription.
+          </t>
+          <t>
+            The 'update-trigger' choice from ietf-yang-push is included as well, as it is crucial to understand the frequency at which notifications should arrive.
+          </t>
+          <t>
+            The only new content is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
+          </t>
+          <t>
+            Finally, we also included the state of the receivers for that subscription, as in ietf-subscribed-notifications.
           </t>
           <!-- Can be removed for YANG-push as the subscription-id is config true. Therefore it’s possible to create a subscription that monitors itself.t>
             We now have a chicken-and-egg issue if the collector collects the Data Manifest via MDT and wants the Data Manifest
@@ -360,10 +387,9 @@
             Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
           </t>
           <t>
-            Align the terms with the YANG Push specifications. Ex: path to subscription (TBC)
-          </t>
-          <t>
             Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
+            Similarly, the ietf-data-collection-manifest.yang includes many lines of copy-pasting from ietf-yang-push.yang and ietf-subscribed-notifications.yang since we want to include the information from these modules. Reusing groupings is not suitable as some leafrefs are pointing to nodes that are not at the same location in our network level module.
+            Maybe we need to find a solution (deviations + some kind of schema mount?) maybe we can live with similar modules since they have common nodes but different purposes?
           </t>
           <t>
             Henk: how does this interact with SBOM effort?

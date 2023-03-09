@@ -3,12 +3,6 @@ module ietf-data-collection-manifest {
   namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
   prefix d-mf;
 
-  import ietf-datastores {
-    prefix ds;
-    reference
-      "RFC 8342: Network Management Datastore Architecture (NMDA)";
-  }
-
   import ietf-platform-manifest {
     prefix p-mf;
     reference "RFC XXXX: Title to be completed";
@@ -27,13 +21,23 @@ module ietf-data-collection-manifest {
     it compiles.";
   }
 
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 6991: Common YANG Data Types";
+  }
+
   organization
     "IETF OPSAWG (Network Configuration) Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
      WG List:  <mailto:opsawg@ietf.org>
-     Author:   Benoit Claise  <mailto:benoit.claise@huawei.com>
-     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>";
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Grapf     <thomas.graf@swisscom.com>";
   description
     "This module describes the context of data collection from a
      given network element. The contents of this model must be
@@ -125,8 +129,10 @@ module ietf-data-collection-manifest {
                subset of information desired from that source.";
             case stream {
                 description
-                  "An event stream filter can be applied to a subscription.
-                   That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+                  "An event stream filter can be applied to a
+                  subscription. That filter should always be fully
+                  included in the Data Collection manifest, i.e. common
+                  filters need to be added here.";
                 leaf stream {
                   type leafref {
                     path "/p-mf:platforms/p-mf:platform[p-mf:id=current()/../../../platform-id]/p-mf:yang-push-streams/p-mf:stream/p-mf:name";
@@ -141,10 +147,12 @@ module ietf-data-collection-manifest {
             case datastore {
                 description
                   "Yang-push subscription from a datastore.
-                   That filter should always be fully included in the Data Collection manifest, i.e. common filters need to be added here.";
+                   That filter should always be fully included in the
+                   Data Collection manifest, i.e. common filters need
+                   to be added here.";
                leaf datastore {
-                 type identityref {
-                   base ds:datastore;
+                 type leafref {
+                   path "/p-mf:platforms/p-mf:platform[p-mf:id=current()/../../../platform-id]/p-mf:yang-library/p-mf:datastore/p-mf:name";
                  }
                  mandatory true;
                  description
@@ -153,6 +161,31 @@ module ietf-data-collection-manifest {
                uses yp:selection-filter-types;
             }
           }
+          leaf transport {
+            type sn:transport;
+            description
+              "For a configured subscription, this leaf specifies the
+               transport used to deliver messages destined for all
+               receivers of that subscription.";
+          }
+          leaf encoding {
+            type sn:encoding;
+            description
+              "The type of encoding for notification messages.  For a
+               dynamic subscription, if not included as part of an
+               'establish-subscription' RPC, the encoding will be
+               populated with the encoding used by that RPC.  For a
+               configured subscription, if not explicitly configured,
+               the encoding will be the default encoding for an
+               underlying transport.";
+          }
+          leaf purpose {
+            type string;
+            description
+              "Open text allowing a configuring entity to embed the
+               originator or other specifics of this subscription.";
+          }
+          uses sn:update-qos;
           uses yp:update-policy-modifiable;
           leaf current-period {
             when '../periodic';
@@ -163,38 +196,89 @@ module ietf-data-collection-manifest {
               when the plaftorm might increase the period
               automatically when it is overloaded.";
           }
+          container receivers {
+            description
+              "Set of receivers in a subscription.";
+            list receiver {
+              key "name";
+              min-elements 1;
+              description
+                "A host intended as a recipient for the notification
+                 messages of a subscription.  For configured
+                 subscriptions, transport-specific network parameters
+                 (or a leafref to those parameters) may be augmented to
+                 a specific receiver in this list.";
+              leaf name {
+                type string;
+                description
+                  "Identifies a unique receiver for a subscription.";
+              }
+              leaf sent-event-records {
+                type yang:zero-based-counter64;
+                config false;
+                description
+                  "The number of event records sent to the receiver.
+                  The count is initialized when a dynamic subscription
+                  is established or when a configured receiver
+                   transitions to the 'valid' state.";
+              }
+              leaf excluded-event-records {
+                type yang:zero-based-counter64;
+                config false;
+                description
+                  "The number of event records explicitly removed via
+                   either an event stream filter or an access control
+                   filter so that they are not passed to a receiver.
+                   This count is set to zero each time
+                   'sent-event-records' is initialized.";
+              }
+              leaf state {
+                type enumeration {
+                  enum active {
+                    value 1;
+                    description
+                      "The receiver is currently being sent any
+                       applicable notification messages for the
+                       subscription.";
+                  }
+                  enum suspended {
+                    value 2;
+                    description
+                      "The receiver state is 'suspended', so the
+                       publisher is currently unable to provide
+                       notification messages for the subscription.";
+                  }
+                  enum connecting {
+                    value 3;
+                    description
+                      "A subscription has been configured, but a
+                       'subscription-started' subscription state change
+                       notification needs to be successfully received
+                       before notification messages are sent. ";
+                  }
+                  enum disconnected {
+                    value 4;
+                    description
+                      "A subscription has failed to send a
+                       'subscription-started' state change to the
+                       receiver.  Additional connection attempts are not
+                       currently being made.";
+                  }
+                }
+                config false;
+                mandatory true;
+                description
+                  "Specifies the state of a subscription from the
+                   perspective of a particular receiver.  With this
+                   information, it is possible to determine whether a
+                   publisher is currently generating notification
+                   messages intended for that receiver.";
+              }
+            }
+          }
         }
       }
       // we could augment here with other kind of collection items
     }
   }
-
-
-/*
- *  Augments similar to the ones in ietf-yang-push module as we need
- *  them for the subscription information.
- */
-
- /*
-  augment "/data-collections/data-collection/yang-push-subscriptions/subscription" {
-    when 'd-mf:datastore';
-    description
-      "This augmentation adds objects to a subscription that are
-       specific to a datastore subscription, i.e., a subscription to
-       a stream of datastore node updates.";
-    uses yp:update-policy;
-  }
-
-
-  augment "/data-collections/data-collection/yang-push-subscriptions/subscription/target" {
-    description
-      "This augmentation allows the datastore to be included as
-       part of the selection-filtering criteria for a subscription.";
-    case datastore {
-      uses yp:datastore-criteria;
-    }
-  }
-  */
-
-
 }
