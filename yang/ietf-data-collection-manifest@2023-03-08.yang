@@ -27,6 +27,12 @@ module ietf-data-collection-manifest {
       "RFC 6991: Common YANG Data Types";
   }
 
+  import ietf-static-schema-mount {
+    prefix static;
+    reference
+      "XXXX: Design-time YANG Schema Mount";
+  }
+
   organization
     "IETF OPSAWG (Network Configuration) Working Group";
   contact
@@ -92,101 +98,13 @@ module ietf-data-collection-manifest {
           "Id of the platform collecting the data. This id is the same
           as the one in the platform manifest.";
       }
-      container yang-push-subscriptions {
-        /*
-         * Copy-pasting here some of the contents of the "subscriptions"
-         * container from ietf-subscribed notification.
-         */
-        description
-          "Contains the list of currently active subscriptions, i.e.,
-           subscriptions that are currently in effect, used for
-           subscription management and monitoring purposes.  This
-           includes subscriptions that have been set up via
-           RPC primitives as well as subscriptions that have been
-           established via configuration.";
-        list subscription {
-          key "id";
-          description
-            "The identity and specific parameters of a subscription.
-             Subscriptions in this list can be created using a control
-             channel or RPC or can be established through configuration.
-
-             If the 'kill-subscription' RPC or configuration operations
-             are used to delete a subscription, a
-             'subscription-terminated' message is sent to any active or
-             suspended receivers.";
-          leaf id {
-            type sn:subscription-id;
-            description
-              "Identifier of a subscription; unique in a given
-               publisher.";
-          }
-          choice target {
-            mandatory true;
-            description
-              "Identifies the source of information against which a
-               subscription is being applied as well as specifics on the
-               subset of information desired from that source.";
-            case stream {
-                description
-                  "An event stream filter can be applied to a
-                  subscription. That filter should always be fully
-                  included in the Data Collection manifest, i.e. common
-                  filters need to be added here.";
-                leaf stream {
-                  type leafref {
-                    path "/p-mf:platforms/p-mf:platform[p-mf:id=current()/../../../platform-id]/p-mf:yang-push-streams/p-mf:stream/p-mf:name";
-                  }
-                  mandatory true;
-                  description
-                    "Indicates the event stream to be considered for
-                     this subscription.";
-                }
-                uses sn:stream-filter-elements;
-            }
-            case datastore {
-                description
-                  "Yang-push subscription from a datastore.
-                   That filter should always be fully included in the
-                   Data Collection manifest, i.e. common filters need
-                   to be added here.";
-               leaf datastore {
-                 type leafref {
-                   path "/p-mf:platforms/p-mf:platform[p-mf:id=current()/../../../platform-id]/p-mf:yang-library/p-mf:datastore/p-mf:name";
-                 }
-                 mandatory true;
-                 description
-                   "Datastore from which to retrieve data.";
-               }
-               uses yp:selection-filter-types;
-            }
-          }
-          leaf transport {
-            type sn:transport;
-            description
-              "For a configured subscription, this leaf specifies the
-               transport used to deliver messages destined for all
-               receivers of that subscription.";
-          }
-          leaf encoding {
-            type sn:encoding;
-            description
-              "The type of encoding for notification messages.  For a
-               dynamic subscription, if not included as part of an
-               'establish-subscription' RPC, the encoding will be
-               populated with the encoding used by that RPC.  For a
-               configured subscription, if not explicitly configured,
-               the encoding will be the default encoding for an
-               underlying transport.";
-          }
-          leaf purpose {
-            type string;
-            description
-              "Open text allowing a configuring entity to embed the
-               originator or other specifics of this subscription.";
-          }
-          uses sn:update-qos;
-          uses yp:update-policy-modifiable;
+      static:mount "sn";  // Mount subscribed nofitication here, including streams,
+                          // filters and subscriptions containers.
+                          // Maybe static mount should have an option to avoid mounting RPCs.
+      static:mount "yp";  // augment subscribed-notifications with yang-push support
+    }
+  }
+  augment "data-collections/data-collection/sn:subscriptions" {
           leaf current-period {
             when '../periodic';
             type yp:centiseconds;
@@ -196,89 +114,5 @@ module ietf-data-collection-manifest {
               when the plaftorm might increase the period
               automatically when it is overloaded.";
           }
-          container receivers {
-            description
-              "Set of receivers in a subscription.";
-            list receiver {
-              key "name";
-              min-elements 1;
-              description
-                "A host intended as a recipient for the notification
-                 messages of a subscription.  For configured
-                 subscriptions, transport-specific network parameters
-                 (or a leafref to those parameters) may be augmented to
-                 a specific receiver in this list.";
-              leaf name {
-                type string;
-                description
-                  "Identifies a unique receiver for a subscription.";
-              }
-              leaf sent-event-records {
-                type yang:zero-based-counter64;
-                config false;
-                description
-                  "The number of event records sent to the receiver.
-                  The count is initialized when a dynamic subscription
-                  is established or when a configured receiver
-                   transitions to the 'valid' state.";
-              }
-              leaf excluded-event-records {
-                type yang:zero-based-counter64;
-                config false;
-                description
-                  "The number of event records explicitly removed via
-                   either an event stream filter or an access control
-                   filter so that they are not passed to a receiver.
-                   This count is set to zero each time
-                   'sent-event-records' is initialized.";
-              }
-              leaf state {
-                type enumeration {
-                  enum active {
-                    value 1;
-                    description
-                      "The receiver is currently being sent any
-                       applicable notification messages for the
-                       subscription.";
-                  }
-                  enum suspended {
-                    value 2;
-                    description
-                      "The receiver state is 'suspended', so the
-                       publisher is currently unable to provide
-                       notification messages for the subscription.";
-                  }
-                  enum connecting {
-                    value 3;
-                    description
-                      "A subscription has been configured, but a
-                       'subscription-started' subscription state change
-                       notification needs to be successfully received
-                       before notification messages are sent. ";
-                  }
-                  enum disconnected {
-                    value 4;
-                    description
-                      "A subscription has failed to send a
-                       'subscription-started' state change to the
-                       receiver.  Additional connection attempts are not
-                       currently being made.";
-                  }
-                }
-                config false;
-                mandatory true;
-                description
-                  "Specifies the state of a subscription from the
-                   perspective of a particular receiver.  With this
-                   information, it is possible to determine whether a
-                   publisher is currently generating notification
-                   messages intended for that receiver.";
-              }
-            }
-          }
-        }
-      }
-      // we could augment here with other kind of collection items
-    }
-  }
+     }
 }
