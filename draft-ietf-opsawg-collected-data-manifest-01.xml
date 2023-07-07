@@ -1076,6 +1076,9 @@ module ietf-data-collection-manifest {
         As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
         Appropriate access control must be associated to the corresponding leafs and containers.
       </t>
+      <t>
+        The integrity of the data of the collection manifest can be ensured by signing mechanism for YANG-push [TODO: Reference Diego’s draft].
+      </t>
     </section>
     <section anchor="iana" title="IANA Considerations">
       <t>
@@ -1097,9 +1100,6 @@ module ietf-data-collection-manifest {
           </t>
           <t>
             Henk: how does this interact with SBOM effort?
-          </t>
-          <t>
-            Eliot: important to give integrity of the information a lot of thought. Threat model to be considered.
           </t>
         </list>
       </t>
@@ -1204,6 +1204,12 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
 
     </section>
     <section title="Changes between revisions">
+      <t>
+          v00 (WG adoption) - v01
+          <list>
+            <t>Solve integrity issue by delegating to Diego’s future draft.</t>
+          </list>
+      </t>
       <t>
         v05 -> v06
         <list>

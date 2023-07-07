@@ -1360,6 +1360,9 @@ Internet-Draft           Telemetry Data Manifest               July 2023
    manifests.  Appropriate access control must be associated to the
    corresponding leafs and containers.
 
+   The integrity of the data of the collection manifest can be ensured
+   by signing mechanism for YANG-push [TODO: Reference Diego's draft].
+
 7.  IANA Considerations
 
    This document includes no request to IANA.
@@ -1389,9 +1392,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
       different purposes?
 
    o  Henk: how does this interact with SBOM effort?
-
-   o  Eliot: important to give integrity of the information a lot of
-      thought.  Threat model to be considered.
 
 
 
@@ -1606,6 +1606,10 @@ Internet-Draft           Telemetry Data Manifest               July 2023
 
 Appendix B.  Changes between revisions
 
+   v00 (WG adoption) - v01
+
+      Solve integrity issue by delegating to Diego's future draft.
+
    v05 -> v06
 
       Remove YANG packages
@@ -1614,10 +1618,6 @@ Appendix B.  Changes between revisions
 
       Add PEN number to identify vendors
 
-      Intro rewritten with uses cases
-
-      Added an "Operational Considerations" section
-
 
 
 
@@ -1625,6 +1625,10 @@ Claise, et al.           Expires January 8, 2024               [Page 29]
 
 Internet-Draft           Telemetry Data Manifest               July 2023
 
+
+      Intro rewritten with uses cases
+
+      Added an "Operational Considerations" section
 
       Switch from MDT to YANG-push
 
@@ -1671,16 +1675,15 @@ Internet-Draft           Telemetry Data Manifest               July 2023
 
    v00 -> v01
 
-      Adding more into data platform: yang packages, whole yanglib
-      module to specify datastores
-
-
 
 
 Claise, et al.           Expires January 8, 2024               [Page 30]
 
 Internet-Draft           Telemetry Data Manifest               July 2023
 
+
+      Adding more into data platform: yang packages, whole yanglib
+      module to specify datastores
 
       Setting the right type for periods: int64 -> uint64
 
@@ -1727,9 +1730,6 @@ Appendix C.  YANG module ietf-yang-push-modif
      }
      import ietf-subscribed-notifications {
        prefix sn;
-       reference
-         "RFC 8639: Subscription to YANG Notifications";
-     }
 
 
 
@@ -1738,6 +1738,9 @@ Claise, et al.           Expires January 8, 2024               [Page 31]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+       reference
+         "RFC 8639: Subscription to YANG Notifications";
+     }
      import ietf-datastores {
        prefix ds;
        reference
@@ -1784,15 +1787,15 @@ Internet-Draft           Telemetry Data Manifest               July 2023
         Relating to IETF Documents
         (https://trustee.ietf.org/license-info).
 
-        This version of this YANG module is part of RFC 8641; see the
-        RFC itself for full legal notices.";
-
 
 
 Claise, et al.           Expires January 8, 2024               [Page 32]
 
 Internet-Draft           Telemetry Data Manifest               July 2023
 
+
+        This version of this YANG module is part of RFC 8641; see the
+        RFC itself for full legal notices.";
 
      revision 2023-03-08 {
        description
@@ -1839,9 +1842,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
 
      identity datastore-not-subscribable {
        base sn:establish-subscription-error;
-       base sn:subscription-terminated-reason;
-       description
-         "This is not a subscribable datastore.";
 
 
 
@@ -1850,6 +1850,9 @@ Claise, et al.           Expires January 8, 2024               [Page 33]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+       base sn:subscription-terminated-reason;
+       description
+         "This is not a subscribable datastore.";
      }
 
      identity no-such-subscription-resync {
@@ -1895,9 +1898,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
      identity update-too-big {
        base sn:establish-subscription-error;
        base sn:modify-subscription-error;
-       base sn:subscription-suspended-reason;
-       description
-         "Periodic or on-change push update data trees exceed a maximum
 
 
 
@@ -1906,6 +1906,9 @@ Claise, et al.           Expires January 8, 2024               [Page 34]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+       base sn:subscription-suspended-reason;
+       description
+         "Periodic or on-change push update data trees exceed a maximum
           size limit.  Hints on the estimated size of what was too big
           may be returned as supplemental information.";
      }
@@ -1951,9 +1954,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
              "A change that refers to the deletion of a
               datastore node.";
          }
-         enum insert {
-           description
-             "A change that refers to the insertion of a new
 
 
 
@@ -1962,6 +1962,9 @@ Claise, et al.           Expires January 8, 2024               [Page 35]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+         enum insert {
+           description
+             "A change that refers to the insertion of a new
               user-ordered datastore node.";
          }
          enum move {
@@ -2007,9 +2010,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
       */
 
      grouping datastore-criteria {
-       description
-         "A grouping to define criteria for which selected objects from
-          a targeted datastore should be included in push updates.";
 
 
 
@@ -2018,6 +2018,9 @@ Claise, et al.           Expires January 8, 2024               [Page 36]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+       description
+         "A grouping to define criteria for which selected objects from
+          a targeted datastore should be included in push updates.";
        leaf datastore {
          type identityref {
            base ds:datastore;
@@ -2063,9 +2066,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
               o  The set of namespace declarations is the set of prefix
                  and namespace pairs for all YANG modules implemented
                  by the server, where the prefix is the YANG module
-                 name and the namespace is as defined by the
-                 'namespace' statement in the YANG module.
-
 
 
 
@@ -2073,6 +2073,9 @@ Claise, et al.           Expires January 8, 2024               [Page 37]
 
 Internet-Draft           Telemetry Data Manifest               July 2023
 
+
+                 name and the namespace is as defined by the
+                 'namespace' statement in the YANG module.
 
                  If the leaf is encoded in XML, all namespace
                  declarations in scope on the 'stream-xpath-filter'
@@ -2119,9 +2122,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
                 applied to the subscription.";
            }
          }
-         case within-subscription {
-           description
-             "A local definition allows a filter to have the same
 
 
 
@@ -2130,6 +2130,9 @@ Claise, et al.           Expires January 8, 2024               [Page 38]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+         case within-subscription {
+           description
+             "A local definition allows a filter to have the same
               lifecycle as the subscription.";
            uses selection-filter-types;
          }
@@ -2175,9 +2178,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
          }
          case on-change {
            if-feature "on-change";
-           container on-change {
-             presence "indicates an on-change subscription";
-             description
 
 
 
@@ -2186,6 +2186,9 @@ Claise, et al.           Expires January 8, 2024               [Page 39]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+           container on-change {
+             presence "indicates an on-change subscription";
+             description
                "The publisher is requested to notify the receiver
                 regarding changes in values in the datastore subset as
                 defined by a selection filter.";
@@ -2231,9 +2234,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
                 in order to facilitate a receiver's synchronization,
                 a full update is sent, via a 'push-update' notification,
                 when the subscription starts.  After that,
-                'push-change-update' notifications are exclusively sent,
-                unless the publisher chooses to resync the subscription
-                via a new 'push-update' notification.";
 
 
 
@@ -2242,6 +2242,9 @@ Claise, et al.           Expires January 8, 2024               [Page 40]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+                'push-change-update' notifications are exclusively sent,
+                unless the publisher chooses to resync the subscription
+                via a new 'push-update' notification.";
            }
            leaf-list excluded-change {
              type change-type;
@@ -2287,9 +2290,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
             the publisher's ability to service this subscription.";
        }
        leaf kilobytes-estimate {
-         type uint32;
-         description
-           "If the returned information could be beyond the capacity
 
 
 
@@ -2298,6 +2298,9 @@ Claise, et al.           Expires January 8, 2024               [Page 41]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+         type uint32;
+         description
+           "If the returned information could be beyond the capacity
             of the publisher, this would identify the estimated
             data size that could result from this selection filter.";
        }
@@ -2343,9 +2346,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
      notification push-update {
        description
          "This notification contains a push update that in turn contains
-          data subscribed to via a subscription.  In the case of a
-          periodic subscription, this notification is sent for periodic
-          updates.  It can also be used for synchronization updates of
 
 
 
@@ -2354,6 +2354,9 @@ Claise, et al.           Expires January 8, 2024               [Page 42]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+          data subscribed to via a subscription.  In the case of a
+          periodic subscription, this notification is sent for periodic
+          updates.  It can also be used for synchronization updates of
           an on-change subscription.  This notification shall only be
           sent to receivers of a subscription.  It does not constitute
           a general-purpose notification that would be subscribable as
@@ -2399,9 +2402,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
             notification to be sent.";
        }
        container datastore-changes {
-         description
-           "This contains the set of datastore changes of the target
-            datastore, starting at the time of the previous update, per
 
 
 
@@ -2410,6 +2410,9 @@ Claise, et al.           Expires January 8, 2024               [Page 43]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+         description
+           "This contains the set of datastore changes of the target
+            datastore, starting at the time of the previous update, per
             the terms of the subscription.";
          uses ypatch:yang-patch;
        }
@@ -2455,9 +2458,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
        description
          "This augmentation adds the datastore as a valid target
           for the subscription to RPC input.";
-       case datastore {
-         description
-           "Information specifying the parameters of a request for a
 
 
 
@@ -2466,6 +2466,9 @@ Claise, et al.           Expires January 8, 2024               [Page 44]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+       case datastore {
+         description
+           "Information specifying the parameters of a request for a
             datastore subscription.";
          uses datastore-criteria;
        }
@@ -2511,9 +2514,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
        case datastore {
          uses datastore-criteria {
            refine "selection-filter/within-subscription" {
-             description
-               "Specifies the selection filter and where it originated
-                from.  If the 'selection-filter-ref' is populated, the
 
 
 
@@ -2522,6 +2522,9 @@ Claise, et al.           Expires January 8, 2024               [Page 45]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+             description
+               "Specifies the selection filter and where it originated
+                from.  If the 'selection-filter-ref' is populated, the
                 filter in the subscription came from the 'filters'
                 container.  Otherwise, it is populated in-line as part
                 of the subscription itself.";
@@ -2567,9 +2570,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
          "This augmentation allows the datastore to be included as
           part of the selection-filtering criteria for a subscription.";
        case datastore {
-         uses datastore-criteria;
-       }
-     }
 
 
 
@@ -2577,6 +2577,10 @@ Claise, et al.           Expires January 8, 2024               [Page 46]
 
 Internet-Draft           Telemetry Data Manifest               July 2023
 
+
+         uses datastore-criteria;
+       }
+     }
 
      rc:yang-data resync-subscription-error {
        container resync-subscription-error {
@@ -2622,10 +2626,6 @@ Internet-Draft           Telemetry Data Manifest               July 2023
      }
      rc:yang-data modify-subscription-datastore-error-info {
        container modify-subscription-datastore-error-info {
-         description
-           "This yang-data MAY be provided as part of a subscription's
-            RPC error response when there is a failure of a
-            'modify-subscription' RPC that has been made against a
 
 
 
@@ -2634,6 +2634,10 @@ Claise, et al.           Expires January 8, 2024               [Page 47]
 Internet-Draft           Telemetry Data Manifest               July 2023
 
 
+         description
+           "This yang-data MAY be provided as part of a subscription's
+            RPC error response when there is a failure of a
+            'modify-subscription' RPC that has been made against a
             datastore.  This yang-data MUST be used if hints are to be
             provided back to the subscriber.";
          leaf reason {
@@ -2677,10 +2681,6 @@ Authors' Addresses
    Spain
 
    Email: diego.r.lopez@telefonica.com
-
-
-
-
 
 
 
