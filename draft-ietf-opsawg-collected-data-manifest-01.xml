@@ -1077,7 +1077,7 @@ module ietf-data-collection-manifest {
         Appropriate access control must be associated to the corresponding leafs and containers.
       </t>
       <t>
-        The integrity of the data of the collection manifest can be ensured by signing mechanism for YANG-push [TODO: Reference Diego’s draft].
+        The integrity and provenance of the data of the collection manifest can be ensured by a signing mechanism such as <xref target="I-D.lopez-opsawg-yang-provenance"/>.
       </t>
     </section>
     <section anchor="iana" title="IANA Considerations">
@@ -1119,6 +1119,7 @@ module ietf-data-collection-manifest {
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
       <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
+      <?rfc include="reference.I-D.lopez-opsawg-yang-provenance"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
@@ -1207,7 +1208,7 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
       <t>
           v00 (WG adoption) - v01
           <list>
-            <t>Solve integrity issue by delegating to Diego’s future draft.</t>
+            <t>Solve integrity issue by delegating to <xref target="I-D.lopez-opsawg-yang-provenance"/>.</t>
           </list>
       </t>
       <t>
