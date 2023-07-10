@@ -14,7 +14,7 @@ Expires: January 11, 2024                                       D. Lopez
 
 
            A Data Manifest for Contextualized Telemetry Data
-              draft-ietf-opsawg-collected-data-manifest-00
+              draft-ietf-opsawg-collected-data-manifest-01
 
 Abstract
 
