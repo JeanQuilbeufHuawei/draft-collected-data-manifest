@@ -11,7 +11,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" ipr="trust200902" docName="draft-ietf-opsawg-collected-data-manifest-00">
+<rfc category="std" ipr="trust200902" docName="draft-ietf-opsawg-collected-data-manifest-01">
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
@@ -372,6 +372,9 @@
         As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
         Appropriate access control must be associated to the corresponding leafs and containers.
       </t>
+      <t>
+        The integrity and provenance of the data of the collection manifest can be ensured by a signing mechanism such as <xref target="I-D.lopez-opsawg-yang-provenance"/>.
+      </t>
     </section>
     <section anchor="iana" title="IANA Considerations">
       <t>
@@ -394,9 +397,6 @@
           <t>
             Henk: how does this interact with SBOM effort?
           </t>
-          <t>
-            Eliot: important to give integrity of the information a lot of thought. Threat model to be considered.
-          </t>
         </list>
       </t>
     </section>
@@ -415,6 +415,7 @@
       <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
       <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
+      <?rfc include="reference.I-D.lopez-opsawg-yang-provenance"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
@@ -500,6 +501,12 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
 
     </section>
     <section title="Changes between revisions">
+      <t>
+          v00 (WG adoption) - v01
+          <list>
+            <t>Solve integrity issue by delegating to <xref target="I-D.lopez-opsawg-yang-provenance"/>.</t>
+          </list>
+      </t>
       <t>
         v05 -> v06
         <list>
