@@ -52,7 +52,8 @@ def _find_yang_file(prefix: str):
 
 def _format_json(filename):
     try:
-        return "", json.dumps(json.load(open(filename)), indent=2)
+        #return "", json.dumps(json.load(open(filename)), indent=2)
+        return "", open(filename).read()
     except Exception as e:
         return str(e), ""
 
@@ -60,7 +61,8 @@ def _format_json(filename):
 PLATFORM_MANIFEST = _find_yang_file("ietf-platform-manifest")
 DATA_COLLECTION_MANIFEST = _find_yang_file("ietf-data-collection-manifest")
 YANG_PUSH_MODIF = _find_yang_file("ietf-yang-push-modif")
-DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "data-collection-manifest-example.json")
+DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "manifests-example.json")
+
 
 def draft_content():
     pyang_results = {

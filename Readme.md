@@ -5,7 +5,7 @@ This repo contains the draft for the next version of
 
 
 [Diff between this repo and latest ietf
-version](http://tools.ietf.org//rfcdiff?url1=https://www.ietf.org/archive/id/draft-claise-opsawg-collected-data-manifest-05.txt&url2=https://raw.githubusercontent.com/JeanQuilbeufHuawei/draft-collected-data-manifest/master/draft-claise-opsawg-collected-data-manifest-06.txt)
+version](http://tools.ietf.org//rfcdiff?url1=https://www.ietf.org/archive/id/draft-opsawg-collected-data-manifest-01.txt&url2=https://raw.githubusercontent.com/JeanQuilbeufHuawei/draft-collected-data-manifest/master/draft-opsawg-collected-data-manifest-02.txt)
 
 ## Modifying the draft
 
@@ -21,6 +21,7 @@ commit the corresponding .txt so that diff with current version is correct.
  * python3
  * make
  * xml2rfc
+ * libyang
  * pip
 
 Python dependencies are listed in [builder/requirements.txt](builder/requirements.txt).
