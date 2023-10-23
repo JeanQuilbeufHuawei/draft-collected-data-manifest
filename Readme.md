@@ -5,7 +5,7 @@ This repo contains the draft for the next version of
 
 
 [Diff between this repo and latest ietf
-version](http://tools.ietf.org//rfcdiff?url1=https://www.ietf.org/archive/id/draft-opsawg-collected-data-manifest-01.txt&url2=https://raw.githubusercontent.com/JeanQuilbeufHuawei/draft-collected-data-manifest/master/draft-opsawg-collected-data-manifest-02.txt)
+version](http://tools.ietf.org//rfcdiff?url1=https://www.ietf.org/archive/id/draft-ietf-opsawg-collected-data-manifest-01.txt&url2=https://raw.githubusercontent.com/JeanQuilbeufHuawei/draft-collected-data-manifest/master/draft-ietf-opsawg-collected-data-manifest-02.txt)
 
 ## Modifying the draft
 
