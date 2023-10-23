@@ -67,7 +67,7 @@
       <t>
       Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
 		  This document documents the metadata that ensure that the collected data can be interpreted correctly.
-		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest) The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
+		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest). The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
       </t>
     </abstract>
   </front>
@@ -1020,57 +1020,103 @@ module ietf-data-collection-manifest {
          </t>
       </section>
     </section>
-    <!-- TODO update to YANG push section anchor="example" title="Example">
-      <t> Below is an example of a Data Collection Manifest file:</t>
-      <t>&lt;CODE BEGINS&gt; file "example_data_collection.json"</t>
+    <section anchor="example" title="Example">
+      <t>
+        Below is an example of both a Platform manifest and corresponding Data Collection Manifests.
+        The list of YANG modules in the yang-library container is kept empty for brevity.
+      </t>
+      <t>&lt;CODE BEGINS&gt; file "manifests-example.json"</t>
       <figure>
         <artwork><![CDATA[
 {
-  "ietf-yang-instance-data:instance-data-set": {
-    "name": "data-collection-manifest-example",
-    "content-schema": {
-      "module": "ietf-data-collection-manifest@2021-10-15"
-    },
-    "timestamp": "2022-02-24T09:45:03Z",
-    "description": [
-      "Data collection manifest for the subscription 4242"
-    ],
-    "content-data": {
-      "ietf-data-collection-manifest:data-collection": {
-        "mdt-subscriptions": [
-          {
-            "subscription-id": 4242,
-            "mdt-path-data-manifest": [
-              {
-                "path": "/ietf-interfaces:interfaces/interface/enabled",
-                "requested-period": 100,
-                "current-period": 10000,
-                "on-change": false,
-                "suppress-redundancy": false
-              },
-              {
-                "path": "/ietf-interfaces:interfaces/interface/statistics/in-octets",
-                "requested-period": 100,
-                "current-period": 100,
-                "on-change": false,
-                "suppress-redundancy": false
-              }
-            ]
-          }
-        ]
+  "ietf-platform-manifest:platforms": {
+    "platform": [
+      {
+        "id": "PE1",
+        "yang-library": {
+          "module-set": [
+            {
+              "name": "operational"
+            }
+          ],
+          "schema": [
+            {
+              "name": "operational-schema",
+              "module-set": [
+                "operational"
+              ]
+            }
+          ],
+          "datastore": [
+            {
+              "name": "ietf-datastores:operational",
+              "schema": "operational-schema"
+            }
+          ]
+        }
       }
-    }
+    ]
+  },
+  "ietf-data-collection-manifest:data-collections": {
+    "data-collection": [
+      {
+        "platform-id": "PE1",
+        "yang-push-subscriptions": {
+          "subscription": [
+            {
+              "id": 4242,
+              "datastore": "ietf-datastores:operational",
+              "datastore-xpath-filter":
+                     "/ietf-interfaces:interfaces/interface/enabled",
+
+              "on-change": {},
+              "receivers": {
+                "receiver": [
+                  {
+                    "name": "yp-collector",
+                    "state": "active"
+                  }
+                ]
+              }
+            },
+            {
+              "id": 4243,
+              "datastore": "ietf-datastores:operational",
+              "datastore-xpath-filter":
+        "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+              "periodic": {
+                "period": 10000
+              },
+              "current-period": 20000,
+              "receivers": {
+                "receiver": [
+                  {
+                    "name": "yp-collector",
+                    "state": "active"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }
   ]]></artwork>
       </figure>
       <t>&lt;CODE ENDS&gt;</t>
       <t>
-        The file above contains the Data Collection Manifest for paths collected in the subscription with id 4242.
-        The requested period for both path is this subscription was 100ms, however the status of the interface could only be collected every 10s.
+        The file above contains the Data Collection Manifest for two Xpaths subscriptions.
+        With the Data Collection Manifest for the first one, with subscription id 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding plaftorm manifest, in order to obtain the exact revision of ieft-interfaces used at collection time.
+        Also, the "on-change" container indicates that data will be sent only if there is a change, thus not receiving data indicates that the administrative status of the interface did not change.
+      </t>
+      <t>
+        The other example of Data Collection Manifest, with subscription id 4243, shows how a periodic subscription is reported.
+        In that example, the current-period indicates that the requested period of 10s (1000 centiseconds) could not be attained and is now of 20s, for instance because the device is overloaded.
       </t>
 
-    </section-->
+    </section>
     <section anchor="security" title="Security Considerations">
       <t>
         As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
@@ -1137,7 +1183,7 @@ module ietf-data-collection-manifest {
         The paths here are referring to the YANG module from <xref target="RFC8343"/>.
         The configuration of YANG push is out of scope for this document.
         Since they don’t have the same trigger, each of the path must be collected in its own subscription.
-        <!-- TODO switch to YANG push <xref target="collection_example"/> presents an example for such a collection. -->
+        <xref target="collection_example"/> presents an example for such a collection.
       </t>
       <figure anchor="collection_example" title="Example of collection from a device to Influx DB">
         <artwork><![CDATA[
@@ -1180,12 +1226,13 @@ sent_bytes,device="PE1",interface="gig1" val=1234
         A possibility for keeping the data manifest with the data is to store it directly into InfluxDB.
         In that case, the collector can subscribe to the data exported by the module presented in this draft and store it inside influxDB.
         For the Platform Manifest, assuming the platform ID is "PE1", the collector subscribes to the path "ietf-platform-manifest:platforms/platform[id=PE1]".
-        For the Data Collection Manifest, assuming the subscription id is 42, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-subscriptions/subscription[id=42]".
+        For the Data Collection Manifests, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-subscriptions/subscription[id=X]" where X is the subscription id of existing subscriptions.
         The data, for instance serialized in JSON, can be stored in InfluxDB as shown in <xref target="influx_manifest"/> where "&lt;platform-manifest&gt;" and "&lt;data-manifest&gt;" represent the contents of respectively the Platform Manifest and the Data Collection Manifest.
         <figure anchor="influx_manifest" title="Storing data manifest">
           <artwork><![CDATA[
 platform-manifest,device="PE1" val=<plaftorm-manifest>
-collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
+collection-data-manifest,device="PE1",subId=4242 val=<data-manifest>
+collection-data-manifest,device="PE1",subId=4243 val=<data-manifest>
             ]]></artwork>
         </figure>
       </t>
@@ -1195,8 +1242,8 @@ collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
         For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>.
         <figure anchor="influx_after" title="Storing datapoints with data manifest">
           <artwork><![CDATA[
-admin_status,device="PE1",interface="gig1" val=T,subId=42
-sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
+admin_status,device="PE1",interface="gig1" val=T,subId=4242
+sent_bytes,device="PE1",interface="gig1" val=1234,subId=4243
             ]]></artwork>
         </figure>
       </t>
@@ -1208,6 +1255,11 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
 
     </section>
     <section title="Changes between revisions">
+      <t> v01 -> v02
+        <list>
+          <t>Updated example with latest version of the model.</t>
+        </list>
+      </t>
       <t>
           v00 (WG adoption) - v01
           <list>
