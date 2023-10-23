@@ -67,7 +67,7 @@
       <t>
       Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
 		  This document documents the metadata that ensure that the collected data can be interpreted correctly.
-		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest.) The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
+		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest). The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
       </t>
     </abstract>
   </front>
@@ -137,7 +137,7 @@
 
          <section anchor="new-device-onboarding" title="New Device Onboarding">
            <t>
-              When a new device is onboarded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, and that the data is correctly ingested in the collection system,  and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifiest, which must be linked to the data up to the collection and analytics system, contains all the relevant information.
+              When a new device is onboarded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, that the data is correctly ingested in the collection system, and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifest, which must be linked to the data up to the collection and analytics system, contains all the relevant information.
           </t>
          </section>
 
@@ -248,7 +248,7 @@
           </t>
           <t>
             The YANG-Push collection is organized in subscriptions, the parameters for such a subscription are specified in <xref target="RFC8639"/> and <xref target="RFC8641"/>.
-            The list of subscription from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription'.
+            The list of subscriptions from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription'.
             Subscription metadata are the bulk of the Data Collection Manifest, they are heavily based on the two RFCs above.
           </t>
           <t>
@@ -404,6 +404,9 @@
           </t>
           <t>
             Henk: how does this interact with SBOM effort?
+          </t>
+          <t>
+            What is the link with the RFC8345 NodeId and IVY?
           </t>
         </list>
       </t>
