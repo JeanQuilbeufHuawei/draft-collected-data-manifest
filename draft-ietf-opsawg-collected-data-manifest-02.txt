@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: April 25, 2024                                         D. Lopez
+Expires: 25 April 2024                                          D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                        October 23, 2023
+                                                         23 October 2023
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -23,10 +23,10 @@ Abstract
    state information.  This document documents the metadata that ensure
    that the collected data can be interpreted correctly.  This document
    specifies the Data Manifest, composed of two YANG data models (the
-   Platform Manifest and the Data Collection Manifest).  The Data
-   Manifest must be streamed and stored along with the data, up to the
-   collection and analytics system in order to keep the collected data
-   fully exploitable by the data scientists.
+   Platform Manifest and the Data Collection Manifest) The Data Manifest
+   must be streamed and stored along with the data, up to the collection
+   and analytics system in order to keep the collected data fully
+   exploitable by the data scientists.
 
 Status of This Memo
 
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 25, 2024.
+   This Internet-Draft will expire on 25 April 2024.
 
 Copyright Notice
 
@@ -53,25 +53,24 @@ Copyright Notice
 
 
 
-Claise, et al.           Expires April 25, 2024                 [Page 1]
+Claise, et al.            Expires 25 April 2024                 [Page 1]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
-   Provisions Relating to IETF Documents
-   (https://trustee.ietf.org/license-info) in effect on the date of
-   publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.1.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.1.  Use Cases . . . . . . . . . . . . . . . . . . . . . . . .   3
        1.1.1.  Network Analytics . . . . . . . . . . . . . . . . . .   4
        1.1.2.  New Device Onboarding . . . . . . . . . . . . . . . .   5
        1.1.3.  Data Mesh Principles in Networking  . . . . . . . . .   5
@@ -82,23 +81,22 @@ Table of Contents
    4.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .  14
      4.1.  Overview of the Model . . . . . . . . . . . . . . . . . .  14
      4.2.  YANG module ietf-data-collection-manifest . . . . . . . .  16
-   5.  Data Manifest and the Collected Data  . . . . . . . . . . . .  22
+   5.  Data Manifest and the Collected Data  . . . . . . . . . . . .  23
      5.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  23
      5.2.  Mapping Collected Data to the Data Manifest . . . . . . .  24
      5.3.  Operational Considerations  . . . . . . . . . . . . . . .  24
-   6.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  25
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
-   9.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  27
-   10. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  27
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  28
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  29
-   Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  30
-   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  32
-   Appendix C.  YANG module ietf-yang-push-modif . . . . . . . . . .  34
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  50
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  51
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
+   8.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  25
+   9.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  25
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  26
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  26
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  26
+   Appendix A.  Example of use based on MDT  . . . . . . . . . . . .  28
+   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  30
+   Appendix C.  YANG module ietf-yang-push-modif . . . . . . . . . .  32
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  48
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  49
 
 1.  Introduction
 
@@ -109,7 +107,9 @@ Table of Contents
 
 
 
-Claise, et al.           Expires April 25, 2024                 [Page 2]
+
+
+Claise, et al.            Expires 25 April 2024                 [Page 2]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -140,13 +140,13 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    platform streaming telemetry.  Some related YANG modules have been
    specified to retrieve the platform capabilities:
 
-   o  The IETF YANG Library [RFC8525].
+   *  The IETF YANG Library [RFC8525].
 
-   o  YANG Modules Describing Capabilities for Systems and Datastore
+   *  YANG Modules Describing Capabilities for Systems and Datastore
       Update Notifications [RFC9196] for the platform capabilities
       regarding the production and export of telemetry data.
 
-   o  [I-D.claise-netconf-metadata-for-collection], which is based on
+   *  [I-D.claise-netconf-metadata-for-collection], which is based on
       the previous draft to define the optimal settings to stream
       specific items (i.e., per path).
 
@@ -160,17 +160,15 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    We explain in Section 5 how the Data Manifest can be retrieved and
    how collected data is mapped to the Data Manifest.
 
+1.1.  Use Cases
 
 
 
 
-
-Claise, et al.           Expires April 25, 2024                 [Page 3]
+Claise, et al.            Expires 25 April 2024                 [Page 3]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
-
-1.1.  Use Cases
 
 1.1.1.  Network Analytics
 
@@ -184,11 +182,11 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    When analyzing the data, the network operator/data scientist must
    understand the context information for these data:
 
-   o  This object definition in the YANG model.
+   *  This object definition in the YANG model.
 
-   o  The network element specific vendor, platform, and OS.
+   *  The network element specific vendor, platform, and OS.
 
-   o  The collection parameters.
+   *  The collection parameters.
 
    Characterizing the source used for producing the data (vendor,
    platform, and OS) is useful to complement the data.  As an example,
@@ -218,16 +216,15 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    with the platform details) help drawing the right conclusions.  As an
    example, taking into account the value of 0 might lead to a wrong
    conclusion that the counter dropped to zero.  This document specifies
+   the Data Collection Manifest, which contains the required information
+   to characterize how and when the telemetry information was metered.
 
 
 
-Claise, et al.           Expires April 25, 2024                 [Page 4]
+Claise, et al.            Expires 25 April 2024                 [Page 4]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
-
-   the Data Collection Manifest, which contains the required information
-   to characterize how and when the telemetry information was metered.
 
    The goal of the current document is to define what needs to be kept
    as metadata (i.e., the Data Manifest) to ensure that the collected
@@ -245,45 +242,45 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 1.1.3.  Data Mesh Principles in Networking
 
-   The concept behind the data mesh <https://www.datamesh-
-   architecture.com/> are:
+   The concept behind the data mesh https://www.datamesh-
+   architecture.com/ are:
 
-   o  Principle of Domain Ownership: Architecturally and
+   *  Principle of Domain Ownership: Architecturally and
       organizationally align business, technology, and analytical data,
       following the line of responsibility.  Here, the Data Mesh
       principles adopt the boundary of bounded context to individual
       data products where each domain is responsible for (and owns) its
       data and models.
 
-   o  Principle of Data as a Product: The "Domain" owners are
+   *  Principle of Data as a Product: The “Domain” owners are
       responsible to provide the data in useful way (discoverable
       through a catalog, addressable with a permanent and unique
       address, understandable with well defined semantics, trustworthy
       and truthful, self-describing for easy consumption, interoperable
       by supporting standards, secure, self-contained, etc.) and should
       treat consumers of that data as customers.  It requires and relies
-      on the "Domain Ownership" principle.
+      on the “Domain Ownership” principle.
 
-   o  Principle of Self-serve Data Platform: This fosters the sharing of
+   *  Principle of Self-serve Data Platform: This fosters the sharing of
       cross-domain data in order to create extra value.
 
-   o  Principle of Federated Computational Governance: Describes the
+   *  Principle of Federated Computational Governance: Describes the
       operating model and approach to establishing global policies
       across a mesh of data products.
 
    The most relevant concept for this document is the "Data as a
    Product" principle.  The Data Manifest fulfills this principle as the
    two YANG data models, Platform Manifest and the Data Collection
+   Manifest, along with the data, provide all the necessary information
+   in a self-describing way for easy consumption.
 
 
 
-Claise, et al.           Expires April 25, 2024                 [Page 5]
+
+Claise, et al.            Expires 25 April 2024                 [Page 5]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
-
-   Manifest, along with the data, provide all the necessary information
-   in a self-describing way for easy consumption.
 
 2.  Terminology
 
@@ -330,17 +327,17 @@ Internet-Draft           Telemetry Data Manifest            October 2023
               |  +--ro module* [name]
               |  |  +--ro name              yang:yang-identifier
               |  |  +--ro revision?         revision-identifier
+              |  |  +--ro namespace         inet:uri
+              |  |  +--ro location*         inet:uri
+              |  |  +--ro submodule* [name]
 
 
 
-Claise, et al.           Expires April 25, 2024                 [Page 6]
+Claise, et al.            Expires 25 April 2024                 [Page 6]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
 
-              |  |  +--ro namespace         inet:uri
-              |  |  +--ro location*         inet:uri
-              |  |  +--ro submodule* [name]
               |  |  |  +--ro name              yang:yang-identifier
               |  |  |  +--ro revision?         revision-identifier
               |  |  |  +--ro location*         inet:uri
@@ -383,19 +380,19 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
    The Platform Manifest is identified by a set of parameters ('name',
    'software-version', 'software-flavor', 'os-version', 'os-type') that
-   are aligned with the YANG Catalog <www.yangcatalog.org>
+   are aligned with the YANG Catalog www.yangcatalog.org
    [I-D.clacla-netmod-model-catalog] so that the YANG Catalog could be
    used to retrieve the YANG modules a posteriori.  The vendor of the
+   platform can be identified via its name 'vendor' or its PEN number
+   'vendor-pen', as described in [RFC9371].
 
 
 
-Claise, et al.           Expires April 25, 2024                 [Page 7]
+
+Claise, et al.            Expires 25 April 2024                 [Page 7]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
-
-   platform can be identified via its name 'vendor' or its PEN number
-   'vendor-pen', as described in [RFC9371].
 
    In order to provide information for yang-push subscriptions based on
    streams, the Platform Manifest specifies the streams available on the
@@ -415,8 +412,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 3.2.  YANG module ietf-platform-manifest
 
-   <CODE BEGINS>
-   file "ietf-platform-manifest@2023-03-08.yang"
+   <CODE BEGINS> file "ietf-platform-manifest@2023-03-08.yang"
 
 module ietf-platform-manifest {
   yang-version 1.1;
@@ -442,18 +438,18 @@ module ietf-platform-manifest {
      Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
      Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
      Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
-
-
-
-Claise, et al.           Expires April 25, 2024                 [Page 8]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
      Author:   Ignacio Dominguez
                           <ignacio.dominguezmartinez@telefonica.com>
      Author:   Thomas Grapf     <thomas.graf@swisscom.com>";
   description
+
+
+
+Claise, et al.            Expires 25 April 2024                 [Page 8]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
     "This module describes the platform information to be used as
      context of data collection from a given network element. The
      contents of this model must be streamed along with the data
@@ -498,18 +494,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
     description
       "Add a revision label to module information";
     leaf revision-label {
-
-
-
-Claise, et al.           Expires April 25, 2024                 [Page 9]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
       type rev:revision-label;
       description
         "The revision label associated with this module revision.
          The label MUST match the rev:revision-label value in the
+
+
+
+Claise, et al.            Expires 25 April 2024                 [Page 9]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
          specific revision of the module loaded in this module-set.";
       reference
         "XXXX: Updated YANG Module Revision Handling;
@@ -554,18 +550,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
   augment
     "/p-mf:platforms/p-mf:platform/p-mf:yang-library/p-mf:module-set/"
   + "p-mf:import-only-module/p-mf:submodule" {
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 10]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
     description
       "Add a revision label to submodule information";
     leaf revision-label {
       type rev:revision-label;
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 10]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
       description
         "The revision label associated with this submodule revision.
          The label MUST match the rev:label value in the specific
@@ -610,18 +606,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
     }
   }
 
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 11]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
   container platforms {
     config false;
     description
       "Top container including all platforms in scope. If this model is
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 11]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
        hosted on a single device, it should contain a single entry in
        the list. At the network level, it should contain an entry for
        every monitored platform.";
@@ -666,18 +662,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
       leaf software-flavor {
         type string;
         description
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 12]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
           "A variation of a specific version where YANG model support
            may be different.  Depending on the vendor, this could be a
            license, additional software component, or a feature set.";
       }
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 12]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
       leaf os-version {
         type string;
         description
@@ -722,18 +718,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
           }
         }
       }
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 13]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
       container yang-library {
         description
           "The YANG library of the device specifying the modules
            available in each of the datastores.";
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 13]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
         uses yanglib:yang-library-parameters;
       }
     }
@@ -778,18 +774,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
                  |           +--ro datastore-xpath-filter?
                  |                   yang:xpath1.0 {sn:xpath}?
                  +--ro transport?
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 14]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
                  |       sn:transport
                  +--ro encoding?
                  |       sn:encoding
                  +--ro purpose?                                string
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 14]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
                  +--ro dscp?                                   inet:dscp
                  |       {dscp}?
                  +--ro weighting?                              uint8
@@ -815,7 +811,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
                        |       yang:zero-based-counter64
                        +--ro state                     enumeration
 
-   Figure 2: YANG tree diagram for ietf-data-collection-manifest module
+    Figure 2: YANG tree diagram for ietf-data-collection-manifest module
 
    The 'data-collections' container contains the information related to
    each YANG-Push subscription.  As for the Platform Manifest, these
@@ -829,19 +825,28 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    subscription'.  Subscription metadata are the bulk of the Data
    Collection Manifest, they are heavily based on the two RFCs above.
 
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 15]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
    The 'target' choice specify the selected contents for the
    subscription.  We did not include the target with a reference to a
    common filter as stored in 'filters' in ietf-subscribed-notfications.
    The rationale for this choice is that otherwise we would need to
    store these filters in the Platform Manifest, which could cause
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 15]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
    changes in that manifest more often than needed.  If a stream based
    subscription is used [RFC8639], the stream must exist in the 'yang-
    push-streams' container of Platform Manifest, which is modelled as a
@@ -885,19 +890,19 @@ module ietf-data-collection-manifest {
     "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
   prefix d-mf;
 
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 16]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
   import ietf-platform-manifest {
     prefix p-mf;
     reference
       "RFC XXXX: Title to be completed";
   }
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 16]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
   import ietf-subscribed-notifications {
     prefix sn;
     reference
@@ -941,18 +946,18 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 17]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
      are to be interpreted as described in BCP 14 (RFC 2119)
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
-
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 17]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
 
      Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -997,19 +1002,19 @@ Internet-Draft           Telemetry Data Manifest            October 2023
          */
         description
           "Contains the list of currently active subscriptions, i.e.,
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 18]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
            subscriptions that are currently in effect, used for
            subscription management and monitoring purposes.  This
            includes subscriptions that have been set up via
            RPC primitives as well as subscriptions that have been
            established via configuration.";
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 18]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
         list subscription {
           key "id";
           description
@@ -1053,19 +1058,19 @@ Internet-Draft           Telemetry Data Manifest            October 2023
               }
               uses sn:stream-filter-elements;
             }
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 19]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
             case datastore {
               description
                 "Yang-push subscription from a datastore.
                  That filter should always be fully included in the
                  Data Collection manifest, i.e. common filters need
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 19]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
                  to be added here.";
               leaf datastore {
                 type leafref {
@@ -1109,19 +1114,19 @@ Internet-Draft           Telemetry Data Manifest            October 2023
           uses yp:update-policy-modifiable;
           leaf current-period {
             when '../periodic';
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 20]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
             type yp:centiseconds;
             description
               "Period during two succesive data collections, in the
                current state. Might differ from the configured period
                when the plaftorm might increase the period
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 20]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
                automatically when it is overloaded.";
           }
           container receivers {
@@ -1165,19 +1170,19 @@ Internet-Draft           Telemetry Data Manifest            October 2023
                   enum active {
                     value 1;
                     description
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 21]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
                       "The receiver is currently being sent any
                        applicable notification messages for the
                        subscription.";
                   }
                   enum suspended {
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 21]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
                     value 2;
                     description
                       "The receiver state is 'suspended', so the
@@ -1221,18 +1226,15 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
    <CODE ENDS>
 
-5.  Data Manifest and the Collected Data
 
 
 
-
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 22]
+Claise, et al.            Expires 25 April 2024                [Page 22]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
+
+5.  Data Manifest and the Collected Data
 
 5.1.  Collecting the Data Manifest
 
@@ -1283,9 +1285,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-
-
-Claise, et al.           Expires April 25, 2024                [Page 23]
+Claise, et al.            Expires 25 April 2024                [Page 23]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1298,22 +1298,22 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    enable a posteriori retrieval of the Data Manifest associated to a
    datapoint, the collector must:
 
-   o  Keep the subscription id and platform id in the metadata of the
+   *  Keep the subscription id and platform id in the metadata of the
       collected values
 
-   o  Collect as well the Data Manifest for the subscription associated
+   *  Collect as well the Data Manifest for the subscription associated
       to the datapoint.
 
    With this information, to retrieve the Data Manifest from the
    datapoint, the following happens:
 
-   o  The subscription id and platform id are retrieved from the
+   *  The subscription id and platform id are retrieved from the
       datapoint metadata
 
-   o  The Data Manifest for that datapoint is obtained by using the
+   *  The Data Manifest for that datapoint is obtained by using the
       values above as keys.
 
-   We don't focus on the timing aspect as storing both the data and
+   We don’t focus on the timing aspect as storing both the data and
    their manifest in a time series database will allow the data
    scientists to look for the Data Manifest corresponding to the
    timestamp of the datapoint.  In that scenario, the reliability of the
@@ -1341,7 +1341,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 24]
+Claise, et al.            Expires 25 April 2024                [Page 24]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1353,126 +1353,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    updated.  To separate these two parts, we enclose each of them in its
    own module.
 
-6.  Example
-
-   Below is an example of both a Platform manifest and corresponding
-   Data Collection Manifests.  The list of YANG modules in the yang-
-   library container is kept empty for brevity.
-
-   <CODE BEGINS> file "manifests-example.json"
-
-   {
-     "ietf-platform-manifest:platforms": {
-       "platform": [
-         {
-           "id": "PE1",
-           "yang-library": {
-             "module-set": [
-               {
-                 "name": "operational"
-               }
-             ],
-             "schema": [
-               {
-                 "name": "operational-schema",
-                 "module-set": [
-                   "operational"
-                 ]
-               }
-             ],
-             "datastore": [
-               {
-                 "name": "ietf-datastores:operational",
-                 "schema": "operational-schema"
-               }
-             ]
-           }
-         }
-       ]
-     },
-     "ietf-data-collection-manifest:data-collections": {
-       "data-collection": [
-         {
-           "platform-id": "PE1",
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 25]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
-           "yang-push-subscriptions": {
-             "subscription": [
-               {
-                 "id": 4242,
-                 "datastore": "ietf-datastores:operational",
-                 "datastore-xpath-filter":
-                        "/ietf-interfaces:interfaces/interface/enabled",
-
-                 "on-change": {},
-                 "receivers": {
-                   "receiver": [
-                     {
-                       "name": "yp-collector",
-                       "state": "active"
-                     }
-                   ]
-                 }
-               },
-               {
-                 "id": 4243,
-                 "datastore": "ietf-datastores:operational",
-                 "datastore-xpath-filter":
-           "/ietf-interfaces:interfaces/interface/statistics/in-octets",
-                 "periodic": {
-                   "period": 10000
-                 },
-                 "current-period": 20000,
-                 "receivers": {
-                   "receiver": [
-                     {
-                       "name": "yp-collector",
-                       "state": "active"
-                     }
-                   ]
-                 }
-               }
-             ]
-           }
-         }
-       ]
-     }
-   }
-
-   <CODE ENDS>
-
-   The file above contains the Data Collection Manifest for two Xpaths
-   subscriptions.  With the Data Collection Manifest for the first one,
-   with subscription id 4242, the exact semantics of the collected path,
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 26]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
-   here the administrative status of the network interfaces, can be
-   obtained by looking up the module in the yang-library of the
-   corresponding plaftorm manifest, in order to obtain the exact
-   revision of ieft-interfaces used at collection time.  Also, the "on-
-   change" container indicates that data will be sent only if there is a
-   change, thus not receiving data indicates that the administrative
-   status of the interface did not change.
-
-   The other example of Data Collection Manifest, with subscription id
-   4243, shows how a periodic subscription is reported.  In that
-   example, the current-period indicates that the requested period of
-   10s (1000 centiseconds) could not be attained and is now of 20s, for
-   instance because the device is overloaded.
-
-7.  Security Considerations
+6.  Security Considerations
 
    As we are reusing an existing telemetry system, the security
    considerations lies with the new content divulged in the new
@@ -1483,20 +1364,20 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    can be ensured by a signing mechanism such as
    [I-D.lopez-opsawg-yang-provenance].
 
-8.  IANA Considerations
+7.  IANA Considerations
 
    This document includes no request to IANA.
 
-9.  Contributors
+8.  Contributors
 
-10.  Open Issues
+9.  Open Issues
 
-   o  Do we want to handle the absence of values, i.e. add information
+   *  Do we want to handle the absence of values, i.e. add information
       about missed collection or errors in the collection context ? It
       could also explain why some values are missing.  On the other
       hand, this might also be out scope.
 
-   o  Regarding the inclusion of ietf-yang-library in our module, do we
+   *  Regarding the inclusion of ietf-yang-library in our module, do we
       want to include as well the changes from ietf-yang-library-
       revisions?  What if other information are present in the yang-
       library from the platform?  Should we use a YANG mount to capture
@@ -1506,26 +1387,26 @@ Internet-Draft           Telemetry Data Manifest            October 2023
       push.yang and ietf-subscribed-notifications.yang since we want to
       include the information from these modules.  Reusing groupings is
       not suitable as some leafrefs are pointing to nodes that are not
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 27]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
       at the same location in our network level module.  Maybe we need
       to find a solution (deviations + some kind of schema mount?) maybe
       we can live with similar modules since they have common nodes but
       different purposes?
 
-   o  Henk: how does this interact with SBOM effort?
+   *  Henk: how does this interact with SBOM effort?
 
-   o  What is the link with the RFC8345 NodeId and IVY?
 
-11.  References
 
-11.1.  Normative References
+
+Claise, et al.            Expires 25 April 2024                [Page 25]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
+
+   *  What is the link with the RFC8345 NodeId and IVY?
+
+10.  References
+
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1558,47 +1439,46 @@ Internet-Draft           Telemetry Data Manifest            October 2023
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
               2022, <https://www.rfc-editor.org/info/rfc9195>.
 
+10.2.  Informative References
+
+   [I-D.clacla-netmod-model-catalog]
+              Clarke, J. and B. Claise, "YANG module for
+              yangcatalog.org", Work in Progress, Internet-Draft, draft-
+              clacla-netmod-model-catalog-03, 3 April 2018,
+              <https://datatracker.ietf.org/doc/html/draft-clacla-
+              netmod-model-catalog-03>.
 
 
 
 
 
 
-
-Claise, et al.           Expires April 25, 2024                [Page 28]
+Claise, et al.            Expires 25 April 2024                [Page 26]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
 
-11.2.  Informative References
-
-   [I-D.clacla-netmod-model-catalog]
-              Clarke, J. and B. Claise, "YANG module for
-              yangcatalog.org", draft-clacla-netmod-model-catalog-03
-              (work in progress), April 2018,
-              <https://datatracker.ietf.org/doc/html/draft-clacla-
-              netmod-model-catalog-03>.
-
    [I-D.claise-netconf-metadata-for-collection]
-              Claise, B., Nayyar, M., and A. Sesani, "Per-Node
+              Claise, B., Nayyar, M., and A. R. Sesani, "Per-Node
               Capabilities for Optimum Operational Data Collection",
-              draft-claise-netconf-metadata-for-collection-02 (work in
-              progress), July 2021,
+              Work in Progress, Internet-Draft, draft-claise-netconf-
+              metadata-for-collection-02, 12 July 2021,
               <https://datatracker.ietf.org/doc/html/draft-claise-
               netconf-metadata-for-collection-02>.
 
    [I-D.lopez-opsawg-yang-provenance]
-              Lopez, D., "Applying COSE Signatures for YANG Data
-              Provenance", draft-lopez-opsawg-yang-provenance-00 (work
-              in progress), July 2023,
-              <https://datatracker.ietf.org/doc/html/draft-lopez-opsawg-
-              yang-provenance-00>.
+              Lopez, D. and A. Pastor, "Applying COSE Signatures for
+              YANG Data Provenance", Work in Progress, Internet-Draft,
+              draft-lopez-opsawg-yang-provenance-01, 23 October 2023,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              lopez-opsawg-yang-provenance/>.
 
    [I-D.tgraf-netconf-notif-sequencing]
-              Graf, T., Quilbeuf, J., and A. Feng, "Support of Hostname
-              and Sequencing in YANG Notifications", draft-tgraf-
-              netconf-notif-sequencing-02 (work in progress), October
-              2023, <https://datatracker.ietf.org/doc/html/draft-tgraf-
+              Graf, T., Quilbeuf, J., and A. H. Feng, "Support of
+              Hostname and Sequencing in YANG Notifications", Work in
+              Progress, Internet-Draft, draft-tgraf-netconf-notif-
+              sequencing-02, 6 October 2023,
+              <https://datatracker.ietf.org/doc/html/draft-tgraf-
               netconf-notif-sequencing-02>.
 
    [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
@@ -1621,7 +1501,15 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 29]
+
+
+
+
+
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 27]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1638,9 +1526,8 @@ Appendix A.  Example of use based on MDT
    interfaces:interfaces/interface/statistics/in-octets" every 100
    milliseconds.  The paths here are referring to the YANG module from
    [RFC8343].  The configuration of YANG push is out of scope for this
-   document.  Since they don't have the same trigger, each of the path
-   must be collected in its own subscription.  Figure 3 presents an
-   example for such a collection.
+   document.  Since they don’t have the same trigger, each of the path
+   must be collected in its own subscription.
 
         +------------+                +----------+
         |   MDT      |                |  Influx  |
@@ -1653,7 +1540,7 @@ Appendix A.  Example of use based on MDT
          | Device  |
          +---------+
 
-        Figure 3: Example of collection from a device to Influx DB
+         Figure 3: Example of collection from a device to Influx DB
 
    In the scenario from Figure 3, the collector receives YANG-push from
    the device and stores it into InfluxDB.  We first present a version
@@ -1670,14 +1557,15 @@ Appendix A.  Example of use based on MDT
    protocol, to represent one datapoint per line.  We use this line
    protocol in Figure 4 and Figure 6 to represent the way data could be
    fed to InfluxDB, omitting the timestamp for readability.  See
-   <https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-
-   protocol/> for more details.
+   https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-
+   protocol/ for more details.
 
 
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 30]
+
+Claise, et al.            Expires 25 April 2024                [Page 28]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1689,7 +1577,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    admin_status,device="PE1",interface="gig1" val=T
    sent_bytes,device="PE1",interface="gig1" val=1234
 
-            Figure 4: Storing datapoints without data manifest
+             Figure 4: Storing datapoints without data manifest
 
    A possibility for keeping the data manifest with the data is to store
    it directly into InfluxDB.  In that case, the collector can subscribe
@@ -1697,18 +1585,17 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    it inside influxDB.  For the Platform Manifest, assuming the platform
    ID is "PE1", the collector subscribes to the path "ietf-platform-
    manifest:platforms/platform[id=PE1]".  For the Data Collection
-   Manifests, the collector subscribes to the path "ietf-data-
-   collection-manifest:data-collections/data-collection[platform-
-   id="PE1"]/yang-push-subscriptions/subscription[id=X]" where X is the
-   subscription id of existing subscriptions.  The data, for instance
+   Manifest, assuming the subscription id is 42, the collector
+   subscribes to the path "ietf-data-collection-manifest:data-
+   collections/data-collection[platform-id="PE1"]/yang-push-
+   subscriptions/subscription[id=42]".  The data, for instance
    serialized in JSON, can be stored in InfluxDB as shown in Figure 5
    where "<platform-manifest>" and "<data-manifest>" represent the
    contents of respectively the Platform Manifest and the Data
    Collection Manifest.
 
    platform-manifest,device="PE1" val=<plaftorm-manifest>
-   collection-data-manifest,device="PE1",subId=4242 val=<data-manifest>
-   collection-data-manifest,device="PE1",subId=4243 val=<data-manifest>
+   collection-data-manifest,device="PE1",subId=42 val=<data-manifest>
 
                       Figure 5: Storing data manifest
 
@@ -1720,33 +1607,35 @@ Internet-Draft           Telemetry Data Manifest            October 2023
    instance, the same datapoints as in Figure 4 could be stored as in
    Figure 6.
 
-   admin_status,device="PE1",interface="gig1" val=T,subId=4242
-   sent_bytes,device="PE1",interface="gig1" val=1234,subId=4243
+   admin_status,device="PE1",interface="gig1" val=T,subId=42
+   sent_bytes,device="PE1",interface="gig1" val=1234,subId=43
 
               Figure 6: Storing datapoints with data manifest
+
+
+
+
+
+
+
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 29]
+
+Internet-Draft           Telemetry Data Manifest            October 2023
+
 
    In our simple example, from the "admin_status" datapoint, one can
    retrieve the corresponding Platform Manifest by looking at the last
    value for the "platform-manifest" measurement with the same value for
    the "device" tag.  From the "admin-status" datapoint, one can
    retrieve the corresponding Data Collection Manifest by looking at the
-
-
-
-Claise, et al.           Expires April 25, 2024                [Page 31]
-
-Internet-Draft           Telemetry Data Manifest            October 2023
-
-
    last value for the "data-manifest" measurement with tags "device" and
    "subId" matching respectively with the tag "device" and the field
    "subId" of the measurement.
 
 Appendix B.  Changes between revisions
-
-   v01 -> v02
-
-      Updated example with latest version of the model.
 
    v00 (WG adoption) - v01
 
@@ -1788,8 +1677,7 @@ Appendix B.  Changes between revisions
 
 
 
-
-Claise, et al.           Expires April 25, 2024                [Page 32]
+Claise, et al.            Expires 25 April 2024                [Page 30]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1815,7 +1703,6 @@ Internet-Draft           Telemetry Data Manifest            October 2023
       Editorial improvements
 
 
-
    v00 -> v01
 
       Adding more into data platform: yang packages, whole yanglib
@@ -1838,14 +1725,15 @@ Internet-Draft           Telemetry Data Manifest            October 2023
       instance file
 
 
-
    v00
 
       Initial version
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 33]
+
+
+Claise, et al.            Expires 25 April 2024                [Page 31]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1856,8 +1744,7 @@ Appendix C.  YANG module ietf-yang-push-modif
    compilations error.  It should be removed as soon as we can fix the
    issue.
 
-   <CODE BEGINS>
-   file "ietf-yang-push-modif@2023-03-08.yang"
+   <CODE BEGINS> file "ietf-yang-push-modif@2023-03-08.yang"
 
    module ietf-yang-push-modif {
      yang-version 1.1;
@@ -1901,7 +1788,8 @@ Appendix C.  YANG module ietf-yang-push-modif
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 34]
+
+Claise, et al.            Expires 25 April 2024                [Page 32]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -1957,7 +1845,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 35]
+Claise, et al.            Expires 25 April 2024                [Page 33]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2013,7 +1901,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 36]
+Claise, et al.            Expires 25 April 2024                [Page 34]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2069,7 +1957,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 37]
+Claise, et al.            Expires 25 April 2024                [Page 35]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2125,7 +2013,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 38]
+Claise, et al.            Expires 25 April 2024                [Page 36]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2181,7 +2069,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 39]
+Claise, et al.            Expires 25 April 2024                [Page 37]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2237,7 +2125,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 40]
+Claise, et al.            Expires 25 April 2024                [Page 38]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2293,7 +2181,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 41]
+Claise, et al.            Expires 25 April 2024                [Page 39]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2349,7 +2237,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 42]
+Claise, et al.            Expires 25 April 2024                [Page 40]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2405,7 +2293,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 43]
+Claise, et al.            Expires 25 April 2024                [Page 41]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2461,7 +2349,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 44]
+Claise, et al.            Expires 25 April 2024                [Page 42]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2517,7 +2405,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 45]
+Claise, et al.            Expires 25 April 2024                [Page 43]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2573,7 +2461,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 46]
+Claise, et al.            Expires 25 April 2024                [Page 44]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2629,7 +2517,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 47]
+Claise, et al.            Expires 25 April 2024                [Page 45]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2685,7 +2573,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 48]
+Claise, et al.            Expires 25 April 2024                [Page 46]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2741,7 +2629,7 @@ Internet-Draft           Telemetry Data Manifest            October 2023
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 49]
+Claise, et al.            Expires 25 April 2024                [Page 47]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2797,7 +2685,7 @@ Acknowledgements
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 50]
+Claise, et al.            Expires 25 April 2024                [Page 48]
 
 Internet-Draft           Telemetry Data Manifest            October 2023
 
@@ -2806,13 +2694,11 @@ Authors' Addresses
 
    Benoit Claise
    Huawei
-
    Email: benoit.claise@huawei.com
 
 
    Jean Quilbeuf
    Huawei
-
    Email: jean.quilbeuf@huawei.com
 
 
@@ -2821,7 +2707,6 @@ Authors' Addresses
    Don Ramon de la Cruz, 82
    Madrid  28006
    Spain
-
    Email: diego.r.lopez@telefonica.com
 
 
@@ -2830,16 +2715,14 @@ Authors' Addresses
    Ronda de la Comunicacion, S/N
    Madrid  28050
    Spain
-
    Email: ignacio.dominguezmartinez@telefonica.com
 
 
    Thomas Graf
    Swisscom
    Binzring 17
-   Zurich  8045
+   CH-8045 Zurich
    Switzerland
-
    Email: thomas.graf@swisscom.com
 
 
@@ -2853,4 +2736,9 @@ Authors' Addresses
 
 
 
-Claise, et al.           Expires April 25, 2024                [Page 51]
+
+
+
+
+
+Claise, et al.            Expires 25 April 2024                [Page 49]
