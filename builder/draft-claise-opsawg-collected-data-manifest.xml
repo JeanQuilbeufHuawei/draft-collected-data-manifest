@@ -323,6 +323,7 @@
           the models from <xref target="platform-manifest"/> and <xref target="data-collection-manifest"/>.
           Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the Platform Manifest and at new subscription or CPU load variation for the Data Collection Manifest.
           The Data Manifest MUST be streamed with the YANG-Push on-change feature <xref target="RFC8641"/> (also called event-driven telemetry).
+          <xref target="inband-example"/> shows how the in-band approach would work while storing to a time-series database (TSDB).
         </t>
       </section>
 
@@ -369,7 +370,7 @@
       <t>&lt;CODE ENDS&gt;</t>
       <t>
         The file above contains the Data Collection Manifest for two Xpaths subscriptions.
-        With the Data Collection Manifest for the first one, with subscription id 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding plaftorm manifest, in order to obtain the exact revision of ieft-interfaces used at collection time.
+        With the Data Collection Manifest for the first one, with subscription id 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding Platform Manifest, in order to obtain the exact revision of ieft-interfaces used at collection time.
         Also, the "on-change" container indicates that data will be sent only if there is a change, thus not receiving data indicates that the administrative status of the interface did not change.
       </t>
       <t>
@@ -411,6 +412,9 @@
           <t>
             What is the link with the RFC8345 NodeId and IVY?
           </t>
+          <t>
+            Handling of deletion in <xref target="I-D.kll-yang-label-tsdb"/>.
+          </t>
         </list>
       </t>
     </section>
@@ -430,15 +434,16 @@
       <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
       <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
       <?rfc include="reference.I-D.lopez-opsawg-yang-provenance"?>
+      <?rfc include="reference.I-D.kll-yang-label-tsdb"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>
       <?rfc include="reference.RFC.9371"?>
     </references>
     <?rfc needLines="100"?>
-    <section title="Example of use based on MDT">
+    <section title="Example of use based on MDT" anchor="inband-example">
       <t>
-        In this example, the goal is to collect the administrative status and number of received bytes for the interfaces of a fictional ACME device, and store the result in a Influx database.
+        In this example, the goal is to collect the administrative status and number of received bytes for the interfaces of a fictional ACME device, and store the result in a time-series database (TSDB).
         The metrics are collected via YANG-Push, which is configured by specifying their XPaths and when they should be collected (periodically or on-change).
         More precisely, we want collect "ietf-interfaces:interfaces/interface/enabled" on every change and "ietf-interfaces:interfaces/interface/statistics/in-octets" every 100 milliseconds.
         The paths here are referring to the YANG module from <xref target="RFC8343"/>.
@@ -446,12 +451,12 @@
         Since they don’t have the same trigger, each of the path must be collected in its own subscription.
         <xref target="collection_example"/> presents an example for such a collection.
       </t>
-      <figure anchor="collection_example" title="Example of collection from a device to Influx DB">
+      <figure anchor="collection_example" title="Example of collection from a device to a TSDB">
         <artwork><![CDATA[
-     +------------+                +----------+
-     |   MDT      |                |  Influx  |
-     | Collector  |--------------> |   DB     |
-     +------------+                +----------+
+     +------------+                +--------+
+     |   MDT      |--------------> |  TSDB  |
+     | Collector  |                +--------+
+     +------------+
           ^
           |
           |
@@ -461,61 +466,102 @@
           ]]></artwork>
       </figure>
       <t>
-        In the scenario from <xref target="collection_example"/>, the collector receives YANG-push from the device and stores it into InfluxDB.
-        We first present a version without data manifest and then how to enrich it with the data manifest.
+        In the scenario from <xref target="collection_example"/>, the collector receives YANG-push from the device and stores it into a TSDB.
+        We first present a version without Data Manifest and then how to enrich it with the Data Manifest.
       </t>
       <t>
-        In InfluxDB, a datapoint is specified by giving the name of the measurement, zero or more key value entries named tags, one or more named values called fields and the timestamp for the datapoint.
-        In our case a measurement could be "admin-status".
-        The tags, whose aim to identify a particular instance of the measurement could be the name of the device and the name of the interface.
-        The fields contain the values to store.
-        InfluxDb defines a textual notation, named line protocol, to represent one datapoint per line.
-        We use this line protocol in <xref target="influx_before"/> and <xref target="influx_after"/> to represent the way data could be fed to InfluxDB, omitting the timestamp for readability.
-        See <eref target="https://docs.influxdata.com/influxdb/cloud/reference/syntax/line-protocol/"/> for more details.
-      </t>
-      <t>
-        Without the data manifest, the YANG-push collector is likely to store something similar to <xref target="influx_before"/> in InfluxDB.
-        In that case, only the value is stored, without any way to know how the value was obtained.
-        <figure anchor="influx_before" title="Storing datapoints without data manifest">
+        We use the notation from <xref target="I-D.kll-yang-label-tsdb"/> to represent how the data is stored in the TSDB.
+        Without the data manifest, the result of the collection would be stored as showed in <xref target="influx_before"/>.
+        The "host" label indicates the devices from which the data is collected and the YANG keys are included as well.
+        Here the interface "eth0" is enabled and received 1234 octets.
+        In that case, the value is stored, without any way to know how the value was obtained.
+        <figure anchor="influx_before" title="Storing datapoints without Data Manifest">
             <artwork><![CDATA[
-admin_status,device="PE1",interface="gig1" val=T
-sent_bytes,device="PE1",interface="gig1" val=1234
+ * Metric: interfaces_interface_enabled
+ * Value: True
+ * Labels:
+   - host: "PE1"
+   - interfaces_interface_name: "eth0"
+--
+ * Metric: interfaces_interface_statistics_in_octets
+ * Value: 1234
+ * Labels:
+   - host: "PE1"
+   - interfaces_interface_name: "eth0"
             ]]></artwork>
         </figure>
       </t>
       <t>
-        A possibility for keeping the data manifest with the data is to store it directly into InfluxDB.
-        In that case, the collector can subscribe to the data exported by the module presented in this draft and store it inside influxDB.
+        A possibility for keeping the Data Manifest with the data is to store it directly into the TSDB.
+        In that case, the collector can subscribe to the data exported by the module presented in this draft and store it as other metrics.
         For the Platform Manifest, assuming the platform ID is "PE1", the collector subscribes to the path "ietf-platform-manifest:platforms/platform[id=PE1]".
         For the Data Collection Manifests, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-subscriptions/subscription[id=X]" where X is the subscription id of existing subscriptions.
-        The data, for instance serialized in JSON, can be stored in InfluxDB as shown in <xref target="influx_manifest"/> where "&lt;platform-manifest&gt;" and "&lt;data-manifest&gt;" represent the contents of respectively the Platform Manifest and the Data Collection Manifest.
-        <figure anchor="influx_manifest" title="Storing data manifest">
+        With the approach from <xref target="I-D.kll-yang-label-tsdb"/>, the corresponding subtrees would be split into a set of datapoints, one per leaf.
+        <xref target="influx_manifest"/> shows two examples of storing leaves in a TSDB.
+        The first leaf is the vendor PEN number, which is part of the Platform Manifest.
+        The second leaf is the Xpath filter used for subscription to the interface status.
+        <figure anchor="influx_manifest" title="Example of storing Platform and Data Collection Manifest: Vendor PEN and Xpath filter.">
           <artwork><![CDATA[
-platform-manifest,device="PE1" val=<plaftorm-manifest>
-collection-data-manifest,device="PE1",subId=4242 val=<data-manifest>
-collection-data-manifest,device="PE1",subId=4243 val=<data-manifest>
-            ]]></artwork>
+ * Metric: platforms_platform_vendor_pen
+ * Value: 32473
+ * Labels:
+   - host: "PE1"
+   - platforms_platform_id: "PE1"
+--
+ * Metric: data_collections_data_collection_yang_push_subscriptions_
+           subscription_datastore_xpath_filter
+ * Value: "ietf-interfaces:interfaces/interface/enabled"
+ * Labels:
+   - host: "PE1"
+   - data_collections_data_collection_platform_id: "PE1"
+   - data_collections_data_collection_yang_push_subscriptions_
+     subscription_id: 4242
+           ]]></artwork>
         </figure>
+          In the labels, the "host" might be different from the "platforms_platform_id" in case the collector is the one assembling it, i.e. for devices that do not natively support the Data Manifest.
+          In that case, the value of this label could be the hostname of the collector.
+          The host value does not matter for retrieving the Data Manifest as the platform id is the meaningful field.
       </t>
       <t>
-        In our example, The link between a collected datapoint and the corresponding Platform Manifest is done via the common "device" tag.
-        In order to link a datapoint with the corresponding Data Collection Manifest, the collector can add fields to specify where the Data Collection Manifest is located for that specific datapoint.
+        In our example, we can retrieve the Platform Manifest associated to a collected datapoint by looking for datapoints that have the label "platforms_platform_id" equal to the value of the host for that collected datapoint.
+        In order to link a datapoint with the corresponding Data Collection Manifest, we need to add an additional label for the subscription id.
         For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>.
-        <figure anchor="influx_after" title="Storing datapoints with data manifest">
+        <figure anchor="influx_after" title="Storing datapoints with information to retrieve the Data Manifest">
           <artwork><![CDATA[
-admin_status,device="PE1",interface="gig1" val=T,subId=4242
-sent_bytes,device="PE1",interface="gig1" val=1234,subId=4243
+ * Metric: interfaces_interface_enabled
+ * Value: True
+ * Labels:
+   - host: "PE1"
+   - interfaces_interface_name: "eth0"
+   - data_collections_data_collection_yang_push_subscriptions_
+     subscription_id: 4242
+--
+ * Metric: interfaces_interface_statistics_in_octets
+ * Value: 1234
+ * Labels:
+   - host: "PE1"
+   - interfaces_interface_name: "eth0"
+   - data_collections_data_collection_yang_push_subscriptions_
+     subscription_id: 4243
             ]]></artwork>
         </figure>
       </t>
       <t>
-        In our simple example, from the "admin_status" datapoint, one can retrieve the corresponding Platform Manifest by looking at the last value for the "platform-manifest" measurement with the same value for the "device" tag.
-
-        From the "admin-status" datapoint, one can retrieve the corresponding Data Collection Manifest by looking at the last value for the "data-manifest" measurement with tags "device" and "subId" matching respectively with the tag "device" and the field "subId" of the measurement.
+        From the "interfaces_interface_enabled" datapoint, one can retrieve the corresponding Data Collection Manifest by looking for datapoints that have the label data_collections_data_collection_yang_push_subscriptions_subscription_id equal to 4242.
+      </t>
+      <t>
+        Various optimizations could be done, such as relying on on-change subscription to modify only the leaves that changed.
+        In that way, the amount of data needed for updating and storing the Data Manifest in the TSDB would be limited.
       </t>
 
     </section>
     <section title="Changes between revisions">
+      <t>v02 -> v03
+        <list>
+          <t>Explicit that modules are network (Controller) level</t>
+          <t>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></t>
+        </list>
+      </t>
       <t> v01 -> v02
         <list>
           <t>Updated example with latest version of the model.</t>
@@ -615,7 +661,7 @@ sent_bytes,device="PE1",interface="gig1" val=1234,subId=4243
     </section>
     <section title="Acknowledgements" numbered="no">
       <t>
-          Thanks to Mohamed Boucadair and Tianran Zhou for their reviews and comments.
+          Thanks to Mohamed Boucadair, Tianran Zhou and Jan Lindblad for their reviews and comments.
        </t>
     </section>
   </back>
