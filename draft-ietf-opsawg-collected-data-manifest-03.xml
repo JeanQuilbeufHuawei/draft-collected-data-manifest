@@ -65,9 +65,11 @@
     <workgroup>OPSAWG</workgroup>
     <abstract>
       <t>
-      Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
-		  This document documents the metadata that ensure that the collected data can be interpreted correctly.
-		  This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest). The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
+        Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
+        This document documents the metadata that ensure that the collected data can be interpreted correctly.
+        This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest).
+        These YANG modules are specified at the network (i.e. controller) level to provide a model that encompasses several network elements.
+        The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
       </t>
     </abstract>
   </front>
@@ -86,7 +88,8 @@
         The Platform Manifest contains information characterizing the platform streaming the telemetry information, while the the Data Collection Manifest contains the required information to characterize how and when the telemetry information was metered.
       </t>
       <t>         
-        The two proposed YANG modules in the Data Manifest do not expose many new information but rather define what should be exposed by a platform streaming telemetry. Some related YANG modules have been specified to retrieve the platform capabilities:
+        The two proposed YANG modules in the Data Manifest do not expose many new information but rather define what should be exposed by a platform streaming or storing telemetry data.
+        Some related YANG modules have been specified to retrieve the platform capabilities:
         <list style="symbols">
           <t>
             The IETF YANG Library <xref target="RFC8525"/>.
