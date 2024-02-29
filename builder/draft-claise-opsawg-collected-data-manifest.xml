@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<?xml-stylesheet type="text/xsl" href="rfc2629.xslt" ?>
 <?rfc toc="yes"?>
 <?rfc tocompact="yes"?>
 <?rfc tocdepth="4"?>
@@ -342,7 +341,8 @@
              </list>
          </t>
          <t>
-             We don’t focus on the timing aspect as storing both the data and their manifest in a time series database will allow the data scientists to look for the Data Manifest corresponding to the timestamp of the datapoint.
+             We don’t focus on the timing aspect as storing both the data and their manifest in a time series database (TSDB) will allow the data scientists to look for the Data Manifest corresponding to the timestamp of the datapoint.
+             More precisely, given the timestamp of a collected datapoint, the query to the TSDB would be to get the last version of the Data Manifest before that timestamp.
              In that scenario, the reliability of the collection of the Data Manifest is the same as the reliability of the data collection itself, since the Data Manifest is like any other data.
          </t>
       </section>
@@ -405,6 +405,7 @@
             Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
             Similarly, the ietf-data-collection-manifest.yang includes many lines of copy-pasting from ietf-yang-push.yang and ietf-subscribed-notifications.yang since we want to include the information from these modules. Reusing groupings is not suitable as some leafrefs are pointing to nodes that are not at the same location in our network level module.
             Maybe we need to find a solution (deviations + some kind of schema mount?) maybe we can live with similar modules since they have common nodes but different purposes?
+            Current effort in <xref target="I-D.jouqui-netmod-yang-full-include"/> might be a potential solution.
           </t>
           <t>
             Henk: how does this interact with SBOM effort?
@@ -435,6 +436,7 @@
       <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
       <?rfc include="reference.I-D.lopez-opsawg-yang-provenance"?>
       <?rfc include="reference.I-D.kll-yang-label-tsdb"?>
+      <?rfc include="reference.I-D.jouqui-netmod-yang-full-include"?>
       <?rfc include="reference.RFC.8199"?>
       <?rfc include="reference.RFC.8343"?>
       <?rfc include="reference.RFC.9196"?>

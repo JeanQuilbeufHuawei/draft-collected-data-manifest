@@ -1314,12 +1314,14 @@ Internet-Draft           Telemetry Data Manifest           February 2024
       values above as keys.
 
    We don't focus on the timing aspect as storing both the data and
-   their manifest in a time series database will allow the data
+   their manifest in a time series database (TSDB) will allow the data
    scientists to look for the Data Manifest corresponding to the
-   timestamp of the datapoint.  In that scenario, the reliability of the
-   collection of the Data Manifest is the same as the reliability of the
-   data collection itself, since the Data Manifest is like any other
-   data.
+   timestamp of the datapoint.  More precisely, given the timestamp of a
+   collected datapoint, the query to the TSDB would be to get the last
+   version of the Data Manifest before that timestamp.  In that
+   scenario, the reliability of the collection of the Data Manifest is
+   the same as the reliability of the data collection itself, since the
+   Data Manifest is like any other data.
 
 5.3.  Operational Considerations
 
@@ -1336,8 +1338,6 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
    That Data Manifest should be kept and available even if the source
    platform is not accessible (from the collection system), or if the
-   platform has been updated (new operating system or new
-   configuration).  The Platform Manifest is "pretty" stable and should
 
 
 
@@ -1346,6 +1346,8 @@ Claise, et al.          Expires September 1, 2024              [Page 24]
 Internet-Draft           Telemetry Data Manifest           February 2024
 
 
+   platform has been updated (new operating system or new
+   configuration).  The Platform Manifest is "pretty" stable and should
    change only when the platform is updated or patched.  On the other
    hand, the Data Collection Manifest is likely to change each time a
    new YANG-Push subscription [RFC8641] is requested and might even
@@ -1392,8 +1394,6 @@ Internet-Draft           Telemetry Data Manifest           February 2024
      },
      "ietf-data-collection-manifest:data-collections": {
        "data-collection": [
-         {
-           "platform-id": "PE1",
 
 
 
@@ -1402,6 +1402,8 @@ Claise, et al.          Expires September 1, 2024              [Page 25]
 Internet-Draft           Telemetry Data Manifest           February 2024
 
 
+         {
+           "platform-id": "PE1",
            "yang-push-subscriptions": {
              "subscription": [
                {
@@ -1447,9 +1449,7 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
    <CODE ENDS>
 
-   The file above contains the Data Collection Manifest for two Xpaths
-   subscriptions.  With the Data Collection Manifest for the first one,
-   with subscription id 4242, the exact semantics of the collected path,
+
 
 
 
@@ -1458,6 +1458,9 @@ Claise, et al.          Expires September 1, 2024              [Page 26]
 Internet-Draft           Telemetry Data Manifest           February 2024
 
 
+   The file above contains the Data Collection Manifest for two Xpaths
+   subscriptions.  With the Data Collection Manifest for the first one,
+   with subscription id 4242, the exact semantics of the collected path,
    here the administrative status of the network interfaces, can be
    obtained by looking up the module in the yang-library of the
    corresponding Platform Manifest, in order to obtain the exact
@@ -1503,9 +1506,6 @@ Internet-Draft           Telemetry Data Manifest           February 2024
       them as well (they would not be captured with our use of the main
       yang-library grouping).  Similarly, the ietf-data-collection-
       manifest.yang includes many lines of copy-pasting from ietf-yang-
-      push.yang and ietf-subscribed-notifications.yang since we want to
-      include the information from these modules.  Reusing groupings is
-      not suitable as some leafrefs are pointing to nodes that are not
 
 
 
@@ -1514,10 +1514,15 @@ Claise, et al.          Expires September 1, 2024              [Page 27]
 Internet-Draft           Telemetry Data Manifest           February 2024
 
 
+      push.yang and ietf-subscribed-notifications.yang since we want to
+      include the information from these modules.  Reusing groupings is
+      not suitable as some leafrefs are pointing to nodes that are not
       at the same location in our network level module.  Maybe we need
       to find a solution (deviations + some kind of schema mount?) maybe
       we can live with similar modules since they have common nodes but
-      different purposes?
+      different purposes?  Current effort in
+      [I-D.jouqui-netmod-yang-full-include] might be a potential
+      solution.
 
    o  Henk: how does this interact with SBOM effort?
 
@@ -1556,11 +1561,6 @@ Internet-Draft           Telemetry Data Manifest           February 2024
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
               September 2019, <https://www.rfc-editor.org/info/rfc8641>.
 
-   [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
-              Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
-              2022, <https://www.rfc-editor.org/info/rfc9195>.
-
-
 
 
 
@@ -1569,6 +1569,10 @@ Claise, et al.          Expires September 1, 2024              [Page 28]
 
 Internet-Draft           Telemetry Data Manifest           February 2024
 
+
+   [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
+              Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
+              2022, <https://www.rfc-editor.org/info/rfc9195>.
 
 11.2.  Informative References
 
@@ -1586,6 +1590,13 @@ Internet-Draft           Telemetry Data Manifest           February 2024
               progress), July 2021,
               <https://datatracker.ietf.org/doc/html/draft-claise-
               netconf-metadata-for-collection-02>.
+
+   [I-D.jouqui-netmod-yang-full-include]
+              Joubert, T., Quilbeuf, J., and B. Claise, "YANG Full
+              Include", draft-jouqui-netmod-yang-full-include-00 (work
+              in progress), November 2023,
+              <https://datatracker.ietf.org/doc/html/draft-jouqui-
+              netmod-yang-full-include-00>.
 
    [I-D.kll-yang-label-tsdb]
               Larsson, K., "Mapping YANG Data to Label-Set Time Series",
@@ -1607,17 +1618,6 @@ Internet-Draft           Telemetry Data Manifest           February 2024
               2024, <https://datatracker.ietf.org/doc/html/draft-tgraf-
               netconf-notif-sequencing-03>.
 
-   [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
-              Classification", RFC 8199, DOI 10.17487/RFC8199, July
-              2017, <https://www.rfc-editor.org/info/rfc8199>.
-
-   [RFC8343]  Bjorklund, M., "A YANG Data Model for Interface
-              Management", RFC 8343, DOI 10.17487/RFC8343, March 2018,
-              <https://www.rfc-editor.org/info/rfc8343>.
-
-
-
-
 
 
 
@@ -1625,6 +1625,14 @@ Claise, et al.          Expires September 1, 2024              [Page 29]
 
 Internet-Draft           Telemetry Data Manifest           February 2024
 
+
+   [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
+              Classification", RFC 8199, DOI 10.17487/RFC8199, July
+              2017, <https://www.rfc-editor.org/info/rfc8199>.
+
+   [RFC8343]  Bjorklund, M., "A YANG Data Model for Interface
+              Management", RFC 8343, DOI 10.17487/RFC8343, March 2018,
+              <https://www.rfc-editor.org/info/rfc8343>.
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
@@ -1665,6 +1673,15 @@ Appendix A.  Example of use based on MDT
 
           Figure 3: Example of collection from a device to a TSDB
 
+
+
+
+
+Claise, et al.          Expires September 1, 2024              [Page 30]
+
+Internet-Draft           Telemetry Data Manifest           February 2024
+
+
    In the scenario from Figure 3, the collector receives YANG-push from
    the device and stores it into a TSDB.  We first present a version
    without Data Manifest and then how to enrich it with the Data
@@ -1674,14 +1691,6 @@ Appendix A.  Example of use based on MDT
    the data is stored in the TSDB.  Without the data manifest, the
    result of the collection would be stored as showed in Figure 4.  The
    "host" label indicates the devices from which the data is collected
-
-
-
-Claise, et al.          Expires September 1, 2024              [Page 30]
-
-Internet-Draft           Telemetry Data Manifest           February 2024
-
-
    and the YANG keys are included as well.  Here the interface "eth0" is
    enabled and received 1234 octets.  In that case, the value is stored,
    without any way to know how the value was obtained.
@@ -1715,15 +1724,6 @@ Internet-Draft           Telemetry Data Manifest           February 2024
    of storing leaves in a TSDB.  The first leaf is the vendor PEN
    number, which is part of the Platform Manifest.  The second leaf is
    the Xpath filter used for subscription to the interface status.
-
-
-
-
-
-
-
-
-
 
 
 
