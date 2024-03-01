@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: September 1, 2024                                      D. Lopez
+Expires: September 2, 2024                                      D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                       February 29, 2024
+                                                           March 1, 2024
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -18,14 +18,14 @@ Expires: September 1, 2024                                      D. Lopez
 
 Abstract
 
-   Network elements use Model-driven Telemetry, and in particular YANG-
+   Network platforms use Model-driven Telemetry, and in particular YANG-
    Push, to continuously stream information, including both counters and
    state information.  This document documents the metadata that ensure
    that the collected data can be interpreted correctly.  This document
    specifies the Data Manifest, composed of two YANG data models (the
    Platform Manifest and the Data Collection Manifest).  These YANG
    modules are specified at the network (i.e. controller) level to
-   provide a model that encompasses several network elements.  The Data
+   provide a model that encompasses several network platforms.  The Data
    Manifest must be streamed and stored along with the data, up to the
    collection and analytics system in order to keep the collected data
    fully exploitable by the data scientists.
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 1, 2024.
+   This Internet-Draft will expire on September 2, 2024.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 1]
+Claise, et al.          Expires September 2, 2024               [Page 1]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
 Copyright Notice
@@ -109,14 +109,14 @@ Table of Contents
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 2]
+Claise, et al.          Expires September 2, 2024               [Page 2]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
 1.  Introduction
 
-   Network elements use Model-driven Telemetry (MDT), and in particular
+   Network platforms use Model-driven Telemetry (MDT), and in particular
    YANG-Push [RFC8641], to continuously stream information, including
    both counters and state information.
 
@@ -126,9 +126,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
    toolchain.  When streaming YANG-structured data with YANG-Push
    [RFC8641], there is a semantic definition in the corresponding YANG
    module definition.  This is the semantic information for the
-   collected objects: While this semantic is absolutely required to
+   collected data nodes: While this semantic is absolutely required to
    correctly decode and interpret the data, understanding the network
-   element and collection environment contexts information is equally
+   platform and collection environment contexts information is equally
    important to interpret the data.
 
    This document proposes the Data Manifest, which is composed of two
@@ -165,9 +165,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 3]
+Claise, et al.          Expires September 2, 2024               [Page 3]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    The full Data Manifest is obtained by combining these two modules.
@@ -178,19 +178,19 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 1.1.1.  Network Analytics
 
-   Streamed information from network elements is used for network
+   Streamed information from network platforms is used for network
    analytics, incident detections, and in the end closed-loop
    automation.  This streamed data can be stored in a database
    (sometimes called a big data lake) for further analysis.
 
    As an example, a database could store a time series representing the
-   evolution of a specific counter collected from a network element.
+   evolution of a specific counter collected from a network platform.
    When analyzing the data, the network operator/data scientist must
    understand the context information for these data:
 
-   o  This object definition in the YANG model.
+   o  This counter definition in the YANG model.
 
-   o  The network element specific vendor, platform, and OS.
+   o  The network platform specific vendor, model, and OS.
 
    o  The collection parameters.
 
@@ -209,21 +209,21 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
    From a collection parameters point of view, the data scientists
    analyzing the collected data must know that the counter was requested
-   from the network element as on-change or at specific cadence.
+   from the network platform as on-change or at specific cadence.
    Indeed, an on-change collection explains why there is a single value
    as opposed to a time series.  In case of periodic collection, this
    exact cadence might not be observable in the time series.  Indeed,
    this time series might report some values as 0 or might even omit
    some values.  The reason for this behavior might be diverse: the
-   network element was under stress, with a too small observation
+   network platform was under stress, with a too small observation
    period, compared to the minimum-observed-period
    [I-D.claise-netconf-metadata-for-collection].  Again, knowing the
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 4]
+Claise, et al.          Expires September 2, 2024               [Page 4]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    conditions under which the counter was collected and streamed (along
@@ -277,9 +277,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 5]
+Claise, et al.          Expires September 2, 2024               [Page 5]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    The most relevant concept for this document is the "Data as a
@@ -333,9 +333,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 6]
+Claise, et al.          Expires September 2, 2024               [Page 6]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
               |  +--ro module* [name]
@@ -389,9 +389,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 7]
+Claise, et al.          Expires September 2, 2024               [Page 7]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    are aligned with the YANG Catalog <www.yangcatalog.org>
@@ -445,9 +445,9 @@ module ietf-platform-manifest {
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 8]
+Claise, et al.          Expires September 2, 2024               [Page 8]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
      Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
@@ -501,9 +501,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024               [Page 9]
+Claise, et al.          Expires September 2, 2024               [Page 9]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
     description
@@ -557,9 +557,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 10]
+Claise, et al.          Expires September 2, 2024              [Page 10]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
   augment
@@ -613,9 +613,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 11]
+Claise, et al.          Expires September 2, 2024              [Page 11]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
     }
@@ -669,9 +669,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 12]
+Claise, et al.          Expires September 2, 2024              [Page 12]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
       leaf software-flavor {
@@ -725,9 +725,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 13]
+Claise, et al.          Expires September 2, 2024              [Page 13]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
           }
@@ -781,9 +781,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 14]
+Claise, et al.          Expires September 2, 2024              [Page 14]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
                  |           +--ro datastore-xpath-filter?
@@ -837,9 +837,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 15]
+Claise, et al.          Expires September 2, 2024              [Page 15]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    common filter as stored in 'filters' in ietf-subscribed-notfications.
@@ -893,9 +893,9 @@ module ietf-data-collection-manifest {
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 16]
+Claise, et al.          Expires September 2, 2024              [Page 16]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
     reference
@@ -949,9 +949,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 17]
+Claise, et al.          Expires September 2, 2024              [Page 17]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
      (RFC 8174) when, and only when, they appear in all
@@ -1005,9 +1005,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 18]
+Claise, et al.          Expires September 2, 2024              [Page 18]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
            includes subscriptions that have been set up via
@@ -1061,9 +1061,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 19]
+Claise, et al.          Expires September 2, 2024              [Page 19]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
                 "Yang-push subscription from a datastore.
@@ -1117,9 +1117,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 20]
+Claise, et al.          Expires September 2, 2024              [Page 20]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
               "Period during two succesive data collections, in the
@@ -1173,9 +1173,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 21]
+Claise, et al.          Expires September 2, 2024              [Page 21]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
                        subscription.";
@@ -1229,9 +1229,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 22]
+Claise, et al.          Expires September 2, 2024              [Page 22]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
 5.  Data Manifest and the Collected Data
@@ -1285,9 +1285,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 23]
+Claise, et al.          Expires September 2, 2024              [Page 23]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
 5.2.  Mapping Collected Data to the Data Manifest
@@ -1327,8 +1327,8 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
    It is expected that the Data Manifest is streamed directly from the
    network equipment, along with YANG-Push [RFC8641] data.  However, if
-   the network element streaming telemetry does not support yet the YANG
-   modules from the Data Manifest specified in this document, the
+   the network equipment streaming telemetry does not support yet the
+   YANG modules from the Data Manifest specified in this document, the
    telemetry collector could populate the Data Manifest from available
    information collected from the platform.  However, this option
    requires efforts on the telemetry collector side, as the information
@@ -1341,9 +1341,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 24]
+Claise, et al.          Expires September 2, 2024              [Page 24]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    platform has been updated (new operating system or new
@@ -1397,9 +1397,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 25]
+Claise, et al.          Expires September 2, 2024              [Page 25]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
          {
@@ -1453,9 +1453,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 26]
+Claise, et al.          Expires September 2, 2024              [Page 26]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    The file above contains the Data Collection Manifest for two Xpaths
@@ -1509,9 +1509,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 27]
+Claise, et al.          Expires September 2, 2024              [Page 27]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
       push.yang and ietf-subscribed-notifications.yang since we want to
@@ -1565,9 +1565,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 28]
+Claise, et al.          Expires September 2, 2024              [Page 28]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
@@ -1621,9 +1621,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 29]
+Claise, et al.          Expires September 2, 2024              [Page 29]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    [RFC8199]  Bogdanovic, D., Claise, B., and C. Moberg, "YANG Module
@@ -1677,9 +1677,9 @@ Appendix A.  Example of use based on MDT
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 30]
+Claise, et al.          Expires September 2, 2024              [Page 30]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    In the scenario from Figure 3, the collector receives YANG-push from
@@ -1733,9 +1733,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 31]
+Claise, et al.          Expires September 2, 2024              [Page 31]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
     * Metric: platforms_platform_vendor_pen
@@ -1789,9 +1789,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 32]
+Claise, et al.          Expires September 2, 2024              [Page 32]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
     * Metric: interfaces_interface_enabled
@@ -1845,9 +1845,9 @@ Appendix B.  Changes between revisions
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 33]
+Claise, et al.          Expires September 2, 2024              [Page 33]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
       Remove YANG packages
@@ -1901,9 +1901,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 34]
+Claise, et al.          Expires September 2, 2024              [Page 34]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
       Editorial improvements
@@ -1957,9 +1957,9 @@ Appendix C.  YANG module ietf-yang-push-modif
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 35]
+Claise, et al.          Expires September 2, 2024              [Page 35]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
        prefix yang;
@@ -2013,9 +2013,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 36]
+Claise, et al.          Expires September 2, 2024              [Page 36]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
         Redistribution and use in source and binary forms, with or
@@ -2069,9 +2069,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 37]
+Claise, et al.          Expires September 2, 2024              [Page 37]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
           This means that the publisher is unable to restrict
@@ -2125,9 +2125,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 38]
+Claise, et al.          Expires September 2, 2024              [Page 38]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
           (with or without dampening).  Hints suggesting alternative
@@ -2181,9 +2181,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 39]
+Claise, et al.          Expires September 2, 2024              [Page 39]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
               datastore node.";
@@ -2237,9 +2237,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 40]
+Claise, et al.          Expires September 2, 2024              [Page 40]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
      }
@@ -2293,9 +2293,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 41]
+Claise, et al.          Expires September 2, 2024              [Page 41]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
               The expression is evaluated in the following XPath
@@ -2349,9 +2349,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 42]
+Claise, et al.          Expires September 2, 2024              [Page 42]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
              mandatory true;
@@ -2405,9 +2405,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 43]
+Claise, et al.          Expires September 2, 2024              [Page 43]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
                   minute that this subscription is active.";
@@ -2461,9 +2461,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 44]
+Claise, et al.          Expires September 2, 2024              [Page 44]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
                 this subscription.  Only updates about changes
@@ -2517,9 +2517,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 45]
+Claise, et al.          Expires September 2, 2024              [Page 45]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
          description
@@ -2573,9 +2573,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 46]
+Claise, et al.          Expires September 2, 2024              [Page 46]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
       * NOTIFICATIONS
@@ -2629,9 +2629,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 47]
+Claise, et al.          Expires September 2, 2024              [Page 47]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
          type sn:subscription-id;
@@ -2685,9 +2685,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 48]
+Claise, et al.          Expires September 2, 2024              [Page 48]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
      }
@@ -2741,9 +2741,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 49]
+Claise, et al.          Expires September 2, 2024              [Page 49]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
          "This augmentation allows the datastore to be included as
@@ -2797,9 +2797,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 50]
+Claise, et al.          Expires September 2, 2024              [Page 50]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
      augment "/sn:subscriptions/sn:subscription/sn:target" {
@@ -2853,9 +2853,9 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 51]
+Claise, et al.          Expires September 2, 2024              [Page 51]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
          uses hints;
@@ -2909,9 +2909,9 @@ Authors' Addresses
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 52]
+Claise, et al.          Expires September 2, 2024              [Page 52]
 
-Internet-Draft           Telemetry Data Manifest           February 2024
+Internet-Draft           Telemetry Data Manifest              March 2024
 
 
    Diego R. Lopez
@@ -2965,4 +2965,4 @@ Internet-Draft           Telemetry Data Manifest           February 2024
 
 
 
-Claise, et al.          Expires September 1, 2024              [Page 53]
+Claise, et al.          Expires September 2, 2024              [Page 53]
