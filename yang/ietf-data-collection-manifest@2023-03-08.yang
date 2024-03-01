@@ -37,7 +37,7 @@ module ietf-data-collection-manifest {
      Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
      Author:   Ignacio Dominguez
                           <ignacio.dominguezmartinez@telefonica.com>
-     Author:   Thomas Grapf     <thomas.graf@swisscom.com>";
+     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
   description
     "This module describes the context of data collection from a
      given network element. The contents of this model must be
