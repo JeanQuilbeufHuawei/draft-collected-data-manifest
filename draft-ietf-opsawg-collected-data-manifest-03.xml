@@ -64,10 +64,10 @@
     <workgroup>OPSAWG</workgroup>
     <abstract>
       <t>
-        Network elements use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
+        Network platforms use Model-driven Telemetry, and in particular YANG-Push, to continuously stream information, including both counters and state information.
         This document documents the metadata that ensure that the collected data can be interpreted correctly.
         This document specifies the Data Manifest, composed of two YANG data models (the Platform Manifest and the Data Collection Manifest).
-        These YANG modules are specified at the network (i.e. controller) level to provide a model that encompasses several network elements.
+        These YANG modules are specified at the network (i.e. controller) level to provide a model that encompasses several network platforms.
         The Data Manifest must be streamed and stored along with the data, up to the collection and analytics system in order to keep the collected data fully exploitable by the data scientists.
       </t>
     </abstract>
@@ -75,10 +75,11 @@
   <middle>
     <section anchor="intro" title="Introduction">
       <t>
-        Network elements use Model-driven Telemetry (MDT), and in particular YANG-Push <xref target="RFC8641"/>, to continuously stream information, including both counters and state information.
+        Network platforms use Model-driven Telemetry (MDT), and in particular YANG-Push <xref target="RFC8641"/>, to continuously stream information, including both counters and state information.
       </t>
       <t>
-        This document specifies what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly throughout the collection and network analytics toolchain. When streaming YANG-structured data with YANG-Push <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition. This is the semantic information for the collected objects: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network element and collection environment contexts information is equally important to interpret the data.
+        This document specifies what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly throughout the collection and network analytics toolchain. When streaming YANG-structured data with YANG-Push <xref target="RFC8641"/>, there is a semantic definition in the corresponding YANG module definition.
+        This is the semantic information for the collected data nodes: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network platform and collection environment contexts information is equally important to interpret the data.
       </t>
       <t>
         This document proposes the Data Manifest, which is composed of two YANG data models, namely, the Platform Manifest and the Data Collection Manifest, in order to keep the collected data exploitable by the data scientists.
@@ -110,16 +111,16 @@
     
          <section anchor="network-analytics" title="Network Analytics">
            <t>
-            Streamed information from network elements is used for network analytics, incident detections, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
+            Streamed information from network platforms is used for network analytics, incident detections, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
           </t>
           <t>         
-            As an example, a database could store a time series representing the evolution of a specific counter collected from a network element. When analyzing the data, the network operator/data scientist must understand the context information for these data:
+            As an example, a database could store a time series representing the evolution of a specific counter collected from a network platform. When analyzing the data, the network operator/data scientist must understand the context information for these data:
             <list style="symbols">
             <t>
-              This object definition in the YANG model.
+              This counter definition in the YANG model.
             </t>
             <t>
-              The network element specific vendor, platform, and OS.
+              The network platform specific vendor, model, and OS.
             </t>
             <t>
               The collection parameters.
@@ -130,7 +131,7 @@
               Characterizing the source used for producing the data (vendor, platform, and OS) is useful to complement the data.  As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, a specific bug fix, or simply a particular specific behavior.  This is also necessary to ensure the reliability of the collected data. On top of that, in particular for YANG-Push <xref target="RFC8641"/>, it is crucial to know the set of YANG modules supported by the platform, along with their deviations. In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one.  This information is captured by the proposed Platform Manifest.
           </t>
            <t>
-              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network element as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network element was under stress, with a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
+              From a collection parameters point of view, the data scientists analyzing the collected data must know that the counter was requested from the network platform as on-change or at specific cadence. Indeed, an on-change collection explains why there is a single value as opposed to a time series. In case of periodic collection, this exact cadence might not be observable in the time series. Indeed, this time series might report some values as 0 or might even omit some values. The reason for this behavior might be diverse: the network platform was under stress, with a too small observation period, compared to the minimum-observed-period <xref target="I-D.claise-netconf-metadata-for-collection"/>. Again, knowing the conditions under which the counter was collected and streamed (along with the platform details) help drawing the right conclusions. As an example, taking into account the value of 0 might lead to a wrong conclusion that the counter dropped to zero. This document specifies the Data Collection Manifest, which contains the required information to characterize how and when the telemetry information was metered.
           </t>
            <t>
               The goal of the current document is to define what needs to be kept as metadata (i.e., the Data Manifest) to ensure that the collected data can still be interpreted correctly. 
@@ -1017,7 +1018,7 @@ module ietf-data-collection-manifest {
 
       <section anchor="operational-considerations" title="Operational Considerations">
          <t>
-             It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network element streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
+             It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network equipment streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
          </t>
          <t>
              That Data Manifest should be kept and available even if the source platform is not accessible (from the collection system), or if the platform has been updated (new operating system or new configuration). The Platform Manifest is "pretty" stable and should change only when the platform is updated or patched. On the other hand, the Data Collection Manifest is likely to change each time a new YANG-Push subscription <xref target="RFC8641"/> is requested and might even change if the platform load increases and collection periods are updated. To separate these two parts, we enclose each of them in its own module.
@@ -1304,6 +1305,7 @@ module ietf-data-collection-manifest {
         <list>
           <t>Explicit that modules are network (Controller) level</t>
           <t>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></t>
+          <t>Minor edits i.e. network element -> platform , object -> data node</t>
         </list>
       </t>
       <t> v01 -> v02
