@@ -1305,6 +1305,7 @@ module ietf-data-collection-manifest {
         <list>
           <t>Explicit that modules are network (Controller) level</t>
           <t>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></t>
+          <t>Minor edits i.e. network element -> platform , object -> data node</t>
         </list>
       </t>
       <t> v01 -> v02

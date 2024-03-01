@@ -1832,6 +1832,8 @@ Appendix B.  Changes between revisions
       InfluxDB example changed to TSDB example aligned with
       [I-D.kll-yang-label-tsdb]
 
+      Minor edits i.e. network element -> platform , object -> data node
+
    v01 -> v02
 
       Updated example with latest version of the model.
@@ -1841,14 +1843,14 @@ Appendix B.  Changes between revisions
       Solve integrity issue by delegating to
       [I-D.lopez-opsawg-yang-provenance].
 
-   v05 -> v06
-
 
 
 Claise, et al.          Expires September 2, 2024              [Page 33]
 
 Internet-Draft           Telemetry Data Manifest              March 2024
 
+
+   v05 -> v06
 
       Remove YANG packages
 
@@ -1897,14 +1899,14 @@ Internet-Draft           Telemetry Data Manifest              March 2024
 
       Alignment with YANGCatalog YANG module: name, vendor
 
-      Clarify the use of YANG instance file
-
 
 
 Claise, et al.          Expires September 2, 2024              [Page 34]
 
 Internet-Draft           Telemetry Data Manifest              March 2024
 
+
+      Clarify the use of YANG instance file
 
       Editorial improvements
 
@@ -1953,8 +1955,6 @@ Appendix C.  YANG module ietf-yang-push-modif
      namespace "urn:ietf:params:xml:ns:yang:ietf-yang-push-modif";
      prefix yp;
 
-     import ietf-yang-types {
-
 
 
 Claise, et al.          Expires September 2, 2024              [Page 35]
@@ -1962,6 +1962,7 @@ Claise, et al.          Expires September 2, 2024              [Page 35]
 Internet-Draft           Telemetry Data Manifest              March 2024
 
 
+     import ietf-yang-types {
        prefix yang;
        reference
          "RFC 6991: Common YANG Data Types";
@@ -2009,7 +2010,6 @@ Internet-Draft           Telemetry Data Manifest              March 2024
 
         Copyright (c) 2019 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
-
 
 
 
