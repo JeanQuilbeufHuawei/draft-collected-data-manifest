@@ -10,7 +10,7 @@
 <?rfc inline="yes"?>
 <?rfc compact="yes"?>
 <?rfc subcompact="no"?>
-<rfc category="std" ipr="trust200902" docName="draft-ietf-opsawg-collected-data-manifest-03">
+<rfc category="std" ipr="trust200902" docName="draft-ietf-opsawg-collected-data-manifest-04">
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
@@ -102,6 +102,12 @@
           </t>
         </list>
         These related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change). Some of their content is part of the context for the streamed data.
+      </t>
+      <t>
+        This documents covers only metadata about the collection context for the telemetry.
+        The collected data is likely to be transformed into usable indicators for the network.
+        The list of such transformation operation applied to the data is often called data lineage.
+        Supplying the data lineage for the computed indicators is out of scope of this document.
       </t>
       <t>
         We first present the module for the Platform Manifest in <xref target="platform-manifest"/> and then the module for the Data Collection Manifest in <xref target="data-collection-manifest"/>. The full Data Manifest is obtained by combining these two modules. We explain in <xref target="mapping"/> how the Data Manifest can be retrieved and how collected data is mapped to the Data Manifest.
@@ -559,6 +565,11 @@
 
     </section>
     <section title="Changes between revisions">
+      <t>v03 -> v04
+        <list>
+          <t>State that data lineage is out of scope</t>
+        </list>
+      </t>
       <t>v02 -> v03
         <list>
           <t>Explicit that modules are network (Controller) level</t>
