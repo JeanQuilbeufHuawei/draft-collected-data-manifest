@@ -68,7 +68,7 @@ module ietf-data-collection-manifest {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2023-07-02 {
+  revision 2024-07-02 {
     description
       "Initial revision";
     reference
