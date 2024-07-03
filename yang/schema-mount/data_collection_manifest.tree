@@ -1,0 +1,56 @@
+module: ietf-data-collection-manifest
+  +--ro data-collections
+     +--ro data-collection* [platform-id]
+        +--ro platform-id             -> /p-mf:platforms/p-mf:platform/p-mf:id
+        +--mp yang-push-collection
+           +--ro streams/
+           |  +--ro stream* [name]
+           |     +--ro name           string
+           |     +--ro description?   string
+           +--ro filters/
+           |  +--ro stream-filter* [name]
+           |  |  +--ro name             string
+           |  |  +--ro (filter-spec)?
+           |  |     +--:(stream-subtree-filter)
+           |  |     +--:(stream-xpath-filter)
+           |  +--ro selection-filter* [filter-id]
+           |     +--ro filter-id        string
+           |     +--ro (filter-spec)?
+           |        +--:(datastore-subtree-filter)
+           |        +--:(datastore-xpath-filter)
+           +--ro subscriptions/
+              +--ro subscription* [id]
+                 +--ro id                  subscription-id
+                 +--ro (target)
+                 |  +--:(stream)
+                 |  |  +--ro (stream-filter)?
+                 |  |  |  +--:(by-reference)
+                 |  |  |  |  +--ro stream-filter-name    stream-filter-ref
+                 |  |  |  +--:(within-subscription)
+                 |  |  |     +--ro (filter-spec)?
+                 |  |  |        +--:(stream-subtree-filter)
+                 |  |  |        +--:(stream-xpath-filter)
+                 |  |  +--ro stream             stream-ref
+                 |  +--:(datastore)
+                 |     +--ro datastore             identityref
+                 |     +--ro (selection-filter)?
+                 |        +--:(by-reference)
+                 |        |  +--ro selection-filter-ref    selection-filter-ref
+                 |        +--:(within-subscription)
+                 |           +--ro (filter-spec)?
+                 |              +--:(datastore-subtree-filter)
+                 |              +--:(datastore-xpath-filter)
+                 +--ro stop-time?          yang:date-and-time
+                 +--ro encoding?           encoding
+                 +--ro receivers
+                 |  +--ro receiver* [name]
+                 |     +--ro name                      string
+                 |     +--ro sent-event-records?       yang:zero-based-counter64
+                 |     +--ro excluded-event-records?   yang:zero-based-counter64
+                 |     +--ro state                     enumeration
+                 +--ro current-period?     yp:centiseconds
+                 +--ro (update-trigger)?
+                    +--:(periodic)
+                       +--ro periodic!
+                          +--ro period         centiseconds
+                          +--ro anchor-time?   yang:date-and-time
