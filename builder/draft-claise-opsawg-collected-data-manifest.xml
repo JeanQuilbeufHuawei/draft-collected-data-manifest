@@ -319,12 +319,10 @@
       </section>
       <section anchor="module-code">
         <name>YANG module ietf-data-collection-manifest</name>
-        <!-- <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2023-03-08.yang"</t> -->
         <sourcecode name="ietf-data-collection-manifest@2023-03-08.yang" type="yang" markers="true"><![CDATA[
 {{data_collection_manifest_yang}}
     ]]>
         </sourcecode>
-        <!--t>&lt;CODE ENDS&gt;</6t-->
       </section>
     </section>
     <section anchor="mapping" >
@@ -468,10 +466,12 @@
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8639.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8641.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9195.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.jouqui-netmod-yang-full-include"/>
     </references>
     <references title="Informative References">
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8199.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8343.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8528.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9196.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9371.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-clacla-netmod-model-catalog-03"/>
@@ -479,7 +479,6 @@
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.tgraf-netconf-notif-sequencing"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.lopez-opsawg-yang-provenance"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.kll-yang-label-tsdb"/>
-      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.jouqui-netmod-yang-full-include"/>
     </references>
     <?rfc needLines="100"?>
     <section anchor="inband-example">
@@ -691,23 +690,46 @@
           <li> Initial version </li>
         </ul>
     </section>
-    <section>
-      <name>YANG module ietf-yang-push-modif</name>
+    <section anchor="schema-mount-version">
+      <name>Supporting files for generating YANG tree diagrams</name>
       <t>
-        This section is only here to ensure that the draft passes without compilations error.
-        It should be removed as soon as we can fix the issue.
+        This section provides the files needed to generate the YANG tree diagrams <xref target="RFC8340"/> from <xref target="platform-manifest-tree"/> and <xref target="data-collection-manifest-tree"/>.
+        The diagrams were obtained using yanglint <eref target="https://github.com/CESNET/libyang"/> version 2.1.80, using the YANG Schema Mount <xref target="RFC8528"/>.
+        Once <xref target="I-D.jouqui-netmod-yang-full-include"/> is implemented, they should be replaced by the tree diagrams produced directly from the corresponding modules.
+        Alternatively, the present section could be used as the standard, if <xref target="I-D.jouqui-netmod-yang-full-include"/> does not become an RFC.
       </t>
-      <t>
-        &lt;CODE BEGINS&gt;
-        <vspace/> <!-- force filename on a single line, needed for xym -->
-        file "ietf-yang-push-modif@2023-03-08.yang"
-      </t>
-      <figure>
-        <artwork><![CDATA[
-{{yp_modif}}
-            ]]></artwork>
-      </figure>
-      <t>&lt;CODE ENDS&gt;</t>
+      <section anchor="platform-schema-mount">
+        <name>Schema Mount Version for the Platform Manifest</name>
+        <t>
+          The YANG module from <xref target="platform-manifest-model"/> is modified to use a mount point from YANG Schema Mount <xref target="RFC8528"/> instead of the full:embed from <xref target="I-D.jouqui-netmod-yang-full-include"/>.
+        </t>
+        <sourcecode type="yang" markers="false"><![CDATA[
+{{platform_schema_mount}}
+          ]]>
+        </sourcecode>
+        <t>
+          In order to get the tree diagram with yanglint, two data files are required.
+          First we need the extension data, containing the YANG library to use at the mount point.
+          Then we need the YANG library to use at the top-level context.
+          The extension data is included below as "platform-extension-data.xml", the top-level YANG library as "platform-toplevel-yanglib.xml".
+          The tree diagram is obtained by running the following command:
+        </t>
+        <sourcecode type="bash">
+yanglint -f tree \
+  -x platform-extension-data.xml \
+  -Y platform-toplevel-yanglib.xml \
+  ietf-platform-manifest@2024-07-02.yang
+        </sourcecode>
+        <sourcecode anchor="platform-extension-data" name="platform-extension-data.xml" type="xml" markers="true"><![CDATA[
+{{platform_extension_data}}
+]]>
+        </sourcecode>
+        <sourcecode anchor="platform-toplevel-yanglib" name="platform-toplevel-yanglib.xml" type="xml" markers="true"><![CDATA[
+{{platform_toplevel_yanglib}}
+]]>
+        </sourcecode>
+      </section>
+
     </section>
     <section numbered="false">
       <name>Acknowledgements</name>

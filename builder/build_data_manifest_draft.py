@@ -34,7 +34,7 @@ def _execute_pyang(options: List[str], filenames: List[str]):
 
 
 def _build_tree(filenames):
-    return _execute_pyang(["-f", "tree", "--tree-line-length", "69"], filenames)
+    return _execute_pyang(["-f", "tree", "--tree-line-length", "67"], filenames)
 
 
 def _format_yang(filenames):
@@ -43,8 +43,12 @@ def _format_yang(filenames):
                            "--yang-line-length", "69"], filenames)
 
 
-def _find_yang_file(prefix: str):
-    for yang_file in os.listdir(YANG_DIR):
+def _find_yang_file(prefix: str, schema_mount=False):
+    if schema_mount:
+        yang_dir = os.path.join(YANG_DIR, "schema-mount")
+    else:
+        yang_dir = YANG_DIR
+    for yang_file in os.listdir(yang_dir):
         if yang_file.startswith(prefix + "@") and yang_file.endswith("yang"):
             return os.path.join(YANG_DIR, yang_file)
     raise Exception(f"Yang file with prefix {prefix} not found.")
@@ -58,10 +62,18 @@ def _format_json(filename):
         return str(e), ""
 
 
+def _get_sm_xml(short_name):
+    filename = os.path.join(YANG_DIR, "schema-mount", short_name + ".xml")
+    return "", open(filename).read()
+
+
 PLATFORM_MANIFEST = _find_yang_file("ietf-platform-manifest")
+PLATFORM_MANIFEST_SM = _find_yang_file("ietf-platform-manifest", schema_mount=True)
 DATA_COLLECTION_MANIFEST = _find_yang_file("ietf-data-collection-manifest")
+DATA_COLLECTION_MANIFEST_SM = _find_yang_file( "ietf-data-collection-manifest", schema_mount=True)
 YANG_PUSH_MODIF = _find_yang_file("ietf-yang-push-modif")
 DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "manifests-example.json")
+
 
 
 def draft_content():
@@ -71,7 +83,10 @@ def draft_content():
         "platform_manifest_tree": _build_tree([PLATFORM_MANIFEST]),
         "platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
         "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE),
-        "yp_modif": _format_yang([YANG_PUSH_MODIF])
+        "yp_modif": _format_yang([YANG_PUSH_MODIF]),
+        "platform_schema_mount": _format_yang([PLATFORM_MANIFEST_SM]),
+        "platform_extension_data": _get_sm_xml("platform-extension-data"),
+        "platform_toplevel_yanglib": _get_sm_xml("platform-toplevel-yanglib")
         }
     errors = []
     warnings = []

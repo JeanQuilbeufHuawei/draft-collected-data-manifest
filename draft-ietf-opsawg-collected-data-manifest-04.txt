@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: 4 January 2025                                         D. Lopez
+Expires: 5 January 2025                                         D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                             3 July 2024
+                                                             4 July 2024
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 January 2025.
+   This Internet-Draft will expire on 5 January 2025.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 1]
+Claise, et al.           Expires 5 January 2025                 [Page 1]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -99,17 +99,17 @@ Table of Contents
    12. Informative References  . . . . . . . . . . . . . . . . . . .  21
    Appendix A.  title="Example of use based on MDT . . . . . . . . .  22
    Appendix B.  Changes between revisions  . . . . . . . . . . . . .  25
-   Appendix C.  YANG module ietf-yang-push-modif . . . . . . . . . .  27
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  44
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  44
+   Appendix C.  Supporting files for generating YANG tree
+           diagrams  . . . . . . . . . . . . . . . . . . . . . . . .  27
+     C.1.  Schema Mount Version for the Platform Manifest  . . . . .  28
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  34
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  34
 
 
 
 
 
-
-
-Claise, et al.           Expires 4 January 2025                 [Page 2]
+Claise, et al.           Expires 5 January 2025                 [Page 2]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -165,7 +165,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 3]
+Claise, et al.           Expires 5 January 2025                 [Page 3]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -221,7 +221,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 4]
+Claise, et al.           Expires 5 January 2025                 [Page 4]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -277,7 +277,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 5]
+Claise, et al.           Expires 5 January 2025                 [Page 5]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -333,7 +333,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 6]
+Claise, et al.           Expires 5 January 2025                 [Page 6]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -389,7 +389,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 7]
+Claise, et al.           Expires 5 January 2025                 [Page 7]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 8]
+Claise, et al.           Expires 5 January 2025                 [Page 8]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                 [Page 9]
+Claise, et al.           Expires 5 January 2025                 [Page 9]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -557,7 +557,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 10]
+Claise, et al.           Expires 5 January 2025                [Page 10]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -579,7 +579,8 @@ Internet-Draft           Telemetry Data Manifest               July 2024
    module: ietf-data-collection-manifest
      +--ro data-collections
         +--ro data-collection* [platform-id]
-           +--ro platform-id             -> /p-mf:platforms/platform/id
+           +--ro platform-id
+           |       -> /p-mf:platforms/platform/id
            +--ro yang-push-collection?   <anydata>
 
     Figure 2: YANG tree diagram for ietf-data-collection-manifest module
@@ -612,8 +613,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-
-Claise, et al.           Expires 4 January 2025                [Page 11]
+Claise, et al.           Expires 5 January 2025                [Page 11]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -669,7 +669,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 12]
+Claise, et al.           Expires 5 January 2025                [Page 12]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -725,7 +725,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 13]
+Claise, et al.           Expires 5 January 2025                [Page 13]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -781,7 +781,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 14]
+Claise, et al.           Expires 5 January 2025                [Page 14]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -837,7 +837,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 15]
+Claise, et al.           Expires 5 January 2025                [Page 15]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -893,7 +893,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 16]
+Claise, et al.           Expires 5 January 2025                [Page 16]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -949,7 +949,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 17]
+Claise, et al.           Expires 5 January 2025                [Page 17]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 18]
+Claise, et al.           Expires 5 January 2025                [Page 18]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 19]
+Claise, et al.           Expires 5 January 2025                [Page 19]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1086,6 +1086,13 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 11.  Normative References
 
+   [I-D.jouqui-netmod-yang-full-include]
+              Quilbeuf, J., Claise, B., and T. Joubert, "YANG Full
+              Embed", Work in Progress, Internet-Draft, draft-jouqui-
+              netmod-yang-full-include-01, 4 March 2024,
+              <https://datatracker.ietf.org/doc/html/draft-jouqui-
+              netmod-yang-full-include-01>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1104,6 +1111,17 @@ Internet-Draft           Telemetry Data Manifest               July 2024
               DOI 10.17487/RFC8525, March 2019,
               <https://www.rfc-editor.org/info/rfc8525>.
 
+
+
+
+
+
+
+Claise, et al.           Expires 5 January 2025                [Page 20]
+
+Internet-Draft           Telemetry Data Manifest               July 2024
+
+
    [RFC8639]  Voit, E., Clemm, A., Gonzalez Prieto, A., Nilsen-Nygaard,
               E., and A. Tripathy, "Subscription to YANG Notifications",
               RFC 8639, DOI 10.17487/RFC8639, September 2019,
@@ -1112,15 +1130,6 @@ Internet-Draft           Telemetry Data Manifest               July 2024
    [RFC8641]  Clemm, A. and E. Voit, "Subscription to YANG Notifications
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
               September 2019, <https://www.rfc-editor.org/info/rfc8641>.
-
-
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 20]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
 
    [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
               Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
@@ -1143,13 +1152,6 @@ Internet-Draft           Telemetry Data Manifest               July 2024
               <https://datatracker.ietf.org/doc/html/draft-claise-
               netconf-metadata-for-collection-02>.
 
-   [I-D.jouqui-netmod-yang-full-include]
-              Quilbeuf, J., Claise, B., and T. Joubert, "YANG Full
-              Embed", Work in Progress, Internet-Draft, draft-jouqui-
-              netmod-yang-full-include-01, 4 March 2024,
-              <https://datatracker.ietf.org/doc/html/draft-jouqui-
-              netmod-yang-full-include-01>.
-
    [I-D.kll-yang-label-tsdb]
               Larsson, K., "Mapping YANG Data to Label-Set Time Series",
               Work in Progress, Internet-Draft, draft-kll-yang-label-
@@ -1165,22 +1167,17 @@ Internet-Draft           Telemetry Data Manifest               July 2024
               <https://datatracker.ietf.org/doc/html/draft-lopez-opsawg-
               yang-provenance-02>.
 
+   [I-D.tgraf-netconf-notif-sequencing]
+              Graf, T., Quilbeuf, J., and A. H. Feng, "Support of
+              Hostname and Sequencing in YANG Notifications", Work in
 
 
 
-
-
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 21]
+Claise, et al.           Expires 5 January 2025                [Page 21]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
 
-   [I-D.tgraf-netconf-notif-sequencing]
-              Graf, T., Quilbeuf, J., and A. H. Feng, "Support of
-              Hostname and Sequencing in YANG Notifications", Work in
               Progress, Internet-Draft, draft-tgraf-netconf-notif-
               sequencing-06, 29 June 2024,
               <https://datatracker.ietf.org/doc/html/draft-tgraf-
@@ -1193,6 +1190,10 @@ Internet-Draft           Telemetry Data Manifest               July 2024
    [RFC8343]  Bjorklund, M., "A YANG Data Model for Interface
               Management", RFC 8343, DOI 10.17487/RFC8343, March 2018,
               <https://www.rfc-editor.org/info/rfc8343>.
+
+   [RFC8528]  Bjorklund, M. and L. Lhotka, "YANG Schema Mount",
+              RFC 8528, DOI 10.17487/RFC8528, March 2019,
+              <https://www.rfc-editor.org/info/rfc8528>.
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
@@ -1228,8 +1229,7 @@ Appendix A.  title="Example of use based on MDT
 
 
 
-
-Claise, et al.           Expires 4 January 2025                [Page 22]
+Claise, et al.           Expires 5 January 2025                [Page 22]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 23]
+Claise, et al.           Expires 5 January 2025                [Page 23]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1341,7 +1341,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 24]
+Claise, et al.           Expires 5 January 2025                [Page 24]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1397,7 +1397,7 @@ Appendix B.  Changes between revisions
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 25]
+Claise, et al.           Expires 5 January 2025                [Page 25]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1453,7 +1453,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 26]
+Claise, et al.           Expires 5 January 2025                [Page 26]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1493,955 +1493,386 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
    *  Initial version
 
-Appendix C.  YANG module ietf-yang-push-modif
+Appendix C.  Supporting files for generating YANG tree diagrams
 
-   This section is only here to ensure that the draft passes without
-   compilations error.  It should be removed as soon as we can fix the
-   issue.
-
-   <CODE BEGINS> <vspace>: file "ietf-yang-push-modif@2023-03-08.yang"
-
-
-
-
-
-
+   This section provides the files needed to generate the YANG tree
+   diagrams [RFC8340] from Figure 1 and Figure 2.  The diagrams were
+   obtained using yanglint https://github.com/CESNET/libyang version
+   2.1.80, using the YANG Schema Mount [RFC8528].  Once
+   [I-D.jouqui-netmod-yang-full-include] is implemented, they should be
+   replaced by the tree diagrams produced directly from the
+   corresponding modules.  Alternatively, the present section could be
+   used as the standard, if [I-D.jouqui-netmod-yang-full-include] does
+   not become an RFC.
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 27]
+
+
+Claise, et al.           Expires 5 January 2025                [Page 27]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
 
-   module ietf-yang-push-modif {
-     yang-version 1.1;
-     namespace "urn:ietf:params:xml:ns:yang:ietf-yang-push-modif";
-     prefix yp;
+C.1.  Schema Mount Version for the Platform Manifest
 
-     import ietf-yang-types {
-       prefix yang;
+   The YANG module from Section 3.2 is modified to use a mount point
+   from YANG Schema Mount [RFC8528] instead of the full:embed from
+   [I-D.jouqui-netmod-yang-full-include].
+
+   module ietf-platform-manifest {
+     yang-version 1.1;
+     namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
+     prefix p-mf;
+
+     import ietf-yang-library {
+       prefix yanglib;
        reference
-         "RFC 6991: Common YANG Data Types";
+         "RFC8525: YANG Library";
      }
-     import ietf-subscribed-notifications {
-       prefix sn;
+     import ietf-yang-status-conformance {
+       prefix ysconf;
        reference
-         "RFC 8639: Subscription to YANG Notifications";
+         "XXXX: Updated YANG Module Revision Handling";
      }
-     import ietf-datastores {
-       prefix ds;
+     import ietf-yang-full-embed {
+       prefix full;
        reference
-         "RFC 8342: Network Management Datastore Architecture (NMDA)";
-     }
-     import ietf-restconf {
-       prefix rc;
-       reference
-         "RFC 8040: RESTCONF Protocol";
-     }
-     import ietf-yang-patch {
-       prefix ypatch;
-       reference
-         "RFC 8072: YANG Patch Media Type";
+         "XXXX: YANG full embed";
      }
 
      organization
-       "IETF NETCONF (Network Configuration) Working Group";
+       "IETF OPSAWG (Network Configuration) Working Group";
      contact
-       "WG Web:  <https:/datatracker.ietf.org/wg/netconf/>
-        WG List: <mailto:netconf@ietf.org>
-
-        Author:  Alexander Clemm
-                 <mailto:ludwig@clemm.org>
-
-        Author:  Eric Voit
-                 <mailto:evoit@cisco.com>";
+       "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
+        WG List:  <mailto:opsawg@ietf.org>
+        Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+        Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+        Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+        Author:   Ignacio Dominguez
+                             <ignacio.dominguezmartinez@telefonica.com>
+        Author:   Thomas Graf     <thomas.graf@swisscom.com>";
      description
-       "This module contains YANG specifications for YANG-Push.
+       "This module describes the platform information to be used as
+        context of data collection from a given network element. The
+        contents of this model must be streamed along with the data
+        streamed from the network element so that the platform context
+        of the data collection can be retrieved later.
 
-        The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
-        NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
-        'MAY', and 'OPTIONAL' in this document are to be interpreted as
+        The data content of this model should not change except on
+        upgrade or patching of the device.
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 28]
+
+Claise, et al.           Expires 5 January 2025                [Page 28]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
 
-        described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
-        they appear in all capitals, as shown here.
+        The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+        'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+        'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
+        are to be interpreted as described in BCP 14 (RFC 2119)
+        (RFC 8174) when, and only when, they appear in all
+        capitals, as shown here.
 
-        Copyright (c) 2019 IETF Trust and the persons identified as
+        Copyright (c) 2022 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
-        without modification, is permitted pursuant to, and subject to
-        the license terms contained in, the Simplified BSD License set
-        forth in Section 4.c of the IETF Trust's Legal Provisions
+        without modification, is permitted pursuant to, and subject
+        to the license terms contained in, the Revised BSD License
+        set forth in Section 4.c of the IETF Trust's Legal Provisions
         Relating to IETF Documents
         (https://trustee.ietf.org/license-info).
+        This version of this YANG module is part of RFC XXXX; see the
+        RFC itself for full legal notices.  ";
 
-        This version of this YANG module is part of RFC 8641; see the
-        RFC itself for full legal notices.";
-
-     revision 2023-03-08 {
+     revision 2024-07-02 {
        description
-         "Hack so that ietf-data-collection-manifest compiles.";
+         "Initial revision";
        reference
-         "RFC 8641: Subscriptions to YANG Datastores";
-     }
-     revision 2019-09-09 {
-       description
-         "Initial revision.";
-       reference
-         "RFC 8641: Subscriptions to YANG Datastores";
+         "RFC xxxx: Title to be completed";
      }
 
-     /*
-      * FEATURES
-      */
-
-     feature on-change {
+     container platforms {
+       config false;
        description
-         "This feature indicates that on-change triggered subscriptions
-          are supported.";
-     }
-
-     /*
-      * IDENTITIES
-      */
-     /* Error type identities for datastore subscription */
-
-     identity resync-subscription-error {
-       description
-         "Problem found while attempting to fulfill a
-          'resync-subscription' RPC request.";
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 29]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-     }
-
-     identity cant-exclude {
-       base sn:establish-subscription-error;
-       description
-         "Unable to remove the set of 'excluded-change' parameters.
-          This means that the publisher is unable to restrict
-          'push-change-update' notifications to just the change types
-          requested for this subscription.";
-     }
-
-     identity datastore-not-subscribable {
-       base sn:establish-subscription-error;
-       base sn:subscription-terminated-reason;
-       description
-         "This is not a subscribable datastore.";
-     }
-
-     identity no-such-subscription-resync {
-       base resync-subscription-error;
-       description
-         "The referenced subscription doesn't exist.  This may be as a
-          result of a nonexistent subscription ID, an ID that belongs to
-          another subscriber, or an ID for a configured subscription.";
-     }
-
-     identity on-change-unsupported {
-       base sn:establish-subscription-error;
-       description
-         "On-change is not supported for any objects that are
-          selectable by this filter.";
-     }
-
-     identity on-change-sync-unsupported {
-       base sn:establish-subscription-error;
-       description
-         "Neither 'sync-on-start' nor resynchronization is supported for
-          this subscription.  This error will be used for two reasons:
-          (1) if an 'establish-subscription' RPC includes
-          'sync-on-start' but the publisher can't support sending a
-          'push-update' for this subscription for reasons other than
-          'on-change-unsupported' or 'sync-too-big'
-          (2) if the 'resync-subscription' RPC is invoked for either an
-          existing periodic subscription or an on-change subscription
-          that can't support resynchronization.";
-     }
-
-     identity period-unsupported {
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 30]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-       base sn:establish-subscription-error;
-       base sn:modify-subscription-error;
-       base sn:subscription-suspended-reason;
-       description
-         "The requested time period or 'dampening-period' is too short.
-          This can be for both periodic and on-change subscriptions
-          (with or without dampening).  Hints suggesting alternative
-          periods may be returned as supplemental information.";
-     }
-
-     identity update-too-big {
-       base sn:establish-subscription-error;
-       base sn:modify-subscription-error;
-       base sn:subscription-suspended-reason;
-       description
-         "Periodic or on-change push update data trees exceed a maximum
-          size limit.  Hints on the estimated size of what was too big
-          may be returned as supplemental information.";
-     }
-
-     identity sync-too-big {
-       base sn:establish-subscription-error;
-       base sn:modify-subscription-error;
-       base resync-subscription-error;
-       base sn:subscription-suspended-reason;
-       description
-         "The 'sync-on-start' or resynchronization data tree exceeds a
-          maximum size limit.  Hints on the estimated size of what was
-          too big may be returned as supplemental information.";
-     }
-
-     identity unchanging-selection {
-       base sn:establish-subscription-error;
-       base sn:modify-subscription-error;
-       base sn:subscription-terminated-reason;
-       description
-         "The selection filter is unlikely to ever select data tree
-          nodes.  This means that based on the subscriber's current
-          access rights, the publisher recognizes that the selection
-          filter is unlikely to ever select data tree nodes that change.
-          Examples for this might be that the node or subtree doesn't
-          exist, read access is not permitted for a receiver, or static
-          objects that only change at reboot have been chosen.";
-     }
-
-     /*
-      * TYPE DEFINITIONS
-      */
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 31]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-     typedef change-type {
-       type enumeration {
-         enum create {
-           description
-             "A change that refers to the creation of a new
-              datastore node.";
-         }
-         enum delete {
-           description
-             "A change that refers to the deletion of a
-              datastore node.";
-         }
-         enum insert {
-           description
-             "A change that refers to the insertion of a new
-              user-ordered datastore node.";
-         }
-         enum move {
-           description
-             "A change that refers to a reordering of the target
-              datastore node.";
-         }
-         enum replace {
-           description
-             "A change that refers to a replacement of the target
-              datastore node's value.";
-         }
-       }
-       description
-         "Specifies different types of datastore changes.
-
-          This type is based on the edit operations defined for
-          YANG Patch, with the difference that it is valid for a
-          receiver to process an update record that performs a
-          'create' operation on a datastore node the receiver believes
-          exists or to process a delete on a datastore node the
-          receiver believes is missing.";
-       reference
-         "RFC 8072: YANG Patch Media Type, Section 2.5";
-     }
-
-     typedef selection-filter-ref {
-       type leafref {
-         path "/sn:filters/yp:selection-filter/yp:filter-id";
-       }
-       description
-         "This type is used to reference a selection filter.";
-     }
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 32]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-     typedef centiseconds {
-       type uint32;
-       description
-         "A period of time, measured in units of 0.01 seconds.";
-     }
-
-     /*
-      * GROUP DEFINITIONS
-      */
-
-     grouping datastore-criteria {
-       description
-         "A grouping to define criteria for which selected objects from
-          a targeted datastore should be included in push updates.";
-       leaf datastore {
-         type identityref {
-           base ds:datastore;
-         }
-         mandatory true;
+         "Top container including all platforms in scope. If this model is
+          hosted on a single device, it should contain a single entry in
+          the list. At the network level, it should contain an entry for
+          every monitored platform.";
+       list platform {
+         key "id";
          description
-           "Datastore from which to retrieve data.";
-       }
-       uses selection-filter-objects;
-     }
-
-     grouping selection-filter-types {
-       description
-         "This grouping defines the types of selectors for objects
-          from a datastore.";
-       choice datastore-filter-spec {
-         description
-           "The content filter specification for this request.";
-         anydata datastore-subtree-filter {
-           if-feature "sn:subtree";
+           "Contains information about the platform that allows to identify
+            and understand the individual data collection information.  ";
+         anydata yang-library {
            description
-             "This parameter identifies the portions of the
-              target datastore to retrieve.";
-           reference
-             "RFC 6241: Network Configuration Protocol (NETCONF),
-                        Section 6";
+             "The YANG library of the device specifying the modules
+              available in each of the datastores.";
+           full:embed "yl";
+           full:embed "ysconf";
          }
-         leaf datastore-xpath-filter {
-           if-feature "sn:xpath";
-           type yang:xpath1.0;
-           description
-             "This parameter contains an XPath expression identifying
-              the portions of the target datastore to retrieve.
-
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 33]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-              If the expression returns a node set, all nodes in the
-              node set are selected by the filter.  Otherwise, if the
-              expression does not return a node set, the filter
-              doesn't select any nodes.
-
-              The expression is evaluated in the following XPath
-              context:
-
-              o  The set of namespace declarations is the set of prefix
-                 and namespace pairs for all YANG modules implemented
-                 by the server, where the prefix is the YANG module
-                 name and the namespace is as defined by the
-                 'namespace' statement in the YANG module.
-
-                 If the leaf is encoded in XML, all namespace
-                 declarations in scope on the 'stream-xpath-filter'
-                 leaf element are added to the set of namespace
-                 declarations.  If a prefix found in the XML is
-                 already present in the set of namespace declarations,
-                 the namespace in the XML is used.
-
-              o  The set of variable bindings is empty.
-
-              o  The function library is comprised of the core
-                 function library and the XPath functions defined in
-                 Section 10 in RFC 7950.
-
-              o  The context node is the root node of the target
-                 datastore.";
-           reference
-             "XML Path Language (XPath) Version 1.0
-              (https://www.w3.org/TR/1999/REC-xpath-19991116)
-              RFC 7950: The YANG 1.1 Data Modeling Language,
-                        Section 10";
-         }
-       }
-     }
-
-     grouping selection-filter-objects {
-       description
-         "This grouping defines a selector for objects from a
-          datastore.";
-       choice selection-filter {
-         description
-           "The source of the selection filter applied to the
-            subscription.  This will either (1) come referenced from a
-            global list or (2) be provided in the subscription itself.";
-         case by-reference {
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 34]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-           description
-             "Incorporates a filter that has been configured
-              separately.";
-           leaf selection-filter-ref {
-             type selection-filter-ref;
-             mandatory true;
-             description
-               "References an existing selection filter that is to be
-                applied to the subscription.";
-           }
-         }
-         case within-subscription {
-           description
-             "A local definition allows a filter to have the same
-              lifecycle as the subscription.";
-           uses selection-filter-types;
-         }
-       }
-     }
-
-     grouping update-policy-modifiable {
-       description
-         "This grouping describes the datastore-specific subscription
-          conditions that can be changed during the lifetime of the
-          subscription.";
-       choice update-trigger {
-         description
-           "Defines necessary conditions for sending an event record to
-            the subscriber.";
-         case periodic {
-           container periodic {
-             presence "indicates a periodic subscription";
-             description
-               "The publisher is requested to periodically notify the
-                receiver regarding the current values of the datastore
-                as defined by the selection filter.";
-             leaf period {
-               type centiseconds;
-               mandatory true;
-               description
-                 "Duration of time that should occur between periodic
-                  push updates, in units of 0.01 seconds.";
-             }
-             leaf anchor-time {
-               type yang:date-and-time;
-               description
-                 "Designates a timestamp before or after which a series
-                  of periodic push updates are determined.  The next
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 35]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-                  update will take place at a point in time that is a
-                  multiple of a period from the 'anchor-time'.
-                  For example, for an 'anchor-time' that is set for the
-                  top of a particular minute and a period interval of a
-                  minute, updates will be sent at the top of every
-                  minute that this subscription is active.";
-             }
-           }
-         }
-         case on-change {
-           if-feature "on-change";
-           container on-change {
-             presence "indicates an on-change subscription";
-             description
-               "The publisher is requested to notify the receiver
-                regarding changes in values in the datastore subset as
-                defined by a selection filter.";
-             leaf dampening-period {
-               type centiseconds;
-               default "0";
-               description
-                 "Specifies the minimum interval between the assembly of
-                  successive update records for a single receiver of a
-                  subscription.  Whenever subscribed objects change and
-                  a dampening-period interval (which may be zero) has
-                  elapsed since the previous update record creation for
-                  a receiver, any subscribed objects and properties
-                  that have changed since the previous update record
-                  will have their current values marshalled and placed
-                  in a new update record.";
-             }
-           }
-         }
-       }
-     }
-
-     grouping update-policy {
-       description
-         "This grouping describes the datastore-specific subscription
-          conditions of a subscription.";
-       uses update-policy-modifiable {
-         augment "update-trigger/on-change/on-change" {
-           description
-             "Includes objects that are not modifiable once a
-              subscription is established.";
-           leaf sync-on-start {
-             type boolean;
-             default "true";
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 36]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-             description
-               "When this object is set to 'false', (1) it restricts an
-                on-change subscription from sending 'push-update'
-                notifications and (2) pushing a full selection per the
-                terms of the selection filter MUST NOT be done for
-                this subscription.  Only updates about changes
-                (i.e., only 'push-change-update' notifications)
-                are sent.  When set to 'true' (the default behavior),
-                in order to facilitate a receiver's synchronization,
-                a full update is sent, via a 'push-update' notification,
-                when the subscription starts.  After that,
-                'push-change-update' notifications are exclusively sent,
-                unless the publisher chooses to resync the subscription
-                via a new 'push-update' notification.";
-           }
-           leaf-list excluded-change {
-             type change-type;
-             description
-               "Used to restrict which changes trigger an update.  For
-                example, if a 'replace' operation is excluded, only the
-                creation and deletion of objects are reported.";
-           }
-         }
-       }
-     }
-
-     grouping hints {
-       description
-         "Parameters associated with an error for a subscription
-          made upon a datastore.";
-       leaf period-hint {
-         type centiseconds;
-         description
-           "Returned when the requested time period is too short.  This
-            hint can assert a viable period for either a periodic push
-            cadence or an on-change dampening interval.";
-       }
-       leaf filter-failure-hint {
-         type string;
-         description
-           "Information describing where and/or why a provided filter
-            was unsupportable for a subscription.";
-       }
-       leaf object-count-estimate {
-         type uint32;
-         description
-           "If there are too many objects that could potentially be
-            returned by the selection filter, this identifies the
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 37]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-            estimate of the number of objects that the filter would
-            potentially pass.";
-       }
-       leaf object-count-limit {
-         type uint32;
-         description
-           "If there are too many objects that could be returned by
-            the selection filter, this identifies the upper limit of
-            the publisher's ability to service this subscription.";
-       }
-       leaf kilobytes-estimate {
-         type uint32;
-         description
-           "If the returned information could be beyond the capacity
-            of the publisher, this would identify the estimated
-            data size that could result from this selection filter.";
-       }
-       leaf kilobytes-limit {
-         type uint32;
-         description
-           "If the returned information would be beyond the capacity
-            of the publisher, this identifies the upper limit of the
-            publisher's ability to service this subscription.";
-       }
-     }
-
-     /*
-      * RPCs
-      */
-
-     rpc resync-subscription {
-       if-feature "on-change";
-       description
-         "This RPC allows a subscriber of an active on-change
-          subscription to request a full push of objects.
-
-          A successful invocation results in a 'push-update' of all
-          datastore nodes that the subscriber is permitted to access.
-          This RPC can only be invoked on the same session on which the
-          subscription is currently active.  In the case of an error, a
-          'resync-subscription-error' is sent as part of an error
-          response.";
-       input {
          leaf id {
-           type sn:subscription-id;
-           mandatory true;
-           description
-             "Identifier of the subscription that is to be resynced.";
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 38]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-         }
-       }
-     }
-
-     /*
-      * NOTIFICATIONS
-      */
-
-     notification push-update {
-       description
-         "This notification contains a push update that in turn contains
-          data subscribed to via a subscription.  In the case of a
-          periodic subscription, this notification is sent for periodic
-          updates.  It can also be used for synchronization updates of
-          an on-change subscription.  This notification shall only be
-          sent to receivers of a subscription.  It does not constitute
-          a general-purpose notification that would be subscribable as
-          part of the NETCONF event stream by any receiver.";
-       anydata datastore-contents {
-         description
-           "This contains the updated data.  It constitutes a snapshot
-            at the time of update of the set of data that has been
-            subscribed to.  The snapshot corresponds to the same
-            snapshot that would be returned in a corresponding 'get'
-            operation with the same selection filter parameters
-            applied.";
-       }
-       leaf id {
-         type sn:subscription-id;
-         description
-           "This references the subscription that drove the
-            notification to be sent.";
-       }
-       leaf incomplete-update {
-         type empty;
-         description
-           "This is a flag that indicates that not all datastore
-            nodes subscribed to are included with this update.  In
-            other words, the publisher has failed to fulfill its full
-            subscription obligations and, despite its best efforts, is
-            providing an incomplete set of objects.";
-       }
-     }
-
-     notification push-change-update {
-       if-feature "on-change";
-       description
-         "This notification contains an on-change push update.  This
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 39]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-          notification shall only be sent to the receivers of a
-          subscription.  It does not constitute a general-purpose
-          notification that would be subscribable as part of the
-          NETCONF event stream by any receiver.";
-       leaf id {
-         type sn:subscription-id;
-         description
-           "This references the subscription that drove the
-            notification to be sent.";
-       }
-       container datastore-changes {
-         description
-           "This contains the set of datastore changes of the target
-            datastore, starting at the time of the previous update, per
-            the terms of the subscription.";
-         uses ypatch:yang-patch;
-       }
-       leaf incomplete-update {
-         type empty;
-         description
-           "The presence of this object indicates that not all changes
-            that have occurred since the last update are included with
-            this update.  In other words, the publisher has failed to
-            fulfill its full subscription obligations -- for example,
-            in cases where it was not able to keep up with a burst of
-            changes.";
-       }
-     }
-
-     augment "/sn:establish-subscription/sn:input" {
-       description
-         "This augmentation adds additional subscription parameters
-          that apply specifically to datastore updates to RPC input.";
-       uses update-policy;
-     }
-
-     augment "/sn:establish-subscription/sn:input/sn:target" {
-       description
-         "This augmentation adds the datastore as a valid target
-          for the subscription to RPC input.";
-       case datastore {
-         description
-           "Information specifying the parameters of a request for a
-            datastore subscription.";
-         uses datastore-criteria;
-       }
-     }
-
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 40]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-     augment "/sn:modify-subscription/sn:input" {
-       description
-         "This augmentation adds additional subscription parameters
-          specific to datastore updates.";
-       uses update-policy-modifiable;
-     }
-
-     augment "/sn:modify-subscription/sn:input/sn:target" {
-       description
-         "This augmentation adds the datastore as a valid target
-          for the subscription to RPC input.";
-       case datastore {
-         description
-           "Information specifying the parameters of a request for a
-            datastore subscription.";
-         uses datastore-criteria;
-       }
-     }
-
-     augment "/sn:subscription-started" {
-       description
-         "This augmentation adds datastore-specific objects to
-          the notification that a subscription has started.";
-       uses update-policy;
-     }
-
-     augment "/sn:subscription-started/sn:target" {
-       description
-         "This augmentation allows the datastore to be included as
-          part of the notification that a subscription has started.";
-       case datastore {
-         uses datastore-criteria {
-           refine "selection-filter/within-subscription" {
-             description
-               "Specifies the selection filter and where it originated
-                from.  If the 'selection-filter-ref' is populated, the
-                filter in the subscription came from the 'filters'
-                container.  Otherwise, it is populated in-line as part
-                of the subscription itself.";
-           }
-         }
-       }
-     }
-
-     augment "/sn:subscription-modified" {
-       description
-         "This augmentation adds datastore-specific objects to
-          the notification that a subscription has been modified.";
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 41]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
-       uses update-policy;
-     }
-
-     augment "/sn:subscription-modified/sn:target" {
-       description
-         "This augmentation allows the datastore to be included as
-          part of the notification that a subscription has been
-          modified.";
-       case datastore {
-         uses datastore-criteria {
-           refine "selection-filter/within-subscription" {
-             description
-               "Specifies the selection filter and where it originated
-                from.  If the 'selection-filter-ref' is populated, the
-                filter in the subscription came from the 'filters'
-                container.  Otherwise, it is populated in-line as part
-                of the subscription itself.";
-           }
-         }
-       }
-     }
-
-     /*
-      * DATA NODES
-      */
-
-     augment "/sn:filters" {
-       description
-         "This augmentation allows the datastore to be included as part
-          of the selection-filtering criteria for a subscription.";
-       list selection-filter {
-         key "filter-id";
-         description
-           "A list of preconfigured filters that can be applied
-            to datastore subscriptions.";
-         leaf filter-id {
            type string;
            description
-             "An identifier to differentiate between selection
-              filters.";
-         }
-         uses selection-filter-types;
-       }
-     }
-
-     augment "/sn:subscriptions/sn:subscription" {
-       when 'yp:datastore';
-       description
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 42]
+Claise, et al.           Expires 5 January 2025                [Page 29]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
 
-         "This augmentation adds objects to a subscription that are
-          specific to a datastore subscription, i.e., a subscription to
-          a stream of datastore node updates.";
-       uses update-policy;
-     }
-
-     augment "/sn:subscriptions/sn:subscription/sn:target" {
-       description
-         "This augmentation allows the datastore to be included as
-          part of the selection-filtering criteria for a subscription.";
-       case datastore {
-         uses datastore-criteria;
-       }
-     }
-
-     rc:yang-data resync-subscription-error {
-       container resync-subscription-error {
-         description
-           "If a 'resync-subscription' RPC fails, the subscription is
-            not resynced and the RPC error response MUST indicate the
-            reason for this failure.  This yang-data MAY be inserted as
-            structured data in a subscription's RPC error response
-            to indicate the reason for the failure.";
-         leaf reason {
-           type identityref {
-             base resync-subscription-error;
-           }
-           mandatory true;
-           description
-             "Indicates the reason why the publisher has declined a
-              request for subscription resynchronization.";
+             "Identifies a given platform on the network, for instance the
+              sysname of the plaftorm. The id has to be unique on the
+              network.";
          }
-         uses hints;
-       }
-     }
-     rc:yang-data establish-subscription-datastore-error-info {
-       container establish-subscription-datastore-error-info {
-         description
-           "If any 'establish-subscription' RPC parameters are
-            unsupportable against the datastore, a subscription is not
-            created and the RPC error response MUST indicate the reason
-            why the subscription failed to be created.  This yang-data
-            MAY be inserted as structured data in a subscription's
-            RPC error response to indicate the reason for the failure.
-            This yang-data MUST be inserted if hints are to be provided
-            back to the subscriber.";
-         leaf reason {
-           type identityref {
+         leaf name {
+           type string;
+           description
+             "Model of the platform from which data is collected.";
+         }
+         leaf vendor {
+           type string;
+           description
+             "Organization that implements that platform.";
+         }
+         leaf vendor-pen {
+           type uint32;
+           description
+             "Vendor''s registered Private Enterprise Number as
+              described in RFC9371";
+         }
+         leaf software-version {
+           type string;
+           description
+             "Name of the version of software. With respect to most network
+              device appliances, this will be the operating system version.
+              But for other YANG module implementation, this would be a
+              version of appliance software. Ultimately, this should
+              correspond to a version string that will be recognizable by
+              the consumers of the platform.";
+         }
+         leaf software-flavor {
+           type string;
+           description
+             "A variation of a specific version where YANG model support
+              may be different.  Depending on the vendor, this could be a
+              license, additional software component, or a feature set.";
+         }
+         leaf os-version {
+           type string;
+           description
+             "Version of the operating system using this module. This is
+              primarily useful if the software implementing the module is
+              an application that requires a specific operating system
+              version.";
+         }
+         leaf os-type {
+           type string;
+           description
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 43]
+Claise, et al.           Expires 5 January 2025                [Page 30]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
 
-             base sn:establish-subscription-error;
-           }
-           description
-             "Indicates the reason why the subscription has failed to
-              be created to a targeted datastore.";
+             "Type of the operating system using this module. This is
+              primarily useful if the software implementing the module is
+              an application that requires a specific operating system
+              type.";
          }
-         uses hints;
-       }
-     }
-     rc:yang-data modify-subscription-datastore-error-info {
-       container modify-subscription-datastore-error-info {
-         description
-           "This yang-data MAY be provided as part of a subscription's
-            RPC error response when there is a failure of a
-            'modify-subscription' RPC that has been made against a
-            datastore.  This yang-data MUST be used if hints are to be
-            provided back to the subscriber.";
-         leaf reason {
-           type identityref {
-             base sn:modify-subscription-error;
-           }
-           description
-             "Indicates the reason why the subscription has failed to
-              be modified.";
-         }
-         uses hints;
        }
      }
    }
 
-                                  Figure 8
+   In order to get the tree diagram with yanglint, two data files are
+   required.  First we need the extension data, containing the YANG
+   library to use at the mount point.  Then we need the YANG library to
+   use at the top-level context.  The extension data is included below
+   as "platform-extension-data.xml", the top-level YANG library as
+   "platform-toplevel-yanglib.xml".  The tree diagram is obtained by
+   running the following command:
 
+   yanglint -f tree \
+     -x platform-extension-data.xml \
+     -Y platform-toplevel-yanglib.xml \
+     ietf-platform-manifest@2024-07-02.yang
+
+   <CODE BEGINS> file "platform-extension-data.xml"
+   <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+                 xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+       <module-set>
+           <name>mountee-set</name>
+           <module>
+             <name>ietf-yang-status-conformance</name>
+              <revision>2024-02-14</revision>
+              <namespace>
+                 urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
+               </namespace>
+           </module>
+           <module>
+               <name>ietf-datastores</name>
+               <revision>2018-02-14</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-datastores
+               </namespace>
+           </module>
+           <module>
+               <name>ietf-yang-library</name>
+               <revision>2019-01-04</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-yang-library
+               </namespace>
+           </module>
+
+
+
+Claise, et al.           Expires 5 January 2025                [Page 31]
+
+Internet-Draft           Telemetry Data Manifest               July 2024
+
+
+           <import-only-module>
+               <name>ietf-yang-types</name>
+               <revision>2013-07-15</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-yang-types
+               </namespace>
+           </import-only-module>
+           <import-only-module>
+               <name>ietf-inet-types</name>
+               <revision>2013-07-15</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-inet-types
+               </namespace>
+           </import-only-module>
+       </module-set>
+       <schema>
+           <name>test-schema</name>
+           <module-set>mountee-set</module-set>
+       </schema>
+       <datastore>
+           <name>ds:running</name>
+           <schema>test-schema</schema>
+       </datastore>
+       <datastore>
+           <name>ds:operational</name>
+           <schema>test-schema</schema>
+       </datastore>
+       <content-id>2</content-id>
+   </yang-library>
+   <modules-state
+     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+     <module-set-id>2</module-set-id>
+   </modules-state>
+   <schema-mounts
+     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
+     <mount-point>
+       <module>ietf-platform-manifest</module>
+       <label>yang-library</label>
+       <shared-schema/>
+     </mount-point>
+   </schema-mounts>
+   <CODE ENDS>
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires 5 January 2025                [Page 32]
+
+Internet-Draft           Telemetry Data Manifest               July 2024
+
+
+   <CODE BEGINS> file "platform-toplevel-yanglib.xml"
+   <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+                 xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+       <module-set>
+           <name>main-set</name>
+           <module>
+               <name>ietf-datastores</name>
+               <revision>2018-02-14</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-datastores
+               </namespace>
+           </module>
+           <module>
+               <name>ietf-yang-library</name>
+               <revision>2019-01-04</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-yang-library
+               </namespace>
+           </module>
+           <module>
+               <name>ietf-yang-schema-mount</name>
+               <revision>2019-01-14</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount
+               </namespace>
+           </module>
+           <module>
+               <name>ietf-platform-manifest</name>
+               <revision>2024-07-02</revision>
+               <namespace>urn:ietf:params:xml:ns:yang:ietf-platform-manifest</namespace>
+           </module>
+           <import-only-module>
+               <name>ietf-yang-types</name>
+               <revision>2023-01-23</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-yang-types
+               </namespace>
+           </import-only-module>
+           <import-only-module>
+               <name>ietf-inet-types</name>
+               <revision>2013-07-15</revision>
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-inet-types
+               </namespace>
+           </import-only-module>
+           <import-only-module>
+               <name>ietf-yang-status-conformance</name>
+               <revision>2024-02-14</revision>
+
+
+
+Claise, et al.           Expires 5 January 2025                [Page 33]
+
+Internet-Draft           Telemetry Data Manifest               July 2024
+
+
+               <namespace>
+                   urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
+               </namespace>
+           </import-only-module>
+       </module-set>
+       <schema>
+           <name>main-schema</name>
+           <module-set>main-set</module-set>
+       </schema>
+       <datastore>
+           <name>ds:running</name>
+           <schema>main-schema</schema>
+       </datastore>
+       <datastore>
+           <name>ds:operational</name>
+           <schema>main-schema</schema>
+       </datastore>
+       <content-id>1</content-id>
+   </yang-library>
+   <modules-state
+   xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+   <module-set-id>2</module-set-id>
+   </modules-state>
    <CODE ENDS>
 
 Acknowledgements
@@ -2458,14 +1889,6 @@ Authors' Addresses
 
    Jean Quilbeuf
    Huawei
-
-
-
-Claise, et al.           Expires 4 January 2025                [Page 44]
-
-Internet-Draft           Telemetry Data Manifest               July 2024
-
-
    Email: jean.quilbeuf@huawei.com
 
 
@@ -2475,6 +1898,12 @@ Internet-Draft           Telemetry Data Manifest               July 2024
    Madrid  28006
    Spain
    Email: diego.r.lopez@telefonica.com
+
+
+
+Claise, et al.           Expires 5 January 2025                [Page 34]
+
+Internet-Draft           Telemetry Data Manifest               July 2024
 
 
    Ignacio Dominguez
@@ -2517,4 +1946,15 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 4 January 2025                [Page 45]
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires 5 January 2025                [Page 35]
