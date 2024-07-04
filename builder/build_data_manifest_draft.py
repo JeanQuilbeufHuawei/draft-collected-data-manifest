@@ -86,7 +86,10 @@ def draft_content():
         "yp_modif": _format_yang([YANG_PUSH_MODIF]),
         "platform_schema_mount": _format_yang([PLATFORM_MANIFEST_SM]),
         "platform_extension_data": _get_sm_xml("platform-extension-data"),
-        "platform_toplevel_yanglib": _get_sm_xml("platform-toplevel-yanglib")
+        "platform_toplevel_yanglib": _get_sm_xml("platform-toplevel-yanglib"),
+        "data_schema_mount": _format_yang([DATA_COLLECTION_MANIFEST_SM]),
+        "data_extension_data": _get_sm_xml("data-collection-extension-data"),
+        "data_toplevel_yanglib": _get_sm_xml("data-collection-toplevel-yanglib")
         }
     errors = []
     warnings = []

@@ -695,6 +695,9 @@
       <t>
         This section provides the files needed to generate the YANG tree diagrams <xref target="RFC8340"/> from <xref target="platform-manifest-tree"/> and <xref target="data-collection-manifest-tree"/>.
         The diagrams were obtained using yanglint <eref target="https://github.com/CESNET/libyang"/> version 2.1.80, using the YANG Schema Mount <xref target="RFC8528"/>.
+        They were manually edited to remove data nodes from imported modules, notifications and RPCs.
+      </t>
+      <t>
         Once <xref target="I-D.jouqui-netmod-yang-full-include"/> is implemented, they should be replaced by the tree diagrams produced directly from the corresponding modules.
         Alternatively, the present section could be used as the standard, if <xref target="I-D.jouqui-netmod-yang-full-include"/> does not become an RFC.
       </t>
@@ -730,6 +733,37 @@ yanglint -f tree \
         </sourcecode>
       </section>
 
+      <section anchor="data-collection-schema-mount">
+        <name>Schema Mount Version for the Platform Manifest</name>
+        <t>
+          The YANG module from <xref target="module-code"/> is modified to use a mount point from YANG Schema Mount <xref target="RFC8528"/> instead of the full:embed from <xref target="I-D.jouqui-netmod-yang-full-include"/>.
+        </t>
+        <sourcecode type="yang" markers="false"><![CDATA[
+{{data_schema_mount}}
+          ]]>
+        </sourcecode>
+        <t>
+          In order to get the tree diagram with yanglint, two data files are required.
+          First we need the extension data, containing the YANG library to use at the mount point.
+          Then we need the YANG library to use at the top-level context.
+          The extension data is included below as "data-collection-extension-data.xml", the top-level YANG library as "data-collection-toplevel-yanglib.xml".
+          The tree diagram is obtained by running the following command:
+        </t>
+        <sourcecode type="bash">
+          yanglint -f tree \
+          -x data-collection-extension-data.xml \
+          -Y data-collection-toplevel-yanglib.xml \
+          ietf-data-collection-manifest@2024-07-02.yang
+        </sourcecode>
+        <sourcecode anchor="data-collection-extension-data" name="data-collection-extension-data.xml" type="xml" markers="true"><![CDATA[
+{{data_extension_data}}
+]]>
+        </sourcecode>
+        <sourcecode anchor="data-collection-toplevel-yanglib" name="data-collection-toplevel-yanglib.xml" type="xml" markers="true"><![CDATA[
+{{data_toplevel_yanglib}}
+]]>
+        </sourcecode>
+      </section>
     </section>
     <section numbered="false">
       <name>Acknowledgements</name>
