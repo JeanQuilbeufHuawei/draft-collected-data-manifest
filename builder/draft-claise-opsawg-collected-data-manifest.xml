@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<?rfc toc="yes"?>
-<?rfc tocompact="yes"?>
-<?rfc tocdepth="4"?>
-<?rfc tocindent="yes"?>
-<?rfc symrefs="yes"?>
-<?rfc sortrefs="yes"?>
-<?rfc comments="yes"?>
-<?rfc inline="yes"?>
-<?rfc compact="yes"?>
-<?rfc subcompact="no"?>
-<rfc category="std" ipr="trust200902" docName="draft-ietf-opsawg-collected-data-manifest-04">
+<!DOCTYPE rfc [
+<!ENTITY nbsp    "&#160;">
+<!ENTITY zwsp   "&#8203;">
+<!ENTITY nbhy   "&#8209;">
+<!ENTITY wj     "&#8288;">
+]>
+<?xml-model href="rfc7991bis.rnc"?>
+<rfc
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        docName="draft-ietf-opsawg-collected-data-manifest-04"
+        category="std"
+        ipr="trust200902"
+        obsoletes=""
+        updates=""
+        submissionType="IETF"
+        xml:lang="en"
+        tocInclude="true"
+        sortRefs="true"
+        symRefs="true"
+        version="3" >
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Huawei</organization>
       <address>
@@ -73,7 +82,8 @@
     </abstract>
   </front>
   <middle>
-    <section anchor="intro" title="Introduction">
+    <section anchor="intro">
+      <name>Introduction</name>
       <t>
         Network platforms use Model-driven Telemetry (MDT), and in particular YANG-Push <xref target="RFC8641"/>, to continuously stream information, including both counters and state information.
       </t>
@@ -90,17 +100,19 @@
       <t>         
         The two proposed YANG modules in the Data Manifest do not expose many new information but rather define what should be exposed by a platform streaming or storing telemetry data.
         Some related YANG modules have been specified to retrieve the platform capabilities:
-        <list style="symbols">
-          <t>
-            The IETF YANG Library <xref target="RFC8525"/>.
-          </t>
-          <t>
-            YANG Modules Describing Capabilities for Systems and Datastore Update Notifications <xref target="RFC9196"/> for the platform capabilities regarding the production and export of telemetry data.
-          </t>
-          <t>
-            <xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specific items (i.e., per path).
-          </t>
-        </list>
+      </t>
+      <ul>
+        <li>
+          The IETF YANG Library <xref target="RFC8525"/>.
+        </li>
+        <li>
+          YANG Modules Describing Capabilities for Systems and Datastore Update Notifications <xref target="RFC9196"/> for the platform capabilities regarding the production and export of telemetry data.
+        </li>
+        <li>
+          <xref target="I-D.claise-netconf-metadata-for-collection"/>, which is based on the previous draft to define the optimal settings to stream specific items (i.e., per path).
+        </li>
+      </ul>
+      <t>
         These related YANG modules are important to discover the capabilities before applying the telemetry configuration (such as on-change). Some of their content is part of the context for the streamed data.
       </t>
       <t>
@@ -113,26 +125,28 @@
         We first present the module for the Platform Manifest in <xref target="platform-manifest"/> and then the module for the Data Collection Manifest in <xref target="data-collection-manifest"/>. The full Data Manifest is obtained by combining these two modules. We explain in <xref target="mapping"/> how the Data Manifest can be retrieved and how collected data is mapped to the Data Manifest.
       </t>
 
-      <section anchor="use-cases" title="Use Cases">
+      <section anchor="use-cases">
+        <name>Use Cases</name>
     
-         <section anchor="network-analytics" title="Network Analytics">
+         <section anchor="network-analytics">
+           <name>Network Analytics</name>
            <t>
             Streamed information from network platforms is used for network analytics, incident detections, and in the end closed-loop automation. This streamed data can be stored in a database (sometimes called a big data lake) for further analysis.
           </t>
           <t>         
             As an example, a database could store a time series representing the evolution of a specific counter collected from a network platform. When analyzing the data, the network operator/data scientist must understand the context information for these data:
-            <list style="symbols">
-            <t>
-              This counter definition in the YANG model.
-            </t>
-            <t>
-              The network platform specific vendor, model, and OS.
-            </t>
-            <t>
-              The collection parameters.
-            </t>
-            </list>
           </t>
+           <ul>
+             <li>
+               This counter definition in the YANG model.
+             </li>
+             <li>
+               The network platform specific vendor, model, and OS.
+             </li>
+             <li>
+               The collection parameters.
+             </li>
+           </ul>
            <t>
               Characterizing the source used for producing the data (vendor, platform, and OS) is useful to complement the data.  As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, a specific bug fix, or simply a particular specific behavior.  This is also necessary to ensure the reliability of the collected data. On top of that, in particular for YANG-Push <xref target="RFC8641"/>, it is crucial to know the set of YANG modules supported by the platform, along with their deviations. In some cases, there might even be some backwards incompatible changes in native modules between one OS version to the next one.  This information is captured by the proposed Platform Manifest.
           </t>
@@ -144,39 +158,42 @@
           </t>
          </section>
 
-         <section anchor="new-device-onboarding" title="New Device Onboarding">
+         <section anchor="new-device-onboarding">
+           <name>New Device Onboarding</name>
            <t>
               When a new device is onboarded,  operators must make sure that the new device streams data with YANG-Push, that the telemetry data is the right ones, that the data is correctly ingested in the collection system, and finally that the data can be analyzed (compared with other similar devices). For the last point, the Data Manifest, which must be linked to the data up to the collection and analytics system, contains all the relevant information.
           </t>
          </section>
 
-        <section anchor="data-mesh-principles-in-networking" title="Data Mesh Principles in Networking">
+        <section anchor="data-mesh-principles-in-networking" >
+          <name>Data Mesh Principles in Networking</name>
           <t>         
              The concept behind the data mesh <eref target="https://www.datamesh-architecture.com/"/> are:
-            <list style="symbols">
-            <t>
-              Principle of Domain Ownership: Architecturally and organizationally align business, technology, and analytical data, following the line of responsibility. Here, the Data Mesh principles adopt the boundary of bounded context to individual data products where each domain is responsible for (and owns) its data and models.
-            </t>
-            <t>
-              Principle of Data as a Product: The “Domain” owners are responsible to provide the data in useful way (discoverable through a catalog, addressable with a permanent and unique address, understandable with well defined semantics, trustworthy and truthful, self-describing for easy consumption, interoperable by supporting standards, secure, self-contained, etc.) and should treat consumers of that data as customers. It requires and relies on the “Domain Ownership” principle.
-            </t>
-            <t>
-              Principle of Self-serve Data Platform: This fosters the sharing of cross-domain data in order to create extra value.
-            </t>
-            <t>
-              Principle of Federated Computational Governance: Describes the operating model and approach to establishing global policies across a mesh of data products. 
-            </t>
-            </list>
           </t>
-           <t>
-              The most relevant concept for this document is the "Data as a Product" principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
+          <ul>
+            <li>
+              Principle of Domain Ownership: Architecturally and organizationally align business, technology, and analytical data, following the line of responsibility. Here, the Data Mesh principles adopt the boundary of bounded context to individual data products where each domain is responsible for (and owns) its data and models.
+            </li>
+            <li>
+              Principle of Data as a Product: The “Domain” owners are responsible to provide the data in useful way (discoverable through a catalog, addressable with a permanent and unique address, understandable with well defined semantics, trustworthy and truthful, self-describing for easy consumption, interoperable by supporting standards, secure, self-contained, etc.) and should treat consumers of that data as customers. It requires and relies on the “Domain Ownership” principle.
+            </li>
+            <li>
+              Principle of Self-serve Data Platform: This fosters the sharing of cross-domain data in order to create extra value.
+            </li>
+            <li>
+              Principle of Federated Computational Governance: Describes the operating model and approach to establishing global policies across a mesh of data products.
+            </li>
+          </ul>
+          <t>
+            The most relevant concept for this document is the "Data as a Product" principle. The Data Manifest fulfills this principle as the two YANG data models, Platform Manifest and the Data Collection Manifest, along with the data, provide all the necessary information in a self-describing way for easy consumption.
           </t>
          </section>
 
       </section>
     </section>
 
-    <section title="Terminology" anchor="terminology">
+    <section anchor="terminology">
+      <name>Terminology </name>
       <t>
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
         NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
@@ -194,63 +211,69 @@
         Data Collection Manifest: part of the Data Manifest that completely characterizes how and when the telemetry information was metered.
       </t>
     </section>
-    <section anchor="platform-manifest" title="Platform Manifest">
-        <section anchor="platform-manifest-model-tree" title="Overview of the Model">
-        <t>
-          <xref target="platform-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-platform-manifest module.
-            <figure anchor="platform-manifest-tree" title="YANG tree diagram for ietf-platform-manifest module">
-              <artwork><![CDATA[
+    <section anchor="platform-manifest">
+      <name>Platform Manifest</name>
+        <section anchor="platform-manifest-model-tree">
+          <name>Overview of the Model</name>
+          <t>
+            <xref target="platform-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-platform-manifest module.
+          </t>
+          <figure anchor="platform-manifest-tree">
+            <name>YANG tree diagram for ietf-platform-manifest module</name>
+            <artwork type="ascii-art"><![CDATA[
 {{platform_manifest_tree}}
-                ]]></artwork>
-            </figure>
-        </t>
-          <t>
-            The YANG module actually contains a list of Platform Manifests (in 'platforms/platform'), indexed by the identifier of the platform.
-            That identifier should be defined by the network manager so that each platform has a unique id.
-            As an example, the identifier could be the 'sysname' from the ietf-notification module presented in <xref target="I-D.tgraf-netconf-notif-sequencing"/>.
-            The scope of this module is the scope of the data collection, i.e. a given network, therefore it contains a collection of Platform Manifests, as opposed to the device scope, which would contain a single Platform Manifest.
-          </t>
-
-          <t>
-            The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog <eref target="www.yangcatalog.org"/> <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
-            The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
-          </t>
-          <t>
-            In order to provide information for yang-push subscriptions based on streams, the Platform Manifest specifies the streams available on the platform within the 'yang-push-streams' container.
-            That container is similar to the one from the ietf-subscribed-notifications module, and the Data Collection Manifest uses it to refer to streams used by subscriptions.
-          </t>
-          <t>
-            The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
-            That module set is particularly useful to define the paths, as they are based on module names.
-            Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
-            If supported by the platform, fetching metrics from a specific datastore could enable some specific use cases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
-          </t>
-        </section>
-      <section anchor="platform-manifest-model" title="YANG module ietf-platform-manifest">
-        <t>
-          &lt;CODE BEGINS&gt;
-          <vspace/> <!-- force filename on a single line, needed for xym -->
-          file "ietf-platform-manifest@2023-03-08.yang"
-        </t>
-        <figure>
-          <artwork><![CDATA[
-{{platform_manifest_yang}}
             ]]></artwork>
-        </figure>
-        <t>&lt;CODE ENDS&gt;</t>
+          </figure>
+        <t>
+          The YANG module actually contains a list of Platform Manifests (in 'platforms/platform'), indexed by the identifier of the platform.
+          That identifier should be defined by the network manager so that each platform has a unique id.
+          As an example, the identifier could be the 'sysname' from the ietf-notification module presented in <xref target="I-D.tgraf-netconf-notif-sequencing"/>.
+          The scope of this module is the scope of the data collection, i.e. a given network, therefore it contains a collection of Platform Manifests, as opposed to the device scope, which would contain a single Platform Manifest.
+        </t>
+
+        <t>
+          The Platform Manifest is identified by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', 'os-type') that are aligned with the YANG Catalog <eref target="www.yangcatalog.org"/> <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
+          The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
+        </t>
+        <t>
+          In order to provide information for yang-push subscriptions based on streams, the Platform Manifest specifies the streams available on the platform within the 'yang-push-streams' container.
+          That container is similar to the one from the ietf-subscribed-notifications module, and the Data Collection Manifest uses it to refer to streams used by subscriptions.
+        </t>
+        <t>
+          The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
+          That module set is particularly useful to define the paths, as they are based on module names.
+          Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
+          If supported by the platform, fetching metrics from a specific datastore could enable some specific use cases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
+        </t>
+      </section>
+    <section anchor="platform-manifest-model">
+      <name>YANG module ietf-platform-manifest</name>
+        <!--<t>
+          &lt;CODE BEGINS&gt;
+          <vspace/> force filename on a single line, needed for xym
+          file "ietf-platform-manifest@2023-03-08.yang"
+        </t> -->
+        <sourcecode name="ietf-platform-manifest@2023-03-08.yang" type="yang" markers="true"><![CDATA[
+{{platform_manifest_yang}}
+            ]]>
+        </sourcecode>
+        <!--t>&lt;CODE ENDS&gt;</-t-->
       </section>
     </section>
 
-     <section anchor="data-collection-manifest" title="Data Collection Manifest">
-        <section anchor="model-tree" title="Overview of the Model">
+     <section anchor="data-collection-manifest">
+       <name>Data Collection Manifest</name>
+        <section anchor="model-tree">
+          <name>Overview of the Model</name>
           <t>
             <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-data-collection-manifest module.
-            <figure anchor="data-collection-manifest-tree" title="YANG tree diagram for ietf-data-collection-manifest module">
-              <artwork><![CDATA[
-{{data_collection_manifest_tree}}
-                ]]></artwork>
-            </figure>
           </t>
+          <figure anchor="data-collection-manifest-tree">
+            <name>YANG tree diagram for ietf-data-collection-manifest module</name>
+            <artwork type="ascii-art"><![CDATA[
+{{data_collection_manifest_tree}}
+              ]]></artwork>
+          </figure>
           <t>
             The 'data-collections' container contains the information related to each YANG-Push subscription.
             As for the Platform Manifest, these subscriptions are indexed by the platform id, so that all subscriptions in the network can be represented in the module.
@@ -294,18 +317,20 @@
             This information is crucial to understand the collected values. For instance, the 'on-change' trigger, if used, might remove a lot of messages from the database because values are sent only when there is a change.
           </t>
       </section>
-      <section anchor="module-code" title="YANG module ietf-data-collection-manifest">
-        <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2023-03-08.yang"</t>
-        <figure>
-          <artwork><![CDATA[
+      <section anchor="module-code">
+        <name>YANG module ietf-data-collection-manifest</name>
+        <!-- <t>&lt;CODE BEGINS&gt; file "ietf-data-collection-manifest@2023-03-08.yang"</t> -->
+        <sourcecode name="ietf-data-collection-manifest@2023-03-08.yang" type="yang" markers="true"><![CDATA[
 {{data_collection_manifest_yang}}
-    ]]></artwork>
-        </figure>
-        <t>&lt;CODE ENDS&gt;</t>
+    ]]>
+        </sourcecode>
+        <!--t>&lt;CODE ENDS&gt;</6t-->
       </section>
     </section>
-    <section anchor="mapping" title="Data Manifest and the Collected Data">
-      <section anchor="collecting_dm" title="Collecting the Data Manifest">
+    <section anchor="mapping" >
+      <name>Data Manifest and the Collected Data</name>
+      <section anchor="collecting_dm">
+        <name>Collecting the Data Manifest</name>
       <t>
           The Data Manifest MUST be streamed and stored along with the collected data.
           In case the collected data are moved to a different place (typically a database), the Data Manifest MUST follow the collected data.
@@ -333,28 +358,32 @@
         </t>
       </section>
 
-      <section anchor="mapping_dm" title="Mapping Collected Data to the Data Manifest">
+      <section anchor="mapping_dm">
+        <name>Mapping Collected Data to the Data Manifest</name>
         <t>
-             With YANG-push, each notification sent by the device is part of a subscription, which is also one of the YANG keys used to retrieve the Data Manifest, the other key being the platform ID.
-             In order to enable a posteriori retrieval of the Data Manifest associated to a datapoint, the collector must:
-             <list style="symbols">
-                 <t>Keep the subscription id and platform id in the metadata of the collected values</t>
-                 <t>Collect as well the Data Manifest for the subscription associated to the datapoint.</t>
-             </list>
-             With this information, to retrieve the Data Manifest from the datapoint, the following happens:
-             <list style="symbols">
-                 <t>The subscription id and platform id are retrieved from the datapoint metadata</t>
-                 <t>The Data Manifest for that datapoint is obtained by using the values above as keys.</t>
-             </list>
-         </t>
-         <t>
-             We don’t focus on the timing aspect as storing both the data and their manifest in a time series database (TSDB) will allow the data scientists to look for the Data Manifest corresponding to the timestamp of the datapoint.
-             More precisely, given the timestamp of a collected datapoint, the query to the TSDB would be to get the last version of the Data Manifest before that timestamp.
-             In that scenario, the reliability of the collection of the Data Manifest is the same as the reliability of the data collection itself, since the Data Manifest is like any other data.
-         </t>
+          With YANG-push, each notification sent by the device is part of a subscription, which is also one of the YANG keys used to retrieve the Data Manifest, the other key being the platform ID.
+          In order to enable a posteriori retrieval of the Data Manifest associated to a datapoint, the collector must:
+        </t>
+        <ul>
+          <li>Keep the subscription id and platform id in the metadata of the collected values</li>
+          <li>Collect as well the Data Manifest for the subscription associated to the datapoint.</li>
+        </ul>
+        <t>
+          With this information, to retrieve the Data Manifest from the datapoint, the following happens:
+        </t>
+        <ul>
+          <li>The subscription id and platform id are retrieved from the datapoint metadata</li>
+          <li>The Data Manifest for that datapoint is obtained by using the values above as keys.</li>
+        </ul>
+        <t>
+          We don’t focus on the timing aspect as storing both the data and their manifest in a time series database (TSDB) will allow the data scientists to look for the Data Manifest corresponding to the timestamp of the datapoint.
+          More precisely, given the timestamp of a collected datapoint, the query to the TSDB would be to get the last version of the Data Manifest before that timestamp.
+          In that scenario, the reliability of the collection of the Data Manifest is the same as the reliability of the data collection itself, since the Data Manifest is like any other data.
+        </t>
       </section>
 
-      <section anchor="operational-considerations" title="Operational Considerations">
+      <section anchor="operational-considerations">
+        <name>Operational Considerations</name>
          <t>
              It is expected that the Data Manifest is streamed directly from the network equipment, along with YANG-Push  <xref target="RFC8641"/> data. However, if the network equipment streaming telemetry does not support yet the YANG modules from the Data Manifest specified in this document, the telemetry collector could populate the Data Manifest from available information collected from the platform. However, this option requires efforts on the telemetry collector side, as the information gathered in the Data Manifest proposed in this document could be scattered among various standard and vendor- specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
          </t>
@@ -363,7 +392,8 @@
          </t>
       </section>
     </section>
-    <section anchor="example" title="Example">
+    <section anchor="example">
+      <name>Example</name>
       <t>
         Below is an example of both a Platform manifest and corresponding Data Collection Manifests.
         The list of YANG modules in the yang-library container is kept empty for brevity.
@@ -386,7 +416,8 @@
       </t>
 
     </section>
-    <section anchor="security" title="Security Considerations">
+    <section anchor="security">
+      <name>Security Considerations</name>
       <t>
         As we are reusing an existing telemetry system, the security considerations lies with the new content divulged in the new manifests.
         Appropriate access control must be associated to the corresponding leafs and containers.
@@ -395,62 +426,64 @@
         The integrity and provenance of the data of the collection manifest can be ensured by a signing mechanism such as <xref target="I-D.lopez-opsawg-yang-provenance"/>.
       </t>
     </section>
-    <section anchor="iana" title="IANA Considerations">
+    <section anchor="iana">
+      <name>IANA Considerations</name>
       <t>
         This document includes no request to IANA.
       </t>
     </section>
-    <section title="Contributors">
+    <section>
+      <name>Contributors</name>
     </section>
-    <section title="Open Issues">
-      <t>
-        <list style="symbols">
-          <t>
+    <section>
+      <name>Open Issues</name>
+        <ul>
+          <li>
             Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
-          </t>
-          <t>
+          </li>
+          <li>
             Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
             Similarly, the ietf-data-collection-manifest.yang includes many lines of copy-pasting from ietf-yang-push.yang and ietf-subscribed-notifications.yang since we want to include the information from these modules. Reusing groupings is not suitable as some leafrefs are pointing to nodes that are not at the same location in our network level module.
             Maybe we need to find a solution (deviations + some kind of schema mount?) maybe we can live with similar modules since they have common nodes but different purposes?
             Current effort in <xref target="I-D.jouqui-netmod-yang-full-include"/> might be a potential solution.
-          </t>
-          <t>
+          </li>
+          <li>
             Henk: how does this interact with SBOM effort?
-          </t>
-          <t>
+          </li>
+          <li>
             What is the link with the RFC8345 NodeId and IVY?
-          </t>
-          <t>
+          </li>
+          <li>
             Handling of deletion in <xref target="I-D.kll-yang-label-tsdb"/>.
-          </t>
-        </list>
-      </t>
+          </li>
+        </ul>
     </section>
   </middle>
   <back>
     <references title="Normative References">
-      <?rfc include="reference.RFC.2119"?>
-      <?rfc include="reference.RFC.8174"?>
-      <?rfc include="reference.RFC.8340"?>
-      <?rfc include="reference.RFC.8525"?>
-      <?rfc include="reference.RFC.8639"?>
-      <?rfc include="reference.RFC.8641"?>
-      <?rfc include="reference.RFC.9195"?>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8340.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8525.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8639.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8641.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9195.xml"/>
     </references>
     <references title="Informative References">
-      <?rfc include="reference.I-D.draft-clacla-netmod-model-catalog-03"?>
-      <?rfc include="reference.I-D.draft-claise-netconf-metadata-for-collection-02"?>
-      <?rfc include="reference.I-D.tgraf-netconf-notif-sequencing"?>
-      <?rfc include="reference.I-D.lopez-opsawg-yang-provenance"?>
-      <?rfc include="reference.I-D.kll-yang-label-tsdb"?>
-      <?rfc include="reference.I-D.jouqui-netmod-yang-full-include"?>
-      <?rfc include="reference.RFC.8199"?>
-      <?rfc include="reference.RFC.8343"?>
-      <?rfc include="reference.RFC.9196"?>
-      <?rfc include="reference.RFC.9371"?>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8199.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8343.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9196.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9371.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-clacla-netmod-model-catalog-03"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.draft-claise-netconf-metadata-for-collection-02"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.tgraf-netconf-notif-sequencing"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.lopez-opsawg-yang-provenance"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.kll-yang-label-tsdb"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.jouqui-netmod-yang-full-include"/>
     </references>
     <?rfc needLines="100"?>
-    <section title="Example of use based on MDT" anchor="inband-example">
+    <section anchor="inband-example">
+      <name> title="Example of use based on MDT</name>
       <t>
         In this example, the goal is to collect the administrative status and number of received bytes for the interfaces of a fictional ACME device, and store the result in a time-series database (TSDB).
         The metrics are collected via YANG-Push, which is configured by specifying their XPaths and when they should be collected (periodically or on-change).
@@ -460,8 +493,9 @@
         Since they don’t have the same trigger, each of the path must be collected in its own subscription.
         <xref target="collection_example"/> presents an example for such a collection.
       </t>
-      <figure anchor="collection_example" title="Example of collection from a device to a TSDB">
-        <artwork><![CDATA[
+      <figure anchor="collection_example">
+        <name>Example of collection from a device to a TSDB</name>
+        <artwork type="ascii-art"><![CDATA[
      +------------+                +--------+
      |   MDT      |--------------> |  TSDB  |
      | Collector  |                +--------+
@@ -484,8 +518,10 @@
         The "host" label indicates the devices from which the data is collected and the YANG keys are included as well.
         Here the interface "eth0" is enabled and received 1234 octets.
         In that case, the value is stored, without any way to know how the value was obtained.
-        <figure anchor="influx_before" title="Storing datapoints without Data Manifest">
-            <artwork><![CDATA[
+      </t>
+      <figure anchor="influx_before">
+          <name>Storing datapoints without Data Manifest</name>
+          <artwork type="ascii-art"><![CDATA[
  * Metric: interfaces_interface_enabled
  * Value: True
  * Labels:
@@ -497,9 +533,8 @@
  * Labels:
    - host: "PE1"
    - interfaces_interface_name: "eth0"
-            ]]></artwork>
-        </figure>
-      </t>
+          ]]></artwork>
+      </figure>
       <t>
         A possibility for keeping the Data Manifest with the data is to store it directly into the TSDB.
         In that case, the collector can subscribe to the data exported by the module presented in this draft and store it as other metrics.
@@ -509,8 +544,10 @@
         <xref target="influx_manifest"/> shows two examples of storing leaves in a TSDB.
         The first leaf is the vendor PEN number, which is part of the Platform Manifest.
         The second leaf is the Xpath filter used for subscription to the interface status.
-        <figure anchor="influx_manifest" title="Example of storing Platform and Data Collection Manifest: Vendor PEN and Xpath filter.">
-          <artwork><![CDATA[
+      </t>
+      <figure anchor="influx_manifest">
+        <name>Example of storing Platform and Data Collection Manifest: Vendor PEN and Xpath filter.</name>
+        <artwork><![CDATA[
  * Metric: platforms_platform_vendor_pen
  * Value: 32473
  * Labels:
@@ -525,8 +562,9 @@
    - data_collections_data_collection_platform_id: "PE1"
    - data_collections_data_collection_yang_push_subscriptions_
      subscription_id: 4242
-           ]]></artwork>
-        </figure>
+         ]]></artwork>
+      </figure>
+      <t>
           In the labels, the "host" might be different from the "platforms_platform_id" in case the collector is the one assembling it, i.e. for devices that do not natively support the Data Manifest.
           In that case, the value of this label could be the hostname of the collector.
           The host value does not matter for retrieving the Data Manifest as the platform id is the meaningful field.
@@ -535,8 +573,10 @@
         In our example, we can retrieve the Platform Manifest associated to a collected datapoint by looking for datapoints that have the label "platforms_platform_id" equal to the value of the host for that collected datapoint.
         In order to link a datapoint with the corresponding Data Collection Manifest, we need to add an additional label for the subscription id.
         For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>.
-        <figure anchor="influx_after" title="Storing datapoints with information to retrieve the Data Manifest">
-          <artwork><![CDATA[
+      </t>
+      <figure anchor="influx_after">
+        <name>Storing datapoints with information to retrieve the Data Manifest</name>
+        <artwork type="ascii-art"><![CDATA[
  * Metric: interfaces_interface_enabled
  * Value: True
  * Labels:
@@ -552,9 +592,8 @@
    - interfaces_interface_name: "eth0"
    - data_collections_data_collection_yang_push_subscriptions_
      subscription_id: 4243
-            ]]></artwork>
-        </figure>
-      </t>
+          ]]></artwork>
+      </figure>
       <t>
         From the "interfaces_interface_enabled" datapoint, one can retrieve the corresponding Data Collection Manifest by looking for datapoints that have the label data_collections_data_collection_yang_push_subscriptions_subscription_id equal to 4242.
       </t>
@@ -564,100 +603,96 @@
       </t>
 
     </section>
-    <section title="Changes between revisions">
-      <t>v03 -> v04
-        <list>
-          <t>State that data lineage is out of scope</t>
-        </list>
-      </t>
-      <t>v02 -> v03
-        <list>
-          <t>Explicit that modules are network (Controller) level</t>
-          <t>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></t>
-          <t>Minor edits i.e. network element -> platform , object -> data node</t>
-        </list>
-      </t>
-      <t> v01 -> v02
-        <list>
-          <t>Updated example with latest version of the model.</t>
-        </list>
-      </t>
+    <section>
+      <name>Changes between revisions</name>
+      <t>v03 -> v04 </t>
+        <ul>
+          <li>State that data lineage is out of scope</li>
+        </ul>
+      <t>v02 -> v03 </t>
+        <ul>
+          <li>Explicit that modules are network (Controller) level</li>
+          <li>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></li>
+          <li>Minor edits i.e. network element -> platform , object -> data node</li>
+        </ul>
+      <t> v01 -> v02 </t>
+        <ul>
+          <li>Updated example with latest version of the model.</li>
+        </ul>
       <t>
           v00 (WG adoption) - v01
-          <list>
-            <t>Solve integrity issue by delegating to <xref target="I-D.lopez-opsawg-yang-provenance"/>.</t>
-          </list>
       </t>
+          <ul>
+            <li>Solve integrity issue by delegating to <xref target="I-D.lopez-opsawg-yang-provenance"/>.</li>
+          </ul>
       <t>
         v05 -> v06
-        <list>
-          <t> Remove YANG packages </t>
-          <t> Switch YANG models from device view to network view </t>
-          <t> Add PEN number to identify vendors </t>
-          <t> Intro rewritten with uses cases</t>
-          <t> Added an "Operational Considerations" section </t>
-          <t> Switch from MDT to YANG-push</t>
-        </list>
       </t>
+        <ul>
+          <li> Remove YANG packages </li>
+          <li> Switch YANG models from device view to network view </li>
+          <li> Add PEN number to identify vendors </li>
+          <li> Intro rewritten with uses cases</li>
+          <li> Added an "Operational Considerations" section </li>
+          <li> Switch from MDT to YANG-push</li>
+        </ul>
       <t>
         v04 -> v05
-        <list>
-          <t> First version of example scenario</t>
-          <t> Updated affiliation</t>
-          <t> Updated YANG module names to ietf-platform-manifest and ietf-data-collection-manifest </t>
-          <t> Unify used terms as defined in the terminology section</t>
-          <t> Replaced 'device' with 'platform' </t>
-          <t> Split Section 5 into two sections for better readibility</t>
-        </list>
       </t>
+        <ul>
+          <li> First version of example scenario</li>
+          <li> Updated affiliation</li>
+          <li> Updated YANG module names to ietf-platform-manifest and ietf-data-collection-manifest </li>
+          <li> Unify used terms as defined in the terminology section</li>
+          <li> Replaced 'device' with 'platform' </li>
+          <li> Split Section 5 into two sections for better readibility</li>
+        </ul>
       <t>
         v03 -> v04
-        <list>
-          <t> Fix xym error</t>
-          <t> Moved terminology after introduction</t>
-          <t> Clarified the role of the module</t>
-        </list>
       </t>
+        <ul>
+          <li> Fix xym error</li>
+          <li> Moved terminology after introduction</li>
+          <li> Clarified the role of the module</li>
+        </ul>
       <t>
         v02 -> v03
-        <list>
-          <t> Add when clause in YANG model</t>
-          <t> Fix validation errors on YANG modules</t>
-          <t> Augment YANG library to handle semantic versioning</t>
-        </list>
       </t>
+        <ul>
+          <li> Add when clause in YANG model</li>
+          <li> Fix validation errors on YANG modules</li>
+          <li> Augment YANG library to handle semantic versioning</li>
+        </ul>
       <t>
         v01 -> v02
-        <list>
-          <t> Alignment with YANGCatalog YANG module: name, vendor </t>
-          <t> Clarify the use of YANG instance file </t>
-          <t> Editorial improvements </t>
-          <t> </t>
-        </list>
       </t>
+        <ul>
+          <li> Alignment with YANGCatalog YANG module: name, vendor </li>
+          <li> Clarify the use of YANG instance file </li>
+          <li> Editorial improvements </li>
+        </ul>
       <t>
         v00 -> v01
-        <list>
-          <t> Adding more into data platform: yang packages, whole yanglib module to specify datastores </t>
-          <t> Setting the right type for periods: int64 -> uint64 </t>
-          <t> Specify the origin datastore for mdt subscription </t>
-          <t> Set both models to config false </t>
-          <t> Applying text comments from Mohamed Boucadair </t>
-          <t> Adding an example of data-manifest file </t>
-          <t> Adding rationale for reusing telemetry system for collection of the manifests </t>
-          <t> Export manifest with on change telemetry as opposed to YANG instance file </t>
-          <t> </t>
-        </list>
       </t>
+        <ul>
+          <li> Adding more into data platform: yang packages, whole yanglib module to specify datastores </li>
+          <li> Setting the right type for periods: int64 -> uint64 </li>
+          <li> Specify the origin datastore for mdt subscription </li>
+          <li> Set both models to config false </li>
+          <li> Applying text comments from Mohamed Boucadair </li>
+          <li> Adding an example of data-manifest file </li>
+          <li> Adding rationale for reusing telemetry system for collection of the manifests </li>
+          <li> Export manifest with on change telemetry as opposed to YANG instance file </li>
+        </ul>
       <t>
         v00
-          <list>
-          <t> Initial version </t>
-          <t> </t>
-        </list>
       </t>
+          <ul>
+          <li> Initial version </li>
+        </ul>
     </section>
-    <section title="YANG module ietf-yang-push-modif">
+    <section>
+      <name>YANG module ietf-yang-push-modif</name>
       <t>
         This section is only here to ensure that the draft passes without compilations error.
         It should be removed as soon as we can fix the issue.
@@ -674,7 +709,8 @@
       </figure>
       <t>&lt;CODE ENDS&gt;</t>
     </section>
-    <section title="Acknowledgements" numbered="no">
+    <section numbered="false">
+      <name>Acknowledgements</name>
       <t>
           Thanks to Mohamed Boucadair, Tianran Zhou and Jan Lindblad for their reviews and comments.
        </t>

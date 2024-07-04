@@ -45,7 +45,7 @@ def _format_yang(filenames):
 
 def _find_yang_file(prefix: str):
     for yang_file in os.listdir(YANG_DIR):
-        if yang_file.startswith(prefix) and yang_file.endswith("yang"):
+        if yang_file.startswith(prefix + "@") and yang_file.endswith("yang"):
             return os.path.join(YANG_DIR, yang_file)
     raise Exception(f"Yang file with prefix {prefix} not found.")
 
@@ -74,14 +74,23 @@ def draft_content():
         "yp_modif": _format_yang([YANG_PUSH_MODIF])
         }
     errors = []
+    warnings = []
     contents = {}
     for key, (error, output) in pyang_results.items():
         contents[key] = output.strip()
         if error != "":
-            errors.append(key + "\n" + error)
+            for issue in error.splitlines():
+                if issue.split(":")[2] == " warning":
+                    warnings.append(issue)
+                else:
+                    errors.append(issue)
+    if warnings:
+        print("************WARNINGS******************")
+        for error in warnings:
+            print(error)
     if errors:
+        print("************ERRORS********************")
         for error in errors:
-            print("************ERROR********************")
             print(error)
         exit(1)
     return contents
