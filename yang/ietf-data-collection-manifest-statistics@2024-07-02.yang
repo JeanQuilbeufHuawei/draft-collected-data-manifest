@@ -11,9 +11,7 @@ module ietf-data-collection-manifest-statistics {
 
   import ietf-yang-push {
     prefix yp;
-    reference "RFC 8641: Subscriptions to YANG Datastores. TODO fix and
-    used original version. This import is a modified version so that
-    it compiles.";
+    reference "RFC 8641: Subscriptions to YANG Datastores.";
   }
 
   organization

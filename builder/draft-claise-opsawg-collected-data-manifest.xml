@@ -216,7 +216,9 @@
         <section anchor="platform-manifest-model-tree">
           <name>Overview of the Model</name>
           <t>
-            <xref target="platform-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-platform-manifest module.
+            <xref target="platform-manifest-tree"/> contains the wanted YANG tree diagram <xref target="RFC8340"/> of the ietf-platform-manifest module.
+            This diagram is not obtained by compiling the YANG module presented in <xref target="platform-manifest-model"/>, but rather by using the YANG Schema Mount <xref target="RFC8528"/> version presented in <xref target="platform-schema-mount"/>.
+            Indeed, the module relies on the Full Embed mechanism <xref target="I-D.jouqui-netmod-yang-full-include"/> which is not implemented yet.
           </t>
           <figure anchor="platform-manifest-tree">
             <name>YANG tree diagram for ietf-platform-manifest module</name>
@@ -236,28 +238,20 @@
           The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
         </t>
         <t>
-          In order to provide information for yang-push subscriptions based on streams, the Platform Manifest specifies the streams available on the platform within the 'yang-push-streams' container.
-          That container is similar to the one from the ietf-subscribed-notifications module, and the Data Collection Manifest uses it to refer to streams used by subscriptions.
+          The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
+          That module set is particularly useful to analyze the xpath filters, as they are based on module names (see <xref target="RFC8639"/>, page 47).
         </t>
         <t>
-          The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
-          That module set is particularly useful to define the paths, as they are based on module names.
-          Similarly, this module defines the available datastores, which can be referred to from the Data Manifest, if necessary.
-          If supported by the platform, fetching metrics from a specific datastore could enable some specific use cases: monitoring configuration before it is committed, comparing between the configuration and operational datastore.
+          The Platform Manifest is obtained by specifying the new fields defined above and embedding the YANG library module, along with the YANG Revisions augmentations.
+          Thus, the YANG Library part is not repeated in the YANG module for the Platform Manifest.
         </t>
       </section>
     <section anchor="platform-manifest-model">
       <name>YANG module ietf-platform-manifest</name>
-        <!--<t>
-          &lt;CODE BEGINS&gt;
-          <vspace/> force filename on a single line, needed for xym
-          file "ietf-platform-manifest@2023-03-08.yang"
-        </t> -->
-        <sourcecode name="ietf-platform-manifest@2023-03-08.yang" type="yang" markers="true"><![CDATA[
+        <sourcecode name="ietf-platform-manifest@2024-07-02.yang" type="yang" markers="true"><![CDATA[
 {{platform_manifest_yang}}
             ]]>
         </sourcecode>
-        <!--t>&lt;CODE ENDS&gt;</-t-->
       </section>
     </section>
 
@@ -266,7 +260,9 @@
         <section anchor="model-tree">
           <name>Overview of the Model</name>
           <t>
-            <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-data-collection-manifest module.
+            <xref target="data-collection-manifest-tree"/> contains the wanted YANG tree diagram <xref target="RFC8340"/> of the ietf-data-collection-manifest module.
+            This diagram is not obtained by compiling the YANG module presented in <xref target="module-code"/>, but rather by using the YANG Schema Mount <xref target="RFC8528"/> version presented in <xref target="data-collection-schema-mount"/>.
+            Indeed, the module relies on the Full Embed mechanism <xref target="I-D.jouqui-netmod-yang-full-include"/> which is not implemented yet.
           </t>
           <figure anchor="data-collection-manifest-tree">
             <name>YANG tree diagram for ietf-data-collection-manifest module</name>
@@ -279,47 +275,33 @@
             As for the Platform Manifest, these subscriptions are indexed by the platform id, so that all subscriptions in the network can be represented in the module.
           </t>
           <t>
-            The YANG-Push collection is organized in subscriptions, the parameters for such a subscription are specified in <xref target="RFC8639"/> and <xref target="RFC8641"/>.
-            The list of subscriptions from a given platform is stored in '/data-collection/data-collection/yang-push-subscriptions/subscription'.
-            Subscription metadata are the bulk of the Data Collection Manifest, they are heavily based on the two RFCs above.
+            As most of the information related to YANG-push subscription <xref target="RFC8639"/> and <xref target="RFC8641"/> is stored in the ietf-yang-push model, we include that model and its dependencies under the 'yang-push-collection' container.
+            These modules have a part common to all subscriptions of the platform, stored in the 'streams' and 'filters' container.
+            The information about subscriptions themselves are stored in the 'subscriptions/subscription' list, indexed by subscription id.
           </t>
           <t>
-            The 'target' choice specify the selected contents for the subscription.
-            We did not include the target with a reference to a common filter as stored in 'filters' in ietf-subscribed-notfications.
-            The rationale for this choice is that otherwise we would need to store these filters in the Platform Manifest, which could cause changes in that manifest more often than needed.
-            If a stream based subscription is used <xref target="RFC8639"/>, the stream must exist in the 'yang-push-streams' container of Platform Manifest, which is modelled as a leafref in our module.
-            If a datastore based subscription is used <xref target="RFC8641"/>, the datastore must exist in the 'yang-library' container of the Platform Manifest, which is modelled by a leafref as well.
+            In the subscription object, the 'current-period' indicates the period currently used between two updates.
+            That leaf can only be present when the subscription is periodic.
+            The current period might differ from the requested period if the platform implements a mechanism to increase the collection period when it is overloaded.
+            Having the current period information is crucial to understand if telemetry is missing because of a bug or a packet loss or simply because it was dynamically adjusted by the platform.
           </t>
           <t>
-            We also included 'transport', 'encoding' and 'purpose' as in ietf-subscribed-notification, but without the feature switches as we are not concerned about using this module for configuration.
+            The current-period node is added by the module 'ietf-data-collection-manifest-statistics' presented in <xref target="data-manifest-statistics-module"/>.
+            This modules augments the subscription list from the module 'ietf-subscribed-notifications'.
+            The Data Collection Manifest is obtained by embedding the YANG Push and Subscribed Notifications, as well the new 'ietf-data-collection-manifest-statistics' modules in the toplevel platform indexed list.
+            The module for the Data Collection Manifest is presented in <xref target="module-code"/>.
           </t>
-          <t>
-            We also included the 'dscp', 'weighting' and 'dependency' as in ietf-subscribed-notification, again without the feature switches.
-            This information might be useful to understand why the collection is failing or less frequent than expected for a given subscription.
-          </t>
-          <t>
-            The 'update-trigger' choice from ietf-yang-push is included as well, as it is crucial to understand the frequency at which notifications should arrive.
-          </t>
-          <t>
-            The only new content is the 'current-period', which might differ from the requested period (when in periodic collection mode) if the platform implements a mechanism to increase the collection period when it is overloaded.
-          </t>
-          <t>
-            Finally, we also included the state of the receivers for that subscription, as in ietf-subscribed-notifications.
-          </t>
-          <!-- Can be removed for YANG-push as the subscription-id is config true. Therefore it’s possible to create a subscription that monitors itself.t>
-            We now have a chicken-and-egg issue if the collector collects the Data Manifest via MDT and wants the Data Manifest
-            for the Data Manifest subscription. First, the collector will collect the actual paths that it needs in subscription A. Once it has the subscription id
-            for A, it will need an additional subscription B for the Data Manifest of paths in A. Then, it would need another subscription C to fetch the Data Manifest for the
-            subscription B and so on... A possible solution would be adding in the "mdt" container an additional list in that contains the Data Manifest for every
-            path that is a Data Manifest. By including that list in subscription B, the collector would have the information about subscription B here.
-          </t -->
-          <t>
-            This information is crucial to understand the collected values. For instance, the 'on-change' trigger, if used, might remove a lot of messages from the database because values are sent only when there is a change.
-          </t>
-      </section>
-      <section anchor="module-code">
+        </section>
+       <section anchor="data-manifest-statistics-module">
+         <name>YANG module ietf-data-collection-manifest-statistics</name>
+         <sourcecode name="ietf-data-collection-manifest-statistics@2024-07-02.yang" type="yang" markers="true"><![CDATA[
+{{data_collection_manifest_statistics}}
+    ]]>
+         </sourcecode>
+       </section>
+       <section anchor="module-code">
         <name>YANG module ietf-data-collection-manifest</name>
-        <sourcecode name="ietf-data-collection-manifest@2023-03-08.yang" type="yang" markers="true"><![CDATA[
+        <sourcecode name="ietf-data-collection-manifest@2024-07-02.yang" type="yang" markers="true"><![CDATA[
 {{data_collection_manifest_yang}}
     ]]>
         </sourcecode>
@@ -343,6 +325,9 @@
           The Platform Manifest is likely to remain the same until the platform is updated. Thus, the Platform Manifest only needs to be collected once per streaming session and updated after a platform reboot.
        </t>
         <t>
+          Similarly, the elements common to all subscriptions, such as the stream definitions and the common filters might be updated less frequently than the subscriptions.
+        </t>
+        <t>
           As this draft specifically focuses on giving context on data collected via streamed telemetry, we can assume that a streaming telemetry system is available.
           Retrieving the Data Collection Manifest and Platform Manifest can be done either by reusing that streaming telemetry system (in-band) or using another system (out-of-band), for instance by adding headers or saving manifests into a YANG instance file <xref target="RFC9195"/>.
         </t>
@@ -353,6 +338,10 @@
           Recall that each type of manifest has its own rough frequency update, i.e. at reboot for the Platform Manifest and at new subscription or CPU load variation for the Data Collection Manifest.
           The Data Manifest MUST be streamed with the YANG-Push on-change feature <xref target="RFC8641"/> (also called event-driven telemetry).
           <xref target="inband-example"/> shows how the in-band approach would work while storing to a time-series database (TSDB).
+        </t>
+        <t>
+          The underlying time series database should accommodate the various rates at which different part of the Data Manifest are updated.
+          In particular, storing the Platform Manifest should be optimized to avoid duplicating repeated content and only storing a new version when there is a change in the manifest.
         </t>
       </section>
 
@@ -404,8 +393,8 @@
       </figure>
       <t>&lt;CODE ENDS&gt;</t>
       <t>
-        The file above contains the Data Collection Manifest for two Xpaths subscriptions.
-        With the Data Collection Manifest for the first one, with subscription id 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding Platform Manifest, in order to obtain the exact revision of ieft-interfaces used at collection time.
+        The file above contains the Data Collection Manifest for two XPaths subscriptions.
+        With the Data Collection Manifest for the first one, with subscription id 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding Platform Manifest, in order to obtain the exact revision of ietf-interfaces used at collection time.
         Also, the "on-change" container indicates that data will be sent only if there is a change, thus not receiving data indicates that the administrative status of the interface did not change.
       </t>
       <t>
@@ -440,10 +429,7 @@
             Do we want to handle the absence of values, i.e. add information about missed collection or errors in the collection context ? It could also explain why some values are missing. On the other hand, this might also be out scope.
           </li>
           <li>
-            Regarding the inclusion of ietf-yang-library in our module, do we want to include as well the changes from ietf-yang-library-revisions? What if other information are present in the yang-library from the platform? Should we use a YANG mount to capture them as well (they would not be captured with our use of the main yang-library grouping).
-            Similarly, the ietf-data-collection-manifest.yang includes many lines of copy-pasting from ietf-yang-push.yang and ietf-subscribed-notifications.yang since we want to include the information from these modules. Reusing groupings is not suitable as some leafrefs are pointing to nodes that are not at the same location in our network level module.
-            Maybe we need to find a solution (deviations + some kind of schema mount?) maybe we can live with similar modules since they have common nodes but different purposes?
-            Current effort in <xref target="I-D.jouqui-netmod-yang-full-include"/> might be a potential solution.
+            If <xref target="I-D.jouqui-netmod-yang-full-include"/> is not published in time, what’s the best approach? We could use the schema-mount version?
           </li>
           <li>
             Henk: how does this interact with SBOM effort?
@@ -538,7 +524,7 @@
         A possibility for keeping the Data Manifest with the data is to store it directly into the TSDB.
         In that case, the collector can subscribe to the data exported by the module presented in this draft and store it as other metrics.
         For the Platform Manifest, assuming the platform ID is "PE1", the collector subscribes to the path "ietf-platform-manifest:platforms/platform[id=PE1]".
-        For the Data Collection Manifests, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-subscriptions/subscription[id=X]" where X is the subscription id of existing subscriptions.
+        For the Data Collection Manifests, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-collection/subscriptions/subscription[id=X]" where X is the subscription id of existing subscriptions.
         With the approach from <xref target="I-D.kll-yang-label-tsdb"/>, the corresponding subtrees would be split into a set of datapoints, one per leaf.
         <xref target="influx_manifest"/> shows two examples of storing leaves in a TSDB.
         The first leaf is the vendor PEN number, which is part of the Platform Manifest.
@@ -553,14 +539,14 @@
    - host: "PE1"
    - platforms_platform_id: "PE1"
 --
- * Metric: data_collections_data_collection_yang_push_subscriptions_
-           subscription_datastore_xpath_filter
+ * Metric: data_collections_data_collection_yang_push_collection_
+           subscriptions_subscription_datastore_xpath_filter
  * Value: "ietf-interfaces:interfaces/interface/enabled"
  * Labels:
    - host: "PE1"
    - data_collections_data_collection_platform_id: "PE1"
-   - data_collections_data_collection_yang_push_subscriptions_
-     subscription_id: 4242
+   - data_collections_data_collection_yang_push_collection_
+     subscriptions_subscription_id: 4242
          ]]></artwork>
       </figure>
       <t>
@@ -594,7 +580,7 @@
           ]]></artwork>
       </figure>
       <t>
-        From the "interfaces_interface_enabled" datapoint, one can retrieve the corresponding Data Collection Manifest by looking for datapoints that have the label data_collections_data_collection_yang_push_subscriptions_subscription_id equal to 4242.
+        From the "interfaces_interface_enabled" datapoint, one can retrieve the corresponding Data Collection Manifest by looking for datapoints that have the label data_collections_data_collection_yang_push_collection_subscriptions_subscription_id equal to 4242.
       </t>
       <t>
         Various optimizations could be done, such as relying on on-change subscription to modify only the leaves that changed.
@@ -607,6 +593,9 @@
       <t>v03 -> v04 </t>
         <ul>
           <li>State that data lineage is out of scope</li>
+          <li>Replace copy-pasted version of the modules with schema mount version, use full-embed for the "real" one</li>
+          <li>Schema mount version is the fallback plan if full:embed is not there fast enough.</li>
+          <li>Update examples accordingly</li>
         </ul>
       <t>v02 -> v03 </t>
         <ul>
