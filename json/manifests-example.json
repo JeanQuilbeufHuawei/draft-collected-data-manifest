@@ -3,27 +3,13 @@
     "platform": [
       {
         "id": "PE1",
-        "yang-library": {
-          "module-set": [
-            {
-              "name": "operational"
-            }
-          ],
-          "schema": [
-            {
-              "name": "operational-schema",
-              "module-set": [
-                "operational"
-              ]
-            }
-          ],
-          "datastore": [
-            {
-              "name": "ietf-datastores:operational",
-              "schema": "operational-schema"
-            }
-          ]
-        }
+        "name": "PE1",
+        "vendor": "ACME",
+        "vendor-pen": 32473,
+        "software-version": "3.14",
+        "os-version": "2.79",
+        "os-type": "ACME OS",
+        "yang-library": {...}
       }
     ]
   },
@@ -31,43 +17,45 @@
     "data-collection": [
       {
         "platform-id": "PE1",
-        "yang-push-subscriptions": {
-          "subscription": [
-            {
-              "id": 4242,
-              "datastore": "ietf-datastores:operational",
-              "datastore-xpath-filter":
-                     "/ietf-interfaces:interfaces/interface/enabled",
+        "yang-push-collection": {
+          "subscriptions": {
+            "subscription": [
+              {
+                "id": 4242,
+                "datastore": "ietf-datastores:operational",
+                "datastore-xpath-filter":
+                  "/ietf-interfaces:interfaces/interface/enabled",
 
-              "on-change": {},
-              "receivers": {
-                "receiver": [
-                  {
-                    "name": "yp-collector",
-                    "state": "active"
-                  }
-                ]
-              }
-            },
-            {
-              "id": 4243,
-              "datastore": "ietf-datastores:operational",
-              "datastore-xpath-filter":
-        "/ietf-interfaces:interfaces/interface/statistics/in-octets",
-              "periodic": {
-                "period": 10000
+                "on-change": {},
+                "receivers": {
+                  "receiver": [
+                    {
+                      "name": "yp-collector",
+                      "state": "active"
+                    }
+                  ]
+                }
               },
-              "current-period": 20000,
-              "receivers": {
-                "receiver": [
-                  {
-                    "name": "yp-collector",
-                    "state": "active"
-                  }
-                ]
+              {
+                "id": 4243,
+                "datastore": "ietf-datastores:operational",
+                "datastore-xpath-filter":
+     "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+                "periodic": {
+                  "period": 10000
+                },
+                "current-period": 20000,
+                "receivers": {
+                  "receiver": [
+                    {
+                      "name": "yp-collector",
+                      "state": "active"
+                    }
+                  ]
+                }
               }
-            }
-          ]
+            ]
+          }
         }
       }
     ]
