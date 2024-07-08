@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: 5 January 2025                                         D. Lopez
+Expires: 9 January 2025                                         D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                             4 July 2024
+                                                             8 July 2024
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 January 2025.
+   This Internet-Draft will expire on 9 January 2025.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 1]
+Claise, et al.           Expires 9 January 2025                 [Page 1]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 2]
+Claise, et al.           Expires 9 January 2025                 [Page 2]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -165,7 +165,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 3]
+Claise, et al.           Expires 9 January 2025                 [Page 3]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -221,7 +221,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 4]
+Claise, et al.           Expires 9 January 2025                 [Page 4]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -277,7 +277,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 5]
+Claise, et al.           Expires 9 January 2025                 [Page 5]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -333,7 +333,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 6]
+Claise, et al.           Expires 9 January 2025                 [Page 6]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -389,7 +389,7 @@ module: ietf-platform-manifest
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 7]
+Claise, et al.           Expires 9 January 2025                 [Page 7]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 8]
+Claise, et al.           Expires 9 January 2025                 [Page 8]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                 [Page 9]
+Claise, et al.           Expires 9 January 2025                 [Page 9]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -557,7 +557,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 10]
+Claise, et al.           Expires 9 January 2025                [Page 10]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -613,7 +613,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 11]
+Claise, et al.           Expires 9 January 2025                [Page 11]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -669,7 +669,7 @@ module: ietf-data-collection-manifest
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 12]
+Claise, et al.           Expires 9 January 2025                [Page 12]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -725,7 +725,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 13]
+Claise, et al.           Expires 9 January 2025                [Page 13]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -781,7 +781,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 14]
+Claise, et al.           Expires 9 January 2025                [Page 14]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -837,7 +837,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 15]
+Claise, et al.           Expires 9 January 2025                [Page 15]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -893,7 +893,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 16]
+Claise, et al.           Expires 9 January 2025                [Page 16]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -949,7 +949,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 17]
+Claise, et al.           Expires 9 January 2025                [Page 17]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1005,7 +1005,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 18]
+Claise, et al.           Expires 9 January 2025                [Page 18]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1061,7 +1061,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 19]
+Claise, et al.           Expires 9 January 2025                [Page 19]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1117,7 +1117,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 20]
+Claise, et al.           Expires 9 January 2025                [Page 20]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1173,7 +1173,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 21]
+Claise, et al.           Expires 9 January 2025                [Page 21]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 22]
+Claise, et al.           Expires 9 January 2025                [Page 22]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 23]
+Claise, et al.           Expires 9 January 2025                [Page 23]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1341,7 +1341,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 24]
+Claise, et al.           Expires 9 January 2025                [Page 24]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1397,7 +1397,7 @@ Appendix A.  title="Example of use based on MDT
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 25]
+Claise, et al.           Expires 9 January 2025                [Page 25]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1453,7 +1453,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 26]
+Claise, et al.           Expires 9 January 2025                [Page 26]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1509,7 +1509,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 27]
+Claise, et al.           Expires 9 January 2025                [Page 27]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1565,7 +1565,7 @@ Appendix B.  Changes between revisions
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 28]
+Claise, et al.           Expires 9 January 2025                [Page 28]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1621,7 +1621,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 29]
+Claise, et al.           Expires 9 January 2025                [Page 29]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1677,7 +1677,7 @@ C.1.  Schema Mount Version for the Platform Manifest
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 30]
+Claise, et al.           Expires 9 January 2025                [Page 30]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1733,7 +1733,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 31]
+Claise, et al.           Expires 9 January 2025                [Page 31]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1789,7 +1789,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 32]
+Claise, et al.           Expires 9 January 2025                [Page 32]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1845,7 +1845,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 33]
+Claise, et al.           Expires 9 January 2025                [Page 33]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1901,7 +1901,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 34]
+Claise, et al.           Expires 9 January 2025                [Page 34]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -1957,7 +1957,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 35]
+Claise, et al.           Expires 9 January 2025                [Page 35]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2013,7 +2013,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 36]
+Claise, et al.           Expires 9 January 2025                [Page 36]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2069,7 +2069,7 @@ C.2.  Schema Mount Version for the Platform Manifest
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 37]
+Claise, et al.           Expires 9 January 2025                [Page 37]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2125,7 +2125,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 38]
+Claise, et al.           Expires 9 January 2025                [Page 38]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2181,7 +2181,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 39]
+Claise, et al.           Expires 9 January 2025                [Page 39]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2237,7 +2237,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 40]
+Claise, et al.           Expires 9 January 2025                [Page 40]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2293,7 +2293,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 41]
+Claise, et al.           Expires 9 January 2025                [Page 41]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2349,7 +2349,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 42]
+Claise, et al.           Expires 9 January 2025                [Page 42]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2405,7 +2405,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 43]
+Claise, et al.           Expires 9 January 2025                [Page 43]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2461,7 +2461,7 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 44]
+Claise, et al.           Expires 9 January 2025                [Page 44]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2517,7 +2517,7 @@ Authors' Addresses
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 45]
+Claise, et al.           Expires 9 January 2025                [Page 45]
 
 Internet-Draft           Telemetry Data Manifest               July 2024
 
@@ -2573,4 +2573,4 @@ Internet-Draft           Telemetry Data Manifest               July 2024
 
 
 
-Claise, et al.           Expires 5 January 2025                [Page 46]
+Claise, et al.           Expires 9 January 2025                [Page 46]

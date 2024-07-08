@@ -21,7 +21,7 @@
         version="3" >
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-04"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Huawei</organization>
       <address>
