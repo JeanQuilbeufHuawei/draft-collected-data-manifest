@@ -1,6 +1,6 @@
 module ietf-data-collection-manifest-statistics {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-statistics";
+  namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest-statistics";
   prefix dcs;
 
   import ietf-subscribed-notifications {

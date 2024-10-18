@@ -42,13 +42,6 @@
                 urn:ietf:params:xml:ns:yang:ietf-inet-types
             </namespace>
         </import-only-module>
-        <import-only-module>
-            <name>ietf-yang-status-conformance</name>
-            <revision>2024-02-14</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
-            </namespace>
-        </import-only-module>
     </module-set>
     <schema>
         <name>main-schema</name>

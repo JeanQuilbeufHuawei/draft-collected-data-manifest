@@ -17,45 +17,43 @@
     "data-collection": [
       {
         "platform-id": "PE1",
-        "yang-push-collection": {
-          "subscriptions": {
-            "subscription": [
-              {
-                "id": 4242,
-                "datastore": "ietf-datastores:operational",
-                "datastore-xpath-filter":
-                  "/ietf-interfaces:interfaces/interface/enabled",
+        "subscriptions": {
+          "subscription": [
+            {
+              "id": 4242,
+              "datastore": "ietf-datastores:operational",
+              "datastore-xpath-filter":
+                "/ietf-interfaces:interfaces/interface/enabled",
 
-                "on-change": {},
-                "receivers": {
-                  "receiver": [
-                    {
-                      "name": "yp-collector",
-                      "state": "active"
-                    }
-                  ]
-                }
-              },
-              {
-                "id": 4243,
-                "datastore": "ietf-datastores:operational",
-                "datastore-xpath-filter":
-     "/ietf-interfaces:interfaces/interface/statistics/in-octets",
-                "periodic": {
-                  "period": 10000
-                },
-                "current-period": 20000,
-                "receivers": {
-                  "receiver": [
-                    {
-                      "name": "yp-collector",
-                      "state": "active"
-                    }
-                  ]
-                }
+              "on-change": {},
+              "receivers": {
+                "receiver": [
+                  {
+                    "name": "yp-collector",
+                    "state": "active"
+                  }
+                ]
               }
-            ]
-          }
+            },
+            {
+              "id": 4243,
+              "datastore": "ietf-datastores:operational",
+              "datastore-xpath-filter":
+     "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+              "periodic": {
+                "period": 10000
+              },
+              "current-period": 20000,
+              "receivers": {
+                "receiver": [
+                  {
+                    "name": "yp-collector",
+                    "state": "active"
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     ]

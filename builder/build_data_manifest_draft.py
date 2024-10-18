@@ -50,7 +50,7 @@ def _find_yang_file(prefix: str, schema_mount=False):
         yang_dir = YANG_DIR
     for yang_file in os.listdir(yang_dir):
         if yang_file.startswith(prefix + "@") and yang_file.endswith("yang"):
-            return os.path.join(YANG_DIR, yang_file)
+            return os.path.join(yang_dir, yang_file)
     raise Exception(f"Yang file with prefix {prefix} not found.")
 
 
@@ -83,10 +83,10 @@ DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "manifests-example.jso
 def draft_content():
     pyang_results = {
         "data_collection_manifest_tree": _get_tree( "data_collection_manifest"),  # _build_tree([ DATA_COLLECTION_MANIFEST]),
-        "data_collection_manifest_yang": _format_yang([DATA_COLLECTION_MANIFEST]),
+        "data_collection_manifest_yang": _format_yang([DATA_COLLECTION_MANIFEST_SM]),
         "data_collection_manifest_statistics": _format_yang([DATA_COLLECTION_STATS]),
         "platform_manifest_tree": _get_tree("platform_manifest"), #_build_tree([PLATFORM_MANIFEST]),
-        "platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
+        #"platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
         "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE),
         "yp_modif": _format_yang([YANG_PUSH_MODIF]),
         "platform_schema_mount": _format_yang([PLATFORM_MANIFEST_SM]),
@@ -120,7 +120,7 @@ def draft_content():
 
 
 if __name__ == '__main__':
-    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-ietf-opsawg-collected-data-manifest-04.xml")
+    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-ietf-opsawg-collected-data-manifest-05.xml")
     draft_text = env.get_template("draft-claise-opsawg-collected-data-manifest.xml")
     with open(output, 'w') as xml_generated:
         xml_generated.write(draft_text.render(**draft_content()))
