@@ -3,19 +3,10 @@ module ietf-platform-manifest {
   namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
   prefix p-mf;
 
-  import ietf-yang-library {
-    prefix yanglib;
-    reference "RFC8525: YANG Library";
-  }
   import ietf-yang-schema-mount {
     prefix yangmnt;
     reference
       "RFC8528: YANG Schema Mount";
-  }
-  import ietf-yang-status-conformance {
-    prefix ysconf;
-    reference
-      "XXXX: Updated YANG Module Revision Handling";
   }
 
   organization
@@ -132,11 +123,7 @@ module ietf-platform-manifest {
            an application that requires a specific operating system
            type.";
       }
-      container yang-library {
-        description
-            "";
-        yangmnt:mount-point yang-library;
-      }
+      yangmnt:mount-point yang-library;
     }
   }
 }

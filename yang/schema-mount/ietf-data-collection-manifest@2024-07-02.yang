@@ -7,25 +7,10 @@ module ietf-data-collection-manifest {
     prefix p-mf;
     reference "RFC XXXX: Title to be completed";
   }
-  import ietf-data-collection-manifest-statistics {
-    prefix dcs;
-    reference "RFC XXXX: Title to be completed";
-  }
   import ietf-yang-schema-mount {
     prefix yangmnt;
     reference
       "RFC8528: YANG Schema Mount";
-  }
-  import ietf-subscribed-notifications {
-    prefix sn;
-    reference "RFC 8639: A YANG Data Model for Subscriptions to
-                 Event Notifications";
-  }
-  import ietf-yang-push {
-    prefix yp;
-    reference "RFC 8641: Subscriptions to YANG Datastores. TODO fix and
-    used original version. This import is a modified version so that
-    it compiles.";
   }
 
   organization
@@ -93,10 +78,8 @@ module ietf-data-collection-manifest {
           "Id of the platform collecting the data. This id is the same
           as the one in the platform manifest.";
       }
-      container  yang-push-collection {
-        yangmnt:mount-point yang-push-collection;
-      }
-      // we could augment here with other kind of collection items
+      yangmnt:mount-point yang-push-collection;
+      // augment here with other kind of collection items
     }
   }
 }
