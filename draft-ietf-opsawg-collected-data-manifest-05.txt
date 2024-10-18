@@ -1775,8 +1775,6 @@ Appendix B.  Changes between revisions
 
    *  Explain link with schema node id
 
-   *  Close open questions
-
    v03 -> v04
 
    *  State that data lineage is out of scope
@@ -1787,14 +1785,14 @@ Appendix B.  Changes between revisions
    *  Schema mount version is the fallback plan if full:embed is not
       there fast enough.
 
+   *  Update examples accordingly
+
 
 
 Claise, et al.            Expires 21 April 2025                [Page 32]
 
 Internet-Draft           Telemetry Data Manifest            October 2024
 
-
-   *  Update examples accordingly
 
    v02 -> v03
 
@@ -1843,14 +1841,14 @@ Internet-Draft           Telemetry Data Manifest            October 2024
 
    *  Split Section 5 into two sections for better readibility
 
+   v03 -> v04
+
 
 
 Claise, et al.            Expires 21 April 2025                [Page 33]
 
 Internet-Draft           Telemetry Data Manifest            October 2024
 
-
-   v03 -> v04
 
    *  Fix xym error
 
@@ -1898,6 +1896,8 @@ Internet-Draft           Telemetry Data Manifest            October 2024
    v00
 
    *  Initial version
+
+
 
 
 

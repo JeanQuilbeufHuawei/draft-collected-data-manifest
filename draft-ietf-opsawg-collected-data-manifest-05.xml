@@ -1273,7 +1273,6 @@ xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
       <ul>
         <li>Remove references to full-include draft, use schema mount.</li>
         <li>Explain link with schema node id</li>
-        <li>Close open questions</li>
       </ul>
       <t>v03 -> v04 </t>
         <ul>
