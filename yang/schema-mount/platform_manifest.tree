@@ -34,7 +34,8 @@ module: ietf-platform-manifest
         |  |        +--ro location*   inet:uri
         |  +--ro schema* [name]
         |  |  +--ro name                            string
-        |  |  +--ro module-set*                     -> ../../module-set/name
+        |  |  +--ro module-set*
+        |  |  |       -> ../../module-set/name
         |  |  +--ro deprecated-nodes-implemented?   boolean
         |  |  +--ro obsolete-nodes-absent?          boolean
         |  +--ro datastore* [name]

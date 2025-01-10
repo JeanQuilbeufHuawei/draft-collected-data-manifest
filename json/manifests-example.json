@@ -9,7 +9,6 @@
         "software-version": "3.14",
         "os-version": "2.79",
         "os-type": "ACME OS",
-        "yang-library": {...}
       }
     ]
   },
@@ -17,15 +16,16 @@
     "data-collection": [
       {
         "platform-id": "PE1",
-        "subscriptions": {
+        "ietf-subscribed-notifications:subscriptions": {
           "subscription": [
             {
               "id": 4242,
-              "datastore": "ietf-datastores:operational",
-              "datastore-xpath-filter":
-                "/ietf-interfaces:interfaces/interface/enabled",
+              "ietf-yang-push:datastore":
+                                       "ietf-datastores:operational",
+              "ietf-yang-push:datastore-xpath-filter":
+                     "/ietf-interfaces:interfaces/interface/enabled",
 
-              "on-change": {},
+              "ietf-yang-push:on-change": {},
               "receivers": {
                 "receiver": [
                   {
@@ -37,13 +37,15 @@
             },
             {
               "id": 4243,
-              "datastore": "ietf-datastores:operational",
-              "datastore-xpath-filter":
-     "/ietf-interfaces:interfaces/interface/statistics/in-octets",
-              "periodic": {
+              "ietf-yang-push:datastore":
+                                       "ietf-datastores:operational",
+              "ietf-yang-push:datastore-xpath-filter":
+        "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+              "ietf-yang-push:periodic": {
                 "period": 10000
               },
-              "current-period": 20000,
+           "ietf-data-collection-manifest-statistics:current-period":
+                 20000,
               "receivers": {
                 "receiver": [
                   {

@@ -8,6 +8,7 @@
             <namespace>
            urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
             </namespace>
+            <feature>xpath</feature>
         </module>
         <module>
             <name>ietf-yang-push</name>
@@ -15,6 +16,7 @@
             <namespace>
                 urn:ietf:params:xml:ns:yang:ietf-yang-push
             </namespace>
+            <feature>on-change</feature>
         </module>
         <module>
             <name>ietf-data-collection-manifest-statistics</name>
