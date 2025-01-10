@@ -8,7 +8,7 @@
 <?xml-model href="rfc7991bis.rnc"?>
 <rfc
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        docName="draft-ietf-opsawg-collected-data-manifest-05"
+        docName="draft-ietf-opsawg-collected-data-manifest-06"
         category="std"
         ipr="trust200902"
         obsoletes=""
@@ -21,7 +21,7 @@
         version="3" >
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-05"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-06"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Huawei</organization>
       <address>
