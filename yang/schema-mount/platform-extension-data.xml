@@ -6,7 +6,7 @@
           <name>ietf-yang-status-conformance</name>
            <revision>2024-02-14</revision>
            <namespace>
-              urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
+             urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
             </namespace>
         </module>
         <module>

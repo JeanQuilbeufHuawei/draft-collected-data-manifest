@@ -71,12 +71,9 @@ def _get_tree(short_name):
     return "", open(filename).read()
 
 
-PLATFORM_MANIFEST = _find_yang_file("ietf-platform-manifest")
 PLATFORM_MANIFEST_SM = _find_yang_file("ietf-platform-manifest", schema_mount=True)
-DATA_COLLECTION_MANIFEST = _find_yang_file("ietf-data-collection-manifest")
-DATA_COLLECTION_STATS = _find_yang_file("ietf-data-collection-manifest-statistics")
+DATA_COLLECTION_STATS = _find_yang_file("ietf-yp-current-period", schema_mount=True)
 DATA_COLLECTION_MANIFEST_SM = _find_yang_file( "ietf-data-collection-manifest", schema_mount=True)
-YANG_PUSH_MODIF = _find_yang_file("ietf-yang-push-modif")
 DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "manifests-example.json")
 
 
@@ -88,13 +85,13 @@ def draft_content():
         "platform_manifest_tree": _get_tree("platform_manifest"), #_build_tree([PLATFORM_MANIFEST]),
         #"platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
         "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE),
-        "yp_modif": _format_yang([YANG_PUSH_MODIF]),
         "platform_schema_mount": _format_yang([PLATFORM_MANIFEST_SM]),
         "platform_extension_data": _get_sm_xml("platform-extension-data"),
         "platform_toplevel_yanglib": _get_sm_xml("platform-toplevel-yanglib"),
         "data_schema_mount": _format_yang([DATA_COLLECTION_MANIFEST_SM]),
         "data_extension_data": _get_sm_xml("data-collection-extension-data"),
-        "data_toplevel_yanglib": _get_sm_xml("data-collection-toplevel-yanglib")
+        "data_toplevel_yanglib": _get_sm_xml( "data-collection-toplevel-yanglib"),
+        "current_period_tree": _build_tree([DATA_COLLECTION_STATS])
         }
     errors = []
     warnings = []

@@ -10,7 +10,7 @@ module ietf-platform-manifest {
   }
 
   organization
-    "IETF OPSAWG (Network Configuration) Working Group";
+    "IETF OPSAWG (Operations and Management Area) Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
      WG List:  <mailto:opsawg@ietf.org>
@@ -49,80 +49,104 @@ module ietf-platform-manifest {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2024-07-02 {
+  revision 2025-02-21 {
     description
       "Initial revision";
     reference
-      "RFC xxxx: Title to be completed";
+      "RFC xxxx: A Data Manifest for Contextualized Telemetry Data";
+  }
+
+  grouping platform-details {
+    description
+        "This grouping contains the information about a particular
+        platform, as stored in the YANG catalog.";
+    leaf name {
+      type string{
+          length "1..1023";
+        }
+      description
+        "Model of the platform from which data is collected.";
+    }
+    leaf vendor {
+      type string {
+          length "1..1023";
+        }
+      description
+        "Organization that implements that platform.";
+    }
+    leaf vendor-pen {
+  	type uint32;
+  	description "Vendor's registered Private Enterprise Number";
+    reference
+        "RFC9371: Registration Procedures for Private Enterprise
+        Numbers (PENs)";
+    }
+    leaf software-version {
+      type string {
+          length "1..1023";
+        }
+      description
+        "Name of the version of software. With respect to most
+        network device appliances, this will be the operating system
+        version. But for other YANG module implementation, this
+        would be a version of appliance software. Ultimately, this
+        should correspond to a version string that will be
+        recognizable by the consumers of the platform.";
+    }
+    leaf software-flavor {
+      type string {
+          length "1..1023";
+        }
+      description
+        "A variation of a specific version where YANG model support
+         may be different.  Depending on the vendor, this could be a
+         license, additional software component, or a feature set.";
+    }
+    leaf os-version {
+      type string {
+          length "1..1023";
+        }
+      description
+        "Version of the operating system using this module. This is
+         primarily useful if the software implementing the module is
+         an application that requires a specific operating system
+         version.";
+    }
+    leaf os-type {
+      type string {
+          length "1..1023";
+        }
+      description
+        "Type of the operating system using this module. This is
+         primarily useful if the software implementing the module is
+         an application that requires a specific operating system
+         type.";
+    }
   }
 
   container platforms{
     config false;
     description
-      "Top container including all platforms in scope. If this model is
-      hosted on a single device, it should contain a single entry in
-      the list. At the network level, it should contain an entry for
-      every monitored platform.";
+      "Top container including all platforms in scope. If this model
+      is hosted on a single device, it should contain a single entry
+      in the list. At the network level, it should contain an entry
+      for every monitored platform.";
     list platform {
       key id;
       description
-        "Contains information about the platform that allows to identify
-         and understand the individual data collection information.  ";
+        "Contains information about the platform that allows
+        identifying and understanding the individual data collection
+        information.";
       leaf id {
-        type string;
+        type string {
+          length "1..1023";
+        }
         description
-          "Identifies a given platform on the network, for instance the
-          sysname of the plaftorm. The id has to be unique on the
-          network.";
+          "Identifies a given platform on the network, for instance
+          the 'sysName' of the platform. The 'id' has to be unique
+          within the network scope.";
       }
-      leaf name {
-        type string;
-        description
-          "Model of the platform from which data is collected.";
-      }
-      leaf vendor {
-        type string;
-        description
-          "Organization that implements that platform.";
-      }
-      leaf vendor-pen {
-  	  type uint32;
-  	  description "Vendor''s registered Private Enterprise Number as
-  	  described in RFC9371";
-      }
-      leaf software-version {
-        type string;
-        description
-          "Name of the version of software. With respect to most network
-           device appliances, this will be the operating system version.
-           But for other YANG module implementation, this would be a
-           version of appliance software. Ultimately, this should
-           correspond to a version string that will be recognizable by
-           the consumers of the platform.";
-      }
-      leaf software-flavor {
-        type string;
-        description
-          "A variation of a specific version where YANG model support
-           may be different.  Depending on the vendor, this could be a
-           license, additional software component, or a feature set.";
-      }
-      leaf os-version {
-        type string;
-        description
-          "Version of the operating system using this module. This is
-           primarily useful if the software implementing the module is
-           an application that requires a specific operating system
-           version.";
-      }
-      leaf os-type {
-        type string;
-        description
-          "Type of the operating system using this module. This is
-           primarily useful if the software implementing the module is
-           an application that requires a specific operating system
-           type.";
-      }
+      uses platform-details;
       yangmnt:mount-point yang-library;
     }
   }
