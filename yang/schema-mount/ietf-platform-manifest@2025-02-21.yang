@@ -3,10 +3,10 @@ module ietf-platform-manifest {
   namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
   prefix p-mf;
 
-  import ietf-yang-schema-mount {
-    prefix yangmnt;
+  import ietf-yang-library {
+    prefix yanglib;
     reference
-      "RFC8528: YANG Schema Mount";
+      "RFC8525: YANG Library";
   }
 
   organization
@@ -147,7 +147,7 @@ module ietf-platform-manifest {
           within the network scope.";
       }
       uses platform-details;
-      yangmnt:mount-point yang-library;
+      uses yanglib:yang-library-parameters;
     }
   }
 }

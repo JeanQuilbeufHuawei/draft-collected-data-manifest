@@ -83,28 +83,28 @@ Table of Contents
    4.  The "ietf-yp-current-period" YANG module  . . . . . . . . . .   7
    5.  Platform Manifest . . . . . . . . . . . . . . . . . . . . . .   8
      5.1.  Overview of the Model . . . . . . . . . . . . . . . . . .   9
-     5.2.  YANG module ietf-platform-manifest  . . . . . . . . . . .  11
-   6.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .  16
-     6.1.  Overview of the Model . . . . . . . . . . . . . . . . . .  16
-     6.2.  The "ietf-data-collection-manifest" YANG module . . . . .  18
-   7.  Data Manifest and the Collected Data  . . . . . . . . . . . .  23
-     7.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  23
-     7.2.  Mapping Collected Data to the Data Manifest . . . . . . .  24
-     7.3.  Operational Considerations  . . . . . . . . . . . . . . .  25
-   8.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  25
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
-   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  28
-   12. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  28
-   13. Normative References  . . . . . . . . . . . . . . . . . . . .  28
-   14. Informative References  . . . . . . . . . . . . . . . . . . .  29
-   Appendix A.  An Example of Use Based on MDT . . . . . . . . . . .  32
-   Appendix B.  Changes between revisions  . . . . . . . . . . . . .  34
-   Appendix C.  Generating YANG Tree Diagrams  . . . . . . . . . . .  37
-     C.1.  YANG Tree Diagram of the Platform Manifest  . . . . . . .  38
-     C.2.  YANG Tree Diagram of the Data Collection Manifest . . . .  39
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  41
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  41
+     5.2.  YANG module ietf-platform-manifest  . . . . . . . . . . .  10
+   6.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .  14
+     6.1.  Overview of the Model . . . . . . . . . . . . . . . . . .  14
+     6.2.  The "example-collection-manifest" YANG module . . . . . .  16
+   7.  Data Manifest and the Collected Data  . . . . . . . . . . . .  18
+     7.1.  Collecting the Data Manifest  . . . . . . . . . . . . . .  19
+     7.2.  Mapping Collected Data to the Data Manifest . . . . . . .  20
+     7.3.  Operational Considerations  . . . . . . . . . . . . . . .  21
+   8.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  21
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
+   11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  24
+   12. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  24
+   13. Normative References  . . . . . . . . . . . . . . . . . . . .  24
+   14. Informative References  . . . . . . . . . . . . . . . . . . .  25
+   Appendix A.  Changes between revisions  . . . . . . . . . . . . .  27
+   Appendix B.  An Example of Use Based on MDT . . . . . . . . . . .  30
+   Appendix C.  Generating YANG Tree Diagrams  . . . . . . . . . . .  33
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  37
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  37
+
+
 
 
 
@@ -453,15 +453,11 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 5.1.  Overview of the Model
 
    Figure 2 contains the YANG tree diagram [RFC8340] of the ietf-
-   platform-manifest module.  The tree diagram is obtained by reusing
-   existing modules, such as "ietf-yang-library" [RFC8525] using the
-   YANG mount mechanism [RFC8528].  In addition to the YANG module in
-   Section 5.2, this document specifies the YANG-library instance to be
-   mounted.  Appendix C explains how the YANG tree is obtained.
+   platform-manifest module.
 
    module: ietf-platform-manifest
      +--ro platforms
-        +--mp platform* [id]
+        +--ro platform* [id]
            +--ro id                  string
            +--ro name?               string
            +--ro vendor?             string
@@ -470,34 +466,38 @@ Internet-Draft           Telemetry Data Manifest           February 2025
            +--ro software-flavor?    string
            +--ro os-version?         string
            +--ro os-type?            string
-           +--ro yang-library/
-           |  +--ro module-set* [name]
-           |  |  +--ro name    string
-           |  |  +--ro module* [name]
-           |  |  |  +--ro name         yang:yang-identifier
-           |  |  |  +--ro revision?    revision-identifier
-           |  |  |  +--ro namespace    inet:uri
-           |  |  |  +--ro location*    inet:uri
-           |  |  |  +--ro submodule* [name]
-           |  |  |  |  +--ro name        yang:yang-identifier
-           |  |  |  |  +--ro revision?   revision-identifier
-           |  |  |  |  +--ro location*   inet:uri
-           |  |  |  +--ro feature*     yang:yang-identifier
-           |  |  |  +--ro deviation*   -> ../../module/name
-           |  |  +--ro import-only-module* [name revision]
-           |  |     +--ro name         yang:yang-identifier
-           |  |     +--ro revision     union
-           |  |     +--ro namespace    inet:uri
-           |  |     +--ro location*    inet:uri
-           |  |     +--ro submodule* [name]
-           |  |        +--ro name        yang:yang-identifier
-           |  |        +--ro revision?   revision-identifier
-           |  |        +--ro location*   inet:uri
-           |  +--ro schema* [name]
-           |  |  +--ro name                            string
-           |  |  +--ro module-set*
-           |  |  |       -> ../../module-set/name
-           |  |  +--ro deprecated-nodes-implemented?   boolean
+           +--ro module-set* [name]
+           |  +--ro name                  string
+           |  +--ro module* [name]
+           |  |  +--ro name         yang:yang-identifier
+           |  |  +--ro revision?    revision-identifier
+           |  |  +--ro namespace    inet:uri
+           |  |  +--ro location*    inet:uri
+           |  |  +--ro submodule* [name]
+           |  |  |  +--ro name        yang:yang-identifier
+           |  |  |  +--ro revision?   revision-identifier
+           |  |  |  +--ro location*   inet:uri
+           |  |  +--ro feature*     yang:yang-identifier
+           |  |  +--ro deviation*   -> ../../module/name
+           |  +--ro import-only-module* [name revision]
+           |     +--ro name         yang:yang-identifier
+           |     +--ro revision     union
+           |     +--ro namespace    inet:uri
+           |     +--ro location*    inet:uri
+           |     +--ro submodule* [name]
+           |        +--ro name        yang:yang-identifier
+           |        +--ro revision?   revision-identifier
+           |        +--ro location*   inet:uri
+           +--ro schema* [name]
+           |  +--ro name          string
+           |  +--ro module-set*   -> ../../module-set/name
+           +--ro datastore* [name]
+              +--ro name      ds:datastore-ref
+              +--ro schema    -> ../../schema/name
+
+       Figure 2: YANG tree diagram for ietf-platform-manifest module
+
+
 
 
 
@@ -505,30 +505,6 @@ Claise, et al.           Expires 31 August 2025                 [Page 9]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
-
-           |  |  +--ro obsolete-nodes-absent?          boolean
-           |  +--ro datastore* [name]
-           |  |  +--ro name      ds:datastore-ref
-           |  |  +--ro schema    -> ../../schema/name
-           |  +--ro content-id    string
-           x--ro modules-state/
-              x--ro module-set-id    string
-              x--ro module* [name revision]
-                 x--ro name                yang:yang-identifier
-                 x--ro revision            union
-                 x--ro schema?             inet:uri
-                 x--ro namespace           inet:uri
-                 x--ro feature*            yang:yang-identifier
-                 x--ro deviation* [name revision]
-                 |  x--ro name        yang:yang-identifier
-                 |  x--ro revision    union
-                 x--ro conformance-type    enumeration
-                 x--ro submodule* [name revision]
-                    x--ro name        yang:yang-identifier
-                    x--ro revision    union
-                    x--ro schema?     inet:uri
-
-       Figure 2: YANG tree diagram for ietf-platform-manifest module
 
    The YANG module contains a list of platform manifests (in 'platforms/
    platform'), indexed by the identifier of the platform.  That
@@ -553,20 +529,12 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    platform can be identified via its name 'vendor' or its PEN number
    'vendor-pen', as described in [RFC9371].
 
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 10]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    The platform manifest also includes the contents of the YANG Library
    [RFC8525].  That module set is particularly useful to retrieve the
    YANG modules associated to a subscription by analyzing the xpath
-   filters.  These filters are based on module names (see [RFC8639],
-   description of leaf 'stream-xpath-filter', page 45).
+   filters or the subtree filters.  Xpath filters are based on module
+   names (see [RFC8639], description of leaf 'stream-xpath-filter', page
+   45).  Subtree filters are based on namespaces.
 
    The platform manifest is obtained by specifying the new fields
    defined above and mounting the YANG library module, along with the
@@ -575,21 +543,26 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 5.2.  YANG module ietf-platform-manifest
 
-   This Section defines the ietf-platform manifest YANG module.
-   Additionally, it defines the extension data file for YANG schema
-   mount.  The platform manifest MUST conform to the model obtained by
-   combining these two specifications.
+   This section defines the ietf-platform manifest YANG module.
 
-   <CODE BEGINS> file "ietf-platform-manifest@2024-07-02.yang"
+   <CODE BEGINS> file "ietf-platform-manifest@2025-02-21.yang"
    module ietf-platform-manifest {
      yang-version 1.1;
      namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
      prefix p-mf;
 
-     import ietf-yang-schema-mount {
-       prefix yangmnt;
+     import ietf-yang-library {
+       prefix yanglib;
        reference
-         "RFC8528: YANG Schema Mount";
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 10]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
+         "RFC8525: YANG Library";
      }
 
      organization
@@ -609,14 +582,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
         contents of this model must be streamed along with the data
         streamed from the network element so that the platform context
         of the data collection can be retrieved later.
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 11]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
         The data content of this model should not change except on
         upgrade or patching of the device.
@@ -645,6 +610,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
          "Initial revision";
        reference
          "RFC xxxx: A Data Manifest for Contextualized Telemetry Data";
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 11]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
      }
 
      grouping platform-details {
@@ -666,14 +639,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
            "Organization that implements that platform.";
        }
        leaf vendor-pen {
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 12]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
          type uint32;
          description
            "Vendor's registered Private Enterprise Number";
@@ -701,6 +666,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
            "A variation of a specific version where YANG model support
             may be different.  Depending on the vendor, this could be a
             license, additional software component, or a feature set.";
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 12]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
        }
        leaf os-version {
          type string {
@@ -722,14 +695,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
             an application that requires a specific operating system
             type.";
        }
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 13]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
      }
 
      container platforms {
@@ -755,106 +720,30 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               within the network scope.";
          }
          uses platform-details;
-         yangmnt:mount-point "yang-library";
+         uses yanglib:yang-library-parameters;
        }
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 13]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
      }
    }
-   <CODE ENDS>
-
-   <CODE BEGINS> file "platform-extension-data.xml"
-   <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
-                 xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
-       <module-set>
-           <name>mountee-set</name>
-           <module>
-             <name>ietf-yang-status-conformance</name>
-              <revision>2024-02-14</revision>
-              <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
-               </namespace>
-           </module>
-           <module>
-               <name>ietf-datastores</name>
-               <revision>2018-02-14</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-datastores
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 14]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-               </namespace>
-           </module>
-           <module>
-               <name>ietf-yang-library</name>
-               <revision>2019-01-04</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-yang-library
-               </namespace>
-           </module>
-           <import-only-module>
-               <name>ietf-yang-types</name>
-               <revision>2013-07-15</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-yang-types
-               </namespace>
-           </import-only-module>
-           <import-only-module>
-               <name>ietf-inet-types</name>
-               <revision>2013-07-15</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-inet-types
-               </namespace>
-           </import-only-module>
-       </module-set>
-       <schema>
-           <name>test-schema</name>
-           <module-set>mountee-set</module-set>
-       </schema>
-       <datastore>
-           <name>ds:running</name>
-           <schema>test-schema</schema>
-       </datastore>
-       <datastore>
-           <name>ds:operational</name>
-           <schema>test-schema</schema>
-       </datastore>
-       <content-id>2</content-id>
-   </yang-library>
-   <modules-state
-     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-     <module-set-id>2</module-set-id>
-   </modules-state>
-   <schema-mounts
-     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
-     <mount-point>
-       <module>ietf-platform-manifest</module>
-       <label>yang-library</label>
-       <shared-schema/>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 15]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-     </mount-point>
-   </schema-mounts>
    <CODE ENDS>
 
 6.  Data Collection Manifest
 
 6.1.  Overview of the Model
 
-   Figure 3 contains the YANG tree diagram [RFC8340] of the "ietf-data-
+   Figure 3 contains the YANG tree diagram [RFC8340] of the "example-
    collection-manifest" module.  The module relies upon the YANG Schema
    mount [RFC8528] to reuse existing YANG modules describing the current
-   data collection status.  Appendix C explains how the YANG tree is
-   obtained.
+   data collection status.  This module is an example as YANG Schema
+   mount does not support design-time schema mount.  Appendix C explains
+   how the YANG tree is obtained.
 
    module: ietf-data-collection-manifest
      +--ro data-collections
@@ -889,15 +778,15 @@ Internet-Draft           Telemetry Data Manifest           February 2025
                  |  |  |  |  +--ro stream-filter-name
                  |  |  |  |          stream-filter-ref
                  |  |  |  +--:(within-subscription)
-                 |  |  |     +--ro (filter-spec)?
 
 
 
-Claise, et al.           Expires 31 August 2025                [Page 16]
+Claise, et al.           Expires 31 August 2025                [Page 14]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
 
+                 |  |  |     +--ro (filter-spec)?
                  |  |  |        +--:(stream-subtree-filter)
                  |  |  |        +--:(stream-xpath-filter)
                  |  |  |           +--ro stream-xpath-filter?
@@ -937,7 +826,7 @@ Internet-Draft           Telemetry Data Manifest           February 2025
                           +--ro sync-on-start?      boolean
                           +--ro excluded-change*    change-type
 
-    Figure 3: YANG tree diagram for ietf-data-collection-manifest module
+     Figure 3: YANG tree diagram for example-collection-manifest module
 
    The 'data-collections' container contains the information related to
    each YANG-Push subscription.  As for the platform manifest, these
@@ -948,8 +837,7 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-
-Claise, et al.           Expires 31 August 2025                [Page 17]
+Claise, et al.           Expires 31 August 2025                [Page 15]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
@@ -978,18 +866,16 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    mechanism.  The module for the data collection manifest is presented
    in Section 6.2.
 
-6.2.  The "ietf-data-collection-manifest" YANG module
+6.2.  The "example-collection-manifest" YANG module
 
-   This section includes the code of the ietf-data-collection-manifest
+   This section includes the code of the "example-collection-manifest"
    YANG module.  Additionally, it defines the extension data file for
    YANG schema mount.  The data collection manifest MUST conform to the
    model obtained by combining these two specifications.
 
-   <CODE BEGINS> file "ietf-data-collection-manifest@2024-07-02.yang"
-   module ietf-data-collection-manifest {
+   module example-collection-manifest {
      yang-version 1.1;
-     namespace
-       "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
+     namespace "http://example.com/example-data-collection-manifest";
      prefix d-mf;
 
      import ietf-platform-manifest {
@@ -1003,14 +889,15 @@ Internet-Draft           Telemetry Data Manifest           February 2025
          "RFC8528: YANG Schema Mount";
      }
 
+     organization
 
 
-Claise, et al.           Expires 31 August 2025                [Page 18]
+
+Claise, et al.           Expires 31 August 2025                [Page 16]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
 
-     organization
        "IETF OPSAWG (Operations and Management Area) Working Group";
      contact
        "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
@@ -1055,18 +942,18 @@ Internet-Draft           Telemetry Data Manifest           February 2025
        description
          "Initial revision";
        reference
-         "RFC xxxx: A Data Manifest for Contextualized Telemetry Data";
+         "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
      }
 
+     container data-collections {
 
 
 
-Claise, et al.           Expires 31 August 2025                [Page 19]
+Claise, et al.           Expires 31 August 2025                [Page 17]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
 
-     container data-collections {
        config false;
        description
          "Contains the configuration and statistics for the collected
@@ -1084,161 +971,22 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               identifier is the same as the one in the platform
               manifest.";
          }
-         yangmnt:mount-point "yang-push-collection";
+         yangmnt:mount-point "yang-push-collection" {
+           description
+             "This mount point MUST mount the following modules and their
+              dependencies:
+                * ietf-subscribed-notifications
+                * ietf-yang-push
+                * ietf-yp-current-period.
+              This mount point MUST NOT mount any other modules.";
+           reference
+             "RFC8639: Subscription to YANG Notifications
+              RFC8641: Subscription to YANG Notifications for datastore
+              updates";
+         }
        }
      }
    }
-   <CODE ENDS>
-
-   <CODE BEGINS> file "data-collection-extension-data.xml"
-   <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
-                 xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
-     <module-set>
-       <name>mountee-set</name>
-       <module>
-         <name>ietf-subscribed-notifications</name>
-         <revision>2019-09-09</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
-         </namespace>
-         <feature>xpath</feature>
-       </module>
-       <module>
-         <name>ietf-yang-push</name>
-         <revision>2019-09-09</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-yang-push
-         </namespace>
-         <feature>on-change</feature>
-       </module>
-       <module>
-         <name>ietf-yp-current-period</name>
-         <revision>2025-02-21</revision>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 20]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-yp-current-period
-         </namespace>
-       </module>
-       <module>
-         <name>ietf-datastores</name>
-         <revision>2018-02-14</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-datastores
-         </namespace>
-       </module>
-       <module>
-         <name>ietf-yang-library</name>
-         <revision>2019-01-04</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-yang-library
-         </namespace>
-       </module>
-       <import-only-module>
-         <name>ietf-inet-types</name>
-         <revision>2013-07-15</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-inet-types
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-interfaces</name>
-         <revision>2018-02-20</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-interfaces
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-ip</name>
-         <revision>2018-02-22</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-ip
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-netconf-acm</name>
-         <revision>2018-02-14</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-netconf-acm
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-network-instance</name>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 21]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-         <revision>2019-01-21</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-network-instance
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-restconf</name>
-         <revision>2017-01-26</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-restconf
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-yang-patch</name>
-         <revision>2017-02-22</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-yang-patch
-         </namespace>
-       </import-only-module>
-       <import-only-module>
-         <name>ietf-yang-types</name>
-         <revision>2023-01-23</revision>
-         <namespace>
-           urn:ietf:params:xml:ns:yang:ietf-yang-types
-         </namespace>
-       </import-only-module>
-     </module-set>
-     <schema>
-       <name>test-schema</name>
-       <module-set>mountee-set</module-set>
-     </schema>
-     <datastore>
-       <name>ds:running</name>
-       <schema>test-schema</schema>
-     </datastore>
-     <datastore>
-       <name>ds:operational</name>
-       <schema>test-schema</schema>
-     </datastore>
-     <content-id>2</content-id>
-   </yang-library>
-   <modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-     <module-set-id>2</module-set-id>
-   </modules-state>
-   <schema-mounts
-     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
-     <mount-point>
-       <module>ietf-data-collection-manifest</module>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 22]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-       <label>yang-push-collection</label>
-       <shared-schema/>
-     </mount-point>
-   </schema-mounts>
-   <CODE ENDS>
 
 7.  Data Manifest and the Collected Data
 
@@ -1249,6 +997,18 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    the storage of the collected data into a database for later
    exploitation.  It is assumed that such a database exists and can be
    used for storing the data manifest.
+
+
+
+
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 18]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
 7.1.  Collecting the Data Manifest
 
@@ -1273,7 +1033,7 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    requesting the relevant subscriptions.  These subscriptions MUST
    include the platform manifest and the data collection manifest,
    possibly limited to the subscriptions for which the context needs to
-   be retrieved a posteriori.  Appendix A shows how the in-band approach
+   be retrieved a posteriori.  Appendix B shows how the in-band approach
    would work while storing to a time-series database (TSDB).
 
    Each type of manifest has its own rough frequency update, i.e. at
@@ -1281,14 +1041,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    for the data collection manifest.  The data manifest SHOULD be
    streamed with the YANG-Push on-change feature [RFC8641] (also called
    event-driven telemetry) whenever possible.
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 23]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    A platform manifest is likely to remain the same until the platform
    is updated.  Thus, the platform manifest only needs to be collected
@@ -1305,6 +1057,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    might be updated less frequently than the subscriptions.  Relying on
    YANG-Push on-change feature enables keeping an up-to-date version of
    the data collection manifest.
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 19]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
    The underlying time series database should accommodate the various
    rates at which different parts of the data manifest are updated.  In
@@ -1336,16 +1096,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    *  The subscription identifier, platform identifier and time stamp of
       the data are retrieved from the datapoint metadata
 
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 24]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    *  The platform manifest for that datapoint is obtained by looking up
       the latest version before the time stamp matching the platform
       identifier.
@@ -1357,6 +1107,20 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    The reliability of the collection of the data manifest is the same as
    the reliability of the data collection itself, since the data
    manifest is like any other data.
+
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 20]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
 7.3.  Operational Considerations
 
@@ -1391,17 +1155,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
          }
        ]
      },
-     "ietf-data-collection-manifest:data-collections": {
+     "example-collection-manifest:data-collections": {
        "data-collection": [
          {
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 25]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
            "platform-id": "PE1",
            "ietf-subscribed-notifications:subscriptions": {
              "subscription": [
@@ -1414,6 +1170,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
                  "ietf-yang-push:on-change": {},
                  "receivers": {
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 21]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
                    "receiver": [
                      {
                        "name": "yp-collector",
@@ -1450,14 +1214,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
                      Figure 4: Example of data manifest
 
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 26]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    Figure 4 contains the data collection manifest for two XPaths
    subscriptions.  With the data collection manifest for the first one,
    with subscription id 4242, the exact semantics of the collected path,
@@ -1468,6 +1224,15 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    change" container indicates that data will be sent only if there is a
    change, thus not receiving data indicates that the administrative
    status of the interface did not change.
+
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 22]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
    The other example of data collection manifest, with subscription id
    4243, shows how a periodic subscription is reported.  In that
@@ -1493,26 +1258,13 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    IANA is requested to register the following URIs in the "ns"
    subregistry within the "IETF XML Registry" [RFC3688]:
 
-      URI: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
-      Registrant Contact:  The IESG.
-      XML: N/A; the requested URI is an XML namespace.
+    URI: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
+    Registrant Contact:  The IESG.
+    XML: N/A; the requested URI is an XML namespace.
 
-      URI: urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
-      Registrant Contact:  The IESG.
-      XML: N/A; the requested URI is an XML namespace.
-
-      URI: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
-      Registrant Contact:  The IESG.
-      XML: N/A; the requested URI is an XML namespace.
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 27]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
+    URI: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
+    Registrant Contact:  The IESG.
+    XML: N/A; the requested URI is an XML namespace.
 
    IANA is requested to register the following YANG modules in the "YANG
    Module Names" subregistry [RFC6020] within the "YANG Parameters"
@@ -1524,17 +1276,19 @@ Internet-Draft           Telemetry Data Manifest           February 2025
     Prefix: p-mf
     Reference: RFC XXXX
 
-    Name: ietf-data-collection-manifest
-    Maintained by IANA?  N
-    Namespace: urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
-    Prefix: d-mf
-    Reference: RFC XXXX
-
     Name: ietf-yp-current-period
     Maintained by IANA?  N
     Namespace: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
     Prefix: yp-cp
     Reference: RFC XXXX
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 23]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
 11.  Contributors
 
@@ -1561,15 +1315,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 13.  Normative References
 
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 28]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1592,6 +1337,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               E., and A. Tripathy, "Subscription to YANG Notifications",
               RFC 8639, DOI 10.17487/RFC8639, September 2019,
               <https://www.rfc-editor.org/info/rfc8639>.
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 24]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
    [RFC8641]  Clemm, A. and E. Voit, "Subscription to YANG Notifications
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
@@ -1617,15 +1370,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               <https://datatracker.ietf.org/doc/html/draft-claise-
               netconf-metadata-for-collection-03>.
 
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 29]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    [I-D.havel-nmop-digital-map]
               Havel, O., Claise, B., de Dios, O. G., Elhassany, A., and
               T. Graf, "Modeling the Digital Map based on RFC 8345:
@@ -1650,6 +1394,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               <https://datatracker.ietf.org/doc/html/draft-ietf-nmop-
               terminology-11>.
 
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 25]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
    [I-D.kll-yang-label-tsdb]
               Larsson, K., "Mapping YANG Data to Label-Set Time Series",
               Work in Progress, Internet-Draft, draft-kll-yang-label-
@@ -1672,15 +1424,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               envelope-02, 28 January 2025,
               <https://datatracker.ietf.org/doc/html/draft-netana-
               netconf-notif-envelope-02>.
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 30]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
               DOI 10.17487/RFC3688, January 2004,
@@ -1708,9 +1451,12 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               Network Topologies", RFC 8345, DOI 10.17487/RFC8345, March
               2018, <https://www.rfc-editor.org/info/rfc8345>.
 
-   [RFC9195]  Lengyel, B. and B. Claise, "A File Format for YANG
-              Instance Data", RFC 9195, DOI 10.17487/RFC9195, February
-              2022, <https://www.rfc-editor.org/info/rfc9195>.
+
+
+Claise, et al.           Expires 31 August 2025                [Page 26]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
 
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
@@ -1724,21 +1470,163 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
    [yanglint] "Yanglint", <https://github.com/CESNET/libyang>.
 
+Appendix A.  Changes between revisions
+
+   This section is to be removed before publishing as an RFC.
+
+   v05 -> v06
+
+   *  Example can be validated using yanglint
+
+   *  Applied details comments from Joe and Med
+
+   *  Making the "current-period" update more generic and mentioning it
+      in the introduction
+
+   *  Section 7 (previously 5) reworked to clarify how data manifest is
+      collected and retrieved from a datapoint
+
+   v04 -> v05
+
+   *  Remove references to full-include draft, use schema mount.
+
+   *  Explain link with schema node id
+
+   v03 -> v04
+
+   *  State that data lineage is out of scope
+
+   *  Replace copy-pasted version of the modules with schema mount
+      version, use full-embed for the "real" one
+
+   *  Schema mount version is the fallback plan if full:embed is not
+      there fast enough.
+
+   *  Update examples accordingly
+
+   v02 -> v03
 
 
 
 
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 31]
+Claise, et al.           Expires 31 August 2025                [Page 27]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
 
-Appendix A.  An Example of Use Based on MDT
+   *  Explicit that modules are network (Controller) level
+
+   *  InfluxDB example changed to TSDB example aligned with
+      [I-D.kll-yang-label-tsdb]
+
+   *  Minor edits i.e. network element -> platform , object -> data node
+
+   v01 -> v02
+
+   *  Updated example with latest version of the model.
+
+   v00 (WG adoption) - v01
+
+   *  Solve integrity issue by delegating to
+      [I-D.lopez-opsawg-yang-provenance].
+
+   v05 -> v06
+
+   *  Remove YANG packages
+
+   *  Switch YANG models from device view to network view
+
+   *  Add PEN number to identify vendors
+
+   *  Intro rewritten with uses cases
+
+   *  Added an "Operational Considerations" section
+
+   *  Switch from MDT to YANG-push
+
+   v04 -> v05
+
+   *  First version of example scenario
+
+   *  Updated affiliation
+
+   *  Updated YANG module names to ietf-platform-manifest and ietf-data-
+      collection-manifest
+
+   *  Unify used terms as defined in the terminology section
+
+   *  Replaced 'device' with 'platform'
+
+   *  Split Section 5 into two sections for better readibility
+
+   v03 -> v04
+
+   *  Fix xym error
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 28]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
+   *  Moved terminology after introduction
+
+   *  Clarified the role of the module
+
+   v02 -> v03
+
+   *  Add when clause in YANG model
+
+   *  Fix validation errors on YANG modules
+
+   *  Augment YANG library to handle semantic versioning
+
+   v01 -> v02
+
+   *  Alignment with YANGCatalog YANG module: name, vendor
+
+   *  Clarify the use of YANG instance file
+
+   *  Editorial improvements
+
+   v00 -> v01
+
+   *  Adding more into data platform: yang packages, whole yanglib
+      module to specify datastores
+
+   *  Setting the right type for periods: int64 -> uint64
+
+   *  Specify the origin datastore for mdt subscription
+
+   *  Set both models to config false
+
+   *  Applying text comments from Mohamed Boucadair
+
+   *  Adding an example of data-manifest file
+
+   *  Adding rationale for reusing telemetry system for collection of
+      the manifests
+
+   *  Export manifest with on change telemetry as opposed to YANG
+      instance file
+
+   v00
+
+   *  Initial version
+
+
+
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 29]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
+Appendix B.  An Example of Use Based on MDT
 
    In this example, the goal is to collect the administrative status and
    number of received bytes for the interfaces of a fictional ACME
@@ -1789,7 +1677,7 @@ Appendix A.  An Example of Use Based on MDT
 
 
 
-Claise, et al.           Expires 31 August 2025                [Page 32]
+Claise, et al.           Expires 31 August 2025                [Page 30]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
@@ -1845,7 +1733,7 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.           Expires 31 August 2025                [Page 33]
+Claise, et al.           Expires 31 August 2025                [Page 31]
 
 Internet-Draft           Telemetry Data Manifest           February 2025
 
@@ -1894,10 +1782,122 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    the amount of data needed for updating and storing the data manifest
    in the TSDB would be limited.
 
-Appendix B.  Changes between revisions
 
-   This section is to be removed before publishing as an RFC.
 
+
+
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 32]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
+Appendix C.  Generating YANG Tree Diagrams
+
+   This section provides the files needed to generate the YANG tree
+   diagram [RFC8340] from Figure 3.  The diagram was obtained using
+   yanglint [yanglint] version 2.1.80, using the YANG Schema Mount
+   [RFC8528].  It was manually edited to remove parts irrelevant to this
+   document such as data nodes from imported modules, notifications and
+   RPCs.
+
+   In order to get a tree diagram involving YANG Schema Mount with
+   yanglint, two data files are required, in addition to the YANG
+   module, its dependencies and the YANG modules to be mounted.  The
+   first required file the extension data, containing the YANG library
+   to use at the mount point, this file is provided below as "data-
+   collection-extension-data.xml".  The second required file is the YANG
+   library to use at the top-level context, this file is provided below
+   as "data-collection-toplevel-yanglib.xml".  The following command was
+   used to obtain the YANG Tree diagram (before manual edition).
+
+           yanglint -f tree \
+           -x data-collection-extension-data.xml \
+           -Y data-collection-toplevel-yanglib.xml \
+           example-collection-manifest@2025-02-21.yang
+
+   <CODE BEGINS> file "data-collection-extension-data.xml"
+   <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+                 xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+     <module-set>
+       <name>mountee-set</name>
+       <module>
+         <name>ietf-subscribed-notifications</name>
+         <revision>2019-09-09</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
+         </namespace>
+         <feature>xpath</feature>
+       </module>
+       <module>
+         <name>ietf-yang-push</name>
+         <revision>2019-09-09</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-yang-push
+         </namespace>
+         <feature>on-change</feature>
+       </module>
+       <module>
+         <name>ietf-yp-current-period</name>
+         <revision>2025-02-21</revision>
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 33]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-yp-current-period
+         </namespace>
+       </module>
+       <module>
+         <name>ietf-datastores</name>
+         <revision>2018-02-14</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-datastores
+         </namespace>
+       </module>
+       <module>
+         <name>ietf-yang-library</name>
+         <revision>2019-01-04</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-yang-library
+         </namespace>
+       </module>
+       <import-only-module>
+         <name>ietf-inet-types</name>
+         <revision>2013-07-15</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-inet-types
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-interfaces</name>
+         <revision>2018-02-20</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-interfaces
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-ip</name>
+         <revision>2018-02-22</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-ip
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-netconf-acm</name>
+         <revision>2018-02-14</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-netconf-acm
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-network-instance</name>
 
 
 
@@ -1906,54 +1906,54 @@ Claise, et al.           Expires 31 August 2025                [Page 34]
 Internet-Draft           Telemetry Data Manifest           February 2025
 
 
-   v05 -> v06
-
-   *  Example can be validated using yanglint
-
-   *  Applied details comments from Joe and Med
-
-   *  Making the "current-period" update more generic and mentioning it
-      in the introduction
-
-   *  Section 7 (previously 5) reworked to clarify how data manifest is
-      collected and retrieved from a datapoint
-
-   v04 -> v05
-
-   *  Remove references to full-include draft, use schema mount.
-
-   *  Explain link with schema node id
-
-   v03 -> v04
-
-   *  State that data lineage is out of scope
-
-   *  Replace copy-pasted version of the modules with schema mount
-      version, use full-embed for the "real" one
-
-   *  Schema mount version is the fallback plan if full:embed is not
-      there fast enough.
-
-   *  Update examples accordingly
-
-   v02 -> v03
-
-   *  Explicit that modules are network (Controller) level
-
-   *  InfluxDB example changed to TSDB example aligned with
-      [I-D.kll-yang-label-tsdb]
-
-   *  Minor edits i.e. network element -> platform , object -> data node
-
-   v01 -> v02
-
-   *  Updated example with latest version of the model.
-
-   v00 (WG adoption) - v01
-
-   *  Solve integrity issue by delegating to
-      [I-D.lopez-opsawg-yang-provenance].
-
+         <revision>2019-01-21</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-network-instance
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-restconf</name>
+         <revision>2017-01-26</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-restconf
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-yang-patch</name>
+         <revision>2017-02-22</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-yang-patch
+         </namespace>
+       </import-only-module>
+       <import-only-module>
+         <name>ietf-yang-types</name>
+         <revision>2023-01-23</revision>
+         <namespace>
+           urn:ietf:params:xml:ns:yang:ietf-yang-types
+         </namespace>
+       </import-only-module>
+     </module-set>
+     <schema>
+       <name>test-schema</name>
+       <module-set>mountee-set</module-set>
+     </schema>
+     <datastore>
+       <name>ds:running</name>
+       <schema>test-schema</schema>
+     </datastore>
+     <datastore>
+       <name>ds:operational</name>
+       <schema>test-schema</schema>
+     </datastore>
+     <content-id>2</content-id>
+   </yang-library>
+   <modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+     <module-set-id>2</module-set-id>
+   </modules-state>
+   <schema-mounts
+     xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
+     <mount-point>
+       <module>example-collection-manifest</module>
 
 
 
@@ -1962,205 +1962,11 @@ Claise, et al.           Expires 31 August 2025                [Page 35]
 Internet-Draft           Telemetry Data Manifest           February 2025
 
 
-   v05 -> v06
-
-   *  Remove YANG packages
-
-   *  Switch YANG models from device view to network view
-
-   *  Add PEN number to identify vendors
-
-   *  Intro rewritten with uses cases
-
-   *  Added an "Operational Considerations" section
-
-   *  Switch from MDT to YANG-push
-
-   v04 -> v05
-
-   *  First version of example scenario
-
-   *  Updated affiliation
-
-   *  Updated YANG module names to ietf-platform-manifest and ietf-data-
-      collection-manifest
-
-   *  Unify used terms as defined in the terminology section
-
-   *  Replaced 'device' with 'platform'
-
-   *  Split Section 5 into two sections for better readibility
-
-   v03 -> v04
-
-   *  Fix xym error
-
-   *  Moved terminology after introduction
-
-   *  Clarified the role of the module
-
-   v02 -> v03
-
-   *  Add when clause in YANG model
-
-   *  Fix validation errors on YANG modules
-
-   *  Augment YANG library to handle semantic versioning
-
-   v01 -> v02
-
-   *  Alignment with YANGCatalog YANG module: name, vendor
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 36]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-   *  Clarify the use of YANG instance file
-
-   *  Editorial improvements
-
-   v00 -> v01
-
-   *  Adding more into data platform: yang packages, whole yanglib
-      module to specify datastores
-
-   *  Setting the right type for periods: int64 -> uint64
-
-   *  Specify the origin datastore for mdt subscription
-
-   *  Set both models to config false
-
-   *  Applying text comments from Mohamed Boucadair
-
-   *  Adding an example of data-manifest file
-
-   *  Adding rationale for reusing telemetry system for collection of
-      the manifests
-
-   *  Export manifest with on change telemetry as opposed to YANG
-      instance file
-
-   v00
-
-   *  Initial version
-
-Appendix C.  Generating YANG Tree Diagrams
-
-   This section provides the files needed to generate the YANG tree
-   diagrams [RFC8340] from Figure 2 and Figure 3.  The diagrams were
-   obtained using yanglint [yanglint] version 2.1.80, using the YANG
-   Schema Mount [RFC8528].  They were manually edited to remove parts
-   irrelevant to this document such as data nodes from imported modules,
-   notifications and RPCs.
-
-   In order to get a tree diagram involving YANG Schema Mount with
-   yanglint, two data files are required, in addition to the YANG
-   module, its dependencies and the YANG modules to be mounted.  The
-   first required file the extension data, containing the YANG library
-   to use at the mount point.  The second required file is the YANG
-   library to use at the top-level context.  The commands used to get
-   the "raw" YANG Tree diagrams from these files are given in the next
-   sections.
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 37]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-C.1.  YANG Tree Diagram of the Platform Manifest
-
-   For the platform manifest, the extension data is provided in
-   Section 5.2 as "platform-extension-data.xml".  The top-level YANG
-   library is included below as "platform-toplevel-yanglib.xml".  The
-   following command was used to obtain the YANG Tree diagram (before
-   manual edition).
-
-   yanglint -f tree \
-     -x platform-extension-data.xml \
-     -Y platform-toplevel-yanglib.xml \
-     ietf-platform-manifest@2024-07-02.yang
-
-   <CODE BEGINS> file "platform-toplevel-yanglib.xml"
-   <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
-                 xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
-       <module-set>
-           <name>main-set</name>
-           <module>
-               <name>ietf-yang-schema-mount</name>
-               <revision>2019-01-14</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount
-               </namespace>
-           </module>
-           <module>
-               <name>ietf-platform-manifest</name>
-               <revision>2025-02-21</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-platform-manifest
-               </namespace>
-           </module>
-           <import-only-module>
-               <name>ietf-yang-types</name>
-               <revision>2023-01-23</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-yang-types
-               </namespace>
-           </import-only-module>
-           <import-only-module>
-               <name>ietf-inet-types</name>
-               <revision>2013-07-15</revision>
-               <namespace>
-                   urn:ietf:params:xml:ns:yang:ietf-inet-types
-               </namespace>
-           </import-only-module>
-       </module-set>
-       <schema>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 38]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
-           <name>main-schema</name>
-           <module-set>main-set</module-set>
-       </schema>
-       <datastore>
-           <name>ds:running</name>
-           <schema>main-schema</schema>
-       </datastore>
-       <datastore>
-           <name>ds:operational</name>
-           <schema>main-schema</schema>
-       </datastore>
-       <content-id>1</content-id>
-   </yang-library>
-   <modules-state
-       xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-       <module-set-id>2</module-set-id>
-   </modules-state>
+       <label>yang-push-collection</label>
+       <shared-schema/>
+     </mount-point>
+   </schema-mounts>
    <CODE ENDS>
-
-C.2.  YANG Tree Diagram of the Data Collection Manifest
-
-   For the data collection manifest, the extension data is provided in
-   Section 6.2 as "data-collection-extension-data.xml".  The top-level
-   YANG library is included below as "data-collection-toplevel-
-   yanglib.xml".  The following command was used to obtain the YANG Tree
-   diagram (before manual edition).
-
-             yanglint -f tree \
-             -x data-collection-extension-data.xml \
-             -Y data-collection-toplevel-yanglib.xml \
-             ietf-data-collection-manifest@2024-07-02.yang
 
    <CODE BEGINS> file "data-collection-toplevel-yanglib.xml"
    <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
@@ -2178,14 +1984,6 @@ C.2.  YANG Tree Diagram of the Data Collection Manifest
                <name>ietf-yang-library</name>
                <revision>2019-01-04</revision>
                <namespace>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 39]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
                    urn:ietf:params:xml:ns:yang:ietf-yang-library
                </namespace>
            </module>
@@ -2197,10 +1995,10 @@ Internet-Draft           Telemetry Data Manifest           February 2025
                </namespace>
            </module>
            <module>
-               <name>ietf-data-collection-manifest</name>
+               <name>example-collection-manifest</name>
                <revision>2025-02-21</revision>
                <namespace>
-               urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
+                  http://example.org/example-collection-manifest
                </namespace>
            </module>
            <module>
@@ -2212,6 +2010,14 @@ Internet-Draft           Telemetry Data Manifest           February 2025
            </module>
            <import-only-module>
                <name>ietf-inet-types</name>
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 36]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
                <revision>2013-07-15</revision>
                <namespace>
                    urn:ietf:params:xml:ns:yang:ietf-inet-types
@@ -2234,14 +2040,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
            <schema>main-schema</schema>
        </datastore>
        <datastore>
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 40]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
            <name>ds:operational</name>
            <schema>main-schema</schema>
        </datastore>
@@ -2268,6 +2066,14 @@ Authors' Addresses
 
    Jean Quilbeuf
    Huawei
+
+
+
+Claise, et al.           Expires 31 August 2025                [Page 37]
+
+Internet-Draft           Telemetry Data Manifest           February 2025
+
+
    Email: jean.quilbeuf@huawei.com
 
 
@@ -2285,17 +2091,6 @@ Authors' Addresses
    Madrid  28050
    Spain
    Email: ignacio.dominguezmartinez@telefonica.com
-
-
-
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 41]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
 
 
    Thomas Graf
@@ -2330,23 +2125,4 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Claise, et al.           Expires 31 August 2025                [Page 42]
+Claise, et al.           Expires 31 August 2025                [Page 38]

@@ -73,7 +73,8 @@ def _get_tree(short_name):
 
 PLATFORM_MANIFEST_SM = _find_yang_file("ietf-platform-manifest", schema_mount=True)
 DATA_COLLECTION_STATS = _find_yang_file("ietf-yp-current-period", schema_mount=True)
-DATA_COLLECTION_MANIFEST_SM = _find_yang_file( "ietf-data-collection-manifest", schema_mount=True)
+DATA_COLLECTION_MANIFEST_SM = _find_yang_file( "example-collection-manifest",
+                                               schema_mount=True)
 DATA_COLLECTION_MANIFEST_EXAMPLE = os.path.join(JSON_DIR, "manifests-example.json")
 
 
@@ -82,7 +83,8 @@ def draft_content():
         "data_collection_manifest_tree": _get_tree( "data_collection_manifest"),  # _build_tree([ DATA_COLLECTION_MANIFEST]),
         "data_collection_manifest_yang": _format_yang([DATA_COLLECTION_MANIFEST_SM]),
         "data_collection_manifest_statistics": _format_yang([DATA_COLLECTION_STATS]),
-        "platform_manifest_tree": _get_tree("platform_manifest"), #_build_tree([PLATFORM_MANIFEST]),
+        "platform_manifest_tree": _build_tree([PLATFORM_MANIFEST_SM]),
+        #_build_tree([PLATFORM_MANIFEST]),
         #"platform_manifest_yang": _format_yang([PLATFORM_MANIFEST]),
         "data_collection_manifest_example": _format_json(DATA_COLLECTION_MANIFEST_EXAMPLE),
         "platform_schema_mount": _format_yang([PLATFORM_MANIFEST_SM]),
@@ -100,6 +102,8 @@ def draft_content():
         contents[key] = output.strip()
         if error != "":
             for issue in error.splitlines():
+                if issue == "":
+                    continue
                 if issue.split(":")[2] == " warning":
                     warnings.append(issue)
                 else:

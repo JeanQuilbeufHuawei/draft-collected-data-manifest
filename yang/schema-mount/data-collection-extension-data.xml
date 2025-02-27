@@ -116,7 +116,7 @@
 <schema-mounts
   xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
   <mount-point>
-    <module>ietf-data-collection-manifest</module>
+    <module>example-collection-manifest</module>
     <label>yang-push-collection</label>
     <shared-schema/>
   </mount-point>

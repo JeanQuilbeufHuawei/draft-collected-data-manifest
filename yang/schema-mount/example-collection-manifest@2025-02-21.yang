@@ -1,6 +1,6 @@
-module ietf-data-collection-manifest {
+module example-collection-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
+  namespace "http://example.com/example-data-collection-manifest";
   prefix d-mf;
 
   import ietf-platform-manifest {
@@ -58,7 +58,7 @@ module ietf-data-collection-manifest {
     description
       "Initial revision";
     reference
-      "RFC xxxx: A Data Manifest for Contextualized Telemetry Data";
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
   }
 
   container data-collections {
@@ -79,7 +79,19 @@ module ietf-data-collection-manifest {
           identifier is the same as the one in the platform
           manifest.";
       }
-      yangmnt:mount-point yang-push-collection;
+      yangmnt:mount-point yang-push-collection {
+        description
+         "This mount point MUST mount the following modules and their
+         dependencies:
+            * ietf-subscribed-notifications
+            * ietf-yang-push
+            * ietf-yp-current-period.
+         This mount point MUST NOT mount any other modules.";
+        reference
+          "RFC8639: Subscription to YANG Notifications
+           RFC8641: Subscription to YANG Notifications for datastore
+           updates";
+      }
     }
   }
 }

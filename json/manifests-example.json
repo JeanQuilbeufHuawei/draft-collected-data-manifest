@@ -12,7 +12,7 @@
       }
     ]
   },
-  "ietf-data-collection-manifest:data-collections": {
+  "example-collection-manifest:data-collections": {
     "data-collection": [
       {
         "platform-id": "PE1",

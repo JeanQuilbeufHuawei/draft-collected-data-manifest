@@ -133,11 +133,6 @@
         The approach proposed in this document delegates the time retrieval to the database storing the collected telemetry and focusing on providing a way to match a platform and a subscription identifier to the collection context.
         This is consistent with most of the YANG modules for devices, which focus on describing the current state of the device, rather than the evolution of that state through time.
       </t>
-      <!--t>
-        This document first presents the module for the platform manifest in <xref target="platform-manifest"/> and then the module for the data collection manifest in <xref target="data-collection-manifest"/>.
-        The full data manifest is obtained by combining these two modules.
-        <xref target="mapping"/> explains how the data manifest can be retrieved and how collected data is mapped to the data manifest.
-      </t-->
 
     </section>
     <section anchor="terminology">
@@ -349,16 +344,16 @@ module ietf-yp-current-period {
           <name>Overview of the Model</name>
           <t>
             <xref target="platform-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-platform-manifest module.
-            The tree diagram is obtained by reusing existing modules, such as "ietf-yang-library" <xref target="RFC8525"/> using the YANG mount mechanism <xref target="RFC8528"/>.
+            <!-- The tree diagram is obtained by reusing existing modules, such as "ietf-yang-library" <xref target="RFC8525"/> using the YANG mount mechanism <xref target="RFC8528"/>.
             In addition to the YANG module in <xref target="platform-manifest-model"/>, this document specifies the YANG-library instance to be mounted.
-            <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
+            <xref target="schema-mount-version"/> explains how the YANG tree is obtained.-->
           </t>
           <figure anchor="platform-manifest-tree">
             <name>YANG tree diagram for ietf-platform-manifest module</name>
             <artwork type="ascii-art"><![CDATA[
 module: ietf-platform-manifest
   +--ro platforms
-     +--mp platform* [id]
+     +--ro platform* [id]
         +--ro id                  string
         +--ro name?               string
         +--ro vendor?             string
@@ -367,55 +362,34 @@ module: ietf-platform-manifest
         +--ro software-flavor?    string
         +--ro os-version?         string
         +--ro os-type?            string
-        +--ro yang-library/
-        |  +--ro module-set* [name]
-        |  |  +--ro name    string
-        |  |  +--ro module* [name]
-        |  |  |  +--ro name         yang:yang-identifier
-        |  |  |  +--ro revision?    revision-identifier
-        |  |  |  +--ro namespace    inet:uri
-        |  |  |  +--ro location*    inet:uri
-        |  |  |  +--ro submodule* [name]
-        |  |  |  |  +--ro name        yang:yang-identifier
-        |  |  |  |  +--ro revision?   revision-identifier
-        |  |  |  |  +--ro location*   inet:uri
-        |  |  |  +--ro feature*     yang:yang-identifier
-        |  |  |  +--ro deviation*   -> ../../module/name
-        |  |  +--ro import-only-module* [name revision]
-        |  |     +--ro name         yang:yang-identifier
-        |  |     +--ro revision     union
-        |  |     +--ro namespace    inet:uri
-        |  |     +--ro location*    inet:uri
-        |  |     +--ro submodule* [name]
-        |  |        +--ro name        yang:yang-identifier
-        |  |        +--ro revision?   revision-identifier
-        |  |        +--ro location*   inet:uri
-        |  +--ro schema* [name]
-        |  |  +--ro name                            string
-        |  |  +--ro module-set*
-        |  |  |       -> ../../module-set/name
-        |  |  +--ro deprecated-nodes-implemented?   boolean
-        |  |  +--ro obsolete-nodes-absent?          boolean
-        |  +--ro datastore* [name]
-        |  |  +--ro name      ds:datastore-ref
-        |  |  +--ro schema    -> ../../schema/name
-        |  +--ro content-id    string
-        x--ro modules-state/
-           x--ro module-set-id    string
-           x--ro module* [name revision]
-              x--ro name                yang:yang-identifier
-              x--ro revision            union
-              x--ro schema?             inet:uri
-              x--ro namespace           inet:uri
-              x--ro feature*            yang:yang-identifier
-              x--ro deviation* [name revision]
-              |  x--ro name        yang:yang-identifier
-              |  x--ro revision    union
-              x--ro conformance-type    enumeration
-              x--ro submodule* [name revision]
-                 x--ro name        yang:yang-identifier
-                 x--ro revision    union
-                 x--ro schema?     inet:uri
+        +--ro module-set* [name]
+        |  +--ro name                  string
+        |  +--ro module* [name]
+        |  |  +--ro name         yang:yang-identifier
+        |  |  +--ro revision?    revision-identifier
+        |  |  +--ro namespace    inet:uri
+        |  |  +--ro location*    inet:uri
+        |  |  +--ro submodule* [name]
+        |  |  |  +--ro name        yang:yang-identifier
+        |  |  |  +--ro revision?   revision-identifier
+        |  |  |  +--ro location*   inet:uri
+        |  |  +--ro feature*     yang:yang-identifier
+        |  |  +--ro deviation*   -> ../../module/name
+        |  +--ro import-only-module* [name revision]
+        |     +--ro name         yang:yang-identifier
+        |     +--ro revision     union
+        |     +--ro namespace    inet:uri
+        |     +--ro location*    inet:uri
+        |     +--ro submodule* [name]
+        |        +--ro name        yang:yang-identifier
+        |        +--ro revision?   revision-identifier
+        |        +--ro location*   inet:uri
+        +--ro schema* [name]
+        |  +--ro name          string
+        |  +--ro module-set*   -> ../../module-set/name
+        +--ro datastore* [name]
+           +--ro name      ds:datastore-ref
+           +--ro schema    -> ../../schema/name
             ]]></artwork>
           </figure>
         <t>
@@ -433,8 +407,9 @@ module: ietf-platform-manifest
         </t>
         <t>
           The platform manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
-          That module set is particularly useful to retrieve the YANG modules associated to a subscription by analyzing the xpath filters.
-          These filters are based on module names (see <xref target="RFC8639"/>, description of leaf 'stream-xpath-filter', page 45).
+          That module set is particularly useful to retrieve the YANG modules associated to a subscription by analyzing the xpath filters or the subtree filters.
+          Xpath filters are based on module names (see <xref target="RFC8639"/>, description of leaf 'stream-xpath-filter', page 45).
+          Subtree filters are based on namespaces.
         </t>
         <t>
           The platform manifest is obtained by specifying the new fields defined above and mounting the YANG library module, along with the YANG Revisions augmentations.
@@ -444,20 +419,18 @@ module: ietf-platform-manifest
       <section anchor="platform-manifest-model">
         <name>YANG module ietf-platform-manifest</name>
         <t>
-          This Section defines the ietf-platform manifest YANG module.
-          Additionally, it defines the extension data file for YANG schema mount.
-          The platform manifest MUST conform to the model obtained by combining these two specifications.
+          This section defines the ietf-platform manifest YANG module.
         </t>
-        <sourcecode name="ietf-platform-manifest@2024-07-02.yang" type="yang" markers="true"><![CDATA[
+        <sourcecode name="ietf-platform-manifest@2025-02-21.yang" type="yang" markers="true"><![CDATA[
 module ietf-platform-manifest {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
   prefix p-mf;
 
-  import ietf-yang-schema-mount {
-    prefix yangmnt;
+  import ietf-yang-library {
+    prefix yanglib;
     reference
-      "RFC8528: YANG Schema Mount";
+      "RFC8525: YANG Library";
   }
 
   organization
@@ -599,80 +572,11 @@ module ietf-platform-manifest {
            within the network scope.";
       }
       uses platform-details;
-      yangmnt:mount-point "yang-library";
+      uses yanglib:yang-library-parameters;
     }
   }
 }
             ]]>
-        </sourcecode>
-        <sourcecode anchor="platform-extension-data" name="platform-extension-data.xml" type="xml" markers="true"><![CDATA[
-<yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
-              xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
-    <module-set>
-        <name>mountee-set</name>
-        <module>
-          <name>ietf-yang-status-conformance</name>
-           <revision>2024-02-14</revision>
-           <namespace>
-             urn:ietf:params:xml:ns:yang:ietf-yang-status-conformance
-            </namespace>
-        </module>
-        <module>
-            <name>ietf-datastores</name>
-            <revision>2018-02-14</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-datastores
-            </namespace>
-        </module>
-        <module>
-            <name>ietf-yang-library</name>
-            <revision>2019-01-04</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-library
-            </namespace>
-        </module>
-        <import-only-module>
-            <name>ietf-yang-types</name>
-            <revision>2013-07-15</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-types
-            </namespace>
-        </import-only-module>
-        <import-only-module>
-            <name>ietf-inet-types</name>
-            <revision>2013-07-15</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-inet-types
-            </namespace>
-        </import-only-module>
-    </module-set>
-    <schema>
-        <name>test-schema</name>
-        <module-set>mountee-set</module-set>
-    </schema>
-    <datastore>
-        <name>ds:running</name>
-        <schema>test-schema</schema>
-    </datastore>
-    <datastore>
-        <name>ds:operational</name>
-        <schema>test-schema</schema>
-    </datastore>
-    <content-id>2</content-id>
-</yang-library>
-<modules-state
-  xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-  <module-set-id>2</module-set-id>
-</modules-state>
-<schema-mounts
-  xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
-  <mount-point>
-    <module>ietf-platform-manifest</module>
-    <label>yang-library</label>
-    <shared-schema/>
-  </mount-point>
-</schema-mounts>
-]]>
         </sourcecode>
       </section>
     </section>
@@ -682,12 +586,13 @@ module ietf-platform-manifest {
       <section anchor="model-tree">
         <name>Overview of the Model</name>
         <t>
-          <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "ietf-data-collection-manifest" module.
+          <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
           The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
+          This module is an example as YANG Schema mount does not support design-time schema mount.
           <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
         </t>
         <figure anchor="data-collection-manifest-tree">
-          <name>YANG tree diagram for ietf-data-collection-manifest module</name>
+          <name>YANG tree diagram for example-collection-manifest module</name>
           <artwork type="ascii-art"><![CDATA[
 module: ietf-data-collection-manifest
   +--ro data-collections
@@ -787,18 +692,17 @@ module: ietf-data-collection-manifest
         </t>
       </section>
       <section anchor="module-code">
-        <name>The "ietf-data-collection-manifest" YANG module</name>
+        <name>The "example-collection-manifest" YANG module</name>
         <t>
-          This section includes the code of the ietf-data-collection-manifest YANG module.
+          This section includes the code of the "example-collection-manifest" YANG module.
           Additionally, it defines the extension data file for YANG schema mount.
           The data collection manifest MUST conform to the model obtained by combining these two specifications.
         </t>
-        <sourcecode name="ietf-data-collection-manifest@2024-07-02.yang"
-                    type="yang" markers="true"><![CDATA[
-module ietf-data-collection-manifest {
+        <sourcecode name="example-collection-manifest@2025-02-21.yang"
+                    type="yang"><![CDATA[
+module example-collection-manifest {
   yang-version 1.1;
-  namespace
-    "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
+  namespace "http://example.com/example-data-collection-manifest";
   prefix d-mf;
 
   import ietf-platform-manifest {
@@ -857,7 +761,7 @@ module ietf-data-collection-manifest {
     description
       "Initial revision";
     reference
-      "RFC xxxx: A Data Manifest for Contextualized Telemetry Data";
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
   }
 
   container data-collections {
@@ -878,139 +782,24 @@ module ietf-data-collection-manifest {
            identifier is the same as the one in the platform
            manifest.";
       }
-      yangmnt:mount-point "yang-push-collection";
+      yangmnt:mount-point "yang-push-collection" {
+        description
+          "This mount point MUST mount the following modules and their
+           dependencies:
+             * ietf-subscribed-notifications
+             * ietf-yang-push
+             * ietf-yp-current-period.
+           This mount point MUST NOT mount any other modules.";
+        reference
+          "RFC8639: Subscription to YANG Notifications
+           RFC8641: Subscription to YANG Notifications for datastore
+           updates";
+      }
     }
   }
 }
     ]]>
         </sourcecode>
-        <sourcecode anchor="data-collection-extension-data" name="data-collection-extension-data.xml" type="xml" markers="true"><![CDATA[
-<yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
-              xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
-  <module-set>
-    <name>mountee-set</name>
-    <module>
-      <name>ietf-subscribed-notifications</name>
-      <revision>2019-09-09</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
-      </namespace>
-      <feature>xpath</feature>
-    </module>
-    <module>
-      <name>ietf-yang-push</name>
-      <revision>2019-09-09</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-yang-push
-      </namespace>
-      <feature>on-change</feature>
-    </module>
-    <module>
-      <name>ietf-yp-current-period</name>
-      <revision>2025-02-21</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-yp-current-period
-      </namespace>
-    </module>
-    <module>
-      <name>ietf-datastores</name>
-      <revision>2018-02-14</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-datastores
-      </namespace>
-    </module>
-    <module>
-      <name>ietf-yang-library</name>
-      <revision>2019-01-04</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-yang-library
-      </namespace>
-    </module>
-    <import-only-module>
-      <name>ietf-inet-types</name>
-      <revision>2013-07-15</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-inet-types
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-interfaces</name>
-      <revision>2018-02-20</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-interfaces
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-ip</name>
-      <revision>2018-02-22</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-ip
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-netconf-acm</name>
-      <revision>2018-02-14</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-netconf-acm
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-network-instance</name>
-      <revision>2019-01-21</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-network-instance
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-restconf</name>
-      <revision>2017-01-26</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-restconf
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-yang-patch</name>
-      <revision>2017-02-22</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-yang-patch
-      </namespace>
-    </import-only-module>
-    <import-only-module>
-      <name>ietf-yang-types</name>
-      <revision>2023-01-23</revision>
-      <namespace>
-        urn:ietf:params:xml:ns:yang:ietf-yang-types
-      </namespace>
-    </import-only-module>
-  </module-set>
-  <schema>
-    <name>test-schema</name>
-    <module-set>mountee-set</module-set>
-  </schema>
-  <datastore>
-    <name>ds:running</name>
-    <schema>test-schema</schema>
-  </datastore>
-  <datastore>
-    <name>ds:operational</name>
-    <schema>test-schema</schema>
-  </datastore>
-  <content-id>2</content-id>
-</yang-library>
-<modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-  <module-set-id>2</module-set-id>
-</modules-state>
-<schema-mounts
-  xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
-  <mount-point>
-    <module>ietf-data-collection-manifest</module>
-    <label>yang-push-collection</label>
-    <shared-schema/>
-  </mount-point>
-</schema-mounts>
-]]>
-        </sourcecode>
-
       </section>
     </section>
     <section anchor="mapping" >
@@ -1118,7 +907,7 @@ module ietf-data-collection-manifest {
       }
     ]
   },
-  "ietf-data-collection-manifest:data-collections": {
+  "example-collection-manifest:data-collections": {
     "data-collection": [
       {
         "platform-id": "PE1",
@@ -1196,39 +985,29 @@ module ietf-data-collection-manifest {
         IANA is requested to register the following URIs in the "ns" subregistry within the "IETF XML Registry" <xref target="RFC3688"/>:
       </t>
       <artwork>
-   URI: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
-   Registrant Contact:  The IESG.
-   XML: N/A; the requested URI is an XML namespace.
+ URI: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
+ Registrant Contact:  The IESG.
+ XML: N/A; the requested URI is an XML namespace.
 
-   URI: urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
-   Registrant Contact:  The IESG.
-   XML: N/A; the requested URI is an XML namespace.
-
-   URI: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
-   Registrant Contact:  The IESG.
-   XML: N/A; the requested URI is an XML namespace.
+ URI: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
+ Registrant Contact:  The IESG.
+ XML: N/A; the requested URI is an XML namespace.
       </artwork>
       <t>
         IANA is requested to register the following YANG modules in the "YANG Module Names" subregistry <xref target="RFC6020"/> within the "YANG Parameters" registry.
       </t>
       <artwork>
-   Name: ietf-platform-manifest
-   Maintained by IANA?  N
-   Namespace: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
-   Prefix: p-mf
-   Reference: RFC XXXX
+ Name: ietf-platform-manifest
+ Maintained by IANA?  N
+ Namespace: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
+ Prefix: p-mf
+ Reference: RFC XXXX
 
-   Name: ietf-data-collection-manifest
-   Maintained by IANA?  N
-   Namespace: urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
-   Prefix: d-mf
-   Reference: RFC XXXX
-
-   Name: ietf-yp-current-period
-   Maintained by IANA?  N
-   Namespace: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
-   Prefix: yp-cp
-   Reference: RFC XXXX
+ Name: ietf-yp-current-period
+ Maintained by IANA?  N
+ Namespace: urn:ietf:params:xml:ns:yang:ietf-yp-current-period
+ Prefix: yp-cp
+ Reference: RFC XXXX
       </artwork>
     </section>
     <section>
@@ -1274,7 +1053,6 @@ module ietf-data-collection-manifest {
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8340.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8343.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8345.xml"/>
-      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9195.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9196.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9371.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.clacla-netmod-model-catalog.xml"/>
@@ -1300,6 +1078,109 @@ module ietf-data-collection-manifest {
       </reference>
     </references>
     <?rfc needLines="100"?>
+    <section removeInRFC="true">
+      <name>Changes between revisions</name>
+      <t>v05 -> v06 </t>
+      <ul>
+        <li>Example can be validated using yanglint</li>
+        <li>Applied details comments from Joe and Med</li>
+        <li>Making the "current-period" update more generic and mentioning it in the introduction</li>
+        <li>Section 7 (previously 5) reworked to clarify how data manifest is collected and retrieved from a datapoint</li>
+      </ul>
+      <t>v04 -> v05 </t>
+      <ul>
+        <li>Remove references to full-include draft, use schema mount.</li>
+        <li>Explain link with schema node id</li>
+      </ul>
+      <t>v03 -> v04 </t>
+      <ul>
+        <li>State that data lineage is out of scope</li>
+        <li>Replace copy-pasted version of the modules with schema mount version, use full-embed for the "real" one</li>
+        <li>Schema mount version is the fallback plan if full:embed is not there fast enough.</li>
+        <li>Update examples accordingly</li>
+      </ul>
+      <t>v02 -> v03 </t>
+      <ul>
+        <li>Explicit that modules are network (Controller) level</li>
+        <li>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></li>
+        <li>Minor edits i.e. network element -> platform , object -> data node</li>
+      </ul>
+      <t> v01 -> v02 </t>
+      <ul>
+        <li>Updated example with latest version of the model.</li>
+      </ul>
+      <t>
+        v00 (WG adoption) - v01
+      </t>
+      <ul>
+        <li>Solve integrity issue by delegating to <xref target="I-D.lopez-opsawg-yang-provenance"/>.</li>
+      </ul>
+      <t>
+        v05 -> v06
+      </t>
+      <ul>
+        <li> Remove YANG packages </li>
+        <li> Switch YANG models from device view to network view </li>
+        <li> Add PEN number to identify vendors </li>
+        <li> Intro rewritten with uses cases</li>
+        <li> Added an "Operational Considerations" section </li>
+        <li> Switch from MDT to YANG-push</li>
+      </ul>
+      <t>
+        v04 -> v05
+      </t>
+      <ul>
+        <li> First version of example scenario</li>
+        <li> Updated affiliation</li>
+        <li> Updated YANG module names to ietf-platform-manifest and ietf-data-collection-manifest </li>
+        <li> Unify used terms as defined in the terminology section</li>
+        <li> Replaced 'device' with 'platform' </li>
+        <li> Split Section 5 into two sections for better readibility</li>
+      </ul>
+      <t>
+        v03 -> v04
+      </t>
+      <ul>
+        <li> Fix xym error</li>
+        <li> Moved terminology after introduction</li>
+        <li> Clarified the role of the module</li>
+      </ul>
+      <t>
+        v02 -> v03
+      </t>
+      <ul>
+        <li> Add when clause in YANG model</li>
+        <li> Fix validation errors on YANG modules</li>
+        <li> Augment YANG library to handle semantic versioning</li>
+      </ul>
+      <t>
+        v01 -> v02
+      </t>
+      <ul>
+        <li> Alignment with YANGCatalog YANG module: name, vendor </li>
+        <li> Clarify the use of YANG instance file </li>
+        <li> Editorial improvements </li>
+      </ul>
+      <t>
+        v00 -> v01
+      </t>
+      <ul>
+        <li> Adding more into data platform: yang packages, whole yanglib module to specify datastores </li>
+        <li> Setting the right type for periods: int64 -> uint64 </li>
+        <li> Specify the origin datastore for mdt subscription </li>
+        <li> Set both models to config false </li>
+        <li> Applying text comments from Mohamed Boucadair </li>
+        <li> Adding an example of data-manifest file </li>
+        <li> Adding rationale for reusing telemetry system for collection of the manifests </li>
+        <li> Export manifest with on change telemetry as opposed to YANG instance file </li>
+      </ul>
+      <t>
+        v00
+      </t>
+      <ul>
+        <li> Initial version </li>
+      </ul>
+    </section>
     <section anchor="inband-example">
       <name>An Example of Use Based on MDT</name>
       <t>
@@ -1421,205 +1302,152 @@ module ietf-data-collection-manifest {
       </t>
 
     </section>
-    <section removeInRFC="true">
-      <name>Changes between revisions</name>
-      <t>v05 -> v06 </t>
-      <ul>
-        <li>Example can be validated using yanglint</li>
-        <li>Applied details comments from Joe and Med</li>
-        <li>Making the "current-period" update more generic and mentioning it in the introduction</li>
-        <li>Section 7 (previously 5) reworked to clarify how data manifest is collected and retrieved from a datapoint</li>
-      </ul>
-      <t>v04 -> v05 </t>
-      <ul>
-        <li>Remove references to full-include draft, use schema mount.</li>
-        <li>Explain link with schema node id</li>
-      </ul>
-      <t>v03 -> v04 </t>
-        <ul>
-          <li>State that data lineage is out of scope</li>
-          <li>Replace copy-pasted version of the modules with schema mount version, use full-embed for the "real" one</li>
-          <li>Schema mount version is the fallback plan if full:embed is not there fast enough.</li>
-          <li>Update examples accordingly</li>
-        </ul>
-      <t>v02 -> v03 </t>
-        <ul>
-          <li>Explicit that modules are network (Controller) level</li>
-          <li>InfluxDB example changed to TSDB example aligned with <xref target="I-D.kll-yang-label-tsdb"/></li>
-          <li>Minor edits i.e. network element -> platform , object -> data node</li>
-        </ul>
-      <t> v01 -> v02 </t>
-        <ul>
-          <li>Updated example with latest version of the model.</li>
-        </ul>
-      <t>
-          v00 (WG adoption) - v01
-      </t>
-          <ul>
-            <li>Solve integrity issue by delegating to <xref target="I-D.lopez-opsawg-yang-provenance"/>.</li>
-          </ul>
-      <t>
-        v05 -> v06
-      </t>
-        <ul>
-          <li> Remove YANG packages </li>
-          <li> Switch YANG models from device view to network view </li>
-          <li> Add PEN number to identify vendors </li>
-          <li> Intro rewritten with uses cases</li>
-          <li> Added an "Operational Considerations" section </li>
-          <li> Switch from MDT to YANG-push</li>
-        </ul>
-      <t>
-        v04 -> v05
-      </t>
-        <ul>
-          <li> First version of example scenario</li>
-          <li> Updated affiliation</li>
-          <li> Updated YANG module names to ietf-platform-manifest and ietf-data-collection-manifest </li>
-          <li> Unify used terms as defined in the terminology section</li>
-          <li> Replaced 'device' with 'platform' </li>
-          <li> Split Section 5 into two sections for better readibility</li>
-        </ul>
-      <t>
-        v03 -> v04
-      </t>
-        <ul>
-          <li> Fix xym error</li>
-          <li> Moved terminology after introduction</li>
-          <li> Clarified the role of the module</li>
-        </ul>
-      <t>
-        v02 -> v03
-      </t>
-        <ul>
-          <li> Add when clause in YANG model</li>
-          <li> Fix validation errors on YANG modules</li>
-          <li> Augment YANG library to handle semantic versioning</li>
-        </ul>
-      <t>
-        v01 -> v02
-      </t>
-        <ul>
-          <li> Alignment with YANGCatalog YANG module: name, vendor </li>
-          <li> Clarify the use of YANG instance file </li>
-          <li> Editorial improvements </li>
-        </ul>
-      <t>
-        v00 -> v01
-      </t>
-        <ul>
-          <li> Adding more into data platform: yang packages, whole yanglib module to specify datastores </li>
-          <li> Setting the right type for periods: int64 -> uint64 </li>
-          <li> Specify the origin datastore for mdt subscription </li>
-          <li> Set both models to config false </li>
-          <li> Applying text comments from Mohamed Boucadair </li>
-          <li> Adding an example of data-manifest file </li>
-          <li> Adding rationale for reusing telemetry system for collection of the manifests </li>
-          <li> Export manifest with on change telemetry as opposed to YANG instance file </li>
-        </ul>
-      <t>
-        v00
-      </t>
-          <ul>
-          <li> Initial version </li>
-        </ul>
-    </section>
     <section anchor="schema-mount-version">
       <name>Generating YANG Tree Diagrams</name>
       <t>
-        This section provides the files needed to generate the YANG tree diagrams <xref target="RFC8340"/> from <xref target="platform-manifest-tree"/> and <xref target="data-collection-manifest-tree"/>.
-        The diagrams were obtained using yanglint <xref target="yanglint"/> version 2.1.80, using the YANG Schema Mount <xref target="RFC8528"/>.
-        They were manually edited to remove parts irrelevant to this document such as data nodes from imported modules, notifications and RPCs.
+        This section provides the files needed to generate the YANG tree diagram <xref target="RFC8340"/> from  <xref target="data-collection-manifest-tree"/>.
+        The diagram was obtained using yanglint <xref target="yanglint"/> version 2.1.80, using the YANG Schema Mount <xref target="RFC8528"/>.
+        It was manually edited to remove parts irrelevant to this document such as data nodes from imported modules, notifications and RPCs.
       </t>
       <t>
         In order to get a tree diagram involving YANG Schema Mount with yanglint, two data files are required, in addition to the YANG module, its dependencies and the YANG modules to be mounted.
-        The first required file the extension data, containing the YANG library to use at the mount point.
-        The second required file is the YANG library to use at the top-level context.
-        The commands used to get the "raw" YANG Tree diagrams from these files are given in the next sections.
+        The first required file the extension data, containing the YANG library to use at the mount point, this file is provided below as "data-collection-extension-data.xml".
+        The second required file is the YANG library to use at the top-level context, this file is provided below as "data-collection-toplevel-yanglib.xml".
+        The following command was used to obtain the YANG Tree diagram (before manual edition).
       </t>
-      <section anchor="platform-schema-mount">
-        <name>YANG Tree Diagram of the Platform Manifest</name>
-        <t>
-          For the platform manifest, the extension data is provided in <xref target="platform-manifest-model"/> as "platform-extension-data.xml".
-          The top-level YANG library is included below as "platform-toplevel-yanglib.xml".
-          The following command was used to obtain the YANG Tree diagram (before manual edition).
-        </t>
-        <sourcecode type="bash">
-yanglint -f tree \
-  -x platform-extension-data.xml \
-  -Y platform-toplevel-yanglib.xml \
-  ietf-platform-manifest@2024-07-02.yang
-        </sourcecode>
-        <sourcecode anchor="platform-toplevel-yanglib" name="platform-toplevel-yanglib.xml" type="xml" markers="true"><![CDATA[
+      <sourcecode type="bash">
+        yanglint -f tree \
+        -x data-collection-extension-data.xml \
+        -Y data-collection-toplevel-yanglib.xml \
+        example-collection-manifest@2025-02-21.yang
+      </sourcecode>
+      <sourcecode anchor="data-collection-extension-data" name="data-collection-extension-data.xml" type="xml" markers="true"><![CDATA[
 <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
               xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
-    <module-set>
-        <name>main-set</name>
-        <module>
-            <name>ietf-yang-schema-mount</name>
-            <revision>2019-01-14</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount
-            </namespace>
-        </module>
-        <module>
-            <name>ietf-platform-manifest</name>
-            <revision>2025-02-21</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-platform-manifest
-            </namespace>
-        </module>
-        <import-only-module>
-            <name>ietf-yang-types</name>
-            <revision>2023-01-23</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-types
-            </namespace>
-        </import-only-module>
-        <import-only-module>
-            <name>ietf-inet-types</name>
-            <revision>2013-07-15</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-inet-types
-            </namespace>
-        </import-only-module>
-    </module-set>
-    <schema>
-        <name>main-schema</name>
-        <module-set>main-set</module-set>
-    </schema>
-    <datastore>
-        <name>ds:running</name>
-        <schema>main-schema</schema>
-    </datastore>
-    <datastore>
-        <name>ds:operational</name>
-        <schema>main-schema</schema>
-    </datastore>
-    <content-id>1</content-id>
+  <module-set>
+    <name>mountee-set</name>
+    <module>
+      <name>ietf-subscribed-notifications</name>
+      <revision>2019-09-09</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
+      </namespace>
+      <feature>xpath</feature>
+    </module>
+    <module>
+      <name>ietf-yang-push</name>
+      <revision>2019-09-09</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-push
+      </namespace>
+      <feature>on-change</feature>
+    </module>
+    <module>
+      <name>ietf-yp-current-period</name>
+      <revision>2025-02-21</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yp-current-period
+      </namespace>
+    </module>
+    <module>
+      <name>ietf-datastores</name>
+      <revision>2018-02-14</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-datastores
+      </namespace>
+    </module>
+    <module>
+      <name>ietf-yang-library</name>
+      <revision>2019-01-04</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-library
+      </namespace>
+    </module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-inet-types
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-interfaces</name>
+      <revision>2018-02-20</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-interfaces
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-ip</name>
+      <revision>2018-02-22</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-ip
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-netconf-acm</name>
+      <revision>2018-02-14</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-netconf-acm
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-network-instance</name>
+      <revision>2019-01-21</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-network-instance
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-restconf</name>
+      <revision>2017-01-26</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-restconf
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-yang-patch</name>
+      <revision>2017-02-22</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-patch
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-yang-types</name>
+      <revision>2023-01-23</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-types
+      </namespace>
+    </import-only-module>
+  </module-set>
+  <schema>
+    <name>test-schema</name>
+    <module-set>mountee-set</module-set>
+  </schema>
+  <datastore>
+    <name>ds:running</name>
+    <schema>test-schema</schema>
+  </datastore>
+  <datastore>
+    <name>ds:operational</name>
+    <schema>test-schema</schema>
+  </datastore>
+  <content-id>2</content-id>
 </yang-library>
-<modules-state
-    xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-    <module-set-id>2</module-set-id>
+<modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+  <module-set-id>2</module-set-id>
 </modules-state>
+<schema-mounts
+  xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
+  <mount-point>
+    <module>example-collection-manifest</module>
+    <label>yang-push-collection</label>
+    <shared-schema/>
+  </mount-point>
+</schema-mounts>
 ]]>
-        </sourcecode>
-      </section>
-
-      <section anchor="data-collection-schema-mount">
-        <name>YANG Tree Diagram of the Data Collection Manifest</name>
-        <t>
-          For the data collection manifest, the extension data is provided in <xref target="module-code"/> as "data-collection-extension-data.xml".
-          The top-level YANG library is included below as "data-collection-toplevel-yanglib.xml".
-          The following command was used to obtain the YANG Tree diagram (before manual edition).
-        </t>
-        <sourcecode type="bash">
-          yanglint -f tree \
-          -x data-collection-extension-data.xml \
-          -Y data-collection-toplevel-yanglib.xml \
-          ietf-data-collection-manifest@2024-07-02.yang
-        </sourcecode>
-        <sourcecode anchor="data-collection-toplevel-yanglib" name="data-collection-toplevel-yanglib.xml" type="xml" markers="true"><![CDATA[
+      </sourcecode>
+      <sourcecode anchor="data-collection-toplevel-yanglib" name="data-collection-toplevel-yanglib.xml" type="xml" markers="true"><![CDATA[
 <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
               xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
     <module-set>
@@ -1646,10 +1474,10 @@ yanglint -f tree \
             </namespace>
         </module>
         <module>
-            <name>ietf-data-collection-manifest</name>
+            <name>example-collection-manifest</name>
             <revision>2025-02-21</revision>
             <namespace>
-            urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
+               http://example.org/example-collection-manifest
             </namespace>
         </module>
         <module>
@@ -1693,8 +1521,7 @@ yanglint -f tree \
   <module-set-id>2</module-set-id>
 </modules-state>
 ]]>
-        </sourcecode>
-      </section>
+      </sourcecode>
     </section>
     <section numbered="false">
       <name>Acknowledgements</name>

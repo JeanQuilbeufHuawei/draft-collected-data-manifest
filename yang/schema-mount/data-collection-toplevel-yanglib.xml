@@ -24,10 +24,10 @@
             </namespace>
         </module>
         <module>
-            <name>ietf-data-collection-manifest</name>
+            <name>example-collection-manifest</name>
             <revision>2025-02-21</revision>
             <namespace>
-            urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
+               http://example.org/example-collection-manifest
             </namespace>
         </module>
         <module>
