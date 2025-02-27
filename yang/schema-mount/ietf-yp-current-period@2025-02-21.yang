@@ -1,7 +1,7 @@
 module ietf-yp-current-period {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-yp-current-period";
-  prefix dcs;
+  prefix yp-cp;
 
   import ietf-subscribed-notifications {
     prefix sn;

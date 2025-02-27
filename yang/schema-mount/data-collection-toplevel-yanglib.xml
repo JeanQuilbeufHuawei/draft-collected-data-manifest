@@ -25,14 +25,14 @@
         </module>
         <module>
             <name>ietf-data-collection-manifest</name>
-            <revision>2024-07-02</revision>
+            <revision>2025-02-21</revision>
             <namespace>
             urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest
             </namespace>
         </module>
         <module>
             <name>ietf-platform-manifest</name>
-            <revision>2024-07-02</revision>
+            <revision>2025-02-21</revision>
             <namespace>
                 urn:ietf:params:xml:ns:yang:ietf-platform-manifest
             </namespace>

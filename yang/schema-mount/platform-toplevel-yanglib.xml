@@ -3,20 +3,6 @@
     <module-set>
         <name>main-set</name>
         <module>
-            <name>ietf-datastores</name>
-            <revision>2018-02-14</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-datastores
-            </namespace>
-        </module>
-        <module>
-            <name>ietf-yang-library</name>
-            <revision>2019-01-04</revision>
-            <namespace>
-                urn:ietf:params:xml:ns:yang:ietf-yang-library
-            </namespace>
-        </module>
-        <module>
             <name>ietf-yang-schema-mount</name>
             <revision>2019-01-14</revision>
             <namespace>
@@ -25,8 +11,10 @@
         </module>
         <module>
             <name>ietf-platform-manifest</name>
-            <revision>2024-07-02</revision>
-            <namespace>urn:ietf:params:xml:ns:yang:ietf-platform-manifest</namespace>
+            <revision>2025-02-21</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-platform-manifest
+            </namespace>
         </module>
         <import-only-module>
             <name>ietf-yang-types</name>
@@ -58,6 +46,6 @@
     <content-id>1</content-id>
 </yang-library>
 <modules-state
-xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
-<module-set-id>2</module-set-id>
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+    <module-set-id>2</module-set-id>
 </modules-state>

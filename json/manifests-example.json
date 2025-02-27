@@ -44,8 +44,7 @@
               "ietf-yang-push:periodic": {
                 "period": 10000
               },
-           "ietf-data-collection-manifest-statistics:current-period":
-                 20000,
+           "ietf-yp-current-period:current-period": 20000,
               "receivers": {
                 "receiver": [
                   {

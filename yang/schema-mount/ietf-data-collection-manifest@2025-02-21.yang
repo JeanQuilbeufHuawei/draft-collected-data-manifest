@@ -54,7 +54,7 @@ module ietf-data-collection-manifest {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2024-07-02 {
+  revision 2025-02-21 {
     description
       "Initial revision";
     reference
@@ -64,8 +64,8 @@ module ietf-data-collection-manifest {
   container data-collections {
     config false;
     description
-      "Contains the configuration and statistics for the collected data,
-      per node in the network.";
+      "Contains the configuration and statistics for the collected
+      data, per node in the network.";
     list data-collection {
     key platform-id;
     description
