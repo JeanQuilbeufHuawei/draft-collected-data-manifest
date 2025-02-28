@@ -344,9 +344,6 @@ module ietf-yp-current-period {
           <name>Overview of the Model</name>
           <t>
             <xref target="platform-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the ietf-platform-manifest module.
-            <!-- The tree diagram is obtained by reusing existing modules, such as "ietf-yang-library" <xref target="RFC8525"/> using the YANG mount mechanism <xref target="RFC8528"/>.
-            In addition to the YANG module in <xref target="platform-manifest-model"/>, this document specifies the YANG-library instance to be mounted.
-            <xref target="schema-mount-version"/> explains how the YANG tree is obtained.-->
           </t>
           <figure anchor="platform-manifest-tree">
             <name>YANG tree diagram for ietf-platform-manifest module</name>
@@ -453,13 +450,6 @@ module ietf-platform-manifest {
 
      The data content of this model should not change except on
      upgrade or patching of the device.
-
-     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
-     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
-     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
-     are to be interpreted as described in BCP 14 (RFC 2119)
-     (RFC 8174) when, and only when, they appear in all
-     capitals, as shown here.
 
      Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
@@ -569,7 +559,10 @@ module ietf-platform-manifest {
         description
           "Identifies a given platform on the network, for instance
            the 'sysName' of the platform. The 'id' has to be unique
-           within the network scope.";
+           within the network scope at every point in time. The same
+           id can point to different platform if they are not
+           simultaneously part of the network, e.g., when a device
+           associated to a particular id is replaced.";
       }
       uses platform-details;
       uses yanglib:yang-library-parameters;
@@ -594,7 +587,7 @@ module ietf-platform-manifest {
         <figure anchor="data-collection-manifest-tree">
           <name>YANG tree diagram for example-collection-manifest module</name>
           <artwork type="ascii-art"><![CDATA[
-module: ietf-data-collection-manifest
+module: example-collection-manifest
   +--ro data-collections
      +--mp data-collection* [platform-id]
         +--ro platform-id    -> /p-mf:platforms/p-mf:platform/p-mf:id
@@ -618,54 +611,54 @@ module: ietf-data-collection-manifest
         |           +--ro datastore-xpath-filter?   yang:xpath1.0
         |                   {sn:xpath}?
         +--ro subscriptions/
-           +--ro subscription* [id]
-              +--ro id                  subscription-id
-              +--ro (target)
-              |  +--:(stream)
-              |  |  +--ro (stream-filter)?
-              |  |  |  +--:(by-reference)
-              |  |  |  |  +--ro stream-filter-name
-              |  |  |  |          stream-filter-ref
-              |  |  |  +--:(within-subscription)
-              |  |  |     +--ro (filter-spec)?
-              |  |  |        +--:(stream-subtree-filter)
-              |  |  |        +--:(stream-xpath-filter)
-              |  |  |           +--ro stream-xpath-filter?
-              |  |  |                   yang:xpath1.0 {xpath}?
-              |  |  +--ro stream             stream-ref
-              |  +--:(datastore)
-              |     +--ro datastore             identityref
-              |     +--ro (selection-filter)?
-              |        +--:(by-reference)
-              |        |  +--ro selection-filter-ref
-              |        |          selection-filter-ref
-              |        +--:(within-subscription)
-              |           +--ro (filter-spec)?
-              |              +--:(datastore-subtree-filter)
-              |              +--:(datastore-xpath-filter)
-              |                 +--ro datastore-xpath-filter?
-              |                         yang:xpath1.0 {sn:xpath}?
-              +--ro stop-time?          yang:date-and-time
-              +--ro encoding?           encoding
-              +--ro receivers
-              |  +--ro receiver* [name]
-              |     +--ro name                      string
-              |     +--ro sent-event-records?
-              |     |       yang:zero-based-counter64
-              |     +--ro excluded-event-records?
-              |     |       yang:zero-based-counter64
-              |     +--ro state                     enumeration
-              +--ro current-period?     yp:centiseconds
-              +--ro (update-trigger)?
-                 +--:(periodic)
-                 |  +--ro periodic!
-                 |     +--ro period         centiseconds
-                 |     +--ro anchor-time?   yang:date-and-time
-                 +--:(on-change) {on-change}?
-                    +--ro on-change!
-                       +--ro dampening-period?   centiseconds
-                       +--ro sync-on-start?      boolean
-                       +--ro excluded-change*    change-type
+          +--ro subscription* [id]
+             +--ro id                  subscription-id
+             +--ro (target)
+             |  +--:(stream)
+             |  |  +--ro (stream-filter)?
+             |  |  |  +--:(by-reference)
+             |  |  |  |  +--ro stream-filter-name
+             |  |  |  |          stream-filter-ref
+             |  |  |  +--:(within-subscription)
+             |  |  |     +--ro (filter-spec)?
+             |  |  |        +--:(stream-subtree-filter)
+             |  |  |        +--:(stream-xpath-filter)
+             |  |  |           +--ro stream-xpath-filter?
+             |  |  |                   yang:xpath1.0 {xpath}?
+             |  |  +--ro stream             stream-ref
+             |  +--:(datastore)
+             |     +--ro datastore             identityref
+             |     +--ro (selection-filter)?
+             |        +--:(by-reference)
+             |        |  +--ro selection-filter-ref
+             |        |          selection-filter-ref
+             |        +--:(within-subscription)
+             |           +--ro (filter-spec)?
+             |              +--:(datastore-subtree-filter)
+             |              +--:(datastore-xpath-filter)
+             |                 +--ro datastore-xpath-filter?
+             |                         yang:xpath1.0 {sn:xpath}?
+             +--ro stop-time?          yang:date-and-time
+             +--ro encoding?           encoding
+             +--ro receivers
+             |  +--ro receiver* [name]
+             |     +--ro name                      string
+             |     +--ro sent-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro excluded-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro state                     enumeration
+             +--ro (update-trigger)?
+             |  +--:(periodic)
+             |  |  +--ro periodic!
+             |  |     +--ro period         centiseconds
+             |  |     +--ro anchor-time?   yang:date-and-time
+             |  +--:(on-change) {on-change}?
+             |     +--ro on-change!
+             |        +--ro dampening-period?   centiseconds
+             |        +--ro sync-on-start?      boolean
+             |        +--ro excluded-change*    change-type
+             +--ro current-period?     yp:centiseconds
               ]]></artwork>
         </figure>
         <t>
@@ -860,7 +853,7 @@ module example-collection-manifest {
         </ul>
         <t>
           This elements can be either known to the collector, if it is the one configuring the collection, or retrieved via dedicated headers as proposed in <xref target="I-D.netana-netconf-notif-envelope"/>.
-          In order to enable a posteriori retrieval of the data manifest associated to a datapoint, the collector MUST keep the subscription id and platform id in the metadata of the collected values.
+          In order to enable a posteriori retrieval of the data manifest associated to a datapoint, the collector MUST keep the subscription identifier and platform identifier in the metadata of the collected values.
         </t>
         <t>
           With this information, to retrieve the data manifest from a datapoint, the following happens:
@@ -959,11 +952,11 @@ module example-collection-manifest {
       </figure>
       <t>
         <xref target="manifest-example"/> contains the data collection manifest for two XPaths subscriptions.
-        With the data collection manifest for the first one, with subscription id 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding platform manifest, in order to obtain the exact revision of ietf-interfaces used at collection time.
+        With the data collection manifest for the first one, with subscription identifier 4242, the exact semantics of the collected path, here the administrative status of the network interfaces, can be obtained by looking up the module in the yang-library of the corresponding platform manifest, in order to obtain the exact revision of ietf-interfaces used at collection time.
         Also, the "on-change" container indicates that data will be sent only if there is a change, thus not receiving data indicates that the administrative status of the interface did not change.
       </t>
       <t>
-        The other example of data collection manifest, with subscription id 4243, shows how a periodic subscription is reported.
+        The other example of data collection manifest, with subscription identifier 4243, shows how a periodic subscription is reported.
         In that example, the 'current-period' indicates that the requested period of 10s (1000 centiseconds) could not be attained and is now of 20s, for instance because the device is overloaded.
       </t>
 
@@ -971,8 +964,24 @@ module example-collection-manifest {
     <section anchor="security">
       <name>Security Considerations</name>
       <t>
+        The YANG modules specified in this document define a schema for data that is designed to be accessed via network management protocols such as NETCONF <xref target="RFC6241"/> or RESTCONF <xref target="RFC8040"/>.
+        The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) <xref target="RFC6242"/>.
+        The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS <xref target="RFC8446"/>.
+      </t>
+      <t>
+        The Network Configuration Access Control Model (NACM) <xref target="RFC8341"/> provides the means to restrict access for particular NETCONF or RESTCONF users to a preconfigured subset of all available NETCONF or RESTCONF protocol operations and content.
+      </t>
+      <t>
+        Some of the readable data nodes in this YANG module may be considered sensitive or vulnerable in some network environments. It is thus important to control read access (e.g., via get, get-config, or notification) to these data nodes. These are the subtrees and data nodes and their sensitivity/vulnerability:
+      </t>
+      <ul>
+        <li>
+          <tt>ietf-plaftorm-manifest:platforms/platform</tt> contains details about the platform that an attacker could use to find the known vulnerabilities of the platform.
+        </li>
+      </ul>
+      <t>
         As the present approach reuses an existing telemetry system, the security considerations lie with the new content divulged in the new manifests.
-        Appropriate access control filters must be associated to the corresponding leafs and containers.
+        Appropriate access control filters must be associated to the corresponding leafs and containers, as well as the databases storing them.
       </t>
       <t>
         The integrity and provenance of the data of the collection manifest can be ensured by a signing mechanism such as <xref target="I-D.lopez-opsawg-yang-provenance"/>.
@@ -1040,7 +1049,12 @@ module example-collection-manifest {
   <back>
     <references title="Normative References">
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6242.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8446.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8525.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8528.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8639.xml"/>
@@ -1086,6 +1100,7 @@ module example-collection-manifest {
         <li>Applied details comments from Joe and Med</li>
         <li>Making the "current-period" update more generic and mentioning it in the introduction</li>
         <li>Section 7 (previously 5) reworked to clarify how data manifest is collected and retrieved from a datapoint</li>
+        <li>Remove use of YANG schema mount for the platform manifest and change data collection manifest to example</li>
       </ul>
       <t>v04 -> v05 </t>
       <ul>
@@ -1238,7 +1253,7 @@ module example-collection-manifest {
         An option for keeping the data manifest with the data is to store it directly into the TSDB.
         In that case, the collector can subscribe to the data exported by the module presented in this document and store it as other metrics.
         For the platform manifest, assuming the platform identifier is "PE1", the collector subscribes to the path "ietf-platform-manifest:platforms/platform[id=PE1]".
-        For the data collection manifests, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-collection/subscriptions/subscription[id=X]" where X is the subscription id of existing subscriptions.
+        For the data collection manifests, the collector subscribes to the path "ietf-data-collection-manifest:data-collections/data-collection[platform-id="PE1"]/yang-push-collection/subscriptions/subscription[id=X]" where X is the subscription identifier of existing subscriptions.
         With the approach from <xref target="I-D.kll-yang-label-tsdb"/>, the corresponding subtrees would be split into a set of datapoints, one per leaf.
         <xref target="influx_manifest"/> shows two examples of storing leaves in a TSDB.
         The first leaf is the vendor PEN number, which is part of the platform manifest.
@@ -1266,11 +1281,11 @@ module example-collection-manifest {
       <t>
           In the labels, the "host" might be different from the "platforms_platform_id" in case the collector is the one assembling it, i.e. for devices that do not natively support the data manifest.
           In that case, the value of this label could be the hostname of the collector.
-          The host value does not matter for retrieving the data manifest as the platform id is the meaningful field.
+          The host value does not matter for retrieving the data manifest as the platform identifier is the meaningful field.
       </t>
       <t>
         In this example, retrieving the platform manifest associated to a collected datapoint is done by looking for datapoints that have the label "platforms_platform_id" equal to the value of the host for that collected datapoint.
-        In order to link a datapoint with the corresponding data collection manifest, an additional label for the subscription id is required.
+        In order to link a datapoint with the corresponding data collection manifest, an additional label for the subscription identifier is required.
         For instance, the same datapoints as in <xref target="influx_before"/> could be stored as in <xref target="influx_after"/>.
       </t>
       <figure anchor="influx_after">

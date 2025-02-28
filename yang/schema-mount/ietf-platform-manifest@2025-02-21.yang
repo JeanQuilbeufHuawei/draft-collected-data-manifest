@@ -30,13 +30,6 @@ module ietf-platform-manifest {
      The data content of this model should not change except on
      upgrade or patching of the device.
 
-     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
-     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
-     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
-     are to be interpreted as described in BCP 14 (RFC 2119)
-     (RFC 8174) when, and only when, they appear in all
-     capitals, as shown here.
-
      Copyright (c) 2022 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
@@ -144,7 +137,10 @@ module ietf-platform-manifest {
         description
           "Identifies a given platform on the network, for instance
           the 'sysName' of the platform. The 'id' has to be unique
-          within the network scope.";
+          within the network scope at every point in time. The same
+          id can point to different platform if they are not
+          simultaneously part of the network, e.g., when a device
+          associated to a particular id is replaced.";
       }
       uses platform-details;
       uses yanglib:yang-library-parameters;
