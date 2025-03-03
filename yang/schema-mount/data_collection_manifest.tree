@@ -1,4 +1,4 @@
-module: ietf-data-collection-manifest
+module: example-collection-manifest
   +--ro data-collections
      +--mp data-collection* [platform-id]
         +--ro platform-id    -> /p-mf:platforms/p-mf:platform/p-mf:id
@@ -12,44 +12,61 @@ module: ietf-data-collection-manifest
         |  |  +--ro (filter-spec)?
         |  |     +--:(stream-subtree-filter)
         |  |     +--:(stream-xpath-filter)
+        |  |        +--ro stream-xpath-filter?   yang:xpath1.0
+        |  |                {xpath}?
         |  +--ro selection-filter* [filter-id]
         |     +--ro filter-id        string
         |     +--ro (filter-spec)?
         |        +--:(datastore-subtree-filter)
         |        +--:(datastore-xpath-filter)
+        |           +--ro datastore-xpath-filter?   yang:xpath1.0
+        |                   {sn:xpath}?
         +--ro subscriptions/
-           +--ro subscription* [id]
-              +--ro id                  subscription-id
-              +--ro (target)
-              |  +--:(stream)
-              |  |  +--ro (stream-filter)?
-              |  |  |  +--:(by-reference)
-              |  |  |  |  +--ro stream-filter-name    stream-filter-ref
-              |  |  |  +--:(within-subscription)
-              |  |  |     +--ro (filter-spec)?
-              |  |  |        +--:(stream-subtree-filter)
-              |  |  |        +--:(stream-xpath-filter)
-              |  |  +--ro stream             stream-ref
-              |  +--:(datastore)
-              |     +--ro datastore             identityref
-              |     +--ro (selection-filter)?
-              |        +--:(by-reference)
-              |        |  +--ro selection-filter-ref    selection-filter-ref
-              |        +--:(within-subscription)
-              |           +--ro (filter-spec)?
-              |              +--:(datastore-subtree-filter)
-              |              +--:(datastore-xpath-filter)
-              +--ro stop-time?          yang:date-and-time
-              +--ro encoding?           encoding
-              +--ro receivers
-              |  +--ro receiver* [name]
-              |     +--ro name                      string
-              |     +--ro sent-event-records?       yang:zero-based-counter64
-              |     +--ro excluded-event-records?   yang:zero-based-counter64
-              |     +--ro state                     enumeration
-              +--ro current-period?     yp:centiseconds
-              +--ro (update-trigger)?
-                 +--:(periodic)
-                    +--ro periodic!
-                       +--ro period         centiseconds
-                       +--ro anchor-time?   yang:date-and-time
+          +--ro subscription* [id]
+             +--ro id                  subscription-id
+             +--ro (target)
+             |  +--:(stream)
+             |  |  +--ro (stream-filter)?
+             |  |  |  +--:(by-reference)
+             |  |  |  |  +--ro stream-filter-name
+             |  |  |  |          stream-filter-ref
+             |  |  |  +--:(within-subscription)
+             |  |  |     +--ro (filter-spec)?
+             |  |  |        +--:(stream-subtree-filter)
+             |  |  |        +--:(stream-xpath-filter)
+             |  |  |           +--ro stream-xpath-filter?
+             |  |  |                   yang:xpath1.0 {xpath}?
+             |  |  +--ro stream             stream-ref
+             |  +--:(datastore)
+             |     +--ro datastore             identityref
+             |     +--ro (selection-filter)?
+             |        +--:(by-reference)
+             |        |  +--ro selection-filter-ref
+             |        |          selection-filter-ref
+             |        +--:(within-subscription)
+             |           +--ro (filter-spec)?
+             |              +--:(datastore-subtree-filter)
+             |              +--:(datastore-xpath-filter)
+             |                 +--ro datastore-xpath-filter?
+             |                         yang:xpath1.0 {sn:xpath}?
+             +--ro stop-time?          yang:date-and-time
+             +--ro encoding?           encoding
+             +--ro receivers
+             |  +--ro receiver* [name]
+             |     +--ro name                      string
+             |     +--ro sent-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro excluded-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro state                     enumeration
+             +--ro (update-trigger)?
+             |  +--:(periodic)
+             |  |  +--ro periodic!
+             |  |     +--ro period         centiseconds
+             |  |     +--ro anchor-time?   yang:date-and-time
+             |  +--:(on-change) {on-change}?
+             |     +--ro on-change!
+             |        +--ro dampening-period?   centiseconds
+             |        +--ro sync-on-start?      boolean
+             |        +--ro excluded-change*    change-type
+             +--ro current-period?     yp:centiseconds

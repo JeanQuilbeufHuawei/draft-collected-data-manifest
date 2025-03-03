@@ -1,6 +1,6 @@
-module ietf-data-collection-manifest {
+module example-collection-manifest {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest";
+  namespace "http://example.com/example-data-collection-manifest";
   prefix d-mf;
 
   import ietf-platform-manifest {
@@ -14,7 +14,7 @@ module ietf-data-collection-manifest {
   }
 
   organization
-    "IETF OPSAWG (Network Configuration) Working Group";
+    "IETF OPSAWG (Operations and Management Area) Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
      WG List:  <mailto:opsawg@ietf.org>
@@ -42,7 +42,7 @@ module ietf-data-collection-manifest {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.
 
-     Copyright (c) 2022 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -54,18 +54,18 @@ module ietf-data-collection-manifest {
      This version of this YANG module is part of RFC XXXX; see the
      RFC itself for full legal notices.  ";
 
-  revision 2024-07-02 {
+  revision 2025-02-21 {
     description
       "Initial revision";
     reference
-      "RFC xxxx: Title to be completed";
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
   }
 
   container data-collections {
     config false;
     description
-      "Contains the configuration and statistics for the collected data,
-      per node in the network.";
+      "Contains the configuration and statistics for the collected
+      data, per node in the network.";
     list data-collection {
     key platform-id;
     description
@@ -75,11 +75,23 @@ module ietf-data-collection-manifest {
             path "/p-mf:platforms/p-mf:platform/p-mf:id";
         }
         description
-          "Id of the platform collecting the data. This id is the same
-          as the one in the platform manifest.";
+          "Identifier of the platform collecting the data. This
+          identifier is the same as the one in the platform
+          manifest.";
       }
-      yangmnt:mount-point yang-push-collection;
-      // augment here with other kind of collection items
+      yangmnt:mount-point yang-push-collection {
+        description
+         "This mount point MUST mount the following modules and their
+         dependencies:
+            * ietf-subscribed-notifications
+            * ietf-yang-push
+            * ietf-yp-current-period.
+         This mount point MUST NOT mount any other modules.";
+        reference
+          "RFC8639: Subscription to YANG Notifications
+           RFC8641: Subscription to YANG Notifications for datastore
+           updates";
+      }
     }
   }
 }

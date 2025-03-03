@@ -1,7 +1,7 @@
-module ietf-data-collection-manifest-statistics {
+module ietf-yp-current-period {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-data-collection-manifest-statistics";
-  prefix dcs;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-yp-current-period";
+  prefix yp-cp;
 
   import ietf-subscribed-notifications {
     prefix sn;
@@ -15,7 +15,7 @@ module ietf-data-collection-manifest-statistics {
   }
 
   organization
-    "IETF OPSAWG (Network Configuration) Working Group";
+    "IETF OPSAWG (Operations and Management Area) Working Group";
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
     WG List:  <mailto:opsawg@ietf.org>
@@ -26,18 +26,11 @@ module ietf-data-collection-manifest-statistics {
     <ignacio.dominguezmartinez@telefonica.com>
     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
   description
-    "This module augments subscribed notification with the
-    current-period statistics reporting the actual collection
-    period.
+    "This module augments ietf-subscribed-notification and
+    ietf-yang-push with the current-period statistics reporting the
+    actual collection period, as opposed to the configured one.
 
-    The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
-    'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
-    'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
-    are to be interpreted as described in BCP 14 (RFC 2119)
-    (RFC 8174) when, and only when, they appear in all
-    capitals, as shown here.
-
-    Copyright (c) 2022 IETF Trust and the persons identified as
+    Copyright (c) 2025 IETF Trust and the persons identified as
     authors of the code.  All rights reserved.
 
     Redistribution and use in source and binary forms, with or
@@ -49,24 +42,24 @@ module ietf-data-collection-manifest-statistics {
     This version of this YANG module is part of RFC XXXX; see the
     RFC itself for full legal notices.  ";
 
-  revision 2024-07-02 {
+  revision 2025-02-21 {
     description
       "Initial revision";
     reference
-      "RFC xxxx: Title to be completed";
+      "RFC xxxx: A Data Manifest for Contextualized Telemetry Data";
   }
 
   augment "/sn:subscriptions/sn:subscription" {
     description
-        "Add extra statistics about data collection";
+        "Adds current period statistics";
 
     leaf current-period {
       when '../yp:periodic';
       type yp:centiseconds;
       description
-        "Period during two succesive data collections, in the
+        "Period during two successive data collections, in the
         current state. Might differ from the configured period
-        when the plaftorm might increase the period
+        when the platform might increase the period
         automatically when it is overloaded.";
     }
   }
