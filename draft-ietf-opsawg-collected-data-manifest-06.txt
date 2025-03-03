@@ -81,7 +81,7 @@ Table of Contents
      3.2.  New Device Onboarding . . . . . . . . . . . . . . . . . .   6
      3.3.  Data Mesh Principles in Networking  . . . . . . . . . . .   6
    4.  The "ietf-yp-current-period" YANG module  . . . . . . . . . .   7
-   5.  Platform Manifest . . . . . . . . . . . . . . . . . . . . . .   8
+   5.  Platform Manifest . . . . . . . . . . . . . . . . . . . . . .   9
      5.1.  Overview of the Model . . . . . . . . . . . . . . . . . .   9
      5.2.  YANG module ietf-platform-manifest  . . . . . . . . . . .  10
    6.  Data Collection Manifest  . . . . . . . . . . . . . . . . . .  14
@@ -375,6 +375,9 @@ Internet-Draft           Telemetry Data Manifest              March 2025
      }
      import ietf-yang-push {
        prefix yp;
+       // RFC Ed.: remove revision-date, needed here because last
+       // version on the server is not the ratified one
+       revision-date 2019-09-09;
        reference
          "RFC 8641: Subscriptions to YANG Datastores.";
      }
@@ -383,9 +386,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
        "IETF OPSAWG (Operations and Management Area) Working Group";
      contact
        "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
-        WG List:  <mailto:opsawg@ietf.org>
-        Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
-        Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
 
 
 
@@ -394,6 +394,9 @@ Claise, et al.          Expires 4 September 2025                [Page 7]
 Internet-Draft           Telemetry Data Manifest              March 2025
 
 
+        WG List:  <mailto:opsawg@ietf.org>
+        Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+        Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
         Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
         Author:   Ignacio Dominguez
         <ignacio.dominguezmartinez@telefonica.com>
@@ -438,9 +441,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
    }
    <CODE ENDS>
 
-5.  Platform Manifest
-
-
 
 
 
@@ -449,6 +449,8 @@ Claise, et al.          Expires 4 September 2025                [Page 8]
 
 Internet-Draft           Telemetry Data Manifest              March 2025
 
+
+5.  Platform Manifest
 
 5.1.  Overview of the Model
 
@@ -496,8 +498,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
               +--ro schema    -> ../../schema/name
 
        Figure 2: YANG tree diagram for ietf-platform-manifest module
-
-
 
 
 
