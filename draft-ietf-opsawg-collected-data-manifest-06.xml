@@ -284,6 +284,9 @@ module ietf-yp-current-period {
   }
   import ietf-yang-push {
     prefix yp;
+    // RFC Ed.: remove revision-date, needed here because last
+    // version on the server is not the ratified one
+    revision-date 2019-09-09;
     reference
       "RFC 8641: Subscriptions to YANG Datastores.";
   }
