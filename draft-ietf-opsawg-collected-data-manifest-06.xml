@@ -103,6 +103,8 @@
       </t>
       <t>
         The platform manifest contains information characterizing the platform streaming the telemetry information, while the data collection manifest contains the required information to characterize how and when the telemetry information was metered.
+        The platform manifest is specified in <xref target="platform-manifest"/>.
+        The data collection manifest is specified in <xref target="data-collection-manifest"/>.
       </t>
       <t>         
         The two proposed YANG modules for the data manifest do not expose any new information but rather define what should be exposed by a platform streaming or storing telemetry data.
@@ -211,7 +213,7 @@
          <name>New Device Onboarding</name>
          <t>
            When a new device is onboarded, operators have to check that the new device streams data with YANG-Push,
-           that the telemetry data is the right ones, that the data is correctly ingested in the collection system,
+           that the telemetry data is the right one, that the data is correctly ingested in the collection system,
            and finally that the data can be analyzed (compared with other similar devices).
            For the last point, the data manifest, which must be linked to the data up to the collection and analytics system,
            contains the relevant information.
@@ -959,7 +961,9 @@ module example-collection-manifest {
         The other example of data collection manifest, with subscription identifier 4243, shows how a periodic subscription is reported.
         In that example, the 'current-period' indicates that the requested period of 10s (1000 centiseconds) could not be attained and is now of 20s, for instance because the device is overloaded.
       </t>
-
+      <t>
+        <xref target="validate-example"/> gives the command line for validating this example using <xref target="yanglint"/>.
+      </t>
     </section>
     <section anchor="security">
       <name>Security Considerations</name>
@@ -1537,6 +1541,20 @@ module example-collection-manifest {
 </modules-state>
 ]]>
       </sourcecode>
+    </section>
+    <section anchor="validate-example">
+      <name>Validating the Example</name>
+      <t>
+        This section provides the command line for validating the example in <xref target="manifest-example"/> using <xref target="yanglint"/>.
+        The files "data-collection-extension-data.xml" and "data-collection-toplevel-yanglib.xml" are provided in the previous section.
+        The file "manifests-example.json" in the one from <xref target="manifest-example"/>.
+      </t>
+      <sourcecode type="bash">
+yanglint -e -x data-collection-extension-data.xml \
+        -Y data-collection-toplevel-yanglib.xml \
+        manifests-example.json
+      </sourcecode>
+
     </section>
     <section numbered="false">
       <name>Acknowledgements</name>

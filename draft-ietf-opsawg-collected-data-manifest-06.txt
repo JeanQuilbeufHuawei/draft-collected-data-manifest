@@ -5,12 +5,12 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                               J. Quilbeuf
 Intended status: Standards Track                                  Huawei
-Expires: 1 September 2025                                       D. Lopez
+Expires: 4 September 2025                                       D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                        28 February 2025
+                                                            3 March 2025
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -48,14 +48,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 September 2025.
+   This Internet-Draft will expire on 4 September 2025.
 
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 1]
+Claise, et al.          Expires 4 September 2025                [Page 1]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 Copyright Notice
@@ -92,26 +92,26 @@ Table of Contents
      7.2.  Mapping Collected Data to the Data Manifest . . . . . . .  20
      7.3.  Operational Considerations  . . . . . . . . . . . . . . .  20
    8.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .  21
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
    10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
    11. Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  24
    12. Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .  24
    13. Normative References  . . . . . . . . . . . . . . . . . . . .  24
-   14. Informative References  . . . . . . . . . . . . . . . . . . .  25
+   14. Informative References  . . . . . . . . . . . . . . . . . . .  26
    Appendix A.  Changes between revisions  . . . . . . . . . . . . .  28
    Appendix B.  An Example of Use Based on MDT . . . . . . . . . . .  31
    Appendix C.  Generating YANG Tree Diagrams  . . . . . . . . . . .  34
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  38
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  38
+   Appendix D.  Validating the Example . . . . . . . . . . . . . . .  38
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  39
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  39
 
 
 
 
 
-
-Claise, et al.          Expires 1 September 2025                [Page 2]
+Claise, et al.          Expires 4 September 2025                [Page 2]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 1.  Introduction
@@ -146,7 +146,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    The platform manifest contains information characterizing the
    platform streaming the telemetry information, while the data
    collection manifest contains the required information to characterize
-   how and when the telemetry information was metered.
+   how and when the telemetry information was metered.  The platform
+   manifest is specified in Section 5.  The data collection manifest is
+   specified in Section 6.
 
    The two proposed YANG modules for the data manifest do not expose any
    new information but rather define what should be exposed by a
@@ -163,11 +165,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-
-
-Claise, et al.          Expires 1 September 2025                [Page 3]
+Claise, et al.          Expires 4 September 2025                [Page 3]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    *  [I-D.claise-netconf-metadata-for-collection], which is based on
@@ -221,9 +221,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 4]
+Claise, et al.          Expires 4 September 2025                [Page 4]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    Collector: software that receives the stream of telemetry.
@@ -277,9 +277,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 5]
+Claise, et al.          Expires 4 September 2025                [Page 5]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    platform details) help drawing the right conclusions.  As an example,
@@ -290,7 +290,7 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
    When a new device is onboarded, operators have to check that the new
    device streams data with YANG-Push, that the telemetry data is the
-   right ones, that the data is correctly ingested in the collection
+   right one, that the data is correctly ingested in the collection
    system, and finally that the data can be analyzed (compared with
    other similar devices).  For the last point, the data manifest, which
    must be linked to the data up to the collection and analytics system,
@@ -333,9 +333,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 6]
+Claise, et al.          Expires 4 September 2025                [Page 6]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 4.  The "ietf-yp-current-period" YANG module
@@ -389,9 +389,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 7]
+Claise, et al.          Expires 4 September 2025                [Page 7]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
         Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
@@ -445,9 +445,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 8]
+Claise, et al.          Expires 4 September 2025                [Page 8]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 5.1.  Overview of the Model
@@ -501,9 +501,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025                [Page 9]
+Claise, et al.          Expires 4 September 2025                [Page 9]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    The YANG module contains a list of platform manifests (in 'platforms/
@@ -557,9 +557,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 10]
+Claise, et al.          Expires 4 September 2025               [Page 10]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
          "RFC8525: YANG Library";
@@ -613,9 +613,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 11]
+Claise, et al.          Expires 4 September 2025               [Page 11]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
          type string {
@@ -669,9 +669,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 12]
+Claise, et al.          Expires 4 September 2025               [Page 12]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
             primarily useful if the software implementing the module is
@@ -725,9 +725,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 13]
+Claise, et al.          Expires 4 September 2025               [Page 13]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 6.  Data Collection Manifest
@@ -781,9 +781,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 14]
+Claise, et al.          Expires 4 September 2025               [Page 14]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
                 |  |  |                   yang:xpath1.0 {xpath}?
@@ -837,9 +837,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 15]
+Claise, et al.          Expires 4 September 2025               [Page 15]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    containers.  The information about subscriptions themselves are
@@ -893,9 +893,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 16]
+Claise, et al.          Expires 4 September 2025               [Page 16]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
         Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
@@ -949,9 +949,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 17]
+Claise, et al.          Expires 4 September 2025               [Page 17]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
        list data-collection {
@@ -1005,9 +1005,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 18]
+Claise, et al.          Expires 4 September 2025               [Page 18]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    manifest information changes, for example, when a router is upgraded,
@@ -1061,9 +1061,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 19]
+Claise, et al.          Expires 4 September 2025               [Page 19]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 7.2.  Mapping Collected Data to the Data Manifest
@@ -1117,9 +1117,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 20]
+Claise, et al.          Expires 4 September 2025               [Page 20]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 8.  Example
@@ -1173,9 +1173,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 21]
+Claise, et al.          Expires 4 September 2025               [Page 21]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
            "/ietf-interfaces:interfaces/interface/statistics/in-octets",
@@ -1218,6 +1218,22 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    period of 10s (1000 centiseconds) could not be attained and is now of
    20s, for instance because the device is overloaded.
 
+   Appendix D gives the command line for validating this example using
+   [yanglint].
+
+
+
+
+
+
+
+
+
+Claise, et al.          Expires 4 September 2025               [Page 22]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
 9.  Security Considerations
 
    The YANG modules specified in this document define a schema for data
@@ -1226,14 +1242,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    is the secure transport layer, and the mandatory-to-implement secure
    transport is Secure Shell (SSH) [RFC6242].  The lowest RESTCONF layer
    is HTTPS, and the mandatory-to-implement secure transport is TLS
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 22]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    [RFC8446].
 
    The Network Configuration Access Control Model (NACM) [RFC8341]
@@ -1268,6 +1276,20 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    IANA is requested to register the following URIs in the "ns"
    subregistry within the "IETF XML Registry" [RFC3688]:
 
+
+
+
+
+
+
+
+
+
+Claise, et al.          Expires 4 September 2025               [Page 23]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
     URI: urn:ietf:params:xml:ns:yang:ietf-platform-manifest
     Registrant Contact:  The IESG.
     XML: N/A; the requested URI is an XML namespace.
@@ -1279,16 +1301,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    IANA is requested to register the following YANG modules in the "YANG
    Module Names" subregistry [RFC6020] within the "YANG Parameters"
    registry.
-
-
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 23]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
     Name: ietf-platform-manifest
     Maintained by IANA?  N
@@ -1327,6 +1339,13 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 13.  Normative References
 
+
+
+Claise, et al.          Expires 4 September 2025               [Page 24]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1336,15 +1355,6 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               and A. Bierman, Ed., "Network Configuration Protocol
               (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
               <https://www.rfc-editor.org/info/rfc6241>.
-
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 24]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    [RFC6242]  Wasserman, M., "Using the NETCONF Protocol over Secure
               Shell (SSH)", RFC 6242, DOI 10.17487/RFC6242, June 2011,
@@ -1385,22 +1395,17 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               for Datastore Updates", RFC 8641, DOI 10.17487/RFC8641,
               September 2019, <https://www.rfc-editor.org/info/rfc8641>.
 
+
+
+Claise, et al.          Expires 4 September 2025               [Page 25]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
 14.  Informative References
 
    [DataMesh] "Datamesh Architecture",
               <https://www.datamesh-architecture.com/>.
-
-
-
-
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 25]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    [I-D.clacla-netmod-model-catalog]
               Clarke, J. and B. Claise, "YANG module for
@@ -1429,17 +1434,29 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               Yu, C., Belotti, S., Bouquier, J., Peruzzini, F., and P.
               Bedard, "A Base YANG Data Model for Network Inventory",
               Work in Progress, Internet-Draft, draft-ietf-ivy-network-
-              inventory-yang-04, 5 November 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-ivy-
-              network-inventory-yang-04>.
+              inventory-yang-05, 28 February 2025,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              ietf-ivy-network-inventory-yang/>.
 
    [I-D.ietf-nmop-terminology]
               Davis, N., Farrel, A., Graf, T., Wu, Q., and C. Yu, "Some
               Key Terms for Network Fault and Problem Management", Work
               in Progress, Internet-Draft, draft-ietf-nmop-terminology-
-              11, 16 February 2025,
+              12, 22 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-nmop-
-              terminology-11>.
+              terminology-12>.
+
+
+
+
+
+
+
+
+Claise, et al.          Expires 4 September 2025               [Page 26]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
 
    [I-D.kll-yang-label-tsdb]
               Larsson, K., "Mapping YANG Data to Label-Set Time Series",
@@ -1448,23 +1465,13 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               <https://datatracker.ietf.org/doc/html/draft-kll-yang-
               label-tsdb-00>.
 
-
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 26]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    [I-D.lopez-opsawg-yang-provenance]
-              Lopez, D., Pastor, A., Feng, A. H., Birkholz, H., and S.
-              Garcia, "Applying COSE Signatures for YANG Data
+              Lopez, D., Pastor, A., Feng, A. H., Mendez, A., Birkholz,
+              H., and S. Garcia, "Applying COSE Signatures for YANG Data
               Provenance", Work in Progress, Internet-Draft, draft-
-              lopez-opsawg-yang-provenance-04, 5 January 2025,
+              lopez-opsawg-yang-provenance-05, 26 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-lopez-opsawg-
-              yang-provenance-04>.
+              yang-provenance-05>.
 
    [I-D.netana-netconf-notif-envelope]
               Feng, A. H., Francois, P., Graf, T., and B. Claise,
@@ -1500,19 +1507,17 @@ Internet-Draft           Telemetry Data Manifest           February 2025
               Network Topologies", RFC 8345, DOI 10.17487/RFC8345, March
               2018, <https://www.rfc-editor.org/info/rfc8345>.
 
+
+
+Claise, et al.          Expires 4 September 2025               [Page 27]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    [RFC9196]  Lengyel, B., Clemm, A., and B. Claise, "YANG Modules
               Describing Capabilities for Systems and Datastore Update
               Notifications", RFC 9196, DOI 10.17487/RFC9196, February
               2022, <https://www.rfc-editor.org/info/rfc9196>.
-
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 27]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    [RFC9371]  Baber, A. and P. Hoffman, "Registration Procedures for
               Private Enterprise Numbers (PENs)", RFC 9371,
@@ -1558,17 +1563,16 @@ Appendix A.  Changes between revisions
 
    *  Update examples accordingly
 
+
+
+Claise, et al.          Expires 4 September 2025               [Page 28]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    v02 -> v03
 
    *  Explicit that modules are network (Controller) level
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 28]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    *  InfluxDB example changed to TSDB example aligned with
       [I-D.kll-yang-label-tsdb]
@@ -1615,16 +1619,16 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
    v03 -> v04
 
+
+
+Claise, et al.          Expires 4 September 2025               [Page 29]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    *  Fix xym error
 
    *  Moved terminology after introduction
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 29]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
 
    *  Clarified the role of the module
 
@@ -1673,13 +1677,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 30]
+Claise, et al.          Expires 4 September 2025               [Page 30]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 Appendix B.  An Example of Use Based on MDT
@@ -1733,9 +1733,9 @@ Appendix B.  An Example of Use Based on MDT
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 31]
+Claise, et al.          Expires 4 September 2025               [Page 31]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
     * Metric: interfaces_interface_enabled
@@ -1789,9 +1789,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 32]
+Claise, et al.          Expires 4 September 2025               [Page 32]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    In the labels, the "host" might be different from the
@@ -1845,9 +1845,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 33]
+Claise, et al.          Expires 4 September 2025               [Page 33]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
 Appendix C.  Generating YANG Tree Diagrams
@@ -1901,9 +1901,9 @@ Appendix C.  Generating YANG Tree Diagrams
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 34]
+Claise, et al.          Expires 4 September 2025               [Page 34]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
          <namespace>
@@ -1957,9 +1957,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 35]
+Claise, et al.          Expires 4 September 2025               [Page 35]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
          <revision>2019-01-21</revision>
@@ -2013,9 +2013,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 36]
+Claise, et al.          Expires 4 September 2025               [Page 36]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
        <label>yang-push-collection</label>
@@ -2069,9 +2069,9 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-Claise, et al.          Expires 1 September 2025               [Page 37]
+Claise, et al.          Expires 4 September 2025               [Page 37]
 
-Internet-Draft           Telemetry Data Manifest           February 2025
+Internet-Draft           Telemetry Data Manifest              March 2025
 
 
                <revision>2013-07-15</revision>
@@ -2107,6 +2107,29 @@ Internet-Draft           Telemetry Data Manifest           February 2025
    </modules-state>
    <CODE ENDS>
 
+Appendix D.  Validating the Example
+
+   This section provides the command line for validating the example in
+   Figure 4 using [yanglint].  The files "data-collection-extension-
+   data.xml" and "data-collection-toplevel-yanglib.xml" are provided in
+   the previous section.  The file "manifests-example.json" in the one
+   from Figure 4.
+
+   yanglint -e -x data-collection-extension-data.xml \
+           -Y data-collection-toplevel-yanglib.xml \
+           manifests-example.json
+
+
+
+
+
+
+
+Claise, et al.          Expires 4 September 2025               [Page 38]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
 Acknowledgements
 
    Thanks to Mohamed Boucadair, Tianran Zhou, Jan Lindblad, Ahmed
@@ -2122,14 +2145,6 @@ Authors' Addresses
 
    Jean Quilbeuf
    Huawei
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 38]
-
-Internet-Draft           Telemetry Data Manifest           February 2025
-
-
    Email: jean.quilbeuf@huawei.com
 
 
@@ -2166,19 +2181,4 @@ Internet-Draft           Telemetry Data Manifest           February 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Claise, et al.          Expires 1 September 2025               [Page 39]
+Claise, et al.          Expires 4 September 2025               [Page 39]
