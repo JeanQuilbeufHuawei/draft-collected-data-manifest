@@ -330,7 +330,7 @@
         <t>
           <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
           The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
-          This module is an example, i.e. non normative, as YANG Schema mount does not support design-time schema mount.
+          This module is an example, i.e. non-normative, as YANG Schema mount does not support design-time schema mount.
           <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
         </t>
         <figure anchor="data-collection-manifest-tree">
@@ -619,6 +619,7 @@
       <t>v06 -> v07 </t>
       <ul>
         <li>Make current period config false</li>
+        <li>Explicit that data collection is non-normative</li>
       </ul>
       <t>v05 -> v06 </t>
       <ul>
