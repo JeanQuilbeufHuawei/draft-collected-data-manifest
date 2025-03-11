@@ -59,6 +59,7 @@ module ietf-yp-current-period {
     leaf current-period {
       when '../yp:periodic';
       type yp:centiseconds;
+      config false;
       description
         "Period during two successive data collections, in the
         current state. Might differ from the configured period

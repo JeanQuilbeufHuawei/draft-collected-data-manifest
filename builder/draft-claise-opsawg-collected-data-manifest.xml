@@ -8,7 +8,7 @@
 <?xml-model href="rfc7991bis.rnc"?>
 <rfc
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        docName="draft-ietf-opsawg-collected-data-manifest-06"
+        docName="draft-ietf-opsawg-collected-data-manifest-07"
         category="std"
         ipr="trust200902"
         obsoletes=""
@@ -21,7 +21,7 @@
         version="3" >
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-06"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-07"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Huawei</organization>
       <address>
@@ -75,7 +75,8 @@
       <t>
         Network platforms use Model-driven Telemetry, such as YANG-Push, to continuously stream information, including both counters and state information.
         This document describes the metadata that ensure that the collected data can be interpreted correctly.
-        This document specifies the data manifest, composed of two YANG data models (the platform manifest and the data collection manifest).
+        This document specifies the data manifest, composed of two YANG data
+        models (the platform manifest and the non-normative data collection manifest).
         These YANG modules are specified at the network (e.g. controller) level to provide a model that encompasses several network platforms.
         The data manifest must be streamed and stored along with the data, up to the collection and analytics systems in order to keep the collected data fully exploitable by the data scientists and relevant tools.
         Additionally, this document proposes an augmentation of the YANG-Push model to include the actual collection period, in case it differs from the configured collection period.
@@ -104,7 +105,8 @@
       <t>
         The platform manifest contains information characterizing the platform streaming the telemetry information, while the data collection manifest contains the required information to characterize how and when the telemetry information was metered.
         The platform manifest is specified in <xref target="platform-manifest"/>.
-        The data collection manifest is specified in <xref target="data-collection-manifest"/>.
+        An example of data collection manifest is specified in <xref target="data-collection-manifest"/>.
+        This module is non-normative due to the lack of design-time schema mount in YANG, see <xref target="RFC8528" section="1"/> .
       </t>
       <t>         
         The two proposed YANG modules for the data manifest do not expose any new information but rather define what should be exposed by a platform streaming or storing telemetry data.
@@ -328,7 +330,7 @@
         <t>
           <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
           The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
-          This module is an example as YANG Schema mount does not support design-time schema mount.
+          This module is an example, i.e. non normative, as YANG Schema mount does not support design-time schema mount.
           <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
         </t>
         <figure anchor="data-collection-manifest-tree">
@@ -614,6 +616,10 @@
     <?rfc needLines="100"?>
     <section removeInRFC="true">
       <name>Changes between revisions</name>
+      <t>v06 -> v07 </t>
+      <ul>
+        <li>Make current period config false</li>
+      </ul>
       <t>v05 -> v06 </t>
       <ul>
         <li>Example can be validated using yanglint</li>
