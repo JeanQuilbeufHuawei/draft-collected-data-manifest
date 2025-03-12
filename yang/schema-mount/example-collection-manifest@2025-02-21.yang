@@ -1,11 +1,12 @@
 module example-collection-manifest {
   yang-version 1.1;
   namespace "http://example.com/example-data-collection-manifest";
-  prefix d-mf;
+  prefix ex-d-mf;
 
   import ietf-platform-manifest {
     prefix p-mf;
-    reference "RFC XXXX: Title to be completed";
+    reference "RFC XXXX: A Data Manifest for Contextualized Telemetry
+                         Data";
   }
   import ietf-yang-schema-mount {
     prefix yangmnt;
@@ -35,13 +36,6 @@ module example-collection-manifest {
      ietf-platform-manifest
      to capture the whole context of a data collection session.
 
-     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
-     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
-     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
-     are to be interpreted as described in BCP 14 (RFC 2119)
-     (RFC 8174) when, and only when, they appear in all
-     capitals, as shown here.
-
      Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
@@ -69,7 +63,7 @@ module example-collection-manifest {
     list data-collection {
     key platform-id;
     description
-      "Defines the information for each collected object";
+      "Defines the information for each collected object.";
       leaf platform-id {
         type leafref {
             path "/p-mf:platforms/p-mf:platform/p-mf:id";
@@ -81,16 +75,16 @@ module example-collection-manifest {
       }
       yangmnt:mount-point yang-push-collection {
         description
-         "This mount point MUST mount the following modules and their
-         dependencies:
+         "This mount point must mount the following modules and
+         their dependencies:
             * ietf-subscribed-notifications
             * ietf-yang-push
             * ietf-yp-current-period.
-         This mount point MUST NOT mount any other modules.";
+         This mount point must not mount any other modules.";
         reference
           "RFC8639: Subscription to YANG Notifications
            RFC8641: Subscription to YANG Notifications for datastore
-           updates";
+                    updates";
       }
     }
   }
