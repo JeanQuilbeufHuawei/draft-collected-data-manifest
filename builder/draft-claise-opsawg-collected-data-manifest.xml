@@ -642,6 +642,8 @@
       <ul>
         <li>Make current period config false</li>
         <li>Explicit that data collection is non-normative</li>
+        <li>Adjust security section to RFC8407bis new template</li>
+        <li>Other comments from Med</li>
       </ul>
       <t>v05 -> v06 </t>
       <ul>

@@ -1570,6 +1570,10 @@ Claise, et al.          Expires 13 September 2025              [Page 28]
 Internet-Draft           Telemetry Data Manifest              March 2025
 
 
+   *  Adjust security section to RFC8407bis new template
+
+   *  Other comments from Med
+
    v05 -> v06
 
    *  Example can be validated using yanglint
@@ -1614,10 +1618,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
 
    v01 -> v02
 
-   *  Updated example with latest version of the model.
-
-   v00 (WG adoption) - v01
-
 
 
 
@@ -1625,6 +1625,10 @@ Claise, et al.          Expires 13 September 2025              [Page 29]
 
 Internet-Draft           Telemetry Data Manifest              March 2025
 
+
+   *  Updated example with latest version of the model.
+
+   v00 (WG adoption) - v01
 
    *  Solve integrity issue by delegating to
       [I-D.lopez-opsawg-yang-provenance].
@@ -1670,10 +1674,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
 
    *  Add when clause in YANG model
 
-   *  Fix validation errors on YANG modules
-
-   *  Augment YANG library to handle semantic versioning
-
 
 
 
@@ -1681,6 +1681,10 @@ Claise, et al.          Expires 13 September 2025              [Page 30]
 
 Internet-Draft           Telemetry Data Manifest              March 2025
 
+
+   *  Fix validation errors on YANG modules
+
+   *  Augment YANG library to handle semantic versioning
 
    v01 -> v02
 
@@ -1726,10 +1730,6 @@ Appendix B.  An Example of Use Based on MDT
    interfaces:interfaces/interface/enabled" on every change and "ietf-
    interfaces:interfaces/interface/statistics/in-octets" every 100
    milliseconds.  The paths here are referring to the YANG module from
-   [RFC8343].  The configuration of YANG push is out of scope for this
-   document.  Since they don’t have the same trigger, each of the path
-   must be collected in its own subscription.  Figure 5 presents an
-   example for such a collection.
 
 
 
@@ -1737,6 +1737,11 @@ Claise, et al.          Expires 13 September 2025              [Page 31]
 
 Internet-Draft           Telemetry Data Manifest              March 2025
 
+
+   [RFC8343].  The configuration of YANG push is out of scope for this
+   document.  Since they don’t have the same trigger, each of the path
+   must be collected in its own subscription.  Figure 5 presents an
+   example for such a collection.
 
         +------------+                +--------+
         |   MDT      |--------------> |  TSDB  |
@@ -1779,13 +1784,8 @@ Internet-Draft           Telemetry Data Manifest              March 2025
 
              Figure 6: Storing Datapoints without Data Manifest
 
-   An option for keeping the data manifest with the data is to store it
-   directly into the TSDB.  In that case, the collector can subscribe to
-   the data exported by the module presented in this document and store
-   it as other metrics.  For the platform manifest, assuming the
-   platform identifier is "PE1", the collector subscribes to the path
-   "ietf-platform-manifest:platforms/platform[id=PE1]".  For the data
-   collection manifests, the collector subscribes to the path "ietf-
+
+
 
 
 
@@ -1794,6 +1794,13 @@ Claise, et al.          Expires 13 September 2025              [Page 32]
 Internet-Draft           Telemetry Data Manifest              March 2025
 
 
+   An option for keeping the data manifest with the data is to store it
+   directly into the TSDB.  In that case, the collector can subscribe to
+   the data exported by the module presented in this document and store
+   it as other metrics.  For the platform manifest, assuming the
+   platform identifier is "PE1", the collector subscribes to the path
+   "ietf-platform-manifest:platforms/platform[id=PE1]".  For the data
+   collection manifests, the collector subscribes to the path "ietf-
    data-collection-manifest:data-collections/data-collection[platform-
    id="PE1"]/yang-push-collection/subscriptions/subscription[id=X]"
    where X is the subscription identifier of existing subscriptions.
@@ -1829,13 +1836,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
    collector.  The host value does not matter for retrieving the data
    manifest as the platform identifier is the meaningful field.
 
-   In this example, retrieving the platform manifest associated to a
-   collected datapoint is done by looking for datapoints that have the
-   label "platforms_platform_id" equal to the value of the host for that
-   collected datapoint.  In order to link a datapoint with the
-   corresponding data collection manifest, an additional label for the
-   subscription identifier is required.  For instance, the same
-   datapoints as in Figure 6 could be stored as in Figure 8.
 
 
 
@@ -1849,6 +1849,14 @@ Claise, et al.          Expires 13 September 2025              [Page 33]
 
 Internet-Draft           Telemetry Data Manifest              March 2025
 
+
+   In this example, retrieving the platform manifest associated to a
+   collected datapoint is done by looking for datapoints that have the
+   label "platforms_platform_id" equal to the value of the host for that
+   collected datapoint.  In order to link a datapoint with the
+   corresponding data collection manifest, an additional label for the
+   subscription identifier is required.  For instance, the same
+   datapoints as in Figure 6 could be stored as in Figure 8.
 
     * Metric: interfaces_interface_enabled
     * Value: True
@@ -1888,6 +1896,16 @@ Appendix C.  Generating YANG Tree Diagrams
    document such as data nodes from imported modules, notifications and
    RPCs.
 
+
+
+
+
+
+Claise, et al.          Expires 13 September 2025              [Page 34]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    In order to get a tree diagram involving YANG Schema Mount with
    yanglint, two data files are required, in addition to the YANG
    module, its dependencies and the YANG modules to be mounted.  The
@@ -1897,14 +1915,6 @@ Appendix C.  Generating YANG Tree Diagrams
    library to use at the top-level context, this file is provided below
    as "data-collection-toplevel-yanglib.xml".  The following command was
    used to obtain the YANG Tree diagram (before manual edition).
-
-
-
-
-Claise, et al.          Expires 13 September 2025              [Page 34]
-
-Internet-Draft           Telemetry Data Manifest              March 2025
-
 
            yanglint -f tree \
            -x data-collection-extension-data.xml \
@@ -1944,6 +1954,14 @@ Internet-Draft           Telemetry Data Manifest              March 2025
          <revision>2018-02-14</revision>
          <namespace>
            urn:ietf:params:xml:ns:yang:ietf-datastores
+
+
+
+Claise, et al.          Expires 13 September 2025              [Page 35]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
          </namespace>
        </module>
        <module>
@@ -1954,14 +1972,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
          </namespace>
        </module>
        <import-only-module>
-
-
-
-Claise, et al.          Expires 13 September 2025              [Page 35]
-
-Internet-Draft           Telemetry Data Manifest              March 2025
-
-
          <name>ietf-inet-types</name>
          <revision>2013-07-15</revision>
          <namespace>
@@ -2000,6 +2010,14 @@ Internet-Draft           Telemetry Data Manifest              March 2025
          <name>ietf-restconf</name>
          <revision>2017-01-26</revision>
          <namespace>
+
+
+
+Claise, et al.          Expires 13 September 2025              [Page 36]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
            urn:ietf:params:xml:ns:yang:ietf-restconf
          </namespace>
        </import-only-module>
@@ -2010,14 +2028,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
            urn:ietf:params:xml:ns:yang:ietf-yang-patch
          </namespace>
        </import-only-module>
-
-
-
-Claise, et al.          Expires 13 September 2025              [Page 36]
-
-Internet-Draft           Telemetry Data Manifest              March 2025
-
-
        <import-only-module>
          <name>ietf-yang-types</name>
          <revision>2023-01-23</revision>
@@ -2053,6 +2063,17 @@ Internet-Draft           Telemetry Data Manifest              March 2025
    </schema-mounts>
    <CODE ENDS>
 
+
+
+
+
+
+
+Claise, et al.          Expires 13 September 2025              [Page 37]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    <CODE BEGINS> file "data-collection-toplevel-yanglib.xml"
    <yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
                  xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
@@ -2066,14 +2087,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
                </namespace>
            </module>
            <module>
-
-
-
-Claise, et al.          Expires 13 September 2025              [Page 37]
-
-Internet-Draft           Telemetry Data Manifest              March 2025
-
-
                <name>ietf-yang-library</name>
                <revision>2019-01-04</revision>
                <namespace>
@@ -2109,6 +2122,14 @@ Internet-Draft           Telemetry Data Manifest              March 2025
                </namespace>
            </import-only-module>
            <import-only-module>
+
+
+
+Claise, et al.          Expires 13 September 2025              [Page 38]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
                <name>ietf-yang-types</name>
                <revision>2023-01-23</revision>
                <namespace>
@@ -2122,14 +2143,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
        </schema>
        <datastore>
            <name>ds:running</name>
-
-
-
-Claise, et al.          Expires 13 September 2025              [Page 38]
-
-Internet-Draft           Telemetry Data Manifest              March 2025
-
-
            <schema>main-schema</schema>
        </datastore>
        <datastore>
@@ -2164,6 +2177,15 @@ Acknowledgements
 
 Authors' Addresses
 
+
+
+
+
+Claise, et al.          Expires 13 September 2025              [Page 39]
+
+Internet-Draft           Telemetry Data Manifest              March 2025
+
+
    Benoit Claise
    Huawei
    Email: benoit.claise@huawei.com
@@ -2172,18 +2194,6 @@ Authors' Addresses
    Jean Quilbeuf
    Huawei
    Email: jean.quilbeuf@huawei.com
-
-
-
-
-
-
-
-
-
-Claise, et al.          Expires 13 September 2025              [Page 39]
-
-Internet-Draft           Telemetry Data Manifest              March 2025
 
 
    Diego R. Lopez
@@ -2208,16 +2218,6 @@ Internet-Draft           Telemetry Data Manifest              March 2025
    CH-8045 Zurich
    Switzerland
    Email: thomas.graf@swisscom.com
-
-
-
-
-
-
-
-
-
-
 
 
 
