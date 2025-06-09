@@ -872,7 +872,7 @@ module example-collection-manifest {
       </section>
 
       <section anchor="operational-considerations">
-        <name>Operational Considerations</name>
+        <name>Operational and Management Considerations</name>
          <t>
            It is expected that the data manifest is streamed directly from the network equipment, along with YANG-Push <xref target="RFC8641"/> data.
            However, if the network equipment streaming telemetry does not yet support the YANG modules from the data manifest specified in this document, the telemetry collector could populate the data manifest from available information collected from the platform.
@@ -1123,6 +1123,7 @@ module example-collection-manifest {
       <name>Changes between revisions</name>
       <t>v06 -> v07 </t>
       <ul>
+        <li>Operational +(and management) considerations (draft-opsarea-rfc5706bis)</li>
         <li>Make current period config false</li>
         <li>Explicit that data collection is non-normative</li>
         <li>Adjust security section to RFC8407bis new template</li>
