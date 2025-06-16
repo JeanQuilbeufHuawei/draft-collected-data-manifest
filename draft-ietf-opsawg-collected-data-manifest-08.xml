@@ -268,14 +268,87 @@
       <figure anchor="current-period-tree" >
         <name>YANG tree diagram for "ietf-yp-current-period" module</name>
         <artwork type="ascii-art"><![CDATA[
-{{current_period_tree}}
+module: ietf-yp-current-period
+
+  augment /sn:subscriptions/sn:subscription:
+    +--ro current-period?   yp:centiseconds
      ]]></artwork>
       </figure>
       <t>
         The code of the "ietf-yp-current" YANG module is given below.
       </t>
       <sourcecode name="ietf-yp-current-period@2025-02-21.yang" type="yang" markers="true"><![CDATA[
-{{data_collection_manifest_statistics}}
+module ietf-yp-current-period {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-yp-current-period";
+  prefix yp-cp;
+
+  import ietf-subscribed-notifications {
+    prefix sn;
+    reference
+      "RFC 8639: A YANG Data Model for Subscriptions to
+                 Event Notifications";
+  }
+  import ietf-yang-push {
+    prefix yp;
+    // RFC Ed.: remove revision-date, needed here for datatracker
+    // to properly validate the module, because the latest version
+    // on the server is not the ratified one and validation fails.
+    revision-date 2019-09-09;
+    reference
+      "RFC 8641: Subscriptions to YANG Datastores.";
+  }
+
+  organization
+    "IETF OPSAWG (Operations and Management Area) Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
+     WG List:  <mailto:opsawg@ietf.org>
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+     <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
+  description
+    "This module augments ietf-subscribed-notification and
+     ietf-yang-push with the current-period statistics reporting the
+     actual collection period, as opposed to the configured one.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Revised BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+     This version of this YANG module is part of RFC XXXX; see the
+     RFC itself for full legal notices.  ";
+
+  revision 2025-02-21 {
+    description
+      "Initial revision";
+    reference
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
+  }
+
+  augment "/sn:subscriptions/sn:subscription" {
+    description
+      "Adds current period statistics";
+    leaf current-period {
+      when '../yp:periodic';
+      type yp:centiseconds;
+      config false;
+      description
+        "Period during two successive data collections, in the
+         current state. Might differ from the configured period
+         when the platform might increase the period
+         automatically when it is overloaded.";
+    }
+  }
+}
     ]]>
       </sourcecode>
     </section>
@@ -289,7 +362,45 @@
           <figure anchor="platform-manifest-tree">
             <name>YANG tree diagram for ietf-platform-manifest module</name>
             <artwork type="ascii-art"><![CDATA[
-{{platform_manifest_tree}}
+module: ietf-platform-manifest
+  +--ro platforms
+     +--ro platform* [id]
+        +--ro id                  string
+        +--ro name?               string
+        +--ro vendor?             string
+        +--ro vendor-pen?         uint32
+        +--ro software-version?   string
+        +--ro software-flavor?    string
+        +--ro os-version?         string
+        +--ro os-type?            string
+        +--ro module-set* [name]
+        |  +--ro name                  string
+        |  +--ro module* [name]
+        |  |  +--ro name         yang:yang-identifier
+        |  |  +--ro revision?    revision-identifier
+        |  |  +--ro namespace    inet:uri
+        |  |  +--ro location*    inet:uri
+        |  |  +--ro submodule* [name]
+        |  |  |  +--ro name        yang:yang-identifier
+        |  |  |  +--ro revision?   revision-identifier
+        |  |  |  +--ro location*   inet:uri
+        |  |  +--ro feature*     yang:yang-identifier
+        |  |  +--ro deviation*   -> ../../module/name
+        |  +--ro import-only-module* [name revision]
+        |     +--ro name         yang:yang-identifier
+        |     +--ro revision     union
+        |     +--ro namespace    inet:uri
+        |     +--ro location*    inet:uri
+        |     +--ro submodule* [name]
+        |        +--ro name        yang:yang-identifier
+        |        +--ro revision?   revision-identifier
+        |        +--ro location*   inet:uri
+        +--ro schema* [name]
+        |  +--ro name          string
+        |  +--ro module-set*   -> ../../module-set/name
+        +--ro datastore* [name]
+           +--ro name      ds:datastore-ref
+           +--ro schema    -> ../../schema/name
             ]]></artwork>
           </figure>
         <t>
@@ -318,7 +429,156 @@
           This section defines the "ietf-platform-manifest" YANG module.
         </t>
         <sourcecode name="ietf-platform-manifest@2025-02-21.yang" type="yang" markers="true"><![CDATA[
-{{platform_schema_mount}}
+module ietf-platform-manifest {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-platform-manifest";
+  prefix p-mf;
+
+  import ietf-yang-library {
+    prefix yanglib;
+    reference
+      "RFC8525: YANG Library";
+  }
+
+  organization
+    "IETF OPSAWG (Operations and Management Area) Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
+     WG List:  <mailto:opsawg@ietf.org>
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
+  description
+    "This module describes the platform information to be used as
+     context of data collection from a given network element. The
+     contents of this model must be streamed along with the data
+     streamed from the network element so that the platform context
+     of the data collection can be retrieved later.
+
+     The data content of this model should not change except on
+     upgrade or patching of the device.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Revised BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+     This version of this YANG module is part of RFC XXXX; see the
+     RFC itself for full legal notices.  ";
+
+  revision 2025-02-21 {
+    description
+      "Initial revision";
+    reference
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
+  }
+
+  grouping platform-details {
+    description
+      "This grouping contains the information about a particular
+       platform, as stored in the YANG catalog.";
+    leaf name {
+      type string {
+        length "1..1023";
+      }
+      description
+        "Model of the platform from which data is collected.";
+    }
+    leaf vendor {
+      type string {
+        length "1..1023";
+      }
+      description
+        "Organization that implements that platform.";
+    }
+    leaf vendor-pen {
+      type uint32;
+      description
+        "Vendor's registered Private Enterprise Number";
+      reference
+        "RFC9371: Registration Procedures for Private Enterprise
+         Numbers (PENs)";
+    }
+    leaf software-version {
+      type string {
+        length "1..1023";
+      }
+      description
+        "Name of the version of software. With respect to most
+         network device appliances, this will be the operating system
+         version. But for other YANG module implementation, this
+         would be a version of appliance software. Ultimately, this
+         should correspond to a version string that will be
+         recognizable by the consumers of the platform.";
+    }
+    leaf software-flavor {
+      type string {
+        length "1..1023";
+      }
+      description
+        "A variation of a specific version where YANG model support
+         may be different.  Depending on the vendor, this could be a
+         license, additional software component, or a feature set.";
+    }
+    leaf os-version {
+      type string {
+        length "1..1023";
+      }
+      description
+        "Version of the operating system using this module. This is
+         primarily useful if the software implementing the module is
+         an application that requires a specific operating system
+         version.";
+    }
+    leaf os-type {
+      type string {
+        length "1..1023";
+      }
+      description
+        "Type of the operating system using this module. This is
+         primarily useful if the software implementing the module is
+         an application that requires a specific operating system
+         type.";
+    }
+  }
+
+  container platforms {
+    config false;
+    description
+      "Top container including all platforms in scope. If this model
+       is hosted on a single device, it should contain a single entry
+       in the list. At the network level, it should contain an entry
+       for every monitored platform.";
+    list platform {
+      key "id";
+      description
+        "Contains information about the platform that allows
+         identifying and understanding the individual data collection
+         information.";
+      leaf id {
+        type string {
+          length "1..1023";
+        }
+        description
+          "Identifies a given platform on the network, for instance
+           the 'sysName' of the platform. The 'id' has to be unique
+           within the network scope at every point in time. The same
+           id can point to different platform if they are not
+           simultaneously part of the network, e.g., when a device
+           associated to a particular id is replaced.";
+      }
+      uses platform-details;
+      uses yanglib:yang-library-parameters;
+    }
+  }
+}
             ]]>
         </sourcecode>
       </section>
@@ -338,7 +598,78 @@
         <figure anchor="data-collection-manifest-tree">
           <name>YANG tree diagram for example-collection-manifest module</name>
           <artwork type="ascii-art"><![CDATA[
-{{data_collection_manifest_tree}}
+module: example-collection-manifest
+  +--ro data-collections
+     +--mp data-collection* [platform-id]
+        +--ro platform-id    -> /p-mf:platforms/p-mf:platform/p-mf:id
+        +--ro streams/
+        |  +--ro stream* [name]
+        |     +--ro name           string
+        |     +--ro description?   string
+        +--ro filters/
+        |  +--ro stream-filter* [name]
+        |  |  +--ro name             string
+        |  |  +--ro (filter-spec)?
+        |  |     +--:(stream-subtree-filter)
+        |  |     +--:(stream-xpath-filter)
+        |  |        +--ro stream-xpath-filter?   yang:xpath1.0
+        |  |                {xpath}?
+        |  +--ro selection-filter* [filter-id]
+        |     +--ro filter-id        string
+        |     +--ro (filter-spec)?
+        |        +--:(datastore-subtree-filter)
+        |        +--:(datastore-xpath-filter)
+        |           +--ro datastore-xpath-filter?   yang:xpath1.0
+        |                   {sn:xpath}?
+        +--ro subscriptions/
+          +--ro subscription* [id]
+             +--ro id                  subscription-id
+             +--ro (target)
+             |  +--:(stream)
+             |  |  +--ro (stream-filter)?
+             |  |  |  +--:(by-reference)
+             |  |  |  |  +--ro stream-filter-name
+             |  |  |  |          stream-filter-ref
+             |  |  |  +--:(within-subscription)
+             |  |  |     +--ro (filter-spec)?
+             |  |  |        +--:(stream-subtree-filter)
+             |  |  |        +--:(stream-xpath-filter)
+             |  |  |           +--ro stream-xpath-filter?
+             |  |  |                   yang:xpath1.0 {xpath}?
+             |  |  +--ro stream             stream-ref
+             |  +--:(datastore)
+             |     +--ro datastore             identityref
+             |     +--ro (selection-filter)?
+             |        +--:(by-reference)
+             |        |  +--ro selection-filter-ref
+             |        |          selection-filter-ref
+             |        +--:(within-subscription)
+             |           +--ro (filter-spec)?
+             |              +--:(datastore-subtree-filter)
+             |              +--:(datastore-xpath-filter)
+             |                 +--ro datastore-xpath-filter?
+             |                         yang:xpath1.0 {sn:xpath}?
+             +--ro stop-time?          yang:date-and-time
+             +--ro encoding?           encoding
+             +--ro receivers
+             |  +--ro receiver* [name]
+             |     +--ro name                      string
+             |     +--ro sent-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro excluded-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro state                     enumeration
+             +--ro (update-trigger)?
+             |  +--:(periodic)
+             |  |  +--ro periodic!
+             |  |     +--ro period         centiseconds
+             |  |     +--ro anchor-time?   yang:date-and-time
+             |  +--:(on-change) {on-change}?
+             |     +--ro on-change!
+             |        +--ro dampening-period?   centiseconds
+             |        +--ro sync-on-start?      boolean
+             |        +--ro excluded-change*    change-type
+             +--ro current-period?     yp:centiseconds
               ]]></artwork>
         </figure>
         <t>
@@ -373,7 +704,98 @@
         </t>
         <sourcecode name="example-collection-manifest@2025-02-21.yang"
                     type="yang"><![CDATA[
-{{data_collection_manifest_yang}}
+module example-collection-manifest {
+  yang-version 1.1;
+  namespace "http://example.com/example-data-collection-manifest";
+  prefix ex-d-mf;
+
+  import ietf-platform-manifest {
+    prefix p-mf;
+    reference
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry
+                 Data";
+  }
+  import ietf-yang-schema-mount {
+    prefix yangmnt;
+    reference
+      "RFC8528: YANG Schema Mount";
+  }
+
+  organization
+    "IETF OPSAWG (Operations and Management Area) Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
+     WG List:  <mailto:opsawg@ietf.org>
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
+  description
+    "This module describes the context of data collection from a
+     given network element. The contents of this model must be
+     streamed along with the data streamed from the network
+     element so that the context of the data collection can
+     be retrieved later.
+
+     This module must be completed with
+     ietf-platform-manifest
+     to capture the whole context of a data collection session.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Revised BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+     This version of this YANG module is part of RFC XXXX; see the
+     RFC itself for full legal notices.  ";
+
+  revision 2025-02-21 {
+    description
+      "Initial revision";
+    reference
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
+  }
+
+  container data-collections {
+    config false;
+    description
+      "Contains the configuration and statistics for the collected
+       data, per node in the network.";
+    list data-collection {
+      key "platform-id";
+      description
+        "Defines the information for each collected object.";
+      leaf platform-id {
+        type leafref {
+          path "/p-mf:platforms/p-mf:platform/p-mf:id";
+        }
+        description
+          "Identifier of the platform collecting the data. This
+           identifier is the same as the one in the platform
+           manifest.";
+      }
+      yangmnt:mount-point "yang-push-collection" {
+        description
+          "This mount point must mount the following modules and
+           their dependencies:
+             * ietf-subscribed-notifications
+             * ietf-yang-push
+             * ietf-yp-current-period.
+           This mount point must not mount any other modules.";
+        reference
+          "RFC8639: Subscription to YANG Notifications
+           RFC8641: Subscription to YANG Notifications for datastore
+                    updates";
+      }
+    }
+  }
+}
     ]]>
         </sourcecode>
       </section>
@@ -470,7 +892,68 @@
       <figure anchor="manifest-example">
         <name>Example of data manifest</name>
         <artwork><![CDATA[
-{{data_collection_manifest_example}}
+{
+  "ietf-platform-manifest:platforms": {
+    "platform": [
+      {
+        "id": "PE1",
+        "name": "PE1",
+        "vendor": "ACME",
+        "vendor-pen": 32473,
+        "software-version": "3.14",
+        "os-version": "2.79",
+        "os-type": "ACME OS"
+      }
+    ]
+  },
+  "example-collection-manifest:data-collections": {
+    "data-collection": [
+      {
+        "platform-id": "PE1",
+        "ietf-subscribed-notifications:subscriptions": {
+          "subscription": [
+            {
+              "id": 4242,
+              "ietf-yang-push:datastore":
+                                       "ietf-datastores:operational",
+              "ietf-yang-push:datastore-xpath-filter":
+                     "/ietf-interfaces:interfaces/interface/enabled",
+
+              "ietf-yang-push:on-change": {},
+              "receivers": {
+                "receiver": [
+                  {
+                    "name": "yp-collector",
+                    "state": "active"
+                  }
+                ]
+              }
+            },
+            {
+              "id": 4243,
+              "ietf-yang-push:datastore":
+                                       "ietf-datastores:operational",
+              "ietf-yang-push:datastore-xpath-filter":
+        "/ietf-interfaces:interfaces/interface/statistics/in-octets",
+              "ietf-yang-push:periodic": {
+                "period": 10000
+              },
+           "ietf-yp-current-period:current-period": 20000,
+              "receivers": {
+                "receiver": [
+                  {
+                    "name": "yp-collector",
+                    "state": "active"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
   ]]></artwork>
       </figure>
       <t>
@@ -893,11 +1376,204 @@
         example-collection-manifest@2025-02-21.yang
       </sourcecode>
       <sourcecode anchor="data-collection-extension-data" name="data-collection-extension-data.xml" type="xml" markers="true"><![CDATA[
-{{data_extension_data}}
+<yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+              xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+  <module-set>
+    <name>mountee-set</name>
+    <module>
+      <name>ietf-subscribed-notifications</name>
+      <revision>2019-09-09</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
+      </namespace>
+      <feature>xpath</feature>
+    </module>
+    <module>
+      <name>ietf-yang-push</name>
+      <revision>2019-09-09</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-push
+      </namespace>
+      <feature>on-change</feature>
+    </module>
+    <module>
+      <name>ietf-yp-current-period</name>
+      <revision>2025-02-21</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yp-current-period
+      </namespace>
+    </module>
+    <module>
+      <name>ietf-datastores</name>
+      <revision>2018-02-14</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-datastores
+      </namespace>
+    </module>
+    <module>
+      <name>ietf-yang-library</name>
+      <revision>2019-01-04</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-library
+      </namespace>
+    </module>
+    <import-only-module>
+      <name>ietf-inet-types</name>
+      <revision>2013-07-15</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-inet-types
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-interfaces</name>
+      <revision>2018-02-20</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-interfaces
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-ip</name>
+      <revision>2018-02-22</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-ip
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-netconf-acm</name>
+      <revision>2018-02-14</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-netconf-acm
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-network-instance</name>
+      <revision>2019-01-21</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-network-instance
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-restconf</name>
+      <revision>2017-01-26</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-restconf
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-yang-patch</name>
+      <revision>2017-02-22</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-patch
+      </namespace>
+    </import-only-module>
+    <import-only-module>
+      <name>ietf-yang-types</name>
+      <revision>2023-01-23</revision>
+      <namespace>
+        urn:ietf:params:xml:ns:yang:ietf-yang-types
+      </namespace>
+    </import-only-module>
+  </module-set>
+  <schema>
+    <name>test-schema</name>
+    <module-set>mountee-set</module-set>
+  </schema>
+  <datastore>
+    <name>ds:running</name>
+    <schema>test-schema</schema>
+  </datastore>
+  <datastore>
+    <name>ds:operational</name>
+    <schema>test-schema</schema>
+  </datastore>
+  <content-id>2</content-id>
+</yang-library>
+<modules-state xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+  <module-set-id>2</module-set-id>
+</modules-state>
+<schema-mounts
+  xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount">
+  <mount-point>
+    <module>example-collection-manifest</module>
+    <label>yang-push-collection</label>
+    <shared-schema/>
+  </mount-point>
+</schema-mounts>
 ]]>
       </sourcecode>
       <sourcecode anchor="data-collection-toplevel-yanglib" name="data-collection-toplevel-yanglib.xml" type="xml" markers="true"><![CDATA[
-{{data_toplevel_yanglib}}
+<yang-library xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library"
+              xmlns:ds="urn:ietf:params:xml:ns:yang:ietf-datastores">
+    <module-set>
+        <name>main-set</name>
+        <module>
+            <name>ietf-datastores</name>
+            <revision>2018-02-14</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-datastores
+            </namespace>
+        </module>
+        <module>
+            <name>ietf-yang-library</name>
+            <revision>2019-01-04</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-yang-library
+            </namespace>
+        </module>
+        <module>
+            <name>ietf-yang-schema-mount</name>
+            <revision>2019-01-14</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-yang-schema-mount
+            </namespace>
+        </module>
+        <module>
+            <name>example-collection-manifest</name>
+            <revision>2025-02-21</revision>
+            <namespace>
+               http://example.org/example-collection-manifest
+            </namespace>
+        </module>
+        <module>
+            <name>ietf-platform-manifest</name>
+            <revision>2025-02-21</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-platform-manifest
+            </namespace>
+        </module>
+        <import-only-module>
+            <name>ietf-inet-types</name>
+            <revision>2013-07-15</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-inet-types
+            </namespace>
+        </import-only-module>
+        <import-only-module>
+            <name>ietf-yang-types</name>
+            <revision>2023-01-23</revision>
+            <namespace>
+                urn:ietf:params:xml:ns:yang:ietf-yang-types
+            </namespace>
+        </import-only-module>
+    </module-set>
+    <schema>
+        <name>main-schema</name>
+        <module-set>main-set</module-set>
+    </schema>
+    <datastore>
+        <name>ds:running</name>
+        <schema>main-schema</schema>
+    </datastore>
+    <datastore>
+        <name>ds:operational</name>
+        <schema>main-schema</schema>
+    </datastore>
+    <content-id>1</content-id>
+</yang-library>
+<modules-state
+  xmlns="urn:ietf:params:xml:ns:yang:ietf-yang-library">
+  <module-set-id>2</module-set-id>
+</modules-state>
 ]]>
       </sourcecode>
     </section>
