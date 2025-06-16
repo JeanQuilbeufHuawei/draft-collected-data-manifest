@@ -1125,6 +1125,10 @@ module example-collection-manifest {
     <?rfc needLines="100"?>
     <section removeInRFC="true">
       <name>Changes between revisions</name>
+      <t>v07 -> v08 </t>
+      <ul>
+        <li>Address comments from Thomas</li>
+      </ul>
       <t>v06 -> v07 </t>
       <ul>
         <li>Operational +(and management) considerations (draft-opsarea-rfc5706bis)</li>

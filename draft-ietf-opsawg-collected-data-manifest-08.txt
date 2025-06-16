@@ -1630,6 +1630,10 @@ Appendix A.  Changes between revisions
 
    This section is to be removed before publishing as an RFC.
 
+   v07 -> v08
+
+   *  Address comments from Thomas
+
    v06 -> v07
 
    *  Operational +(and management) considerations (draft-opsarea-
@@ -1671,16 +1675,15 @@ Appendix A.  Changes between revisions
    *  Replace copy-pasted version of the modules with schema mount
       version, use full-embed for the "real" one
 
-   *  Schema mount version is the fallback plan if full:embed is not
-      there fast enough.
-
-
 
 
 Claise, et al.          Expires 18 December 2025               [Page 30]
 
 Internet-Draft           Telemetry Data Manifest               June 2025
 
+
+   *  Schema mount version is the fallback plan if full:embed is not
+      there fast enough.
 
    *  Update examples accordingly
 
@@ -1727,9 +1730,6 @@ Internet-Draft           Telemetry Data Manifest               June 2025
 
    *  Unify used terms as defined in the terminology section
 
-   *  Replaced 'device' with 'platform'
-
-   *  Split Section 5 into two sections for better readibility
 
 
 
@@ -1737,6 +1737,10 @@ Claise, et al.          Expires 18 December 2025               [Page 31]
 
 Internet-Draft           Telemetry Data Manifest               June 2025
 
+
+   *  Replaced 'device' with 'platform'
+
+   *  Split Section 5 into two sections for better readibility
 
    v03 -> v04
 
@@ -1783,16 +1787,16 @@ Internet-Draft           Telemetry Data Manifest               June 2025
    *  Export manifest with on change telemetry as opposed to YANG
       instance file
 
-   v00
-
-   *  Initial version
-
 
 
 Claise, et al.          Expires 18 December 2025               [Page 32]
 
 Internet-Draft           Telemetry Data Manifest               June 2025
 
+
+   v00
+
+   *  Initial version
 
 Appendix B.  An Example of Use Based on MDT
 
@@ -1836,10 +1840,6 @@ Appendix B.  An Example of Use Based on MDT
    interface "eth0" is enabled and received 1234 octets.  In that case,
    the value is stored, without any way to know how the value was
    obtained.
-
-
-
-
 
 
 
