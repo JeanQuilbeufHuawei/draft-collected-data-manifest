@@ -156,7 +156,7 @@
         Platform: equipment of the network able to produce telemetry data.
       </t>
       <t>
-        Data manifest: The necessary data required to interpret a telemetry information.
+        Data manifest: The necessary data required to interpret telemetry information.
       </t>
       <t>
         Platform manifest: part of the data manifest that completely characterizes the platform producing the telemetry information.
@@ -239,8 +239,8 @@
             The Data Mesh principles adopt the boundary of bounded context to individual data products where each domain is responsible for (and owns) its data and models.
           </li>
           <li>
-            Data as a Product: The “Domain” owners are responsible to provide the data in useful way (discoverable through a catalog, addressable with a permanent and unique address, understandable with well-defined semantics, trustworthy and truthful, self-describing for easy consumption, interoperable by supporting standards, secure, self-contained, etc.) and should treat consumers of that data as customers.
-            It requires and relies on the “Domain Ownership” principle.
+            Data as a Product: The "Domain" owners are responsible to provide the data in useful way (discoverable through a catalog, addressable with a permanent and unique address, understandable with well-defined semantics, trustworthy and truthful, self-describing for easy consumption, interoperable by supporting standards, secure, self-contained, etc.) and should treat consumers of that data as customers.
+            It requires and relies on the "Domain Ownership" principle.
           </li>
           <li>
             Self-serve Data Platform: This fosters the sharing of cross-domain data to create extra value.
@@ -451,15 +451,25 @@
           The reliability of the collection of the data manifest is the same as the reliability of the data collection itself, since the data manifest is like any other data.
         </t>
       </section>
-
-      <section anchor="operational-considerations">
-        <name>Operational and Management Considerations</name>
-         <t>
-           It is expected that the data manifest is streamed directly from the network equipment, along with YANG-Push <xref target="RFC8641"/> data.
-           However, if the equipment Network Telemetry does not yet support the YANG modules from the data manifest specified in this document, the telemetry collector could populate the data manifest from available information collected from the platform.
-           This latter option requires efforts on the Network Telemetry data collection side, as the information gathered in the data manifest proposed in this document could be scattered among various standard and vendor-specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
-         </t>
-      </section>
+    </section>
+    <section anchor="operational-considerations">
+      <name>Operational Considerations</name>
+       <t>
+         The data manifest is partially standardized in this document since only the platform manifest has a normative YANG module.
+         <xref target="model-tree"/> explains why the data collection manifest cannot be normative at the current time.
+         In practice, the data collection manifest might be difficult to implement due to the dependency on YANG Schema Mount and the lack of normative YANG module.
+         In that case, the solution proposed in the next paragraph covers the creation of the data collection manifest.
+       </t>
+       <t>
+         It is expected that the data manifest is streamed directly from the network equipment, along with YANG-Push <xref target="RFC8641"/> data.
+         However, if the equipment Network Telemetry does not yet support the YANG modules from the data manifest specified in this document, the telemetry collector could populate the data manifest from available information collected from the platform.
+         This latter option requires efforts on the Network Telemetry data collection side, as the information gathered in the data manifest proposed in this document could be scattered among various standard and vendor-specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
+       </t>
+       <t>
+         The current approach relies on the sysname for identifying the various platform, which identifies a role rather than a particular piece of hardware.
+         As a consequence, there is no simple solution for obtaining the data manifest of a given piece of hardware reused for different roles in the same network.
+         In general, the problem of having consistent metadata among various protocols is still an open problem as detailed in <xref target="I-D.boucadair-nmop-rfc3535-20years-later" section="4.10"/>.
+       </t>
     </section>
     <section anchor="example">
       <name>Example</name>
@@ -624,6 +634,7 @@
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-ivy-network-inventory-yang.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-nmop-terminology.xml"/>
       <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-netmod-rfc8407bis.xml"/>
+      <xi:include href="https://bib.ietf.org/public/rfc/bibxml3/reference.I-D.boucadair-nmop-rfc3535-20years-later.xml"/>
       <reference anchor="DataMesh" target="https://www.datamesh-architecture.com/">
         <front>
           <title>Datamesh Architecture</title>
