@@ -1646,6 +1646,9 @@ Appendix A.  Changes between revisions
 
    *  Removed unused ref, move 9232 to informational
 
+   *  Answer Joe’s comments in Operational Consideration (which is re-
+      renamed by the way)
+
    v07 -> v08
 
    *  Address comments from Thomas
@@ -1672,15 +1675,15 @@ Appendix A.  Changes between revisions
    *  Making the "current-period" update more generic and mentioning it
       in the introduction
 
-   *  Section 7 (previously 5) reworked to clarify how data manifest is
-      collected and retrieved from a datapoint
-
 
 
 Claise, et al.           Expires 2 January 2026                [Page 30]
 
 Internet-Draft           Telemetry Data Manifest               July 2025
 
+
+   *  Section 7 (previously 5) reworked to clarify how data manifest is
+      collected and retrieved from a datapoint
 
    *  Remove use of YANG schema mount for the platform manifest and
       change data collection manifest to example
@@ -1727,9 +1730,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
 
    *  Switch YANG models from device view to network view
 
-   *  Add PEN number to identify vendors
-
-   *  Intro rewritten with uses cases
 
 
 
@@ -1737,6 +1737,10 @@ Claise, et al.           Expires 2 January 2026                [Page 31]
 
 Internet-Draft           Telemetry Data Manifest               July 2025
 
+
+   *  Add PEN number to identify vendors
+
+   *  Intro rewritten with uses cases
 
    *  Added an "Operational Considerations" section
 
@@ -1783,16 +1787,15 @@ Internet-Draft           Telemetry Data Manifest               July 2025
 
    v00 -> v01
 
-   *  Adding more into data platform: yang packages, whole yanglib
-      module to specify datastores
-
-
 
 
 Claise, et al.           Expires 2 January 2026                [Page 32]
 
 Internet-Draft           Telemetry Data Manifest               July 2025
 
+
+   *  Adding more into data platform: yang packages, whole yanglib
+      module to specify datastores
 
    *  Setting the right type for periods: int64 -> uint64
 
@@ -1830,6 +1833,23 @@ Appendix B.  An Example of Use Based on MDT
    must be collected in its own subscription.  Figure 5 presents an
    example for such a collection.
 
+
+
+
+
+
+
+
+
+
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 33]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
         +------------+                +--------+
         |   MDT      |--------------> |  TSDB  |
         | Collector  |                +--------+
@@ -1842,13 +1862,6 @@ Appendix B.  An Example of Use Based on MDT
          +---------+
 
           Figure 5: Example of Collection From a Device to a TSDB
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 33]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
 
    In the scenario depicted in Figure 5, the collector receives YANG-
    push data from the device and stores it into a time series database
@@ -1885,6 +1898,14 @@ Internet-Draft           Telemetry Data Manifest               July 2025
    platform identifier is "PE1", the collector subscribes to the path
    "ietf-platform-manifest:platforms/platform[id=PE1]".  For the data
    collection manifests, the collector subscribes to the path "ietf-
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 34]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
    data-collection-manifest:data-collections/data-collection[platform-
    id="PE1"]/yang-push-collection/subscriptions/subscription[id=X]"
    where X is the subscription identifier of existing subscriptions.
@@ -1894,17 +1915,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
    leaf is the vendor PEN number, which is part of the platform
    manifest.  The second leaf is the Xpath filter used for subscription
    to the interface status.
-
-
-
-
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 34]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
 
     * Metric: platforms_platform_vendor_pen
     * Value: 32473
@@ -1939,6 +1949,19 @@ Internet-Draft           Telemetry Data Manifest               July 2025
    subscription identifier is required.  For instance, the same
    datapoints as in Figure 6 could be stored as in Figure 8.
 
+
+
+
+
+
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 35]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
     * Metric: interfaces_interface_enabled
     * Value: True
     * Labels:
@@ -1954,13 +1977,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
       - interfaces_interface_name: "eth0"
       - data_collections_data_collection_yang_push_subscriptions_
         subscription_id: 4243
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 35]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
 
        Figure 8: Storing datapoints with information to retrieve the
                                data manifest
@@ -1994,6 +2010,14 @@ Appendix C.  Generating YANG Tree Diagrams
    as "data-collection-toplevel-yanglib.xml".  The following command was
    used to obtain the YANG Tree diagram (before manual edition).
 
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 36]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
            yanglint -f tree \
            -x data-collection-extension-data.xml \
            -Y data-collection-toplevel-yanglib.xml \
@@ -2010,14 +2034,6 @@ Appendix C.  Generating YANG Tree Diagrams
          <namespace>
            urn:ietf:params:xml:ns:yang:ietf-subscribed-notifications
          </namespace>
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 36]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
-
          <feature>xpath</feature>
        </module>
        <module>
@@ -2050,6 +2066,14 @@ Internet-Draft           Telemetry Data Manifest               July 2025
          </namespace>
        </module>
        <import-only-module>
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 37]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
          <name>ietf-inet-types</name>
          <revision>2013-07-15</revision>
          <namespace>
@@ -2066,14 +2090,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
        <import-only-module>
          <name>ietf-ip</name>
          <revision>2018-02-22</revision>
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 37]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
-
          <namespace>
            urn:ietf:params:xml:ns:yang:ietf-ip
          </namespace>
@@ -2106,6 +2122,14 @@ Internet-Draft           Telemetry Data Manifest               July 2025
            urn:ietf:params:xml:ns:yang:ietf-yang-patch
          </namespace>
        </import-only-module>
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 38]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
        <import-only-module>
          <name>ietf-yang-types</name>
          <revision>2023-01-23</revision>
@@ -2122,14 +2146,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
        <name>ds:running</name>
        <schema>test-schema</schema>
      </datastore>
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 38]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
-
      <datastore>
        <name>ds:operational</name>
        <schema>test-schema</schema>
@@ -2162,6 +2178,14 @@ Internet-Draft           Telemetry Data Manifest               July 2025
                </namespace>
            </module>
            <module>
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 39]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
                <name>ietf-yang-library</name>
                <revision>2019-01-04</revision>
                <namespace>
@@ -2178,14 +2202,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
            <module>
                <name>example-collection-manifest</name>
                <revision>2025-02-21</revision>
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 39]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
-
                <namespace>
                   http://example.org/example-collection-manifest
                </namespace>
@@ -2218,6 +2234,14 @@ Internet-Draft           Telemetry Data Manifest               July 2025
        </schema>
        <datastore>
            <name>ds:running</name>
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 40]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
            <schema>main-schema</schema>
        </datastore>
        <datastore>
@@ -2231,16 +2255,6 @@ Internet-Draft           Telemetry Data Manifest               July 2025
      <module-set-id>2</module-set-id>
    </modules-state>
    <CODE ENDS>
-
-
-
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 40]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
 
 Appendix D.  Validating the Example
 
@@ -2272,6 +2286,18 @@ Authors' Addresses
    Email: jean.quilbeuf@huawei.com
 
 
+
+
+
+
+
+
+
+Claise, et al.           Expires 2 January 2026                [Page 41]
+
+Internet-Draft           Telemetry Data Manifest               July 2025
+
+
    Diego R. Lopez
    Telefonica I+D
    Don Ramon de la Cruz, 82
@@ -2288,38 +2314,12 @@ Authors' Addresses
    Email: ignacio.dominguezmartinez@telefonica.com
 
 
-
-
-
-
-
-Claise, et al.           Expires 2 January 2026                [Page 41]
-
-Internet-Draft           Telemetry Data Manifest               July 2025
-
-
    Thomas Graf
    Swisscom
    Binzring 17
    CH-8045 Zurich
    Switzerland
    Email: thomas.graf@swisscom.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

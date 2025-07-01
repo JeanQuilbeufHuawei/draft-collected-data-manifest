@@ -1138,6 +1138,7 @@ module example-collection-manifest {
       <t>v08 -> v09 </t>
       <ul>
         <li>Removed unused ref, move 9232 to informational</li>
+        <li>Answer Joe’s comments in Operational Consideration (which is re-renamed by the way)</li>
       </ul>
       <t>v07 -> v08 </t>
       <ul>
