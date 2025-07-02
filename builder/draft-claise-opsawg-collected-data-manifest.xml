@@ -466,7 +466,7 @@
          This latter option requires efforts on the Network Telemetry data collection side, as the information gathered in the data manifest proposed in this document could be scattered among various standard and vendor-specific YANG modules <xref target="RFC8199"/>, that depend on the platform.
        </t>
        <t>
-         The current approach relies on the sysname for identifying the various platform, which identifies a role rather than a particular piece of hardware.
+         The current approach relies on the hostname for identifying the various platform, which identifies a role rather than a particular piece of hardware.
          As a consequence, there is no simple solution for obtaining the data manifest of a given piece of hardware reused for different roles in the same network.
          In general, the problem of having consistent metadata among various protocols is still an open problem as detailed in <xref target="I-D.boucadair-nmop-rfc3535-20years-later" section="4.10"/>.
        </t>
