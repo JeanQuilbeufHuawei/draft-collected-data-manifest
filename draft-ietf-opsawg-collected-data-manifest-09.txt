@@ -1178,9 +1178,9 @@ Claise, et al.           Expires 3 January 2026                [Page 21]
 Internet-Draft           Telemetry Data Manifest               July 2025
 
 
-   The current approach relies on the hostname for identifying the
-   various platform, which identifies a role rather than a particular
-   piece of hardware.  As a consequence, there is no simple solution for
+   The current approach relies on the hostname for identifying
+   platforms, which identifies a role rather than a particular piece of
+   hardware.  As a consequence, there is no simple solution for
    obtaining the data manifest of a given piece of hardware reused for
    different roles in the same network.  In general, the problem of
    having consistent metadata among various protocols is still an open
