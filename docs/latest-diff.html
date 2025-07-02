@@ -509,7 +509,7 @@ document.onkeydown = function(e) {
       <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   *  Removed unused ref, move 9232 to informational</span></td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert"></span></td><td class="lineno"></td></tr>
-      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   *  Answer Joe’s comments in Operational Consideration (which is re-</span></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">   *  Answer Joe's comments in Operational Consideration (which is re-</span></td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock"><span class="insert">      renamed by the way)</span></td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="lblock"></td><td> </td><td class="rblock">                                                                         </td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="left">   v07 -&gt; v08</td><td> </td><td class="right">   v07 -&gt; v08</td><td class="lineno"></td></tr>
@@ -522,10 +522,34 @@ document.onkeydown = function(e) {
       <tr><td class="lineno"></td><td class="left">      rfc5706bis)</td><td> </td><td class="right">      rfc5706bis)</td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
       <tr><td class="lineno"></td><td class="left">   *  Make current period config false</td><td> </td><td class="right">   *  Make current period config false</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr id="part-12" class="change" ><td></td><th><small>skipping to change at</small><a href="#part-12"><em> page 33, line 21<span class="hide"> &para;</span></em></a></th><th> </th><th><small>skipping to change at</small><a href="#part-12"><em> page 33, line 39<span class="hide"> &para;</span></em></a></th><td></td></tr>
+      <tr><td class="lineno"></td><td class="left">   In this example, the goal is to collect the administrative status and</td><td> </td><td class="right">   In this example, the goal is to collect the administrative status and</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   number of received bytes for the interfaces of a fictional ACME</td><td> </td><td class="right">   number of received bytes for the interfaces of a fictional ACME</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   device, and store the result in a time-series database.  The metrics</td><td> </td><td class="right">   device, and store the result in a time-series database.  The metrics</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   are collected using YANG-Push, which is configured by specifying</td><td> </td><td class="right">   are collected using YANG-Push, which is configured by specifying</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   their XPaths and when they should be collected (periodically or on-</td><td> </td><td class="right">   their XPaths and when they should be collected (periodically or on-</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   change).  More precisely, the Xpaths to collect are "ietf-</td><td> </td><td class="right">   change).  More precisely, the Xpaths to collect are "ietf-</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   interfaces:interfaces/interface/enabled" on every change and "ietf-</td><td> </td><td class="right">   interfaces:interfaces/interface/enabled" on every change and "ietf-</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   interfaces:interfaces/interface/statistics/in-octets" every 100</td><td> </td><td class="right">   interfaces:interfaces/interface/statistics/in-octets" every 100</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   milliseconds.  The paths here are referring to the YANG module from</td><td> </td><td class="right">   milliseconds.  The paths here are referring to the YANG module from</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   [RFC8343].  The configuration of YANG push is out of scope for this</td><td> </td><td class="right">   [RFC8343].  The configuration of YANG push is out of scope for this</td><td class="lineno"></td></tr>
+      <tr id="diff0023"><td></td></tr>
+      <tr><td class="lineno"></td><td class="lblock">   document.  Since they don<span class="delete">’</span>t have the same trigger, each of the path</td><td> </td><td class="rblock">   document.  Since they don<span class="insert">'</span>t have the same trigger, each of the path</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   must be collected in its own subscription.  Figure 5 presents an</td><td> </td><td class="right">   must be collected in its own subscription.  Figure 5 presents an</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">   example for such a collection.</td><td> </td><td class="right">   example for such a collection.</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left"></td><td> </td><td class="right"></td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">        +------------+                +--------+</td><td> </td><td class="right">        +------------+                +--------+</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">        |   MDT      |--------------&gt; |  TSDB  |</td><td> </td><td class="right">        |   MDT      |--------------&gt; |  TSDB  |</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">        | Collector  |                +--------+</td><td> </td><td class="right">        | Collector  |                +--------+</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">        +------------+</td><td> </td><td class="right">        +------------+</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             ^</td><td> </td><td class="right">             ^</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             |</td><td> </td><td class="right">             |</td><td class="lineno"></td></tr>
+      <tr><td class="lineno"></td><td class="left">             |</td><td> </td><td class="right">             |</td><td class="lineno"></td></tr>
 
      <tr><td></td><td class="left"></td><td> </td><td class="right"></td><td></td></tr>
-     <tr id="end" bgcolor="gray"><th colspan="5" align="center">&nbsp;End of changes. 22 change blocks.&nbsp;</th></tr>
-     <tr class="stats"><td></td><th><i>39 lines changed or deleted</i></th><th><i> </i></th><th><i>65 lines changed or added</i></th><td></td></tr>
+     <tr id="end" bgcolor="gray"><th colspan="5" align="center">&nbsp;End of changes. 23 change blocks.&nbsp;</th></tr>
+     <tr class="stats"><td></td><th><i>40 lines changed or deleted</i></th><th><i> </i></th><th><i>66 lines changed or added</i></th><td></td></tr>
      <tr><td colspan="5" align="center" class="small"><br/>This html diff was produced by rfcdiff 1.45. The latest version is available from <a href="http://www.tools.ietf.org/tools/rfcdiff/" >http://tools.ietf.org/tools/rfcdiff/</a> </td></tr>
    </table>
    </body>

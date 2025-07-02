@@ -1646,7 +1646,7 @@ Appendix A.  Changes between revisions
 
    *  Removed unused ref, move 9232 to informational
 
-   *  Answer Joe’s comments in Operational Consideration (which is re-
+   *  Answer Joe's comments in Operational Consideration (which is re-
       renamed by the way)
 
    v07 -> v08
@@ -1829,7 +1829,7 @@ Appendix B.  An Example of Use Based on MDT
    interfaces:interfaces/interface/statistics/in-octets" every 100
    milliseconds.  The paths here are referring to the YANG module from
    [RFC8343].  The configuration of YANG push is out of scope for this
-   document.  Since they don’t have the same trigger, each of the path
+   document.  Since they don't have the same trigger, each of the path
    must be collected in its own subscription.  Figure 5 presents an
    example for such a collection.
 

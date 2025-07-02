@@ -1138,7 +1138,7 @@ module example-collection-manifest {
       <t>v08 -> v09 </t>
       <ul>
         <li>Removed unused ref, move 9232 to informational</li>
-        <li>Answer Joe’s comments in Operational Consideration (which is re-renamed by the way)</li>
+        <li>Answer Joe's comments in Operational Consideration (which is re-renamed by the way)</li>
       </ul>
       <t>v07 -> v08 </t>
       <ul>
@@ -1262,7 +1262,7 @@ module example-collection-manifest {
         More precisely, the Xpaths to collect are "ietf-interfaces:interfaces/interface/enabled" on every change and "ietf-interfaces:interfaces/interface/statistics/in-octets" every 100 milliseconds.
         The paths here are referring to the YANG module from <xref target="RFC8343"/>.
         The configuration of YANG push is out of scope for this document.
-        Since they don’t have the same trigger, each of the path must be collected in its own subscription.
+        Since they don't have the same trigger, each of the path must be collected in its own subscription.
         <xref target="collection_example"/> presents an example for such a collection.
       </t>
       <figure anchor="collection_example">
