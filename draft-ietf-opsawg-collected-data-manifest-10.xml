@@ -23,9 +23,9 @@
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
     <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-10"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
-      <organization>Huawei</organization>
+      <organization>Everything OPS</organization>
       <address>
-        <email>benoit.claise@huawei.com</email>
+        <email>benoit@everything-ops.net</email>
       </address>
     </author>
     <author fullname="Jean Quilbeuf" initials="J" surname="Quilbeuf ">

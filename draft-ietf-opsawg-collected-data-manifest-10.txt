@@ -3,9 +3,10 @@
 
 
 OPSAWG                                                         B. Claise
-Internet-Draft                                               J. Quilbeuf
-Intended status: Standards Track                                  Huawei
-Expires: 20 April 2026                                          D. Lopez
+Internet-Draft                                            Everything OPS
+Intended status: Standards Track                             J. Quilbeuf
+Expires: 20 April 2026                                            Huawei
+                                                                D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
@@ -49,7 +50,6 @@ Status of This Memo
    material or to cite them other than as "work in progress."
 
    This Internet-Draft will expire on 20 April 2026.
-
 
 
 
@@ -2277,8 +2277,8 @@ Acknowledgements
 Authors' Addresses
 
    Benoit Claise
-   Huawei
-   Email: benoit.claise@huawei.com
+   Everything OPS
+   Email: benoit@everything-ops.net
 
 
    Jean Quilbeuf
