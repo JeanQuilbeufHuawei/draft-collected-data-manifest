@@ -95,7 +95,7 @@
       </t>
       <t>
         One part of this information is the actual collection period, as opposed to the configured collection period.
-        On some platforms, that period can be adjusted automatically by the platform, for instance to reduce the load incurred by sending the telemetry.
+        On some platforms, that period can be adjusted unilaterally by the platform, for instance to reduce the load incurred by sending the telemetry.
         To later exploit the collected data, getting this actual collection period is crucial.
         This document defines a YANG model augmenting the YANG-Push model <xref target="RFC8641"/> to expose the actual collection period in <xref target="data-manifest-statistics-module"/>.
       </t>
@@ -134,8 +134,10 @@
         Supplying the data lineage for the computed indicators is out of scope of this document.
       </t>
       <t>
-        To retrieve the context in which a particular piece of data was collected, three elements are necessary: the time of data emission, the originating platform and the subscription through which the data arrived.
-        The approach described in this document delegates the time retrieval to the database storing the collected telemetry and focusing on providing a way to match a platform and a subscription identifier to the collection context.
+        This document enables retrieving the context in which a particular piece of data was collected, without having to access the platform that emitted the telemetry.
+        This retrieval requires three elements: the time of data emission, the originating platform and the subscription through which the data arrived.
+        The approach described in this document assumes that an underlying database records the history of both the data and the data manifest, enabling the data analyst to temporally match the data and the data manifest.
+        Therefore, the approach presented here focuses on providing a way to match a platform and a subscription identifier to the collection context.
         This is consistent with most of the YANG modules for devices, which focus on describing the current state of the device, rather than the evolution of that state through time.
       </t>
 
@@ -153,16 +155,16 @@
         This document reuses the term "Network Telemetry" as defined in <xref target="RFC9232"/>.
       </t>
       <t>
-        Platform: equipment of the network able to produce telemetry data.
+        Platform: equipment in the network able to produce telemetry data.
       </t>
       <t>
         Data manifest: The necessary data required to interpret telemetry information.
       </t>
       <t>
-        Platform manifest: part of the data manifest that completely characterizes the platform producing the telemetry information.
+        Platform manifest: part of the data manifest that characterizes the platform producing the telemetry information.
       </t>
       <t>
-        Data collection manifest: part of the data manifest that completely characterizes how and when the telemetry information was metered.
+        Data collection manifest: part of the data manifest that characterizes how and when the telemetry information was metered.
       </t>
       <t>
         Datapoint: an instance of data collected via Network Telemetry at a specific time.
@@ -187,7 +189,7 @@
         </t>
          <ul>
            <li>
-             This counter definition, typically as defined in the YANG model.
+             The counter definition, typically as defined in the YANG model.
            </li>
            <li>
              The network platform vendor, model, and OS.
@@ -201,7 +203,7 @@
            As an example, knowing the exact data source software specification might reveal a particularity in the observed data, explained by a specific bug, a specific bug fix, or simply a particular specific behavior.
            This is also necessary to ensure the reliability of the collected data.
            On top of that, for YANG-Push <xref target="RFC8641"/>, it is crucial to know the set of YANG modules supported by the platform, along with their deviations.
-           In some cases, there might even be some backwards incompatible changes in native modules (i.e., vendor proprietary modules) between one OS version to the next one.
+           In some cases, there might even be some backwards incompatible changes in built-in modules (i.e., vendor proprietary modules) between one OS version to the next one.
            This information is captured by means of the platform manifest <xref target="platform-manifest"/>.
         </t>
          <t>
@@ -212,7 +214,7 @@
            The reason for this behavior might be diverse: the network
            platform may be  under stress, with a too small observation period, compared to the minimum-observed-period.
            Knowing the conditions under which a counter was collected and streamed (along with the platform details) helps drawing the informed conclusions.
-           As an example, some platform might report a value of 0 for counters when the collection period is too short with respect to the capabilities of the platform.
+           As an example, some platform might erroneously report a value of 0 for counters when the collection period is too short with respect to the capabilities of the platform.
            Without context, this value of 0 might lead to a wrong conclusion that the corresponding counter dropped to zero.
         </t>
        </section>
@@ -224,7 +226,8 @@
            that the Network Telemetry data is the right one, that the data is correctly collected at the data collection,
            and finally that the data can be analyzed (compared with other similar devices).
            For the last point, the data manifest, which must be linked to the data up to the collection and analytics system,
-           contains the relevant information.
+           contains the relevant information, notably in the case where the telemetry subscriptions are not configured by the
+           telemetry collectors.
         </t>
        </section>
 
@@ -260,7 +263,7 @@
       <t>
         Some platforms will adjust the collection period depending on their capabilities and current load.
         The YANG module in this section augments the "ietf-subscribed-notification" module to provide the "current-period" leaf.
-        The value of this leaf indicates the current collection which might be different from the configured collection period.
+        The value of this leaf indicates the current collection period which might be different from the configured collection period.
       </t>
       <t>
         <xref target="current-period-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "ietf-yp-current-period" module.
@@ -298,9 +301,12 @@
           There are several documents about managing the inventory of the network, e.g., <xref target="I-D.ietf-ivy-network-inventory-yang"/>.
           The platform identifier should be the same as the identifier used in inventories or the 'node-id' in <xref target="RFC8345"/>.
           As an example, the identifier could be the 'sysName' from <xref target="RFC3418"/>.
-          The scope of the "ietf-platform-manifest" module is the scope of the data collection, i.e., a given network, therefore it contains a collection of platform manifests, as opposed to the device scope, which would contain a single platform manifest.
+          Selecting the correct identifier out of the existing works in IETF is out of scope for this document.
         </t>
-
+        <t>
+          The scope of the "ietf-platform-manifest" module is the scope of the data collection, i.e., a given network, therefore it contains a collection of platform manifests, as opposed to the device scope, which would contain a single platform manifest.
+          For a device-level implementation the same module is used, including a single entry in 'platforms/platform', corresponding to the local view of the network from the device point of view.
+        </t>
         <t>
           The platform manifest is characterized by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', and 'os-type') that are aligned with the YANG Catalog <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
           The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
@@ -652,6 +658,10 @@
     <?rfc needLines="100"?>
     <section removeInRFC="true">
       <name>Changes between revisions</name>
+      <t>v09 -> v10 </t>
+      <ul>
+        <li>Address Mahesh comments</li>
+      </ul>
       <t>v08 -> v09 </t>
       <ul>
         <li>Removed unused ref, move 9232 to informational</li>
@@ -854,7 +864,7 @@
          ]]></artwork>
       </figure>
       <t>
-          In the labels, the "host" might be different from the "platforms_platform_id" in case the collector is the one assembling it, i.e. for devices that do not natively support the data manifest.
+          In the labels, the "host" might be different from the "platforms_platform_id" in case the collector is the one assembling it, i.e. for devices that do not support the data manifest.
           In that case, the value of this label could be the hostname of the collector.
           The host value does not matter for retrieving the data manifest as the platform identifier is the meaningful field.
       </t>
