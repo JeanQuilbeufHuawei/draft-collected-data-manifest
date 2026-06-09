@@ -100,8 +100,8 @@
         This document defines a YANG model augmenting the YANG-Push model <xref target="RFC8641"/> to expose the actual collection period in <xref target="data-manifest-statistics-module"/>.
       </t>
       <t>
-        This document introduces the Data Manifest, which is composed of two YANG modules, namely, the Platform Manifest and the data collection
-        manifest, to keep the collected data exploitable by the data scientists and relevant tools.
+        This document introduces the Data Manifest, which is composed of two YANG modules, namely, the Platform Manifest and the Data Collection
+        Manifest, to keep the collected data exploitable by the data scientists and relevant tools.
       </t>
       <t>
         The Platform Manifest contains information characterizing the platform streaming the telemetry information, while the Data Collection Manifest contains the required information to characterize how and when the telemetry information was metered.
@@ -1170,7 +1170,7 @@ module example-collection-manifest {
         <li>Applied details comments from Joe and Med</li>
         <li>Making the "current-period" update more generic and mentioning it in the introduction</li>
         <li>Section 7 (previously 5) reworked to clarify how data manifest is collected and retrieved from a datapoint</li>
-        <li>Remove use of YANG schema mount for the platform manifest and change data collection manifest to example</li>
+        <li>Remove use of YANG schema mount for the platform manifest and change Data Collection Manifest to example</li>
       </ul>
       <t>v04 -> v05 </t>
       <ul>
