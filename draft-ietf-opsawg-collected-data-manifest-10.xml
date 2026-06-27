@@ -107,7 +107,7 @@
         The Platform Manifest contains information characterizing the platform streaming the telemetry information, while the Data Collection Manifest contains the required information to characterize how and when the telemetry information was metered.
         The Platform Manifest is specified in <xref target="platform-manifest"/>.
         An example of Data Collection Manifest is specified in <xref target="data-collection-manifest"/>.
-        The latter module is non-normative due to the lack of design-time schema mount in YANG, see <xref target="RFC8528" section="1"/>.
+        Due to the lack of design-time schema mount in YANG, see <xref target="RFC8528" section="1"/>, the Data Collection Manifest is non-normative and therefore included in the appendix.
       </t>
       <t>         
         These two  YANG modules do not expose any new information but rather define what should be exposed by a platform streaming or storing telemetry data.
@@ -592,222 +592,6 @@ module ietf-platform-manifest {
       </section>
     </section>
 
-    <section anchor="data-collection-manifest">
-      <name>Data Collection Manifest</name>
-      <t> This section is non-normative.</t>
-      <section anchor="model-tree">
-        <name>Overview of the Model</name>
-        <t>
-          <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
-          The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
-          This module is an example, i.e. non-normative, as YANG Schema mount does not support design-time schema mount.
-          <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
-        </t>
-        <figure anchor="data-collection-manifest-tree">
-          <name>YANG tree diagram for example-collection-manifest module</name>
-          <artwork type="ascii-art"><![CDATA[
-module: example-collection-manifest
-  +--ro data-collections
-     +--mp data-collection* [platform-id]
-        +--ro platform-id    -> /p-mf:platforms/p-mf:platform/p-mf:id
-        +--ro streams/
-        |  +--ro stream* [name]
-        |     +--ro name           string
-        |     +--ro description?   string
-        +--ro filters/
-        |  +--ro stream-filter* [name]
-        |  |  +--ro name             string
-        |  |  +--ro (filter-spec)?
-        |  |     +--:(stream-subtree-filter)
-        |  |     +--:(stream-xpath-filter)
-        |  |        +--ro stream-xpath-filter?   yang:xpath1.0
-        |  |                {xpath}?
-        |  +--ro selection-filter* [filter-id]
-        |     +--ro filter-id        string
-        |     +--ro (filter-spec)?
-        |        +--:(datastore-subtree-filter)
-        |        +--:(datastore-xpath-filter)
-        |           +--ro datastore-xpath-filter?   yang:xpath1.0
-        |                   {sn:xpath}?
-        +--ro subscriptions/
-          +--ro subscription* [id]
-             +--ro id                  subscription-id
-             +--ro (target)
-             |  +--:(stream)
-             |  |  +--ro (stream-filter)?
-             |  |  |  +--:(by-reference)
-             |  |  |  |  +--ro stream-filter-name
-             |  |  |  |          stream-filter-ref
-             |  |  |  +--:(within-subscription)
-             |  |  |     +--ro (filter-spec)?
-             |  |  |        +--:(stream-subtree-filter)
-             |  |  |        +--:(stream-xpath-filter)
-             |  |  |           +--ro stream-xpath-filter?
-             |  |  |                   yang:xpath1.0 {xpath}?
-             |  |  +--ro stream             stream-ref
-             |  +--:(datastore)
-             |     +--ro datastore             identityref
-             |     +--ro (selection-filter)?
-             |        +--:(by-reference)
-             |        |  +--ro selection-filter-ref
-             |        |          selection-filter-ref
-             |        +--:(within-subscription)
-             |           +--ro (filter-spec)?
-             |              +--:(datastore-subtree-filter)
-             |              +--:(datastore-xpath-filter)
-             |                 +--ro datastore-xpath-filter?
-             |                         yang:xpath1.0 {sn:xpath}?
-             +--ro stop-time?          yang:date-and-time
-             +--ro encoding?           encoding
-             +--ro receivers
-             |  +--ro receiver* [name]
-             |     +--ro name                      string
-             |     +--ro sent-event-records?
-             |     |       yang:zero-based-counter64
-             |     +--ro excluded-event-records?
-             |     |       yang:zero-based-counter64
-             |     +--ro state                     enumeration
-             +--ro (update-trigger)?
-             |  +--:(periodic)
-             |  |  +--ro periodic!
-             |  |     +--ro period         centiseconds
-             |  |     +--ro anchor-time?   yang:date-and-time
-             |  +--:(on-change) {on-change}?
-             |     +--ro on-change!
-             |        +--ro dampening-period?   centiseconds
-             |        +--ro sync-on-start?      boolean
-             |        +--ro excluded-change*    change-type
-             +--ro current-period?     yp:centiseconds
-              ]]></artwork>
-        </figure>
-        <t>
-          The 'data-collections' container contains the information related to each YANG-Push subscription.
-          As for the Platform Manifest, these subscriptions are indexed by the 'platform-id', so that all subscriptions in the network can be represented at the network level without any conflict.
-        </t>
-        <t>
-          As most of the information related to YANG-push subscription
-          <xref target="RFC8639"/> and <xref target="RFC8641"/> is stored in the "ietf-yang-push" module, these modules are mounted.
-          These modules have a part common to all subscriptions of the platform, stored in the 'streams' and 'filters' containers.
-          The information about subscriptions themselves are stored in the 'subscriptions/subscription' list, indexed by a subscription identifier.
-        </t>
-        <t>
-          In the subscription object, the 'current-period' indicates the period currently used between two updates.
-          That leaf can only be present when the subscription is periodic.
-          The current period might differ from the requested period if the platform implements a mechanism to increase the collection period when it is overloaded.
-          Having the current period information is crucial to understand if telemetry is missing because of a bug or a packet loss or simply because it was dynamically adjusted by the platform.
-        </t>
-        <t>
-          The 'current-period' data node is added by the module 'ietf-data-collection-manifest-statistics' presented in <xref target="data-manifest-statistics-module"/>.
-          This module augments the subscription list from the module 'ietf-subscribed-notifications'.
-          It is mounted as well via the YANG Schema Mount mechanism.
-          The module for the Data Collection Manifest is presented in <xref target="module-code"/>.
-        </t>
-      </section>
-      <section anchor="module-code">
-        <name>The "example-collection-manifest" YANG module</name>
-        <t>
-          This section includes the code of the "example-collection-manifest" YANG module.
-          Additionally, it defines the extension data file for YANG schema mount.
-          The Data Collection Manifest should conform to the model obtained by combining these two specifications.
-        </t>
-        <sourcecode name="example-collection-manifest@2025-02-21.yang"
-                    type="yang"><![CDATA[
-module example-collection-manifest {
-  yang-version 1.1;
-  namespace "http://example.com/example-data-collection-manifest";
-  prefix ex-d-mf;
-
-  import ietf-platform-manifest {
-    prefix p-mf;
-    reference
-      "RFC XXXX: A Data Manifest for Contextualized Telemetry
-                 Data";
-  }
-  import ietf-yang-schema-mount {
-    prefix yangmnt;
-    reference
-      "RFC8528: YANG Schema Mount";
-  }
-
-  organization
-    "IETF OPSAWG (Operations and Management Area) Working Group";
-  contact
-    "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
-     WG List:  <mailto:opsawg@ietf.org>
-     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
-     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
-     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
-     Author:   Ignacio Dominguez
-                          <ignacio.dominguezmartinez@telefonica.com>
-     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
-  description
-    "This module describes the context of data collection from a
-     given network element. The contents of this model must be
-     streamed along with the data streamed from the network
-     element so that the context of the data collection can
-     be retrieved later.
-
-     This module must be completed with
-     ietf-platform-manifest
-     to capture the whole context of a data collection session.
-
-     Copyright (c) 2025 IETF Trust and the persons identified as
-     authors of the code.  All rights reserved.
-
-     Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject
-     to the license terms contained in, the Revised BSD License
-     set forth in Section 4.c of the IETF Trust's Legal Provisions
-     Relating to IETF Documents
-     (https://trustee.ietf.org/license-info).
-     This version of this YANG module is part of RFC XXXX; see the
-     RFC itself for full legal notices.  ";
-
-  revision 2025-02-21 {
-    description
-      "Initial revision";
-    reference
-      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
-  }
-
-  container data-collections {
-    config false;
-    description
-      "Contains the configuration and statistics for the collected
-       data, per node in the network.";
-    list data-collection {
-      key "platform-id";
-      description
-        "Defines the information for each collected object.";
-      leaf platform-id {
-        type leafref {
-          path "/p-mf:platforms/p-mf:platform/p-mf:id";
-        }
-        description
-          "Identifier of the platform collecting the data. This
-           identifier is the same as the one in the platform
-           manifest.";
-      }
-      yangmnt:mount-point "yang-push-collection" {
-        description
-          "This mount point must mount the following modules and
-           their dependencies:
-             * ietf-subscribed-notifications
-             * ietf-yang-push
-             * ietf-yp-current-period.
-           This mount point must not mount any other modules.";
-        reference
-          "RFC8639: Subscription to YANG Notifications
-           RFC8641: Subscription to YANG Notifications for datastore
-                    updates";
-      }
-    }
-  }
-}
-    ]]>
-        </sourcecode>
-      </section>
-    </section>
     <section anchor="mapping" >
       <name>Data Manifest and the Collected Data</name>
       <t>
@@ -1143,7 +927,11 @@ module example-collection-manifest {
     <?rfc needLines="100"?>
     <section removeInRFC="true">
       <name>Changes between revisions</name>
-      <t>v09 -> v10 </t>
+      <t>v10 -> v11 </t>
+      <ul>
+        <li>Address AD review comments</li>
+      </ul>
+       <t>v09 -> v10 </t>
       <ul>
         <li>Address Mahesh comments</li>
       </ul>
@@ -1266,6 +1054,225 @@ module example-collection-manifest {
         <li> Initial version </li>
       </ul>
     </section>
+
+    <section anchor="data-collection-manifest">
+      <name>Data Collection Manifest</name>
+      <t> This section is non-normative.</t>
+      <section anchor="model-tree">
+        <name>Overview of the Model</name>
+        <t>
+          <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
+          The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
+          This module is an example, i.e. non-normative, as YANG Schema mount does not support design-time schema mount.
+          <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
+        </t>
+        <figure anchor="data-collection-manifest-tree">
+          <name>YANG tree diagram for example-collection-manifest module</name>
+          <artwork type="ascii-art"><![CDATA[
+module: example-collection-manifest
+  +--ro data-collections
+     +--mp data-collection* [platform-id]
+        +--ro platform-id    -> /p-mf:platforms/p-mf:platform/p-mf:id
+        +--ro streams/
+        |  +--ro stream* [name]
+        |     +--ro name           string
+        |     +--ro description?   string
+        +--ro filters/
+        |  +--ro stream-filter* [name]
+        |  |  +--ro name             string
+        |  |  +--ro (filter-spec)?
+        |  |     +--:(stream-subtree-filter)
+        |  |     +--:(stream-xpath-filter)
+        |  |        +--ro stream-xpath-filter?   yang:xpath1.0
+        |  |                {xpath}?
+        |  +--ro selection-filter* [filter-id]
+        |     +--ro filter-id        string
+        |     +--ro (filter-spec)?
+        |        +--:(datastore-subtree-filter)
+        |        +--:(datastore-xpath-filter)
+        |           +--ro datastore-xpath-filter?   yang:xpath1.0
+        |                   {sn:xpath}?
+        +--ro subscriptions/
+          +--ro subscription* [id]
+             +--ro id                  subscription-id
+             +--ro (target)
+             |  +--:(stream)
+             |  |  +--ro (stream-filter)?
+             |  |  |  +--:(by-reference)
+             |  |  |  |  +--ro stream-filter-name
+             |  |  |  |          stream-filter-ref
+             |  |  |  +--:(within-subscription)
+             |  |  |     +--ro (filter-spec)?
+             |  |  |        +--:(stream-subtree-filter)
+             |  |  |        +--:(stream-xpath-filter)
+             |  |  |           +--ro stream-xpath-filter?
+             |  |  |                   yang:xpath1.0 {xpath}?
+             |  |  +--ro stream             stream-ref
+             |  +--:(datastore)
+             |     +--ro datastore             identityref
+             |     +--ro (selection-filter)?
+             |        +--:(by-reference)
+             |        |  +--ro selection-filter-ref
+             |        |          selection-filter-ref
+             |        +--:(within-subscription)
+             |           +--ro (filter-spec)?
+             |              +--:(datastore-subtree-filter)
+             |              +--:(datastore-xpath-filter)
+             |                 +--ro datastore-xpath-filter?
+             |                         yang:xpath1.0 {sn:xpath}?
+             +--ro stop-time?          yang:date-and-time
+             +--ro encoding?           encoding
+             +--ro receivers
+             |  +--ro receiver* [name]
+             |     +--ro name                      string
+             |     +--ro sent-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro excluded-event-records?
+             |     |       yang:zero-based-counter64
+             |     +--ro state                     enumeration
+             +--ro (update-trigger)?
+             |  +--:(periodic)
+             |  |  +--ro periodic!
+             |  |     +--ro period         centiseconds
+             |  |     +--ro anchor-time?   yang:date-and-time
+             |  +--:(on-change) {on-change}?
+             |     +--ro on-change!
+             |        +--ro dampening-period?   centiseconds
+             |        +--ro sync-on-start?      boolean
+             |        +--ro excluded-change*    change-type
+             +--ro current-period?     yp:centiseconds
+              ]]></artwork>
+        </figure>
+        <t>
+          The 'data-collections' container contains the information related to each YANG-Push subscription.
+          As for the Platform Manifest, these subscriptions are indexed by the 'platform-id', so that all subscriptions in the network can be represented at the network level without any conflict.
+        </t>
+        <t>
+          As most of the information related to YANG-push subscription
+          <xref target="RFC8639"/> and <xref target="RFC8641"/> is stored in the "ietf-yang-push" module, these modules are mounted.
+          These modules have a part common to all subscriptions of the platform, stored in the 'streams' and 'filters' containers.
+          The information about subscriptions themselves are stored in the 'subscriptions/subscription' list, indexed by a subscription identifier.
+        </t>
+        <t>
+          In the subscription object, the 'current-period' indicates the period currently used between two updates.
+          That leaf can only be present when the subscription is periodic.
+          The current period might differ from the requested period if the platform implements a mechanism to increase the collection period when it is overloaded.
+          Having the current period information is crucial to understand if telemetry is missing because of a bug or a packet loss or simply because it was dynamically adjusted by the platform.
+        </t>
+        <t>
+          The 'current-period' data node is added by the module 'ietf-data-collection-manifest-statistics' presented in <xref target="data-manifest-statistics-module"/>.
+          This module augments the subscription list from the module 'ietf-subscribed-notifications'.
+          It is mounted as well via the YANG Schema Mount mechanism.
+          The module for the Data Collection Manifest is presented in <xref target="module-code"/>.
+        </t>
+      </section>
+      <section anchor="module-code">
+        <name>The "example-collection-manifest" YANG module</name>
+        <t>
+          This section includes the code of the "example-collection-manifest" YANG module.
+          Additionally, it defines the extension data file for YANG schema mount.
+          The Data Collection Manifest should conform to the model obtained by combining these two specifications.
+        </t>
+        <sourcecode name="example-collection-manifest@2025-02-21.yang"
+                    type="yang"><![CDATA[
+module example-collection-manifest {
+  yang-version 1.1;
+  namespace "http://example.com/example-data-collection-manifest";
+  prefix ex-d-mf;
+
+  import ietf-platform-manifest {
+    prefix p-mf;
+    reference
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry
+                 Data";
+  }
+  import ietf-yang-schema-mount {
+    prefix yangmnt;
+    reference
+      "RFC8528: YANG Schema Mount";
+  }
+
+  organization
+    "IETF OPSAWG (Operations and Management Area) Working Group";
+  contact
+    "WG Web:   <https://datatracker.ietf.org/wg/opsawg/>
+     WG List:  <mailto:opsawg@ietf.org>
+     Author:   Benoit Claise   <mailto:benoit.claise@huawei.com>
+     Author:   Jean Quilbeuf   <mailto:jean.quilbeuf@huawei.com>
+     Author:   Diego R. Lopez  <diego.r.lopez@telefonica.com>
+     Author:   Ignacio Dominguez
+                          <ignacio.dominguezmartinez@telefonica.com>
+     Author:   Thomas Graf     <thomas.graf@swisscom.com>";
+  description
+    "This module describes the context of data collection from a
+     given network element. The contents of this model must be
+     streamed along with the data streamed from the network
+     element so that the context of the data collection can
+     be retrieved later.
+
+     This module must be completed with
+     ietf-platform-manifest
+     to capture the whole context of a data collection session.
+
+     Copyright (c) 2025 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
+
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject
+     to the license terms contained in, the Revised BSD License
+     set forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+     This version of this YANG module is part of RFC XXXX; see the
+     RFC itself for full legal notices.  ";
+
+  revision 2025-02-21 {
+    description
+      "Initial revision";
+    reference
+      "RFC XXXX: A Data Manifest for Contextualized Telemetry Data";
+  }
+
+  container data-collections {
+    config false;
+    description
+      "Contains the configuration and statistics for the collected
+       data, per node in the network.";
+    list data-collection {
+      key "platform-id";
+      description
+        "Defines the information for each collected object.";
+      leaf platform-id {
+        type leafref {
+          path "/p-mf:platforms/p-mf:platform/p-mf:id";
+        }
+        description
+          "Identifier of the platform collecting the data. This
+           identifier is the same as the one in the platform
+           manifest.";
+      }
+      yangmnt:mount-point "yang-push-collection" {
+        description
+          "This mount point must mount the following modules and
+           their dependencies:
+             * ietf-subscribed-notifications
+             * ietf-yang-push
+             * ietf-yp-current-period.
+           This mount point must not mount any other modules.";
+        reference
+          "RFC8639: Subscription to YANG Notifications
+           RFC8641: Subscription to YANG Notifications for datastore
+                    updates";
+      }
+    }
+  }
+}
+    ]]>
+        </sourcecode>
+      </section>
+    </section>
+
+
     <section anchor="inband-example">
       <name>An Example of Use Based on MDT</name>
       <t>
