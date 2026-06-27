@@ -20,7 +20,7 @@
     </module>
     <module>
       <name>ietf-yp-current-period</name>
-      <revision>2025-02-21</revision>
+      <revision>2026-06-27</revision>
       <namespace>
         urn:ietf:params:xml:ns:yang:ietf-yp-current-period
       </namespace>
