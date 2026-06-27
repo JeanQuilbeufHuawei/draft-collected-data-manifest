@@ -48,9 +48,10 @@ def _find_yang_file(prefix: str, schema_mount=False):
         yang_dir = os.path.join(YANG_DIR, "schema-mount")
     else:
         yang_dir = YANG_DIR
-    for yang_file in os.listdir(yang_dir):
-        if yang_file.startswith(prefix + "@") and yang_file.endswith("yang"):
-            return os.path.join(yang_dir, yang_file)
+    matches = sorted([f for f in os.listdir(yang_dir)
+                      if f.startswith(prefix + "@") and f.endswith("yang")])
+    if matches:
+        return os.path.join(yang_dir, matches[-1])
     raise Exception(f"Yang file with prefix {prefix} not found.")
 
 
@@ -121,7 +122,7 @@ def draft_content():
 
 
 if __name__ == '__main__':
-    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-ietf-opsawg-collected-data-manifest-10.xml")
+    output = os.path.join(os.path.dirname(BUILDER_DIR), "draft-ietf-opsawg-collected-data-manifest-11.xml")
     draft_text = env.get_template("draft-claise-opsawg-collected-data-manifest.xml")
     with open(output, 'w') as xml_generated:
         xml_generated.write(draft_text.render(**draft_content()))
