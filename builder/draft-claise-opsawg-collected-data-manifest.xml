@@ -8,7 +8,7 @@
 <?xml-model href="rfc7991bis.rnc"?>
 <rfc
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        docName="draft-ietf-opsawg-collected-data-manifest-10"
+        docName="draft-ietf-opsawg-collected-data-manifest-11"
         category="std"
         ipr="trust200902"
         obsoletes=""
@@ -21,7 +21,7 @@
         version="3" >
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-10"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-11"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Everything OPS</organization>
       <address>
@@ -91,7 +91,7 @@
       </t>
       <t>
         This document specifies what needs to be kept as metadata to ensure that the collected data can still be interpreted correctly throughout the collection and network analytics toolchain. When streaming YANG-structured data with YANG-Push, there is a semantic definition in the corresponding YANG module definition.
-        This is the semantic information for the collected data nodes: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network platform and collection environment contexts information is equally important to interpret the data.
+        This is the semantic information for the collected data nodes: While this semantic is absolutely required to correctly decode and interpret the data, understanding the network platform and collection environment context information is equally important to interpret the data.
       </t>
       <t>
         One part of this information is the actual collection period, as opposed to the configured collection period.
@@ -277,7 +277,7 @@
       <t>
         The code of the "ietf-yp-current" YANG module is given below.
       </t>
-      <sourcecode name="ietf-yp-current-period@2025-02-21.yang" type="yang" markers="true"><![CDATA[
+      <sourcecode name="ietf-yp-current-period@2026-06-27.yang" type="yang" markers="true"><![CDATA[
 {{data_collection_manifest_statistics}}
     ]]>
       </sourcecode>
@@ -308,9 +308,37 @@
           For a device-level implementation the same module is used, including a single entry in 'platforms/platform', corresponding to the local view of the network from the device point of view.
         </t>
         <t>
-          The Platform Manifest is characterized by a set of parameters ('name', 'software-version', 'software-flavor', 'os-version', and 'os-type') that are aligned with the YANG Catalog <xref target="I-D.clacla-netmod-model-catalog"/> so that the YANG Catalog could be used to retrieve the YANG modules a posteriori.
-          The vendor of the platform can be identified via its name 'vendor' or its PEN number 'vendor-pen', as described in <xref target="RFC9371"/>.
+          The Platform Manifest platform details are provided via one or
+          both of two optional feature sets.
+          When the 'yang-catalog' feature is supported, the parameters
+          ('name', 'vendor', 'vendor-pen', 'software-version',
+          'software-flavor', 'os-version', and 'os-type') are aligned
+          with the YANG Catalog <xref target="I-D.clacla-netmod-model-catalog"/>
+          so that the YANG Catalog could be used to retrieve the YANG
+          modules a posteriori.
+          The vendor of the platform can be identified via its name
+          'vendor' or its PEN number 'vendor-pen', as described in
+          <xref target="RFC9371"/>.
+          When the 'ietf-system' feature is supported, the parameters
+          are sourced from the RFC 7317 ietf-system module
+          (system/contact, system/hostname, system/location, and
+          system-state/platform).
         </t>
+        <t>
+          An implementation of the 'ietf-platform-manifest' module MUST
+          support at least one of the following features:
+        </t>
+        <ul>
+          <li>
+            'yang-catalog': provides platform details as defined in the
+            YANG Catalog schema.
+          </li>
+          <li>
+            'ietf-system': provides platform details sourced from the
+            RFC 7317 ietf-system module (system/contact, system/hostname,
+            system/location, and system-state/platform).
+          </li>
+        </ul>
         <t>
           The Platform Manifest also includes the contents of the YANG Library <xref target="RFC8525"/>.
           That module set is particularly useful to retrieve the YANG modules associated to a subscription by analyzing the xpath filters or the subtree filters.
@@ -323,7 +351,7 @@
         <t>
           This section defines the "ietf-platform-manifest" YANG module.
         </t>
-        <sourcecode name="ietf-platform-manifest@2025-02-21.yang" type="yang" markers="true"><![CDATA[
+        <sourcecode name="ietf-platform-manifest@2026-06-27.yang" type="yang" markers="true"><![CDATA[
 {{platform_schema_mount}}
             ]]>
         </sourcecode>
@@ -611,6 +639,7 @@
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.6242.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.7317.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
@@ -619,6 +648,7 @@
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8528.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8639.xml"/>
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.8641.xml"/>
+      <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.9911.xml"/>
     </references>
     <references title="Informative References">
       <xi:include href="http://xml.resource.org/public/rfc/bibxml/reference.RFC.3418.xml"/>
