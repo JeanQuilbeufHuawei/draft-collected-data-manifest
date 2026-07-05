@@ -1735,10 +1735,11 @@ module example-collection-manifest {
         </module>
         <module>
             <name>ietf-platform-manifest</name>
-            <revision>2025-02-21</revision>
+            <revision>2026-06-27</revision>
             <namespace>
                 urn:ietf:params:xml:ns:yang:ietf-platform-manifest
             </namespace>
+            <feature>yang-catalog</feature>
         </module>
         <import-only-module>
             <name>ietf-inet-types</name>
@@ -1782,6 +1783,14 @@ module example-collection-manifest {
         This section provides the command line for validating the example in <xref target="manifest-example"/> using <xref target="yanglint"/>.
         The files "data-collection-extension-data.xml" and "data-collection-toplevel-yanglib.xml" are provided in the previous section.
         The file "manifests-example.json" in the one from <xref target="manifest-example"/>.
+      </t>
+      <t>
+        The Platform Manifest in this example uses the leaves defined
+        under the 'yang-catalog' feature ('name', 'vendor',
+        'vendor-pen', 'software-version', 'os-version', and 'os-type').
+        The example is therefore valid only when the
+        'ietf-platform-manifest' module is implemented with the
+        'yang-catalog' feature enabled.
       </t>
       <sourcecode type="bash">
 yanglint -e -x data-collection-extension-data.xml \
