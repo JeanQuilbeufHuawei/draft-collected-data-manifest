@@ -32,10 +32,11 @@
         </module>
         <module>
             <name>ietf-platform-manifest</name>
-            <revision>2025-02-21</revision>
+            <revision>2026-06-27</revision>
             <namespace>
                 urn:ietf:params:xml:ns:yang:ietf-platform-manifest
             </namespace>
+            <feature>yang-catalog</feature>
         </module>
         <import-only-module>
             <name>ietf-inet-types</name>
