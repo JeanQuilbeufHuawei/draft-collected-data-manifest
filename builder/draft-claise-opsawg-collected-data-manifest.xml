@@ -8,7 +8,7 @@
 <?xml-model href="rfc7991bis.rnc"?>
 <rfc
         xmlns:xi="http://www.w3.org/2001/XInclude"
-        docName="draft-ietf-opsawg-collected-data-manifest-11"
+        docName="draft-ietf-opsawg-collected-data-manifest-12"
         category="std"
         ipr="trust200902"
         obsoletes=""
@@ -21,7 +21,7 @@
         version="3" >
   <front>
     <title abbrev="Telemetry Data Manifest">A Data Manifest for Contextualized Telemetry Data</title>
-    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-11"/>
+    <seriesInfo name="Internet-Draft" value="draft-ietf-opsawg-collected-data-manifest-12"/>
     <author fullname="Benoit Claise" initials="B" surname="Claise">
       <organization>Everything OPS</organization>
       <address>
@@ -107,7 +107,7 @@
         The Platform Manifest contains information characterizing the platform streaming the telemetry information, while the Data Collection Manifest contains the required information to characterize how and when the telemetry information was metered.
         The Platform Manifest is specified in <xref target="platform-manifest"/>.
         An example of Data Collection Manifest is specified in <xref target="data-collection-manifest"/>.
-        The latter module is non-normative due to the lack of design-time schema mount in YANG, see <xref target="RFC8528" section="1"/>.
+        The latter module is non-normative due to the lack of design-time schema mount in YANG (see <xref target="RFC8528" section="1"/>) and is therefore included in the appendix.
       </t>
       <t>         
         These two  YANG modules do not expose any new information but rather define what should be exposed by a platform streaming or storing telemetry data.
@@ -358,60 +358,6 @@
       </section>
     </section>
 
-    <section anchor="data-collection-manifest">
-      <name>Data Collection Manifest</name>
-      <t> This section is non-normative.</t>
-      <section anchor="model-tree">
-        <name>Overview of the Model</name>
-        <t>
-          <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
-          The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
-          This module is an example, i.e. non-normative, as YANG Schema mount does not support design-time schema mount.
-          <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
-        </t>
-        <figure anchor="data-collection-manifest-tree">
-          <name>YANG tree diagram for example-collection-manifest module</name>
-          <artwork type="ascii-art"><![CDATA[
-{{data_collection_manifest_tree}}
-              ]]></artwork>
-        </figure>
-        <t>
-          The 'data-collections' container contains the information related to each YANG-Push subscription.
-          As for the Platform Manifest, these subscriptions are indexed by the 'platform-id', so that all subscriptions in the network can be represented at the network level without any conflict.
-        </t>
-        <t>
-          As most of the information related to YANG-push subscription
-          <xref target="RFC8639"/> and <xref target="RFC8641"/> is stored in the "ietf-yang-push" module, these modules are mounted.
-          These modules have a part common to all subscriptions of the platform, stored in the 'streams' and 'filters' containers.
-          The information about subscriptions themselves are stored in the 'subscriptions/subscription' list, indexed by a subscription identifier.
-        </t>
-        <t>
-          In the subscription object, the 'current-period' indicates the period currently used between two updates.
-          That leaf can only be present when the subscription is periodic.
-          The current period might differ from the requested period if the platform implements a mechanism to increase the collection period when it is overloaded.
-          Having the current period information is crucial to understand if telemetry is missing because of a bug or a packet loss or simply because it was dynamically adjusted by the platform.
-        </t>
-        <t>
-          The 'current-period' data node is added by the module 'ietf-data-collection-manifest-statistics' presented in <xref target="data-manifest-statistics-module"/>.
-          This module augments the subscription list from the module 'ietf-subscribed-notifications'.
-          It is mounted as well via the YANG Schema Mount mechanism.
-          The module for the Data Collection Manifest is presented in <xref target="module-code"/>.
-        </t>
-      </section>
-      <section anchor="module-code">
-        <name>The "example-collection-manifest" YANG module</name>
-        <t>
-          This section includes the code of the "example-collection-manifest" YANG module.
-          Additionally, it defines the extension data file for YANG schema mount.
-          The Data Collection Manifest should conform to the model obtained by combining these two specifications.
-        </t>
-        <sourcecode name="example-collection-manifest@2025-02-21.yang"
-                    type="yang"><![CDATA[
-{{data_collection_manifest_yang}}
-    ]]>
-        </sourcecode>
-      </section>
-    </section>
     <section anchor="mapping" >
       <name>Data Manifest and the Collected Data</name>
       <t>
@@ -685,9 +631,75 @@
 
       </reference>
     </references>
+    <section anchor="data-collection-manifest">
+      <name>Data Collection Manifest</name>
+      <t> This section is non-normative.</t>
+      <section anchor="model-tree">
+        <name>Overview of the Model</name>
+        <t>
+          <xref target="data-collection-manifest-tree"/> contains the YANG tree diagram <xref target="RFC8340"/> of the "example-collection-manifest" module.
+          The module relies upon the YANG Schema mount <xref target="RFC8528"/> to reuse existing YANG modules describing the current data collection status.
+          This module is an example, i.e. non-normative, as YANG Schema mount does not support design-time schema mount.
+          <xref target="schema-mount-version"/> explains how the YANG tree is obtained.
+        </t>
+        <figure anchor="data-collection-manifest-tree">
+          <name>YANG tree diagram for example-collection-manifest module</name>
+          <artwork type="ascii-art"><![CDATA[
+{{data_collection_manifest_tree}}
+              ]]></artwork>
+        </figure>
+        <t>
+          The 'data-collections' container contains the information related to each YANG-Push subscription.
+          As for the Platform Manifest, these subscriptions are indexed by the 'platform-id', so that all subscriptions in the network can be represented at the network level without any conflict.
+        </t>
+        <t>
+          As most of the information related to YANG-push subscription
+          <xref target="RFC8639"/> and <xref target="RFC8641"/> is stored in the "ietf-yang-push" module, these modules are mounted.
+          These modules have a part common to all subscriptions of the platform, stored in the 'streams' and 'filters' containers.
+          The information about subscriptions themselves are stored in the 'subscriptions/subscription' list, indexed by a subscription identifier.
+        </t>
+        <t>
+          In the subscription object, the 'current-period' indicates the period currently used between two updates.
+          That leaf can only be present when the subscription is periodic.
+          The current period might differ from the requested period if the platform implements a mechanism to increase the collection period when it is overloaded.
+          Having the current period information is crucial to understand if telemetry is missing because of a bug or a packet loss or simply because it was dynamically adjusted by the platform.
+        </t>
+        <t>
+          The 'current-period' data node is added by the module 'ietf-data-collection-manifest-statistics' presented in <xref target="data-manifest-statistics-module"/>.
+          This module augments the subscription list from the module 'ietf-subscribed-notifications'.
+          It is mounted as well via the YANG Schema Mount mechanism.
+          The module for the Data Collection Manifest is presented in <xref target="module-code"/>.
+        </t>
+      </section>
+      <section anchor="module-code">
+        <name>The "example-collection-manifest" YANG module</name>
+        <t>
+          This section includes the code of the "example-collection-manifest" YANG module.
+          Additionally, it defines the extension data file for YANG schema mount.
+          The Data Collection Manifest should conform to the model obtained by combining these two specifications.
+        </t>
+        <sourcecode name="example-collection-manifest@2025-02-21.yang"
+                    type="yang"><![CDATA[
+{{data_collection_manifest_yang}}
+    ]]>
+        </sourcecode>
+      </section>
+    </section>
     <?rfc needLines="100"?>
     <section removeInRFC="true">
       <name>Changes between revisions</name>
+      <t>v11 -> v12 </t>
+      <ul>
+        <li>Moved the non-normative Data Collection Manifest to the appendix (Appendix A)</li>
+        <li>Clarified that the example is valid only when the 'yang-catalog' feature is enabled</li>
+      </ul>
+      <t>v10 -> v11 </t>
+      <ul>
+        <li>Added features 'yang-catalog' and 'ietf-system' to the Platform Manifest: platform details can be sourced from the YANG Catalog fields or the RFC 7317 ietf-system model, and at least one feature must be supported</li>
+        <li>Added RFC 7317 and RFC 9911 as normative references</li>
+        <li>Added the RFC 8174 key-words boilerplate to the ietf-platform-manifest module; updated the copyright year to 2026</li>
+        <li>Updated the example</li>
+      </ul>
       <t>v09 -> v10 </t>
       <ul>
         <li>Address Mahesh comments</li>
