@@ -5,13 +5,13 @@
 OPSAWG                                                         B. Claise
 Internet-Draft                                            Everything OPS
 Intended status: Standards Track                             J. Quilbeuf
-Expires: 6 January 2027                                           Huawei
+Expires: 7 January 2027                                           Huawei
                                                                 D. Lopez
                                                             I. Dominguez
                                                           Telefonica I+D
                                                                  T. Graf
                                                                 Swisscom
-                                                             5 July 2026
+                                                             6 July 2026
 
 
            A Data Manifest for Contextualized Telemetry Data
@@ -49,11 +49,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2027.
+   This Internet-Draft will expire on 7 January 2027.
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 1]
+Claise, et al.           Expires 7 January 2027                 [Page 1]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 2]
+Claise, et al.           Expires 7 January 2027                 [Page 2]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -165,7 +165,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 3]
+Claise, et al.           Expires 7 January 2027                 [Page 3]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -221,7 +221,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 4]
+Claise, et al.           Expires 7 January 2027                 [Page 4]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -277,7 +277,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 5]
+Claise, et al.           Expires 7 January 2027                 [Page 5]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -333,7 +333,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 6]
+Claise, et al.           Expires 7 January 2027                 [Page 6]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -389,7 +389,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 7]
+Claise, et al.           Expires 7 January 2027                 [Page 7]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -415,7 +415,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
         ietf-yang-push with the current-period leaf reporting the actual
         collection period, as opposed to the configured one.
 
-        Copyright (c) 2025 IETF Trust and the persons identified as
+        Copyright (c) 2026 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -445,7 +445,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 8]
+Claise, et al.           Expires 7 January 2027                 [Page 8]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -501,7 +501,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                 [Page 9]
+Claise, et al.           Expires 7 January 2027                 [Page 9]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -557,7 +557,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 10]
+Claise, et al.           Expires 7 January 2027                [Page 10]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -613,7 +613,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 11]
+Claise, et al.           Expires 7 January 2027                [Page 11]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -652,7 +652,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
         An implementation of this module MUST support at least one of
         the features 'yang-catalog' or 'ietf-system'.
 
-        Copyright (c) 2025 IETF Trust and the persons identified as
+        Copyright (c) 2026 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -669,7 +669,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 12]
+Claise, et al.           Expires 7 January 2027                [Page 12]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -725,7 +725,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 13]
+Claise, et al.           Expires 7 January 2027                [Page 13]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -781,7 +781,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 14]
+Claise, et al.           Expires 7 January 2027                [Page 14]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -837,7 +837,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 15]
+Claise, et al.           Expires 7 January 2027                [Page 15]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -893,7 +893,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 16]
+Claise, et al.           Expires 7 January 2027                [Page 16]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -949,7 +949,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 17]
+Claise, et al.           Expires 7 January 2027                [Page 17]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1005,7 +1005,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 18]
+Claise, et al.           Expires 7 January 2027                [Page 18]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1061,7 +1061,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 19]
+Claise, et al.           Expires 7 January 2027                [Page 19]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1117,7 +1117,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 20]
+Claise, et al.           Expires 7 January 2027                [Page 20]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1126,7 +1126,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
         ietf-platform-manifest
         to capture the whole context of a data collection session.
 
-        Copyright (c) 2025 IETF Trust and the persons identified as
+        Copyright (c) 2026 IETF Trust and the persons identified as
         authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -1173,7 +1173,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 21]
+Claise, et al.           Expires 7 January 2027                [Page 21]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1229,7 +1229,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 22]
+Claise, et al.           Expires 7 January 2027                [Page 22]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1285,7 +1285,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 23]
+Claise, et al.           Expires 7 January 2027                [Page 23]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1341,7 +1341,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 24]
+Claise, et al.           Expires 7 January 2027                [Page 24]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1397,7 +1397,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 25]
+Claise, et al.           Expires 7 January 2027                [Page 25]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1453,7 +1453,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 26]
+Claise, et al.           Expires 7 January 2027                [Page 26]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1509,7 +1509,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 27]
+Claise, et al.           Expires 7 January 2027                [Page 27]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1565,7 +1565,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 28]
+Claise, et al.           Expires 7 January 2027                [Page 28]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1621,7 +1621,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 29]
+Claise, et al.           Expires 7 January 2027                [Page 29]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1677,7 +1677,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 30]
+Claise, et al.           Expires 7 January 2027                [Page 30]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1733,7 +1733,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 31]
+Claise, et al.           Expires 7 January 2027                [Page 31]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1789,7 +1789,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 32]
+Claise, et al.           Expires 7 January 2027                [Page 32]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1845,7 +1845,7 @@ Appendix A.  Changes between revisions
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 33]
+Claise, et al.           Expires 7 January 2027                [Page 33]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1901,7 +1901,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 34]
+Claise, et al.           Expires 7 January 2027                [Page 34]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -1957,7 +1957,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 35]
+Claise, et al.           Expires 7 January 2027                [Page 35]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2013,7 +2013,7 @@ Appendix B.  An Example of Use Based on MDT
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 36]
+Claise, et al.           Expires 7 January 2027                [Page 36]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2069,7 +2069,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 37]
+Claise, et al.           Expires 7 January 2027                [Page 37]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2125,7 +2125,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 38]
+Claise, et al.           Expires 7 January 2027                [Page 38]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2181,7 +2181,7 @@ Appendix C.  Generating YANG Tree Diagrams
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 39]
+Claise, et al.           Expires 7 January 2027                [Page 39]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2237,7 +2237,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 40]
+Claise, et al.           Expires 7 January 2027                [Page 40]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2293,7 +2293,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 41]
+Claise, et al.           Expires 7 January 2027                [Page 41]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2349,7 +2349,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 42]
+Claise, et al.           Expires 7 January 2027                [Page 42]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2405,7 +2405,7 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 43]
+Claise, et al.           Expires 7 January 2027                [Page 43]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2461,7 +2461,7 @@ Authors' Addresses
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 44]
+Claise, et al.           Expires 7 January 2027                [Page 44]
 
 Internet-Draft           Telemetry Data Manifest               July 2026
 
@@ -2517,4 +2517,4 @@ Internet-Draft           Telemetry Data Manifest               July 2026
 
 
 
-Claise, et al.           Expires 6 January 2027                [Page 45]
+Claise, et al.           Expires 7 January 2027                [Page 45]
